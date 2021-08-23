@@ -1,0 +1,13 @@
+{% extends 'game/html/base.html' %}
+{% load static %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'game/js/index.js' %}"></script>
+{% endblock js %}
+
+{% block body %}
+What chat room would you like to enter?<br>
+<input id="room-name-input" type="text" size="100"><br>
+<input id="room-name-submit" type="button" value="Enter">
+{% endblock %}

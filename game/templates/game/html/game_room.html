@@ -1,0 +1,14 @@
+{% extends 'game/html/base.html' %}
+{% load static %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'game/js/game_room.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<textarea id="chat-log" cols="100" rows="20"></textarea><br>
+<input id="chat-message-input" type="text" size="100"><br>
+<input id="chat-message-submit" type="button" value="Send">
+{{ room_name|json_script:"room-name" }}
+{% endblock %}

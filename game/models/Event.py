@@ -14,6 +14,10 @@ class GameEvent(AbstractModel):
     def __str__(self):
         return self.description
 
+    @classmethod
+    def get_cls(cls):
+        return cls
+
 
 class MoveCard(GameEvent):
     from_area = models.ManyToManyField(Area, related_name="from_area")
@@ -21,3 +25,7 @@ class MoveCard(GameEvent):
 
     def __str__(self):
         return 'Moves card from %s to %s' % (self.from_area.name, self.to_area.name)
+
+    @classmethod
+    def get_concrete_cls(cls):
+        return cls

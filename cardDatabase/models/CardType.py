@@ -18,6 +18,10 @@ class Card(AbstractModel):
     def get_type_choices(cls):
         super().get_type_choices_from_clas(cls)
 
+    @classmethod
+    def get_cls(cls):
+        return cls
+
 
 class Chant(Card):
     class Meta:

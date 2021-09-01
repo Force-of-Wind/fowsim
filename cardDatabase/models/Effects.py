@@ -19,6 +19,10 @@ class Effect(AbstractModel):
     def get_type_choices(cls):
         return super().get_type_choices_from_cls(cls)
 
+    @classmethod
+    def get_cls(cls):
+        return cls
+
 
 class OneTimeEffect(Effect):
     class Meta:

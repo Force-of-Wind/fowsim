@@ -13,6 +13,10 @@ class Ability(AbstractModel):
     def get_type_choices(cls):
         return super().get_type_choices_from_cls(cls)
 
+    @classmethod
+    def get_cls(cls):
+        return cls
+
 
 class AutomaticAbilityTrigger(Ability):
     class Meta:

@@ -43,3 +43,6 @@ class AbstractModel(models.Model):
 
         return query_filter
 
+
+def listToChoices(inputs):
+    return [(x, x) for x in inputs]

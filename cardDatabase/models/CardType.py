@@ -26,7 +26,7 @@ class Card(AbstractModel):
 class Chant(Card):
     class Meta:
         abstract = False
-    abilities = models.ManyToManyField(Ability.Ability)
+    abilities = models.ManyToManyField(Ability)
     effect_type_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,
                                          limit_choices_to=Effects.Effect.get_type_choices)
     effect_type_id = models.PositiveIntegerField()

@@ -21,12 +21,14 @@ class Ability(AbstractModel):
 class AutomaticAbilityTrigger(Ability):
     class Meta:
         abstract = False
+        app_label = 'cardDatabase'
     # event = ForeignKey(Event.GameEvent)
 
 
 class AutomaticAbility(Ability):
     class Meta:
         abstract = False
+        app_label = 'cardDatabase'
 
     trigger = models.ManyToManyField(AutomaticAbilityTrigger)
     triggered_count = models.IntegerField(default=0, null=False, blank=False)
@@ -35,9 +37,12 @@ class AutomaticAbility(Ability):
 class ContinuousAbility(Ability):
     class Meta:
         abstract = False
+        app_label = 'cardDatabase'
 
     #effect = models.ForeignKey(Effect, on_delete=models.CASCADE)
+
 
 class ActivateAbility(Ability):
     class Meta:
         abstract = False
+        app_label = 'cardDatabase'

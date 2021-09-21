@@ -1,11 +1,10 @@
+from django.apps import apps
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
-from . import Ability
-from . import Effects
-
 from fowsim.utils import AbstractModel
+from cardDatabase.models.Effects import Effect
 
 
 class Card(AbstractModel):
@@ -16,7 +15,7 @@ class Card(AbstractModel):
 
     @classmethod
     def get_type_choices(cls):
-        super().get_type_choices_from_clas(cls)
+        super().get_type_choices_from_cls(cls)
 
     @classmethod
     def get_cls(cls):
@@ -26,8 +25,7 @@ class Card(AbstractModel):
 class Chant(Card):
     class Meta:
         abstract = False
-    abilities = models.ManyToManyField(Ability)
-    effect_type_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,
-                                         limit_choices_to=Effects.Effect.get_type_choices)
+    abilities = models.ManyToManyField('Ability')
+    effect_type_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=Effect.get_type_choices)
     effect_type_id = models.PositiveIntegerField()
     effect_type = GenericForeignKey('effect_type_type', 'effect_type_id')

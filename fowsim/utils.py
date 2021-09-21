@@ -18,7 +18,7 @@ class AbstractModel(models.Model):
     @classmethod
     @abc.abstractmethod
     def get_type_choices(cls):
-        """Call super().get_type_choices_from_class(cls) with the concrete class"""
+        """Call super().get_type_choices_from_cls(cls) with the concrete class"""
 
     @staticmethod
     def get_subclasses(cls, *args, **kwargs):

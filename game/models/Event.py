@@ -1,8 +1,8 @@
 import abc
 
 from django.db import models
+from django.apps import apps
 
-from . import Area
 from fowsim.utils import AbstractModel, listToChoices
 from fowsim import constants as CONS
 
@@ -37,15 +37,20 @@ class GameEvent(AbstractModel):
     def do_action(self, data):
         """
         Action is able to be done, replacement effects have been applied to the necessary data/fields. Do the action
-        :return:
+        :return: List of triggerable actions
         """
+    @classmethod
+    def trigger_abilities_from_actions(cls, actions_done):
+        # TODO
+        return
 
     def apply_action(self, data):
         if self.can_do_action(data):
             self.apply_replacement_effects(data)
-            self.do_action(data)
+            actions_done = self.do_action(data)
+            self.trigger_abilities_from_actions(actions_done)
         else:
-            raise Exception("Action %s could not be done") % (str(self))
+            raise Exception("Attempted to do action which cannot be done: %s") % (str(self))
 
 
 # Turn the values into tuples
@@ -54,10 +59,13 @@ EFFECT_AREA_CONTROLLER_CHOICES = listToChoices(CONS.EFFECT_AREA_CHOICES_VALUES)
 
 
 class MoveCardFromPosition(GameEvent):
-    from_area = models.ManyToManyField(Area, related_name="from_area")
+    class Meta:
+        app_label = 'game'
+
+    from_area = models.ManyToManyField('game.Area', related_name="from_area")
     from_position = models.TextField(choices=MOVE_CARD_POSITION_CHOICES)
     from_controller = models.TextField(choices=EFFECT_AREA_CONTROLLER_CHOICES)
-    to_area = models.ManyToManyField(Area, related_name="to_area")
+    to_area = models.ManyToManyField('Area', related_name="to_area")
     to_position = models.TextField(choices=MOVE_CARD_POSITION_CHOICES)
     to_controller = models.TextField(choices=EFFECT_AREA_CONTROLLER_CHOICES)
 
@@ -66,8 +74,13 @@ class MoveCardFromPosition(GameEvent):
             self.from_area.name, self.from_position, self.to_area.name, self.to_position)
 
     def do_action(self, data):
-        cards_to_move = data['cards_to_move']
-        for card in cards_to_move:
+        card = data['card']
+        controller = data['to_controller']
+        area = data['area']
+        game = card.game
+        to_area = apps.get_model('GameArea').objects.get(game=game, controller=controller, area=area)
+        card.area = to_area
+        card.save()
 
 
     @classmethod

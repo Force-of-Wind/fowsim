@@ -82,7 +82,6 @@ class MoveCardFromPosition(GameEvent):
         card.area = to_area
         card.save()
 
-
     @classmethod
     def get_concrete_cls(cls):
         return cls

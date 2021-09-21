@@ -38,8 +38,10 @@ class GameCard(models.Model):
         app_label = 'game'
 
     game = models.ForeignKey('Game', on_delete=models.CASCADE)
+    '''
     card_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=Card.get_type_choices)
     card_id = models.PositiveIntegerField()
     card = GenericForeignKey('card_type', 'card_id')
+    '''
     game_area = models.ForeignKey('GameArea', on_delete=models.CASCADE)
 

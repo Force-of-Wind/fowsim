@@ -39,7 +39,7 @@ class Command(BaseCommand):
                         card_abilities = card['abilities']
                         card, created = Card.objects.get_or_create(
                             name=card['name'],
-                            card_id=card['id'],
+                            card_id=card['id'].replace('*', CONS.DOUBLE_SIDED_CARD_CHARACTER),
                             cost=card['cost'],
                             divinity=card['divinity'],
                             flavour=card['flavor'],

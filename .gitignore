@@ -1,3 +1,4 @@
 *.pyc
 .idea/
 db.sqlite3
+cardDatabase/static/cards/*.jpg

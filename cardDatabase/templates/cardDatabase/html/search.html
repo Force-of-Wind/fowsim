@@ -1,6 +1,7 @@
 {% extends 'cardDatabase/html/base.html' %}
 {% load static %}
 {% block css %}
+    {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/search.css' %}">
 {% endblock %}
 {% block body %}

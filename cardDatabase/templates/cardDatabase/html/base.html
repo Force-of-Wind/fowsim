@@ -1,20 +1,35 @@
 <!DOCTYPE html>
+{% load static %}
 {% block html %}
     <html lang="en">
         <head>
             {% block head %}
                 <meta charset="UTF-8">
                 <title>{% block title %}FoW Simulator{% block subtitle %} - Database{% endblock %}{% endblock %}</title>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-                        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-                        crossorigin="anonymous"></script>
                 {% block js %}
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+                            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+                            crossorigin="anonymous"></script>
                 {% endblock %}
                 {% block css %}
+                    <link rel="stylesheet" href="{% static 'css/base.css' %}">
                 {% endblock %}
             {% endblock %}
         </head>
         <body>
+            {% block header %}
+                <div id="header">
+                    <div class="header-content">
+                        <div id="site-title">{% block header-title %}Force of Wind{% endblock %}</div>
+                        <img id="site-icon" src="{% static 'imgs/wind.png'%}">
+                    </div>
+                    <div id="social-media">
+                        <a href="https://discord.com/invite/8S5XW6pUEF" target="_blank">
+                            <img class="discord" src="{% static 'imgs/discord.png' %}">
+                        </a>
+                    </div>
+                </div>
+            {% endblock %}
             {% block body %}
             {% endblock %}
         </body>

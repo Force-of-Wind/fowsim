@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 import game.urls
+import cardDatabase.urls
 
 admin.site.site_header = settings.ADMIN_SITE_HEADER
 admin.site.site_title = settings.ADMIN_SITE_TITLE
@@ -29,3 +30,4 @@ urlpatterns = [
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += game.urls.urlpatterns
+urlpatterns += cardDatabase.urls.urlpatterns

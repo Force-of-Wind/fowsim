@@ -1,0 +1,18 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% block body %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Search">
+    </form>
+
+    {% if cards %}
+        <div id="search-results">
+        {% for card in cards %}
+            <div class="card">
+                {{ card.name }}
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

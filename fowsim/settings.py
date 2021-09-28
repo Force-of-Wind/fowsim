@@ -138,6 +138,8 @@ ASGI_APPLICATION = 'fowsim.asgi.application'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
+    BASE_DIR / "cardDatabase/static",
+    BASE_DIR / "game/static",
 ]
 
 CHANNEL_LAYERS = {

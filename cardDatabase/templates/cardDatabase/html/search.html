@@ -1,4 +1,8 @@
 {% extends 'cardDatabase/html/base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock %}
 {% block body %}
     <form method="post">
         {% csrf_token %}
@@ -10,7 +14,7 @@
         <div id="search-results">
         {% for card in cards %}
             <div class="card">
-                {{ card.name }}
+                <img class="card-img" src="{% static 'cards/'%}{{ card.card_id }}.jpg">
             </div>
         {% endfor %}
         </div>

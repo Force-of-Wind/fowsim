@@ -1,5 +1,5 @@
 {% extends 'cardDatabase/html/base.html' %}
-{% load static %}
+{% load static card_database_tags %}
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/view_card.css' %}">
@@ -8,5 +8,17 @@
     {{ block.super }}
     <div class="card">
         <img class="card-img" src="{% static 'cards/'%}{{ card.card_id }}.jpg">
+        <div class="card-text-info">Name: {{ card.name }}</div>
+        <div class="card-text-info">ID: {{ card.card_id }}</div>
+        <div class="card-text-info">Cost: {{ card.cost }}</div>
+        {% if card.divinity %}<div class="card-text-info">Divinity: {{ card.divinity }}</div>{% endif %}
+        {% if card.flavour %}<div class="card-text-info">Flavour: {{ card.flavour }}</div>{% endif %}
+        <div class="card-text-info">Rarity: {{ card.rarity }}</div>
+        {% if card.ATK %}<div class="card-text-info">ATK: {{ card.ATK }}</div>{% endif %}
+        {% if card.DEF %}<div class="card-text-info">DEF: {{ card.DEF }}</div>{% endif %}
+        {% for ability in card.ability_texts.all %}
+            <div class="card-text-info">{% format_ability_text ability.text %}</div>
+        {% endfor %}
+
     </div>
 {% endblock %}

@@ -5,4 +5,5 @@ from . import views
 
 urlpatterns = [
     path('search/', views.search, name='cardDatabase-search'),
+    path('card/<str:card_id>/', views.view_card, name='cardDatabase-view-card')
 ]

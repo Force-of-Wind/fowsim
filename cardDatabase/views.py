@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+
 from .forms import SearchForm
 from .models.CardType import Card
 
@@ -19,3 +20,6 @@ def search(request):
     return render(request, 'cardDatabase/html/search.html', context=ctx)
 
 
+def view_card(request, card_id=None):
+    card = get_object_or_404(Card, card_id=card_id)
+    return render(request, 'cardDatabase/html/view_card.html', context={'card': card, 'form': SearchForm()})

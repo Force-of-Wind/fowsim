@@ -1,0 +1,12 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/view_card.css' %}">
+{% endblock %}
+{% block body %}
+    {{ block.super }}
+    <div class="card">
+        <img class="card-img" src="{% static 'cards/'%}{{ card.card_id }}.jpg">
+    </div>
+{% endblock %}

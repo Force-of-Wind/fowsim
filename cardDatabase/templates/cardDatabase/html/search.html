@@ -5,17 +5,14 @@
     <link rel="stylesheet" href="{% static 'css/search.css' %}">
 {% endblock %}
 {% block body %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Search">
-    </form>
-
+    {{ block.super }}
     {% if cards %}
         <div id="search-results">
         {% for card in cards %}
             <div class="card">
-                <img class="card-img" src="{% static 'cards/'%}{{ card.card_id }}.jpg">
+                <a href="{% url 'cardDatabase-view-card' card.card_id %}">
+                    <img class="card-img" src="{% static 'cards/'%}{{ card.card_id }}.jpg">
+                </a>
             </div>
         {% endfor %}
         </div>

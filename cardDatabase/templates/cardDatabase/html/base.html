@@ -31,6 +31,13 @@
                 </div>
             {% endblock %}
             {% block body %}
+                {% block search_form %}
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form }}
+                        <input type="submit" value="Search">
+                    </form>
+                {% endblock %}
             {% endblock %}
         </body>
     </html>

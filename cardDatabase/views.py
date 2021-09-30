@@ -15,8 +15,9 @@ def search(request):
         if form.is_valid():
             # Filter cards and show them
             search_text = form.cleaned_data['generic_text']
+            #TODO Sort by something useful, dont assume id
             ctx['cards'] = Card.objects.filter(Q(name__icontains=search_text) |
-                                               Q(ability_texts__text__icontains=search_text))
+                                               Q(ability_texts__text__icontains=search_text)).order_by('-id')
 
     ctx['form'] = form
     return render(request, 'cardDatabase/html/search.html', context=ctx)

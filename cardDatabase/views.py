@@ -25,7 +25,15 @@ def search(request):
             basic_form = SearchForm()
             advanced_form = AdvancedSearchForm(request.POST)
             if advanced_form.is_valid():
-                ctx['cards'] = Card.objects.get(name='Otherworld Dreams')
+                search_text = advanced_form.cleaned_data['generic_text']
+                text_search_fields = advanced_form.cleaned_data['text_search_fields']
+                text_query = Q()
+                for field in text_search_fields:
+                    #  Value of the field is the destination to search e.g. 'name' or 'ability_text
+                    text_query |= Q(**{field + '__icontains': search_text})
+                #TODO fix ordering
+                ctx['cards'] = Card.objects.filter(text_query).distinct().order_by('-id')
+
 
 
     ctx['basic_form'] = basic_form

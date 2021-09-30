@@ -42,7 +42,7 @@ body{
     right: 5px;
 }
 
-#search-form{
+#basic-form, #advanced-form{
     width: max-content;
     margin: 0 auto;
 }

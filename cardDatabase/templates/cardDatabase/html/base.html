@@ -40,7 +40,7 @@
                         <div id="advanced-search-toggle" class="search-toggle">Advanced Search</div>
                     </div>
                     <div id="basic-search">
-                        <form id="search-form" method="post" action="{% url 'cardDatabase-search' %}">
+                        <form id="basic-form" method="post" action="{% url 'cardDatabase-search' %}">
                             {% csrf_token %}
                             {{ basic_form }}
                             <input type="submit" value="Search" name="basic-form">

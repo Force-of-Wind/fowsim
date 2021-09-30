@@ -27,6 +27,10 @@ body{
     width: max-content;
 }
 
+.header-content a{
+    text-decoration: none;
+}
+
 .discord{
     width: 30px;
     height: 30px;
@@ -36,4 +40,9 @@ body{
     position: absolute;
     top: 5px;
     right: 5px;
+}
+
+#search-form{
+    width: max-content;
+    margin: 0 auto;
 }

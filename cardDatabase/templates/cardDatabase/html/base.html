@@ -20,8 +20,10 @@
             {% block header %}
                 <div id="header">
                     <div class="header-content">
-                        <div id="site-title">{% block header-title %}Force of Wind{% endblock %}</div>
-                        <img id="site-icon" src="{% static 'imgs/wind.png'%}">
+                        <a href="{% url 'cardDatabase-search' %}">
+                            <div id="site-title">{% block header-title %}Force of Wind{% endblock %}</div>
+                            <img id="site-icon" src="{% static 'imgs/wind.png'%}">
+                        </a>
                     </div>
                     <div id="social-media">
                         <a href="https://discord.com/invite/8S5XW6pUEF" target="_blank">
@@ -32,7 +34,7 @@
             {% endblock %}
             {% block body %}
                 {% block search_form %}
-                    <form method="post" action="{% url 'cardDatabase-search' %}">
+                    <form id="search-form" method="post" action="{% url 'cardDatabase-search' %}">
                         {% csrf_token %}
                         {{ form }}
                         <input type="submit" value="Search">

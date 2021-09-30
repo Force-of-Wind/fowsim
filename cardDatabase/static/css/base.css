@@ -46,3 +46,40 @@ body{
     width: max-content;
     margin: 0 auto;
 }
+
+#advanced-search{
+    display: none;
+}
+
+#search-toggles{
+    width: max-content;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+.search-toggle{
+    display: inline-block;
+    cursor: pointer;
+}
+
+#basic-search-toggle{
+    margin-right: 50px;
+}
+
+.basic-showing #basic-search-toggle{
+    border-bottom: 1px solid black;
+    font-weight: bold;
+}
+.advanced-showing #advanced-search-toggle{
+    border-bottom: 1px solid black;
+    font-weight: bold;
+}
+
+.no-select {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}

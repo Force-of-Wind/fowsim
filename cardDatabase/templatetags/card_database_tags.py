@@ -4,16 +4,17 @@ from django import template
 from django.utils.safestring import mark_safe
 from django.templatetags.static import static
 
+from fowsim import constants as CONS
 
 register = template.Library()
 
 
 ATTR_TO_FILENAMES = {
-    'R': 'fire.png',
-    'B': 'darkness.png',
-    'W': 'light.png',
-    'U': 'water.png',
-    'G': 'wind.png',
+    CONS.ATTRIBUTE_FIRE_CODE: 'fire.png',
+    CONS.ATTRIBUTE_DARKNESS_CODE: 'darkness.png',
+    CONS.ATTRIBUTE_LIGHT_CODE: 'light.png',
+    CONS.ATTRIBUTE_WATER_CODE: 'water.png',
+    CONS.ATTRIBUTE_WIND_CODE: 'wind.png',
 }
 
 

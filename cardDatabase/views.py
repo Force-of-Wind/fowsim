@@ -19,8 +19,8 @@ def search(request):
                 # Filter cards and show them
                 search_text = basic_form.cleaned_data['generic_text']
                 #TODO Sort by something useful, dont assume id
-                ctx['cards'] = Card.objects.filter(Q(name__icontains=search_text) | Q(ability_texts__text__icontains=search_text))\
-                    .distinct().order_by('-id')
+                ctx['cards'] = Card.objects.filter(Q(name__icontains=search_text) | Q(ability_texts__text__icontains=search_text)
+                                                   | Q(races__name__icontains=search_text)).distinct().order_by('-id')
         elif 'advanced-form' in request.POST:
             basic_form = SearchForm()
             advanced_form = AdvancedSearchForm(request.POST)

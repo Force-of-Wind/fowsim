@@ -8,3 +8,10 @@
 .cost-img{
     width: 18px;
 }
+
+.bubble-text{
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 0 5px;
+}

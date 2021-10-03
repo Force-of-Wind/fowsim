@@ -66,6 +66,14 @@ class Card(AbstractModel):
     def get_type_choices(cls):
         super().get_type_choices_from_cls(cls)
 
+    @property
+    def card_image_filename(self):
+        return self.card_id + '.jpg'
+
+    @property
+    def set_code(self):
+        return self.card_id.split('-')[0]
+
 
 class Chant(models.Model):
     class Meta:

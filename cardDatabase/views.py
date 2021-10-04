@@ -34,8 +34,6 @@ def search(request):
                 #TODO fix ordering
                 ctx['cards'] = Card.objects.filter(text_query).distinct().order_by('-id')
 
-
-
     ctx['basic_form'] = basic_form
     ctx['advanced_form'] = advanced_form
     return render(request, 'cardDatabase/html/search.html', context=ctx)

@@ -48,9 +48,22 @@
                     </div>
                     <div id="advanced-search">
                         <form id="advanced-form" method="post" action="{% url 'cardDatabase-search' %}">
-                        {% csrf_token %}
-                        {{ advanced_form }}
-                        <input type="submit" value="Search" name="advanced-form">
+                            {% csrf_token %}
+                            {{ advanced_form.non_field_errors }}
+                            <div class="fieldWrapper">
+                                {{ advanced_form.generic_text }}
+                            </div>
+                            <div class="fieldWrapper">
+                                {{ form.text_search_fields.errors }}
+                                {% for value, display in advanced_form.text_search_fields.field.choices %}
+                                    <label for="text_search_fields_{{ forloop.counter0 }}">
+                                        <input type="checkbox" name="text_search_fields" id="id_text_search_fields_{{ forloop.counter0 }}"
+                                               value="{{ value }}">
+                                        {{ display }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                            <input type="submit" value="Search" name="advanced-form">
                         </form>
                     </div>
                 {% endblock %}

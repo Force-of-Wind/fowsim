@@ -3,7 +3,7 @@ from django import forms
 
 class SearchForm(forms.Form):
     generic_text = forms.CharField(label='', strip=True,
-                                   widget=forms.TextInput(attrs={'placeholder': 'Search for cards here...'}))
+                                   widget=forms.TextInput(attrs={'placeholder': 'Search...'}))
 
 
 TEXT_SEARCH_FIELD_CHOICES = [

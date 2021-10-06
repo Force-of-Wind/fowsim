@@ -130,6 +130,7 @@ COLOUR_CHOICES = [
 
 DOUBLE_SIDED_CARD_CHARACTER = '^'
 
+# No longer used, refers to the query parameter on fowtcg.com when you search by a specific set
 FOWTCG_CARD_DATABASE_SET_INDEX = {
     'CMF': 11,
     'TAT': 16,
@@ -185,4 +186,98 @@ FOWTCG_CARD_DATABASE_SET_INDEX = {
     'ADW': 53,
     'TST': 54,
     'PR': 20
+}
+
+SET_DATA = {
+    'clusters': [
+        {
+            'name': 'Grimm',
+            'sets': [
+                {'code': 'CMF', 'name': "Crimson Moon's Fairy Tale"},
+                {'code': 'TAT', 'name': "The Castle of Heaven and The Two Towers"},
+                {'code': 'MPR', 'name': 'The Moon Priestess Returns'},
+                {'code': 'MOA', 'name': "The Millennia of Ages"},
+                {'code': 'VIN001', 'name': 'Vingolf "Engage Knights"'}
+            ]
+        },
+        {
+            'name': 'Alice',
+            'sets': [
+                {'code': 'VS01', 'name': "Faria, the Sacred Queen and Melgis, the Flame King"},
+                {'code': 'SKL', 'name': 'The Seven Kings of the Lands'},
+                {'code': 'TTW', 'name': 'The Twilight Wanderer'},
+                {'code': 'TMS', 'name': 'The Moonlit Savior'},
+                {'code': 'BFA', 'name': 'Battle for Attoractia'},
+                {'code': 'VIN002', 'name': 'Vingolf "Valkyria Chronicles"'}
+            ]
+        },
+        {
+            'name': 'Lapis',
+            'sets': [
+                {'code': 'SDL1', 'name': 'Fairy Tale Force'},
+                {'code': 'SDL2', 'name': "Rage of R'lyeh"},
+                {'code': 'SDL3', 'name': 'Malefic Ice'},
+                {'code': 'SDL4', 'name': 'Swarming Elves'},
+                {'code': 'SDL5', 'name': 'Vampiric Hunger'},
+                {'code': 'CFC', 'name': 'Curse of the Frozen Casket'},
+                {'code': 'LEL', 'name': 'Legacy Lost'},
+                {'code': 'VIN003', 'name': 'Vingolf "Ruler All Stars'},
+                {'code': 'RDE', 'name': 'Return of the Dragon Emperor'},
+                {'code': 'ENW', 'name': 'Echoes of the New World'}
+            ]
+        },
+        {
+            'name': 'Reiya',
+            'sets':[
+                {'code': 'SDR1', 'name': 'King of the Mountain'},
+                {'code': 'SDR2', 'name': 'Blood of the Dragons'},
+                {'code': 'SDR3', 'name': 'Below the Waves'},
+                {'code': 'SDR4', 'name': 'Elemental Surge'},
+                {'code': 'SDR5', 'name': 'Children of the Night'},
+                {'code': 'ACN', 'name': 'Ancient Nights'},
+                {'code': 'ADK', 'name': 'Advent of the Demon King'},
+                {'code': 'TSW', 'name': 'The Time Spinning Witch'},
+                {'code': 'SDR6', 'name': 'The Lost Tomes'},
+                {'code': 'WOM', 'name': 'Winds of the Ominous Moon'}
+            ]
+        },
+        {
+            'name': 'New Valhalla',
+            'sets': [
+                {'code': 'SDV1', 'name': 'New Valhalla Entry Set [Light] '},
+                {'code': 'SDV2', 'name': 'New Valhalla Entry Set [Fire] '},
+                {'code': 'SDV3', 'name': 'New Valhalla Entry Set [Water] '},
+                {'code': 'SDV4', 'name': 'New Valhalla Entry Set [Wind] '},
+                {'code': 'SDV5', 'name': 'New Valhalla Entry Set [Darkness] '},
+                {'code': 'NDR', 'name': 'New Dawn Rises'},
+                {'code': 'SNV', 'name': 'The Strangers of New Valhalla'},
+                {'code': 'AOA', 'name': 'Awakening of the Ancients'},
+                {'code': 'DBV', 'name': 'The Decisive Battle of Valhalla'}
+            ]
+        },
+        {
+            'name': 'Alice Origin',
+            'sets': [
+                {'code': 'SDAO1', 'name': 'Faria/Melgis'},
+                {'code': 'AO1', 'name': 'Alice Origin'},
+                {'code': 'SDAO2', 'name': 'Valentina/Pricia'},
+                {'code': 'AO2', 'name': 'Alice Origin II'},
+                {'code': 'GITS2045', 'name': 'GHOST IN THE SHELL SAC_2045'},
+                {'code': 'GITS2045SD', 'name': 'Starter Deck GHOST IN THE SHELL SAC_2045'},
+                {'code': 'AO3', 'name': 'Alice Origin III'},
+                {'code': 'POFA', 'name': 'Prologue of Attoractia'},
+
+            ]
+        },
+        {
+            'name': 'Saga',
+            'sets': [
+                {'code': 'EDL', 'name': 'The Epic of the Dragon Lord'},
+                {'code': 'MSW', 'name': 'The Magic Stone War - Zero'},
+                {'code': 'ROL', 'name': 'Rebirth of Legend'},
+                {'code': 'ADW', 'name': 'Assault into the Demonic World'},
+                {'code': 'TSW', 'name': 'The Seventh'}
+            ]
+        }
+    ]
 }

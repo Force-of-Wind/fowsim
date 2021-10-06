@@ -1,5 +1,8 @@
+import json
+
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
+from django.utils.safestring import mark_safe
 
 from .forms import SearchForm, AdvancedSearchForm
 from .models.CardType import Card
@@ -46,11 +49,16 @@ def search(request):
                     else:
                         attr_query |= Q(cost__contains=card_attr)
 
+                set_query = Q()
+                for fow_set in advanced_form.cleaned_data['sets']:
+                    set_query |= Q(card_id__istartswith=fow_set + '-')
                 # TODO fix ordering
-                ctx['cards'] = Card.objects.filter(text_query).filter(attr_query).distinct().order_by('-id')
+                ctx['cards'] = Card.objects.filter(text_query).filter(attr_query).filter(set_query).\
+                    distinct().order_by('-id')
 
     ctx['basic_form'] = basic_form
     ctx['advanced_form'] = advanced_form
+    ctx['sets_json'] = json.dumps(CONS.SET_DATA)
     return render(request, 'cardDatabase/html/search.html', context=ctx)
 
 

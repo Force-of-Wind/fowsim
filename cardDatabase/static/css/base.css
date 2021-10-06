@@ -135,3 +135,11 @@ body{
 #advanced-form label:not(:last-child){
     padding-right: 20px;
 }
+
+/*
+KendoUI overrides
+ */
+
+#advanced-form .fieldWrapper .k-multiselect div{
+    width: 500px;
+}

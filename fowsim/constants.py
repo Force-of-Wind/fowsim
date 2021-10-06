@@ -281,3 +281,10 @@ SET_DATA = {
         }
     ]
 }
+
+SET_CHOICES = []
+for cluster in SET_DATA['clusters']:
+    for fow_set in cluster['sets']:
+        SET_CHOICES.append((fow_set['code'], fow_set['name']))
+
+SET_CHOICES.reverse()

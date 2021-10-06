@@ -12,5 +12,9 @@ $(function(){
             $('#advanced-search').hide();
             $('#search-toggles').addClass('basic-showing');
             $('#search-toggles').removeClass('advanced-showing');
-        })
+        });
+
+    $('#id_sets').kendoMultiSelect({
+        autoClose: false,
+    }).data("kendoMultiSelect")
 });

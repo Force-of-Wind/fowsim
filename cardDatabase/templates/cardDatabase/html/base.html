@@ -10,9 +10,13 @@
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
                             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
                             crossorigin="anonymous"></script>
+                    <script src="{% static 'js/kendo/kendo.all.min.js' %}" type="text/javascript"></script>
                     <script src="{% static 'js/base.js' %}" type="text/javascript"></script>
                 {% endblock %}
                 {% block css %}
+                    <link rel="stylesheet" href="{% static 'css/kendo/kendo.common.min.css' %}">
+                    <link rel="stylesheet" href="{% static 'css/kendo/kendo.default.min.css' %}">
+                    <link rel="stylesheet" href="{% static 'css/kendo/kendo.default.mobile.min.css' %}">
                     <link rel="stylesheet" href="{% static 'css/base.css' %}">
                 {% endblock %}
             {% endblock %}
@@ -72,6 +76,10 @@
                                                value="{{ value }}">
                                     </label>
                                 {% endfor %}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_sets">Select Sets:</label>
+                                {{ advanced_form.sets }}
                             </div>
                             <input type="submit" value="Search" name="advanced-form">
                         </form>

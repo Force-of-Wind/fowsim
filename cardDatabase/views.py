@@ -27,23 +27,24 @@ def search(request):
             advanced_form = AdvancedSearchForm(request.POST)
             if advanced_form.is_valid():
                 search_text = advanced_form.cleaned_data['generic_text']
-                text_search_fields = advanced_form.cleaned_data['text_search_fields']
+
                 text_query = Q()
-                for field in text_search_fields:
-                    #  Value of the field is the destination to search e.g. 'name' or 'ability_text
-                    text_query |= Q(**{field + '__icontains': search_text})
+                if search_text:
+                    text_search_fields = advanced_form.cleaned_data['text_search_fields']
+                    for field in text_search_fields:
+                        #  Value of the field is the destination to search e.g. 'name' or 'ability_text
+                        text_query |= Q(**{field + '__icontains': search_text})
 
                 attr_query = Q()
                 for card_attr in advanced_form.cleaned_data['colours']:
                     if card_attr == CONS.ATTRIBUTE_VOID_CODE:
                         void_query = Q()
-                        # Build query to exclude cards with any attribute in the cost e.g. not 'R' and not
+                        # Build query to exclude cards with any attribute in the cost e.g. not 'R' and not 'G' etc.
                         for attr_code in CONS.ATTRIBUTE_CODES:
                             void_query &= ~Q(cost__contains=attr_code)
                         attr_query |= void_query
                     else:
                         attr_query |= Q(cost__contains=card_attr)
-
 
                 # TODO fix ordering
                 ctx['cards'] = Card.objects.filter(text_query).filter(attr_query).distinct().order_by('-id')

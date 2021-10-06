@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static %}
+{% load static card_database_tags %}
 {% block html %}
     <html lang="en">
         <head>
@@ -54,12 +54,22 @@
                                 {{ advanced_form.generic_text }}
                             </div>
                             <div class="fieldWrapper">
-                                {{ form.text_search_fields.errors }}
+                                {{ advanced_form.text_search_fields.errors }}
                                 {% for value, display in advanced_form.text_search_fields.field.choices %}
-                                    <label for="text_search_fields_{{ forloop.counter0 }}">
+                                    <label for="id_text_search_fields_{{ forloop.counter0 }}">
                                         <input type="checkbox" name="text_search_fields" id="id_text_search_fields_{{ forloop.counter0 }}"
                                                value="{{ value }}">
                                         {{ display }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                            <div class="fieldWrapper">
+                                {{ advanced_form.colours.errors }}
+                                {% for value, display in advanced_form.colours.field.choices %}
+                                    <label for="id_colours_{{ forloop.counter0 }}">
+                                        {% attribute_to_img_html value %}
+                                        <input type="checkbox" class="fow-checkbox" name="colours" id="id_colours_{{ forloop.counter0 }}"
+                                               value="{{ value }}">
                                     </label>
                                 {% endfor %}
                             </div>

@@ -3,6 +3,7 @@ from django.db.models import Q
 
 from .forms import SearchForm, AdvancedSearchForm
 from .models.CardType import Card
+from fowsim import constants as CONS
 
 
 def search(request):
@@ -31,8 +32,21 @@ def search(request):
                 for field in text_search_fields:
                     #  Value of the field is the destination to search e.g. 'name' or 'ability_text
                     text_query |= Q(**{field + '__icontains': search_text})
-                #TODO fix ordering
-                ctx['cards'] = Card.objects.filter(text_query).distinct().order_by('-id')
+
+                attr_query = Q()
+                for card_attr in advanced_form.cleaned_data['colours']:
+                    if card_attr == CONS.ATTRIBUTE_VOID_CODE:
+                        void_query = Q()
+                        # Build query to exclude cards with any attribute in the cost e.g. not 'R' and not
+                        for attr_code in CONS.ATTRIBUTE_CODES:
+                            void_query &= ~Q(cost__contains=attr_code)
+                        attr_query |= void_query
+                    else:
+                        attr_query |= Q(cost__contains=card_attr)
+
+
+                # TODO fix ordering
+                ctx['cards'] = Card.objects.filter(text_query).filter(attr_query).distinct().order_by('-id')
 
     ctx['basic_form'] = basic_form
     ctx['advanced_form'] = advanced_form

@@ -87,6 +87,7 @@ body{
 
 #advanced-form input[name="generic_text"]{
     display: block;
+    width: 100%;
 }
 
 #advanced-form #id_text_search_fields li{
@@ -95,4 +96,42 @@ body{
 
 #advanced-form #id_text_search_fields{
     padding-inline-start: 0;
+}
+
+.cost-img{
+    width: 25px;
+}
+
+
+.fow-checkbox {
+    -webkit-appearance: none;
+    background-color: #dc0800;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+    padding: 9px;
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+}
+
+.fow-checkbox:active, .fow-checkbox:checked:active {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.fow-checkbox:checked {
+    background-color: #dc0800;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+    color: #99a1a7;
+}
+
+.fow-checkbox:checked:after {
+    content: '\2714';
+    font-size: 14px;
+    position: absolute;
+    top: 0px;
+    left: 3px;
+    color: white;
+}
+
+#advanced-form label:not(:last-child){
+    padding-right: 20px;
 }

@@ -15,6 +15,7 @@ ATTR_TO_FILENAMES = {
     CONS.ATTRIBUTE_LIGHT_CODE: 'light.png',
     CONS.ATTRIBUTE_WATER_CODE: 'water.png',
     CONS.ATTRIBUTE_WIND_CODE: 'wind.png',
+    CONS.ATTRIBUTE_VOID_CODE: 'void.png'
 }
 
 
@@ -26,8 +27,9 @@ def format_cost_text(text):
     return mark_safe(text)
 
 
+@register.simple_tag
 def attribute_to_img_html(attr):
-    return '<img class="cost-img" src="%s">' % static('costs/' + ATTR_TO_FILENAMES[attr])
+    return mark_safe('<img class="cost-img" src="%s">' % static('costs/' + ATTR_TO_FILENAMES[attr]))
 
 
 def make_bubble_html(text):

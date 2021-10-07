@@ -64,7 +64,7 @@
                                 {% for value, display in advanced_form.text_search_fields.field.choices %}
                                     <label for="id_text_search_fields_{{ forloop.counter0 }}">
                                         <input type="checkbox" name="text_search_fields" id="id_text_search_fields_{{ forloop.counter0 }}"
-                                               value="{{ value }}">
+                                               value="{{ value }}" checked>
                                         {{ display }}
                                     </label>
                                 {% endfor %}

@@ -4949,7 +4949,7 @@
                         e = "",
                         i = this.selectedOptionsIndexes.length;
                     this.selectedOptionsIndexes.forEach((function(i) {
-                        return e += ", ".concat(t.view.$nativeSelect.find("option").eq(i).text().replace(/  +/g, " ").trim())
+                        return e += ", ".concat(t.view.$nativeSelect.find("option:not(:disabled)").eq(i).text().replace(/  +/g, " ").trim())
                     })), 0 === (e = this.options.maxSelectedOptions >= 0 && i > this.options.maxSelectedOptions ? "".concat(i, " ").concat(this.options.labels.optionsSelected) : e.substring(2)).length && (e = this.view.$nativeSelect.find("option:disabled").eq(0).text()), this.view.$nativeSelect.siblings("".concat(this.options.defaultMaterialInput ? "input.multi-bs-select" : "input.select-dropdown")).val(e)
                 }
             }, {

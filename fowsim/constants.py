@@ -276,7 +276,7 @@ SET_DATA = {
                 {'code': 'MSW', 'name': 'The Magic Stone War - Zero'},
                 {'code': 'ROL', 'name': 'Rebirth of Legend'},
                 {'code': 'ADW', 'name': 'Assault into the Demonic World'},
-                {'code': 'TSW', 'name': 'The Seventh'}
+                {'code': 'TST', 'name': 'The Seventh'}
             ]
         }
     ]

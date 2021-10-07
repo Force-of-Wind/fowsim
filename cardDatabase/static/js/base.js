@@ -13,4 +13,12 @@ $(function(){
             $('#search-toggles').addClass('basic-showing');
             $('#search-toggles').removeClass('advanced-showing');
         });
+
+    $('.mdb-select').materialSelect({
+        'visibleOptions': 10,
+        'placeholder': 'Search Set(s)...',
+        'maxSelectedOptions': 2
+    });
+
+
 });

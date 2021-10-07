@@ -58,10 +58,14 @@ def search(request):
 
     ctx['basic_form'] = basic_form
     ctx['advanced_form'] = advanced_form
-    ctx['sets_json'] = json.dumps(CONS.SET_DATA)
+    ctx['sets_json'] = CONS.SET_DATA
     return render(request, 'cardDatabase/html/search.html', context=ctx)
 
 
 def view_card(request, card_id=None):
     card = get_object_or_404(Card, card_id=card_id)
-    return render(request, 'cardDatabase/html/view_card.html', context={'card': card, 'form': SearchForm()})
+    return render(request, 'cardDatabase/html/view_card.html', context={
+        'card': card,
+        'basic_form': SearchForm(),
+        'advanced_form': AdvancedSearchForm()
+    })

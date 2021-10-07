@@ -4,7 +4,7 @@ body{
 
 #header{
     width: 100%;
-    height: 30px;
+    height: max-content;
     background-color: #dc0800;
     margin-bottom: 30px;
     padding: 5px 0;
@@ -13,7 +13,6 @@ body{
 #site-title{
     display: inline-block;
     line-height: 10px;
-    position: relative;
     bottom: 10px;
     color: white;
 }
@@ -100,10 +99,15 @@ body{
 
 .cost-img{
     width: 25px;
+    vertical-align: baseline;
 }
 
+input[type="checkbox"][name="text_search_fields"], input[type="checkbox"].fow-checkbox {
+    position: static;
+    opacity: 1;
+}
 
-.fow-checkbox {
+input[type="checkbox"].fow-checkbox {
     -webkit-appearance: none;
     background-color: #dc0800;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
@@ -136,10 +140,6 @@ body{
     padding-right: 20px;
 }
 
-/*
-KendoUI overrides
- */
-
-#advanced-form .fieldWrapper .k-multiselect div{
+.sets-select{
     width: 500px;
 }

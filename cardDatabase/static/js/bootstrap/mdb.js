@@ -2618,7 +2618,7 @@
                             var u = r.attr("aria-selected");
                             r.attr("aria-selected", "true" === u ? "false" : "true"), e._selectSingleOption(r), e.$nativeSelect.data("stop-refresh", !0);
                             var d = e.$nativeSelect.attr("data-placeholder") ? i + 1 : i;
-                            e.$nativeSelect.find("option").eq(d).prop("selected", a), e.$nativeSelect.removeData("stop-refresh"), e._triggerChangeOnNativeSelect(), e.$materialSelect.val() && e.$mainLabel.addClass("active"), r.hasClass("li-added") && e.renderer.buildSingleOption(r, "")
+                            e.$nativeSelect.find("option:not(:disabled)").eq(d).prop("selected", a), e.$nativeSelect.removeData("stop-refresh"), e._triggerChangeOnNativeSelect(), e.$materialSelect.val() && e.$mainLabel.addClass("active"), r.hasClass("li-added") && e.renderer.buildSingleOption(r, "")
                         }
                     }))
                 }))

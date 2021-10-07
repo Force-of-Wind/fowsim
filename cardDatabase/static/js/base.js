@@ -15,7 +15,7 @@ $(function(){
         });
 
     $('.mdb-select').materialSelect({
-        'visibleOptions': 10,
+        'visibleOptions': 12,
         'placeholder': 'Search Set(s)...',
         'maxSelectedOptions': 2
     });

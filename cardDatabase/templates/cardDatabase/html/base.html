@@ -80,7 +80,7 @@
                                 {% endfor %}
                             </div>
                             <div class="fieldWrapper sets-select">
-                                <select class="mdb-select md-form" multiple form="advanced-form">
+                                <select class="mdb-select md-form" multiple form="advanced-form" name="sets">
                                     {% for cluster in sets_json.clusters reversed %}
                                         <optgroup label="{{ cluster.name }} Cluster">
                                             {% for set in cluster.sets reversed %}

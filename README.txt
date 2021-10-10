@@ -26,6 +26,7 @@ python manage.py migrate
 python manage.py importjson
 
 8. Download card images (may take a little while and can be done while doing other things)
+Create a directory in cardDatabase/static called "cards"
 python manage.py downloadCardImages
 
 9. Setup a redis queue (This might not be necessary if you aren't working on the game sim parts yet, so can try skip this)

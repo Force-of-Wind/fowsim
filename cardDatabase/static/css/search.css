@@ -7,5 +7,15 @@
 }
 
 #search-results{
-    padding-top: 50px;
+    padding-top: 20px;
+}
+
+.number-of-results{
+    width: max-content;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+.number-of-results b{
+    font-weight: bold;
 }

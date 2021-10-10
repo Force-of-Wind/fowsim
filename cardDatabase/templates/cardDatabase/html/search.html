@@ -8,13 +8,16 @@
     {{ block.super }}
     {% if cards %}
         <div id="search-results">
-        {% for card in cards %}
-            <div class="card">
-                <a href="{% url 'cardDatabase-view-card' card.card_id %}">
-                    <img class="card-img" src="{% static 'cards/'%}{{ card.card_id }}.jpg">
-                </a>
+            <div class="number-of-results">
+                Showing <b>{{ cards|length }}</b> results:
             </div>
-        {% endfor %}
+            {% for card in cards %}
+                <div class="card">
+                    <a href="{% url 'cardDatabase-view-card' card.card_id %}">
+                        <img class="card-img" src="{% static 'cards/'%}{{ card.card_id }}.jpg">
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     {% endif %}
 {% endblock %}

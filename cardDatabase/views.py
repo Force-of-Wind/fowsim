@@ -56,6 +56,17 @@ def search(request):
                 ctx['cards'] = Card.objects.filter(text_query).filter(attr_query).filter(set_query).\
                     distinct().order_by('-id')
 
+                cost_filters = advanced_form.cleaned_data['cost']
+                if len(cost_filters) > 0:
+                    # Don't need DB query to do total cost, remove all that don't match if any were chosen
+                    # TODO
+                    if 'X' in cost_filters:
+                        ctx['cards'] = [x for x in ctx['cards']
+                                        if str(x.total_cost) in cost_filters
+                                        or '{X}' in x.cost]
+                    else:
+                        ctx['cards'] = [x for x in ctx['cards'] if str(x.total_cost) in cost_filters]
+
     ctx['basic_form'] = basic_form
     ctx['advanced_form'] = advanced_form
     ctx['sets_json'] = CONS.SET_DATA

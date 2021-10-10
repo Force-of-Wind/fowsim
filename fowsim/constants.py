@@ -1,3 +1,5 @@
+from fowsim.utils import listToChoices
+
 CARD_POSITION_TOP = 'Top'
 CARD_POSITION_BOTTOM = 'Bottom'
 CARD_POSITION_X_FROM_TOP = "X From Top"
@@ -288,3 +290,10 @@ for cluster in SET_DATA['clusters']:
         SET_CHOICES.append((fow_set['code'], fow_set['name']))
 
 SET_CHOICES.reverse()
+
+TEXT_SEARCH_FIELD_CHOICES = [
+    ('name', 'Name'),
+    ('races__name', 'Race/Trait'),
+    ('ability_texts__text', 'Abilities')
+]
+TOTAL_COST_CHOICES = listToChoices(list(range(0, 13)) + ['X'])

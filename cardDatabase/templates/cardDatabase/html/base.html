@@ -69,13 +69,13 @@
                                     </label>
                                 {% endfor %}
                             </div>
-                            <div class="fieldWrapper">
+                            <div class="fieldWrapper select-colours">
                                 {{ advanced_form.colours.errors }}
                                 {% for value, display in advanced_form.colours.field.choices %}
-                                    <label for="id_colours_{{ forloop.counter0 }}">
+                                    <input type="checkbox" class="fow-checkbox hidden-checkbox" name="colours" id="id_colours_{{ forloop.counter0 }}"
+                                           value="{{ value }}">
+                                    <label class="selected-backgrounds" for="id_colours_{{ forloop.counter0 }}">
                                         {% attribute_to_img_html value %}
-                                        <input type="checkbox" class="fow-checkbox" name="colours" id="id_colours_{{ forloop.counter0 }}"
-                                               value="{{ value }}">
                                     </label>
                                 {% endfor %}
                             </div>
@@ -89,6 +89,20 @@
                                         </optgroup>
                                     {% endfor %}
                                 </select>
+                            </div>
+                            <div class="fieldWrapper cost-select no-select">
+                                <div class="search-field-title">
+                                    Total cost:
+                                </div>
+                                {% for value, display in advanced_form.cost.field.choices %}
+                                    <input type="checkbox" class="hidden-checkbox fow-checkbox" name="cost" id="id_cost_{{ forloop.counter0 }}"
+                                           value="{{ value }}">
+                                    <label class="selected-backgrounds" for="id_cost_{{ forloop.counter0 }}">
+                                        <div class="cost-value-wrapper">
+                                            {{ value }}
+                                        </div>
+                                    </label>
+                                {% endfor %}
                             </div>
                             <input type="submit" value="Search" name="advanced-form">
                         </form>

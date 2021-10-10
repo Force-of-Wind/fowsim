@@ -29,7 +29,12 @@ def format_cost_text(text):
 
 @register.simple_tag
 def attribute_to_img_html(attr):
-    return mark_safe('<img class="cost-img" src="%s">' % static('costs/' + ATTR_TO_FILENAMES[attr]))
+    return mark_safe('<img class="cost-img" src="%s">' % attribute_to_img_src(attr))
+
+
+@register.simple_tag
+def attribute_to_img_src(attr):
+    return mark_safe(static('costs/' + ATTR_TO_FILENAMES[attr]))
 
 
 def make_bubble_html(text):

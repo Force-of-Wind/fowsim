@@ -97,9 +97,8 @@ body{
     padding-inline-start: 0;
 }
 
-.cost-img{
-    width: 25px;
-    vertical-align: baseline;
+#advanced-form .cost-img{
+    width: 35px;
 }
 
 input[type="checkbox"][name="text_search_fields"], input[type="checkbox"].fow-checkbox {
@@ -137,9 +136,37 @@ input[type="checkbox"].fow-checkbox {
 }
 
 #advanced-form label:not(:last-child){
-    padding-right: 20px;
+    margin-right: 30px;
 }
 
 .sets-select{
-    width: 500px;
+    min-width: 500px;
+}
+
+input[type="checkbox"].fow-checkbox.hidden-checkbox{
+    display: none;
+}
+
+.selected-backgrounds{
+    border-radius: 25px;
+}
+
+input:checked + .selected-backgrounds{
+    outline: 3px solid black;
+}
+
+.select-colours input:not(:checked) + .selected-backgrounds{
+    opacity: 0.4;
+}
+
+.cost-select label{
+    width: 35px;
+    background-color: #d5d5d5;
+    padding: 5px 0px;
+}
+
+.cost-select .cost-value-wrapper{
+    margin: 0 auto;
+    width: max-content;
+    font-weight: bold;
 }

@@ -1,3 +1,5 @@
+import re
+
 from django.apps import apps
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -73,6 +75,22 @@ class Card(AbstractModel):
     @property
     def set_code(self):
         return self.card_id.split('-')[0]
+
+    @property
+    def total_cost(self):
+        total = 0
+        matches = re.findall('{[a-zA-Z0-9]*}', self.cost)
+        for match in matches:  # "{W}" or "{R}" or "{3}" etc.
+            cost_value = match[1]
+            if cost_value.isnumeric():
+                total += int(cost_value)
+            elif cost_value == 'X':
+                pass
+            else:
+                total += 1
+
+        return total
+
 
 
 class Chant(models.Model):

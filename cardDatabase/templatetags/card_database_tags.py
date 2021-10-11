@@ -6,6 +6,7 @@ from django.templatetags.static import static
 from django.urls import reverse
 
 from fowsim import constants as CONS
+from cardDatabase.models.CardType import Card
 
 register = template.Library()
 
@@ -55,9 +56,23 @@ def make_bubbles(text):
 def format_ability_text(text):
     text = format_cost_text(text)
     text = make_bubbles(text)
+    text = add_card_reference_links(text)
     return mark_safe(text)
 
 
 @register.simple_tag
 def card_id_to_url(card_id):
     return reverse('cardDatabase-view-card', kwargs={'card_id': card_id})
+
+
+def add_card_reference_links(ability_text):
+    # Check for names in apostrophes
+    matches = re.findall(r'"[^\"\"]+"', ability_text)
+    for match in matches:
+        try:
+            card = Card.objects.get(name=match[1:-1])  # Trim apostrophes
+            card_url = card_id_to_url(card.card_id)
+            ability_text = ability_text.replace(match, f'"<a href="{card_url}">{card.name}</a>"')
+        except Card.DoesNotExist:
+            pass
+    return ability_text

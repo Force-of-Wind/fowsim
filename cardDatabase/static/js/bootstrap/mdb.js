@@ -2441,12 +2441,12 @@
             value: function(t) {
                 var e = this;
                 if (this.isMultiple) this.$nativeSelect.find("option:selected:not(:disabled)").each((function(i, n) {
-                    var o = n.index;
+                    var o = n.index - 1;
                     e.$materialOptionsList.find("li:not(.optgroup):not(.select-toggle-all)").eq(o).addClass("selected active").find(":checkbox").prop("checked", !0), t(o)
                 }));
                 else {
                     var i = this.$nativeSelect.find("option:selected").first(),
-                        n = this.$nativeSelect.find("option").index(i.get(0));
+                        n = this.$nativeSelect.find("option:not(:disabled)").index(i.get(0));
                     i.get(0) && "disabled" !== i.attr("disabled") && t(n)
                 }
             }
@@ -4875,6 +4875,7 @@
                         id: this.uuid
                     }
                 }), this.selectedOptionsIndexes = [], e.mutationObservers = []
+                console.log(this.options)
             }
             var i, r, a;
             return i = e, a = [{

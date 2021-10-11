@@ -4940,7 +4940,7 @@
                 value: function(t) {
                     var e = this.selectedOptionsIndexes.indexOf(t),
                         i = -1 !== e;
-                    return i ? this.selectedOptionsIndexes.splice(e, 1) : this.selectedOptionsIndexes.push(t), this.view.$nativeSelect.find("option").eq(t).prop("selected", !i), this._setValueToMaterialSelect(), !i
+                    return i ? this.selectedOptionsIndexes.splice(e, 1) : this.selectedOptionsIndexes.push(t), this.view.$nativeSelect.find("option:not(:disabled)").eq(t).prop("selected", !i), this._setValueToMaterialSelect(), !i
                 }
             }, {
                 key: "_setValueToMaterialSelect",

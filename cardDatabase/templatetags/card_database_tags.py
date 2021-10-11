@@ -82,3 +82,13 @@ def add_card_reference_links(ability_text):
         except Card.DoesNotExist:
             pass
     return ability_text
+
+
+@register.simple_tag
+def advanced_form_is_in_data(form_values, value, default_value, success_value):
+    if not form_values:
+        return default_value
+    elif form_values and value in form_values:
+        print(value, success_value)
+        return success_value
+    return ''

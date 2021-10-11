@@ -29,6 +29,7 @@ def search(request):
             basic_form = SearchForm()
             advanced_form = AdvancedSearchForm(request.POST)
             if advanced_form.is_valid():
+                ctx['advanced_form_data'] = advanced_form.cleaned_data
                 search_text = advanced_form.cleaned_data['generic_text']
 
                 text_query = Q()

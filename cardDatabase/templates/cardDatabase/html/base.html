@@ -60,20 +60,18 @@
                                 {{ advanced_form.generic_text }}
                             </div>
                             <div class="fieldWrapper">
-                                {{ advanced_form.text_search_fields.errors }}
                                 {% for value, display in advanced_form.text_search_fields.field.choices %}
                                     <label for="id_text_search_fields_{{ forloop.counter0 }}">
                                         <input type="checkbox" name="text_search_fields" id="id_text_search_fields_{{ forloop.counter0 }}"
-                                               value="{{ value }}" checked>
+                                               value="{{ value }}"  {% advanced_form_is_in_data advanced_form_data.text_search_fields value 'checked' 'checked' %}>
                                         {{ display }}
                                     </label>
                                 {% endfor %}
                             </div>
                             <div class="fieldWrapper select-colours">
-                                {{ advanced_form.colours.errors }}
                                 {% for value, display in advanced_form.colours.field.choices %}
                                     <input type="checkbox" class="fow-checkbox hidden-checkbox" name="colours" id="id_colours_{{ forloop.counter0 }}"
-                                           value="{{ value }}">
+                                           value="{{ value }}" {% advanced_form_is_in_data advanced_form_data.colours value '' 'checked' %}>
                                     <label class="selected-backgrounds" for="id_colours_{{ forloop.counter0 }}">
                                         {% attribute_to_img_html value %}
                                     </label>
@@ -84,7 +82,10 @@
                                     {% for cluster in sets_json.clusters reversed %}
                                         <optgroup label="{{ cluster.name }} Cluster">
                                             {% for set in cluster.sets reversed %}
-                                                <option value="{{ set.code }}">{{ set.name }}</option>
+                                                <option value="{{ set.code }}"
+                                                {% if set.code in advanced_form_data.sets %}selected{% endif %}>
+                                                    {{ set.name }}
+                                                </option>
                                             {% endfor %}
                                         </optgroup>
                                     {% endfor %}
@@ -96,7 +97,7 @@
                                 </div>
                                 {% for value, display in advanced_form.cost.field.choices %}
                                     <input type="checkbox" class="hidden-checkbox fow-checkbox" name="cost" id="id_cost_{{ forloop.counter0 }}"
-                                           value="{{ value }}">
+                                           value="{{ value }}" {% if value|slugify in advanced_form_data.cost %}checked{% endif %}>
                                     <label class="selected-backgrounds" for="id_cost_{{ forloop.counter0 }}">
                                         <div class="cost-value-wrapper">
                                             {{ value }}

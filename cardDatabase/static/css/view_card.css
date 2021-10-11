@@ -23,3 +23,11 @@
 .card-img{
     padding-bottom: 20px;
 }
+
+#referred-by{
+    padding-top: 30px;
+}
+
+.referred-by-title{
+    font-weight: bold;
+}

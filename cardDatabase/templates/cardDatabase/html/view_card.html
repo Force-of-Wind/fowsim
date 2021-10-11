@@ -19,6 +19,22 @@
         {% for ability in card.ability_texts.all %}
             <div class="card-text-info">{% format_ability_text ability.text %}</div>
         {% endfor %}
+        {% if referred_by %}
+            <div id="referred-by">
+                <div class="referred-by-title">
+                    This card is referenced by:
+                </div>
+                {% for card_referred_by in referred_by %}
+                    <div class="referred-card">
+                        <a href="{% card_id_to_url card_referred_by.card_id %}">
+                            <div class="referred-link">
+                                {{ card_referred_by.name }}
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
     </div>
 {% endblock %}

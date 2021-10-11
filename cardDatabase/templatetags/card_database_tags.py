@@ -3,6 +3,7 @@ import re
 from django import template
 from django.utils.safestring import mark_safe
 from django.templatetags.static import static
+from django.urls import reverse
 
 from fowsim import constants as CONS
 
@@ -55,3 +56,8 @@ def format_ability_text(text):
     text = format_cost_text(text)
     text = make_bubbles(text)
     return mark_safe(text)
+
+
+@register.simple_tag
+def card_id_to_url(card_id):
+    return reverse('cardDatabase-view-card', kwargs={'card_id': card_id})

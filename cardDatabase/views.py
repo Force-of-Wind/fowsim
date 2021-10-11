@@ -2,7 +2,6 @@ import json
 
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-from django.utils.safestring import mark_safe
 
 from .forms import SearchForm, AdvancedSearchForm
 from .models.CardType import Card
@@ -75,8 +74,10 @@ def search(request):
 
 def view_card(request, card_id=None):
     card = get_object_or_404(Card, card_id=card_id)
+    referred_by = Card.objects.filter(ability_texts__text__contains=f'"{card.name}"')
     return render(request, 'cardDatabase/html/view_card.html', context={
         'card': card,
+        'referred_by': referred_by,
         'basic_form': SearchForm(),
         'advanced_form': AdvancedSearchForm()
     })

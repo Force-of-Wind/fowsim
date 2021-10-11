@@ -52,10 +52,16 @@ def make_bubbles(text):
     return text
 
 
+def add_rest_icon(text):
+    rest_url = static('imgs/rest.png')
+    return text.replace('{Rest}', f'<img class="ability-rest-icon" src="{rest_url}"> ')
+
+
 @register.simple_tag
 def format_ability_text(text):
     text = format_cost_text(text)
     text = make_bubbles(text)
+    text = add_rest_icon(text)
     text = add_card_reference_links(text)
     return mark_safe(text)
 

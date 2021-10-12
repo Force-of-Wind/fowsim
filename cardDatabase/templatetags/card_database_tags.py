@@ -1,3 +1,4 @@
+import random
 import re
 
 from django import template
@@ -91,3 +92,8 @@ def advanced_form_is_in_data(form_values, value, default_value, success_value):
     elif form_values and value in form_values:
         return success_value
     return ''
+
+
+@register.simple_tag
+def get_random_chibi(category):
+    return static(f'chibis/{category}/{random.choice(CONS.CHIBI_NAMES)}.png')

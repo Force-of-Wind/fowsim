@@ -1,5 +1,5 @@
 {% extends 'cardDatabase/html/base.html' %}
-{% load static %}
+{% load static card_database_tags %}
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/search.css' %}">
@@ -18,6 +18,13 @@
                     </a>
                 </div>
             {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-search-results">
+            <div class="no-results-text">
+                No results. Try a different search.
+            </div>
+            <img src="{% get_random_chibi 'sad' %}">
         </div>
     {% endif %}
 {% endblock %}

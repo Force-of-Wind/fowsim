@@ -369,3 +369,25 @@ DATABASE_CARD_TYPE_CHOICES = []
 for area in DATABASE_CARD_TYPE_GROUPS:
     for card_type in area['types']:
         DATABASE_CARD_TYPE_CHOICES.append((card_type, card_type))
+
+
+CHIBI_NAMES = [
+    'alhamaat',
+    'charlotte',
+    'faria',
+    'fiethsing',
+    'kaguya',
+    'lapis',
+    'lilias',
+    'lumia',
+    'mars',
+    'mikage',
+    'millium',
+    'nyarlathotep',
+    'pricia',
+    'sol',
+    'valentina',
+    'wukong',
+    'yog',
+    'zero'
+]

@@ -19,3 +19,13 @@
 .number-of-results b{
     font-weight: bold;
 }
+
+.no-results-text{
+    font-weight: bold;
+}
+
+.no-search-results{
+    width: max-content;
+    margin: 0 auto;
+    padding-top: 30px;
+}

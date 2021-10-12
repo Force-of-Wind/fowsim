@@ -14,11 +14,14 @@ $(function(){
             $('#search-toggles').removeClass('advanced-showing');
         });
 
-    $('.mdb-select').materialSelect({
+    $('.sets-select .mdb-select').materialSelect({
         'visibleOptions': 14,
         'placeholder': 'Search Set(s)...',
         'maxSelectedOptions': 2
     });
-
-
+    $('.card-type-select .mdb-select').materialSelect({
+        'visibleOptions': 14,
+        'placeholder': 'Search Card Type(s)...',
+        'maxSelectedOptions': 2
+    });
 });

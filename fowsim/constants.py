@@ -74,13 +74,14 @@ CARD_TYPE_VALUES = [
     'Rune',
     'Master Rune',
     'Magic Stone',
-    'Basic Magic Stone'
+    'Basic Magic Stone',
     'Special Magic Stone',
-    'True Magic Stone'
+    'True Magic Stone',
     'Ruler',
     'Basic J-Ruler',
     'J-Ruler'
     'Spell:Chant-Standby',
+    'Resonator'
 ]
 CARD_SUBTYPE_VALUES = [
     'J',
@@ -297,3 +298,45 @@ TEXT_SEARCH_FIELD_CHOICES = [
     ('ability_texts__text', 'Abilities')
 ]
 TOTAL_COST_CHOICES = listToChoices(list(range(0, 13)) + ['X'])
+
+# Valhalla and Promos. Data exists in the database so we want to exclude it from
+UNSUPPORTED_DATABASE_SETS = [
+    'AO2 Buy a Box',
+    'AO2 Buy a BoxJ',
+    'SOUVENIR038',
+    'SOUVENIR039',
+    'AOA V3 Buy 2',
+    'AO1 Buy a BoxJ'
+    'AO3 Buy a Box',
+    '1',
+    '2'
+    '3',
+    'S'
+]
+
+DATABASE_CARD_TYPE_CHOICES = listToChoices([
+    'Addition',
+    'Addition: Field',
+    'Addition:Field',
+    'Addition:J',
+    'Addition:Resonator',
+    'Basic J-Ruler',
+    'Basic Magic Stone',
+    'Basic Ruler',
+    'Chant',
+    'J-Ruler',
+    'Magic Stone',
+    'Master Rune',
+    'Regalia',
+    'Regalia (Shift)',
+    'Resonator',
+    'Resonator (Shift)',
+    'Resonator (Stranger)',
+    'Ruler',
+    'Rune',
+    'Special Magic Stone',
+    'Spell:Chant',
+    'Spell:Chant-Instant',
+    'Spell:Chant-Standby',
+    'True Magic Stone'
+])

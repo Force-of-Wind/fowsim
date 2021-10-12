@@ -16,6 +16,10 @@ def search(request):
         advanced_form = AdvancedSearchForm()
 
     elif request.method == 'POST':
+        unsupported_sets = Q()
+        for unsupported_set in CONS.UNSUPPORTED_DATABASE_SETS:
+            unsupported_sets |= Q(card_id__istartswith=unsupported_set + '-')
+
         if 'basic-form' in request.POST:
             basic_form = SearchForm(request.POST)
             advanced_form = AdvancedSearchForm()
@@ -24,7 +28,7 @@ def search(request):
                 search_text = basic_form.cleaned_data['generic_text']
                 #TODO Sort by something useful, dont assume id
                 ctx['cards'] = Card.objects.filter(Q(name__icontains=search_text) | Q(ability_texts__text__icontains=search_text)
-                                                   | Q(races__name__icontains=search_text)).distinct().order_by('-id')
+                                                   | Q(races__name__icontains=search_text)).exclude(unsupported_sets).distinct().order_by('-id')
         elif 'advanced-form' in request.POST:
             basic_form = SearchForm()
             advanced_form = AdvancedSearchForm(request.POST)
@@ -53,10 +57,20 @@ def search(request):
                 set_query = Q()
                 for fow_set in advanced_form.cleaned_data['sets']:
                     set_query |= Q(card_id__istartswith=fow_set + '-')
-                # TODO fix ordering
-                ctx['cards'] = Card.objects.filter(text_query).filter(attr_query).filter(set_query).\
-                    distinct().order_by('-id')
 
+                card_type_query = Q()
+                for card_type in advanced_form.cleaned_data['card_type']:
+                    card_type_query |= Q(types__name=card_type)
+
+                # TODO fix ordering
+                ctx['cards'] = (Card.objects.filter(text_query).
+                                filter(attr_query).
+                                filter(set_query).
+                                filter(card_type_query).
+                                exclude(unsupported_sets).
+                                distinct().
+                                order_by('-id')
+                                )
                 cost_filters = advanced_form.cleaned_data['cost']
                 if len(cost_filters) > 0:
                     # Don't need DB query to do total cost, remove all that don't match if any were chosen

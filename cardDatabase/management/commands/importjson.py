@@ -2,7 +2,7 @@ import json
 
 from fowsim import constants as CONS
 from django.core.management.base import BaseCommand
-from cardDatabase.models.CardType import Card, AbilityText, Race
+from cardDatabase.models.CardType import Card, AbilityText, Race, Type
 
 
 def strip_attributes(text):
@@ -53,5 +53,8 @@ class Command(BaseCommand):
                         for card_race in card_races:
                             race, created = Race.objects.get_or_create(name=card_race)
                             card.races.add(race)
+                        for card_type in card_types:
+                            type_obj, created = Type.objects.get_or_create(name=card_type)
+                            card.types.add(type_obj)
 
                         card.save()

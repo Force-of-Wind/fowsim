@@ -2789,7 +2789,7 @@
                     var i = t.which > 46 && t.which < 91,
                         n = t.which > 93 && t.which < 106,
                         o = 8 === t.which;
-                    (i || n) && this.$searchInput.find("input").val(t.key).focus(), o && this.$searchInput.find("input").val("").focus()
+                    (i || n) && this.$searchInput.find("input").val('').focus(), o && this.$searchInput.find("input").val("").focus()
                 } else {
                     var r = "",
                         a = String.fromCharCode(t.which).toLowerCase(),
@@ -4875,7 +4875,6 @@
                         id: this.uuid
                     }
                 }), this.selectedOptionsIndexes = [], e.mutationObservers = []
-                console.log(this.options)
             }
             var i, r, a;
             return i = e, a = [{

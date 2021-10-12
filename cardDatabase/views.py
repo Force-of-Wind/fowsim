@@ -9,8 +9,15 @@ from .models.CardType import Card
 from fowsim import constants as CONS
 
 
+def get_search_form_ctx():
+    return {
+        'card_types_list': CONS.DATABASE_CARD_TYPE_GROUPS,
+        'sets_json': CONS.SET_DATA
+    }
+
+
 def search(request):
-    ctx = {}
+    ctx = get_search_form_ctx()
     if request.method == 'GET':
         basic_form = SearchForm()
         advanced_form = AdvancedSearchForm()
@@ -84,16 +91,16 @@ def search(request):
 
     ctx['basic_form'] = basic_form
     ctx['advanced_form'] = advanced_form
-    ctx['sets_json'] = CONS.SET_DATA
     return render(request, 'cardDatabase/html/search.html', context=ctx)
 
 
 def view_card(request, card_id=None):
     card = get_object_or_404(Card, card_id=card_id)
     referred_by = Card.objects.filter(ability_texts__text__contains=f'"{card.name}"')
-    return render(request, 'cardDatabase/html/view_card.html', context={
-        'card': card,
-        'referred_by': referred_by,
-        'basic_form': SearchForm(),
-        'advanced_form': AdvancedSearchForm()
-    })
+    ctx = get_search_form_ctx()
+    ctx['card'] = card
+    ctx['referred_by'] = referred_by
+    ctx['basic_form'] = SearchForm()
+    ctx['advanced_form'] = AdvancedSearchForm()
+
+    return render(request, 'cardDatabase/html/view_card.html', context=ctx)

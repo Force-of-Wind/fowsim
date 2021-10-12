@@ -5,6 +5,11 @@ from django.core.management.base import BaseCommand
 from cardDatabase.models.CardType import Card, AbilityText, Race, Type
 
 
+#  Types separated by / that don't have spaces e.g. "Chant / Rune".
+#  Need to distinguish between Addition:J/Resonator for ex
+MIXED_TYPES = ['Chant/Rune/Master Rune', 'Chant/Rune', 'Special Magic Stone/True Magic Stone']
+
+
 def strip_attributes(text):
     # Magic stone have types 'Fire Magic Stone', etc. Remove that, then strip whitespace
     for attribute in CONS.ATTRIBUTE_NAMES:
@@ -19,17 +24,20 @@ class Command(BaseCommand):
         with open('cardDatabase/static/cards.json') as json_file:
             data = json.load(json_file)
             for cluster in data['fow']['clusters']:
-                cluster_name = cluster['name']
                 sets = cluster['sets']
                 for fow_set in sets:
-                    set_name = fow_set['name']
-                    set_code = fow_set['code']
                     cards = fow_set['cards']
                     for card in cards:
-                        card_types = card['type']
-                        card_types = [strip_attributes(x) for x in card_types.split('/')]
+                        card_types = []
                         card_rarity = card['rarity']
 
+                        for card_type in card['type'].split(' / '):
+                            if any(x in card_type for x in MIXED_TYPES):
+                                for mixed_type in MIXED_TYPES:
+                                    if mixed_type in card_type:
+                                        card_types = card_types + mixed_type.split('/')
+                            else:
+                                card_types.append(card_type)
                         # Some rulers are Uncommon/Rare, set them to modern Ruler value
                         if (CONS.RARITY_RULER in card_types and not card_rarity == CONS.RARITY_ASCENDED_RULER_VALUE and
                                 not card_rarity == CONS.RARITY_ASCENDED_J_RULER_VALUE):

@@ -314,29 +314,58 @@ UNSUPPORTED_DATABASE_SETS = [
     'S'
 ]
 
-DATABASE_CARD_TYPE_CHOICES = listToChoices([
-    'Addition',
-    'Addition: Field',
-    'Addition:Field',
-    'Addition:J',
-    'Addition:Resonator',
-    'Basic J-Ruler',
-    'Basic Magic Stone',
-    'Basic Ruler',
-    'Chant',
-    'J-Ruler',
-    'Magic Stone',
-    'Master Rune',
-    'Regalia',
-    'Regalia (Shift)',
-    'Resonator',
-    'Resonator (Shift)',
-    'Resonator (Stranger)',
-    'Ruler',
-    'Rune',
-    'Special Magic Stone',
-    'Spell:Chant',
-    'Spell:Chant-Instant',
-    'Spell:Chant-Standby',
-    'True Magic Stone'
-])
+DATABASE_CARD_TYPE_GROUPS = [
+    {
+        'name': 'J/Ruler',
+        'types': [
+            'Basic J-Ruler',
+            'Basic Ruler',
+            'J-Ruler',
+            'Ruler',
+        ]
+    },
+    {
+        'name': 'Magic Stone Deck',
+        'types': [
+            'Basic Magic Stone',
+            'Darkness Magic Stone',
+            'Fire Magic Stone',
+            'Light Magic Stone',
+            'Magic Stone',
+            'Special Magic Stone',
+            'True Magic Stone',
+            'Water Magic Stone',
+            'Wind Magic Stone'
+        ]
+    },
+    {
+        'name': 'Main Deck',
+        'types': [
+            'Addition',
+            'Addition: Field',
+            'Addition:J/Resonator',
+            'Addition:Ruler/J-Ruler',
+            'Chant',
+            'Regalia',
+            'Regalia (Shift)',
+            'Resonator',
+            'Resonator (Shift)',
+            'Resonator (Stranger)',
+            'Spell:Chant',
+            'Spell:Chant-Instant',
+            'Spell:Chant-Standby',
+        ]
+    },
+    {
+        'name': 'Other Decks',
+        'types': [
+            'Master Rune',
+            'Rune',
+        ]
+    },
+]
+
+DATABASE_CARD_TYPE_CHOICES = []
+for area in DATABASE_CARD_TYPE_GROUPS:
+    for card_type in area['types']:
+        DATABASE_CARD_TYPE_CHOICES.append((card_type, card_type))

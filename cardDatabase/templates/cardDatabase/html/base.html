@@ -99,10 +99,14 @@
                             </div>
                             <div class="fieldWrapper card-type-select">
                                 <select class="mdb-select md-form" multiple form="advanced-form" name="card_type" searchable="Search here...">
-                                    {% for value, display in advanced_form.card_type.field.choices %}
-                                        <option value="{{ value }}" {% if value in advanced_form_data.card_type %}selected{% endif %}>
-                                            {{ value }}
-                                        </option>
+                                    {% for deck_group in card_types_list %}
+                                        <optgroup label="{{ deck_group.name }}">
+                                            {% for value in deck_group.types %}
+                                                <option value="{{ value }}" {% if value in advanced_form_data.card_type %}selected{% endif %}>
+                                                    {{ value }}
+                                                </option>
+                                            {% endfor %}
+                                        </optgroup>
                                     {% endfor %}
                                 </select>
                             </div>

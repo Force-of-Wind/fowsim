@@ -10,10 +10,10 @@
         <img class="card-img" src="{% static 'cards/'%}{{ card.card_id }}.jpg">
         <div class="card-text-info">Name: {{ card.name }}</div>
         <div class="card-text-info">ID: {{ card.card_id }}</div>
-        <div class="card-text-info">Cost: {%  format_cost_text card.cost %}</div>
+        {% if card.cost %}<div class="card-text-info">Cost: {%  format_cost_text card.cost %}</div>{% endif %}
         {% if card.divinity %}<div class="card-text-info">Divinity: {{ card.divinity }}</div>{% endif %}
         {% if card.flavour %}<div class="card-text-info">Flavour: {{ card.flavour }}</div>{% endif %}
-        <div class="card-text-info">Rarity: {{ card.rarity }}</div>
+        {% if card.rarity %}<div class="card-text-info">Rarity: {{ card.rarity }}</div>{% endif %}
         {% if card.ATK %}<div class="card-text-info">ATK: {{ card.ATK }}</div>{% endif %}
         {% if card.DEF %}<div class="card-text-info">DEF: {{ card.DEF }}</div>{% endif %}
         {% for ability in card.ability_texts.all %}

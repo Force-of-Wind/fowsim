@@ -1,9 +1,10 @@
+import os
 import re
 
-from django.apps import apps
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.staticfiles import finders
 
 from cardDatabase.models.Effects import Effect
 from fowsim.utils import listToChoices, AbstractModel
@@ -70,7 +71,11 @@ class Card(AbstractModel):
 
     @property
     def card_image_filename(self):
-        return self.card_id + '.jpg'
+        if finders.find(f'cards/{self.card_id}.jpg'):
+            return self.card_id + '.jpg'
+        else:  # Try use the "front" side of a card, might be an alternative card
+            return self.card_id.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, '') + '.jpg'
+
 
     @property
     def set_code(self):

@@ -295,7 +295,9 @@ SET_CHOICES.reverse()
 TEXT_SEARCH_FIELD_CHOICES = [
     ('name', 'Name'),
     ('races__name', 'Race/Trait'),
-    ('ability_texts__text', 'Abilities')
+    ('ability_texts__text', 'Abilities'),
+    ('card_id', 'Set Code'),
+    ('flavour', 'Flavour')
 ]
 TOTAL_COST_CHOICES = listToChoices(list(range(0, 13)) + ['X'])
 

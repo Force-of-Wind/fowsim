@@ -29,7 +29,6 @@ class Command(BaseCommand):
                     cards = fow_set['cards']
                     for card in cards:
                         card_types = []
-                        card_rarity = card['rarity']
 
                         for card_type in card['type'].split(' / '):
                             if any(x in card_type for x in MIXED_TYPES):
@@ -38,10 +37,6 @@ class Command(BaseCommand):
                                         card_types = card_types + mixed_type.split('/')
                             else:
                                 card_types.append(card_type)
-                        # Some rulers are Uncommon/Rare, set them to modern Ruler value
-                        if (CONS.RARITY_RULER in card_types and not card_rarity == CONS.RARITY_ASCENDED_RULER_VALUE and
-                                not card_rarity == CONS.RARITY_ASCENDED_J_RULER_VALUE):
-                            card_rarity = CONS.RARITY_RULER_VALUE
 
                         card_races = card['race']
                         card_abilities = card['abilities']
@@ -51,7 +46,7 @@ class Command(BaseCommand):
                             cost=card['cost'],
                             divinity=card['divinity'],
                             flavour=card['flavor'],
-                            rarity=card_rarity,
+                            rarity=card['rarity'],
                             ATK=card['ATK'],
                             DEF=card['DEF'],
                         )

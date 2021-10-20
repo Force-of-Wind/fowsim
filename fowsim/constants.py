@@ -309,12 +309,12 @@ UNSUPPORTED_DATABASE_SETS = [
     'SOUVENIR038',
     'SOUVENIR039',
     'AOA V3 Buy 2',
-    'AO1 Buy a BoxJ'
+    'AO1 Buy a BoxJ',
     'AO3 Buy a Box',
     '1',
-    '2'
+    '2',
     '3',
-    'S'
+    'S',
 ]
 
 DATABASE_CARD_TYPE_GROUPS = [

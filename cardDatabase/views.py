@@ -61,6 +61,13 @@ def get_text_query(search_text, text_search_fields):
     return text_query
 
 
+def get_divinity_query(data):
+    divinity_query = Q()
+    for div in data:
+        divinity_query |= Q(divinity=div)
+    return divinity_query
+
+
 def search(request):
     ctx = get_search_form_ctx()
     if request.method == 'GET':
@@ -93,6 +100,7 @@ def search(request):
                 set_query = get_set_query(advanced_form.cleaned_data['sets'])
                 card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
                 rarity_query = get_rarity_query(advanced_form.cleaned_data['rarity'])
+                divinity_query = get_divinity_query(advanced_form.cleaned_data['divinity'])
 
                 # TODO fix ordering
                 ctx['cards'] = (Card.objects.filter(text_query).
@@ -100,6 +108,7 @@ def search(request):
                                 filter(set_query).
                                 filter(card_type_query).
                                 filter(rarity_query).
+                                filter(divinity_query).
                                 exclude(unsupported_sets).
                                 distinct().
                                 order_by('-id')

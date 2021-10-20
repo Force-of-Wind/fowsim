@@ -44,7 +44,7 @@ class Command(BaseCommand):
                             name=card['name'],
                             card_id=card['id'].replace('*', CONS.DOUBLE_SIDED_CARD_CHARACTER),
                             cost=card['cost'],
-                            divinity=card['divinity'],
+                            divinity=card['divinity'].replace("âˆž", CONS.INFINITY_STRING),
                             flavour=card['flavor'],
                             rarity=card['rarity'],
                             ATK=card['ATK'],

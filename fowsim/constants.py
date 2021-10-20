@@ -1,3 +1,5 @@
+from django.utils.safestring import mark_safe
+
 from fowsim.utils import listToChoices
 
 CARD_POSITION_TOP = 'Top'
@@ -395,4 +397,13 @@ CHIBI_NAMES = [
     'wukong',
     'yog',
     'zero'
+]
+
+INFINITY_STRING = 'Inf'
+
+DIVINITY_CHOICES = [
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (INFINITY_STRING, mark_safe('&infin;'))
 ]

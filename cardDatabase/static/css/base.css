@@ -159,13 +159,13 @@ input:checked + .selected-backgrounds{
     opacity: 0.4;
 }
 
-.cost-select label{
+.cost-select label, .divinity-select label{
     width: 35px;
     background-color: #d5d5d5;
     padding: 5px 0px;
 }
 
-.cost-select .cost-value-wrapper{
+.cost-select .cost-value-wrapper, .divinity-select .divinity-value-wrapper{
     margin: 0 auto;
     width: max-content;
     font-weight: bold;

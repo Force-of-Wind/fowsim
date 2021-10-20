@@ -152,3 +152,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'

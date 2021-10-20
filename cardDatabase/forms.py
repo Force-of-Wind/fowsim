@@ -16,3 +16,4 @@ class AdvancedSearchForm(forms.Form):
     sets = forms.MultipleChoiceField(label='Set(s):', choices=CONS.SET_CHOICES, required=False)
     cost = forms.MultipleChoiceField(label='Total Cost(s):', choices=CONS.TOTAL_COST_CHOICES, required=False)
     card_type = forms.MultipleChoiceField(label='Card Type(s):', choices=CONS.DATABASE_CARD_TYPE_CHOICES, required=False)
+    rarity = forms.MultipleChoiceField(label='Rarity:', choices=CONS.RARITY_CHOICE_VALUES, required=False)

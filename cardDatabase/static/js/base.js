@@ -24,4 +24,9 @@ $(function(){
         'placeholder': 'Search Card Type(s)...',
         'maxSelectedOptions': 2
     });
+    $('.rarity-select .mdb-select').materialSelect({
+        'visibleOptions': 14,
+        'placeholder': 'Search Rarity(s)...',
+        'maxSelectedOptions': 2
+    });
 });

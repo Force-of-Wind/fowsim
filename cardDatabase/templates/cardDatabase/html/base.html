@@ -110,6 +110,16 @@
                                     {% endfor %}
                                 </select>
                             </div>
+                            <div class="fieldWrapper rarity-select">
+                                <select class="mdb-select md-form" multiple form="advanced-form" name="rarity" searchable="Search here...">
+                                    {% for value, display in advanced_form.rarity.field.choices %}
+                                        <option value="{{ value }}"
+                                            {% if value in advanced_form_data.rarity %}selected{% endif %}>
+                                                {{ value }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                             <div class="fieldWrapper cost-select no-select">
                                 <div class="search-field-title">
                                     Total cost:

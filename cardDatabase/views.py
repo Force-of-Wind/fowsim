@@ -69,11 +69,15 @@ def search(request):
                 for card_type in advanced_form.cleaned_data['card_type']:
                     card_type_query |= Q(types__name=card_type)
 
+                rarity_query = Q()
+                for rarity in advanced_form.cleaned_data['rarity']:
+                    rarity_query |= Q(rarity=rarity)
                 # TODO fix ordering
                 ctx['cards'] = (Card.objects.filter(text_query).
                                 filter(attr_query).
                                 filter(set_query).
                                 filter(card_type_query).
+                                filter(rarity_query).
                                 exclude(unsupported_sets).
                                 distinct().
                                 order_by('-id')

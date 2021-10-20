@@ -19,12 +19,16 @@
                 </div>
             {% endfor %}
         </div>
-    {% else %}
+    {% elif request.method == 'POST' %}
         <div class="no-search-results">
             <div class="no-results-text">
                 No results. Try a different search.
             </div>
             <img src="{% get_random_chibi 'sad' %}">
+        </div>
+    {% elif request.method == 'GET' %}
+        <div class="no-search-results">
+            <img src="{% get_random_chibi 'greetings' %}">
         </div>
     {% endif %}
 {% endblock %}

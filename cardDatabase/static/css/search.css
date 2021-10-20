@@ -22,6 +22,8 @@
 
 .no-results-text{
     font-weight: bold;
+    width: max-content;
+    margin: 0 auto;
 }
 
 .no-search-results{

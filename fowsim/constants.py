@@ -133,7 +133,8 @@ COLOUR_CHOICES = [
 
 DOUBLE_SIDED_CARD_CHARACTER = '^'
 
-# No longer used, refers to the query parameter on fowtcg.com when you search by a specific set
+# No longer used, refers to the query parameter on fowtcg.com when you search by a specific set.
+# It is in sorted order from oldest to newest though, can be reused later
 FOWTCG_CARD_DATABASE_SET_INDEX = {
     'CMF': 11,
     'TAT': 16,

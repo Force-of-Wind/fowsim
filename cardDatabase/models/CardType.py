@@ -76,7 +76,6 @@ class Card(AbstractModel):
         else:  # Try use the "front" side of a card, might be an alternative card
             return self.card_id.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, '') + '.jpg'
 
-
     @property
     def set_code(self):
         return self.card_id.split('-')[0]

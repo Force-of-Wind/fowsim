@@ -16,6 +16,51 @@ def get_search_form_ctx():
     }
 
 
+def get_rarity_query(data):
+    rarity_query = Q()
+    for rarity in data:
+        rarity_query |= Q(rarity=rarity)
+    return rarity_query
+
+
+def get_card_type_query(data):
+    card_type_query = Q()
+    for card_type in data:
+        card_type_query |= Q(types__name=card_type)
+    return card_type_query
+
+
+def get_set_query(data):
+    set_query = Q()
+    for fow_set in data:
+        set_query |= Q(card_id__istartswith=fow_set + '-')
+    return set_query
+
+
+def get_attr_query(data):
+    attr_query = Q()
+    for card_attr in data:
+        if card_attr == CONS.ATTRIBUTE_VOID_CODE:
+            void_query = Q()
+            # Build query to exclude cards with any attribute in the cost e.g. not 'R' and not 'G' etc.
+            for attr_code in CONS.ATTRIBUTE_CODES:
+                void_query &= ~Q(cost__contains=attr_code)
+            attr_query |= void_query
+        else:
+            attr_query |= Q(cost__contains=card_attr)
+    return attr_query
+
+
+def get_text_query(search_text, text_search_fields):
+    text_query = Q()
+    if search_text:
+        for field in text_search_fields:
+            #  Value of the field is the destination to search e.g. 'name' or 'ability_text
+            text_query |= Q(**{field + '__icontains': search_text})
+
+    return text_query
+
+
 def search(request):
     ctx = get_search_form_ctx()
     if request.method == 'GET':
@@ -41,37 +86,14 @@ def search(request):
             advanced_form = AdvancedSearchForm(request.POST)
             if advanced_form.is_valid():
                 ctx['advanced_form_data'] = advanced_form.cleaned_data
-                search_text = advanced_form.cleaned_data['generic_text']
+                text_query = get_text_query(advanced_form.cleaned_data['generic_text'],
+                                            advanced_form.cleaned_data['text_search_fields'])
 
-                text_query = Q()
-                if search_text:
-                    text_search_fields = advanced_form.cleaned_data['text_search_fields']
-                    for field in text_search_fields:
-                        #  Value of the field is the destination to search e.g. 'name' or 'ability_text
-                        text_query |= Q(**{field + '__icontains': search_text})
+                attr_query = get_attr_query(advanced_form.cleaned_data['colours'])
+                set_query = get_set_query(advanced_form.cleaned_data['sets'])
+                card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
+                rarity_query = get_rarity_query(advanced_form.cleaned_data['rarity'])
 
-                attr_query = Q()
-                for card_attr in advanced_form.cleaned_data['colours']:
-                    if card_attr == CONS.ATTRIBUTE_VOID_CODE:
-                        void_query = Q()
-                        # Build query to exclude cards with any attribute in the cost e.g. not 'R' and not 'G' etc.
-                        for attr_code in CONS.ATTRIBUTE_CODES:
-                            void_query &= ~Q(cost__contains=attr_code)
-                        attr_query |= void_query
-                    else:
-                        attr_query |= Q(cost__contains=card_attr)
-
-                set_query = Q()
-                for fow_set in advanced_form.cleaned_data['sets']:
-                    set_query |= Q(card_id__istartswith=fow_set + '-')
-
-                card_type_query = Q()
-                for card_type in advanced_form.cleaned_data['card_type']:
-                    card_type_query |= Q(types__name=card_type)
-
-                rarity_query = Q()
-                for rarity in advanced_form.cleaned_data['rarity']:
-                    rarity_query |= Q(rarity=rarity)
                 # TODO fix ordering
                 ctx['cards'] = (Card.objects.filter(text_query).
                                 filter(attr_query).

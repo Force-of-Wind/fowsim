@@ -47,6 +47,7 @@ class Card(AbstractModel):
         abstract = False
         app_label = 'cardDatabase'
     name = models.CharField(max_length=200, null=False, blank=False)
+    name_without_punctuation = models.CharField(max_length=200, null=False, blank=False)
     card_id = models.CharField(max_length=200, null=False, blank=False)
     cost = models.CharField(max_length=200, null=False, blank=False)
     divinity = models.CharField(max_length=200, null=False, blank=False)

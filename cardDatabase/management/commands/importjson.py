@@ -1,4 +1,5 @@
 import json
+import re
 
 from fowsim import constants as CONS
 from django.core.management.base import BaseCommand
@@ -17,11 +18,38 @@ def strip_attributes(text):
     return text.strip()
 
 
+PUNCTUATION_REPLACEMENTS = {
+    'ӧ': 'o',
+    'ö': 'o',  # There are actually two different ones, not a mistake. One is cyrillic, one is latin.
+}
+
+
+def remove_punctuation(name):
+    matches = re.findall('[^a-zA-Z0-9"\' ]', name)
+    for match in matches:
+        if match in PUNCTUATION_REPLACEMENTS:
+            name = name.replace(match, PUNCTUATION_REPLACEMENTS[match])
+        else:
+            name = name.replace(match, '')
+    return name
+
+
+NAME_ERRORS = {
+    'ӧ': 'ö'  # Not the same
+}
+
+
+def replace_name_errors(name):
+    for error in NAME_ERRORS:
+        name = name.replace(error, NAME_ERRORS[error])
+    return name
+
+
 class Command(BaseCommand):
     help = 'imports cardDatabase/static/cards.json to the database'
 
     def handle(self, *args, **options):
-        with open('cardDatabase/static/cards.json') as json_file:
+        with open('cardDatabase/static/cards.json', encoding='utf-8') as json_file:
             data = json.load(json_file)
             for cluster in data['fow']['clusters']:
                 sets = cluster['sets']
@@ -41,10 +69,11 @@ class Command(BaseCommand):
                         card_races = card['race']
                         card_abilities = card['abilities']
                         card, created = Card.objects.get_or_create(
-                            name=card['name'],
+                            name=replace_name_errors(card['name']),
+                            name_without_punctuation=remove_punctuation(card['name']),
                             card_id=card['id'].replace('*', CONS.DOUBLE_SIDED_CARD_CHARACTER),
                             cost=card['cost'],
-                            divinity=card['divinity'].replace("âˆž", CONS.INFINITY_STRING),
+                            divinity=card['divinity'].replace("∞", CONS.INFINITY_STRING),
                             flavour=card['flavor'],
                             rarity=card['rarity'],
                             ATK=card['ATK'],

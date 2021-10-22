@@ -57,6 +57,9 @@ def get_text_query(search_text, text_search_fields):
         for field in text_search_fields:
             #  Value of the field is the destination to search e.g. 'name' or 'ability_text
             text_query |= Q(**{field + '__icontains': search_text})
+            if field == 'name':
+                # Also check the alternative name
+                text_query |= Q(**{'name_without_punctuation__icontains': search_text})
 
     return text_query
 
@@ -86,8 +89,11 @@ def search(request):
                 # Filter cards and show them
                 search_text = basic_form.cleaned_data['generic_text']
                 #TODO Sort by something useful, dont assume id
-                ctx['cards'] = Card.objects.filter(Q(name__icontains=search_text) | Q(ability_texts__text__icontains=search_text)
-                                                   | Q(races__name__icontains=search_text)).exclude(unsupported_sets).distinct().order_by('-id')
+                ctx['cards'] = Card.objects.filter(Q(name__icontains=search_text) |
+                                                   Q(name_without_punctuation__icontains=search_text) |
+                                                   Q(ability_texts__text__icontains=search_text) |
+                                                   Q(races__name__icontains=search_text)
+                ).exclude(unsupported_sets).distinct().order_by('-id')
         elif 'advanced-form' in request.POST:
             basic_form = SearchForm()
             advanced_form = AdvancedSearchForm(request.POST)

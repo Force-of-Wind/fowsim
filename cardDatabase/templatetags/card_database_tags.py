@@ -105,3 +105,8 @@ def text_search_fields_is_in_data(form_values, value):
 @register.simple_tag
 def get_random_chibi(category):
     return static(f'chibis/{category}/{random.choice(CONS.CHIBI_NAMES)}.png')
+
+
+@register.filter
+def card_referenced_by(card):
+    return Card.objects.filter(ability_texts__text__contains=f'"{card.name}"')

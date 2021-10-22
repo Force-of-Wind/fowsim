@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.staticfiles import finders
+from django.db.models import Q
 
 from cardDatabase.models.Effects import Effect
 from fowsim.utils import listToChoices, AbstractModel
@@ -96,6 +97,28 @@ class Card(AbstractModel):
 
         return total
 
+    @property
+    def other_sides(self):
+        shared_id = self.card_id
+        self_other_side_char = ''
+        for to_remove in CONS.OTHER_SIDE_CHARACTERS:
+            if to_remove in shared_id:
+                shared_id = shared_id.replace(to_remove, '')
+                self_other_side_char = to_remove
+
+        other_side_query = Q()
+
+        if self_other_side_char:
+            # This isn't the front side so check with no extra chars
+            other_side_query |= Q(card_id=shared_id)
+
+        # Also check all the other combinations of characters that aren't itself
+        for to_query in CONS.OTHER_SIDE_CHARACTERS:
+            if not self_other_side_char == to_query:
+                # Don't look for self
+                other_side_query |= Q(card_id__endswith=shared_id + to_query)
+
+        return Card.objects.filter(other_side_query)
 
 
 class Chant(models.Model):

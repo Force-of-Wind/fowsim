@@ -6,35 +6,8 @@
 {% endblock %}
 {% block body %}
     {{ block.super }}
-    <div class="card">
-        <img class="card-img" src="{% static 'cards/'%}{{ card.card_id }}.jpg">
-        <div class="card-text-info">Name: {{ card.name }}</div>
-        <div class="card-text-info">ID: {{ card.card_id }}</div>
-        {% if card.cost %}<div class="card-text-info">Cost: {%  format_cost_text card.cost %}</div>{% endif %}
-        {% if card.divinity %}<div class="card-text-info">Divinity: {{ card.divinity }}</div>{% endif %}
-        {% if card.flavour %}<div class="card-text-info">Flavour: {{ card.flavour }}</div>{% endif %}
-        {% if card.rarity %}<div class="card-text-info">Rarity: {{ card.rarity }}</div>{% endif %}
-        {% if card.ATK %}<div class="card-text-info">ATK: {{ card.ATK }}</div>{% endif %}
-        {% if card.DEF %}<div class="card-text-info">DEF: {{ card.DEF }}</div>{% endif %}
-        {% for ability in card.ability_texts.all %}
-            <div class="card-text-info">{% format_ability_text ability.text %}</div>
-        {% endfor %}
-        {% if referred_by %}
-            <div id="referred-by">
-                <div class="referred-by-title">
-                    This card is referenced by:
-                </div>
-                {% for card_referred_by in referred_by %}
-                    <div class="referred-card">
-                        <a href="{% card_id_to_url card_referred_by.card_id %}">
-                            <div class="referred-link">
-                                {{ card_referred_by.name }}
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-    </div>
+    {% include 'cardDatabase/html/card_details.html' with referred_by=card|card_referenced_by card=card %}
+    {% for other_side in card.other_sides %}
+        {% include 'cardDatabase/html/card_details.html' with referred_by=other_side|card_referenced_by card=other_side %}
+    {% endfor %}
 {% endblock %}

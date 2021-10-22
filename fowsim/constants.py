@@ -134,6 +134,16 @@ COLOUR_CHOICES = [
 ]
 
 DOUBLE_SIDED_CARD_CHARACTER = '^'
+J_SIDE_CHARACTER = 'J'
+ALTERNATIVE_SIDE_CHARACTER = '*'
+COLOSSAL_SIDE_CHARACTER = 'J^'
+
+OTHER_SIDE_CHARACTERS = [  # Order is important for Card.other_sides
+    COLOSSAL_SIDE_CHARACTER,
+    DOUBLE_SIDED_CARD_CHARACTER,
+    J_SIDE_CHARACTER,
+    ALTERNATIVE_SIDE_CHARACTER,
+]
 
 # No longer used, refers to the query parameter on fowtcg.com when you search by a specific set.
 # It is in sorted order from oldest to newest though, can be reused later

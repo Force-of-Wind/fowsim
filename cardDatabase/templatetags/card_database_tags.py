@@ -79,7 +79,8 @@ def add_card_reference_links(ability_text):
         try:
             card = Card.objects.get(name=match[1:-1])  # Trim apostrophes
             card_url = card_id_to_url(card.card_id)
-            ability_text = ability_text.replace(match, f'"<a href="{card_url}">{card.name}</a>"')
+            card_img_url = static('cards/' + card.card_image_filename)
+            ability_text = ability_text.replace(match, f'"<a class="referenced-card" href="{card_url}">{card.name}<img class="hover-card-img" src="{card_img_url}"/></a>"')
         except Card.DoesNotExist:
             pass
     return ability_text

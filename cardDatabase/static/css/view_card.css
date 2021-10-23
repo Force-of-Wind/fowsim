@@ -35,3 +35,17 @@
 .ability-rest-icon{
     width: 25px;
 }
+
+.hover-card-img{
+    display: none;
+}
+
+.referenced-card{
+    position: relative;
+}
+
+.hover-card-img.show-hover{
+    display: block;
+    position: absolute;
+    top: -680px;
+}

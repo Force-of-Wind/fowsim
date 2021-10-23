@@ -37,5 +37,13 @@ $(function(){
                 $(this).find('input').prop('checked', false);
             });
         }
-    })
+    });
+
+    $('.referenced-card').mouseover(function(event){
+       $(this).find('img').addClass('show-hover');
+    });
+
+    $('.referenced-card').mouseout(function(event){
+        $(this).find('img').removeClass('show-hover');
+    });
 });

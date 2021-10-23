@@ -72,7 +72,7 @@ def get_divinity_query(data):
 
 
 def get_atk_def_query(value, comparator, field_name):
-    if value and comparator:
+    if value is not None and comparator:
         return Q(**{f'{field_name}__{comparator}': value})
     return Q()
 

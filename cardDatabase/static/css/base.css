@@ -101,7 +101,7 @@ body{
     width: 35px;
 }
 
-input[type="checkbox"][name="text_search_fields"], input[type="checkbox"].fow-checkbox {
+input[type="checkbox"][name="text_search_fields"], input[type="checkbox"].fow-checkbox, input[type="checkbox"][name="text_exactness"] {
     position: static;
     opacity: 1;
 }
@@ -171,9 +171,12 @@ input:checked + .selected-backgrounds{
     font-weight: bold;
 }
 
+.atk-def-stats{
+    padding-bottom: 20px;
+}
+
 .atk-def-stats div{
     display: inline-block;
-    margin: 10px 0;
 }
 
 .atk-inputs, .def-inputs{
@@ -192,6 +195,15 @@ input:checked + .selected-backgrounds{
     padding-right: 10px;
 }
 
-.divinity-select, .cost-select, .select-colours{
+.divinity-select, .cost-select, .select-colours, .select-text-search-fields, .select-text-exactness, .atk-def-stats{
     border-bottom: 1px solid rgb(0 0 0 / 16%);
+    margin-bottom: 20px;
+}
+
+.field-title{
+    font-weight: bold;
+}
+
+.select-text-exactness{
+    padding-top: 10px;
 }

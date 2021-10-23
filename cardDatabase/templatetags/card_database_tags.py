@@ -95,6 +95,14 @@ def advanced_form_is_in_data(form_values, value, default_value, success_value):
 
 
 @register.simple_tag
+def text_exactness_is_in_data(form_values, value):
+    default_value = ''
+    if value == CONS.TEXT_CONTAINS_ALL:
+        default_value = 'checked'
+    return advanced_form_is_in_data(form_values, value, default_value, 'checked')
+
+
+@register.simple_tag
 def text_search_fields_is_in_data(form_values, value):
     default_value = ''
     if value in ['name', 'races__name', 'ability_texts__text']:

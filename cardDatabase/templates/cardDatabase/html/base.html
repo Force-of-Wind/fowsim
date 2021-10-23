@@ -65,7 +65,22 @@
                             <div class="fieldWrapper">
                                 {{ advanced_form.generic_text }}
                             </div>
-                            <div class="fieldWrapper">
+                            <div class="fieldWrapper select-text-exactness">
+                                <div class="text-exactness-title field-title">
+                                    Search terms match:
+                                </div>
+                                {% for value, display in advanced_form.text_exactness.field.choices %}
+                                    <label for="id_text_exactness_fields_{{ forloop.counter0 }}">
+                                        <input type="checkbox" name="text_exactness" id="id_text_exactness_fields_{{ forloop.counter0 }}"
+                                               value="{{ value }}" {% text_exactness_is_in_data advanced_form_data.text_exactness value %}>
+                                        {{ display }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                            <div class="fieldWrapper select-text-search-fields">
+                                <div class="text-search-fields-title field-title">
+                                    Search in:
+                                </div>
                                 {% for value, display in advanced_form.text_search_fields.field.choices %}
                                     <label for="id_text_search_fields_{{ forloop.counter0 }}">
                                         <input type="checkbox" name="text_search_fields" id="id_text_search_fields_{{ forloop.counter0 }}"
@@ -84,7 +99,7 @@
                                 {% endfor %}
                             </div>
                             <div class="fieldWrapper cost-select no-select">
-                                <div class="search-field-title">
+                                <div class="search-field-title field-title">
                                     Total cost:
                                 </div>
                                 {% for value, display in advanced_form.cost.field.choices %}
@@ -135,7 +150,7 @@
                                 </select>
                             </div>
                             <div class="fieldWrapper divinity-select no-select">
-                                <div class="search-field-title">
+                                <div class="search-field-title field-title">
                                     Divinity:
                                 </div>
                                 {% for value, display in advanced_form.divinity.field.choices %}
@@ -150,7 +165,7 @@
                             </div>
                             <div class="atk-def-stats fieldWrapper">
                                 <div class="atk-inputs">
-                                    <div class="atk-label">
+                                    <div class="atk-label field-title">
                                         Attack
                                     </div>
                                     <div class="atk-comparator">
@@ -162,7 +177,7 @@
                                         </div>
                                     </div>
                                 </div>{% comment %} Not pretty, but need no whitespace between them for 50% width {% endcomment %}<div class="def-inputs">
-                                    <div class="def-label">
+                                    <div class="def-label field-title">
                                         Defense
                                     </div>
                                     <div class="def-comparator">

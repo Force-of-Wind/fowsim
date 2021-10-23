@@ -51,15 +51,42 @@ def get_attr_query(data):
     return attr_query
 
 
-def get_text_query(search_text, text_search_fields):
+def separate_text_query(field, search_text, exactness_option):
+    """
+    :param field: name of the field to search e.g. 'name' or 'ability_text'
+    :param search_text: actual string to query for
+    :param exactness_option: which option was selected in constants.py:TEXT_EXACTNESS_OPTIONS
+    :return: query object using the chosen setting
+    """
+    q = Q()
+    if search_text and field:
+        if exactness_option == CONS.TEXT_EXACT:
+            # Simply check that the whole phrase exists without edits
+            return Q(**{field + '__icontains': search_text})
+        else:  # Either "Contains all" or 'Contains at least one"
+            '''
+            Check for each individual word, not the whole phrase
+            E.g. Contains "Lumia fated rebirth"
+            becomes Contains "Lumia" and/or contains "fated" and/or contains "rebirth"
+            '''
+            for word in search_text.split(' '):
+                word_query = Q(**{field + '__icontains': word})
+                if exactness_option == CONS.TEXT_CONTAINS_ALL:
+                    q &= word_query
+                elif exactness_option == CONS.TEXT_CONTAINS_AT_LEAST_ONE:
+                    q |= word_query
+    return q
+
+
+def get_text_query(search_text, text_search_fields, exactness_option):
     text_query = Q()
     if search_text:
         for field in text_search_fields:
             #  Value of the field is the destination to search e.g. 'name' or 'ability_text
-            text_query |= Q(**{field + '__icontains': search_text})
+            text_query |= separate_text_query(field, search_text, exactness_option)
             if field == 'name':
                 # Also check the alternative name
-                text_query |= Q(**{'name_without_punctuation__icontains': search_text})
+                text_query |= separate_text_query('name_without_punctuation', search_text, exactness_option)
 
     return text_query
 
@@ -106,7 +133,9 @@ def search(request):
             if advanced_form.is_valid():
                 ctx['advanced_form_data'] = advanced_form.cleaned_data
                 text_query = get_text_query(advanced_form.cleaned_data['generic_text'],
-                                            advanced_form.cleaned_data['text_search_fields'])
+                                            advanced_form.cleaned_data['text_search_fields'],
+                                            advanced_form.cleaned_data['text_exactness'])
+                print(text_query)
 
                 attr_query = get_attr_query(advanced_form.cleaned_data['colours'])
                 set_query = get_set_query(advanced_form.cleaned_data['sets'])

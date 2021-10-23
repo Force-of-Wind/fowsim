@@ -11,6 +11,7 @@ class SearchForm(forms.Form):
 class AdvancedSearchForm(forms.Form):
     generic_text = forms.CharField(label='', strip=True,
                                    widget=forms.TextInput(attrs={'placeholder': 'Search...'}), required=False)
+    text_exactness = forms.ChoiceField(label='Search card for:', required=False, choices=CONS.TEXT_EXACTNESS_OPTIONS)
     text_search_fields = forms.MultipleChoiceField(label='Search Card:', choices=CONS.TEXT_SEARCH_FIELD_CHOICES, required=False)
     colours = forms.MultipleChoiceField(label='Color(s):', choices=CONS.COLOUR_CHOICES, required=False)
     sets = forms.MultipleChoiceField(label='Set(s):', choices=CONS.SET_CHOICES, required=False)

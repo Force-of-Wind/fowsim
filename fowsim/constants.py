@@ -423,3 +423,13 @@ ATK_DEF_COMPARATOR_CHOICES = [
     ('gt', mark_safe('&gt;')),
     ('lt', mark_safe('&lt;')),
 ]
+
+TEXT_EXACT = 'Exact'
+TEXT_CONTAINS_ALL = 'Contains all'
+TEXT_CONTAINS_AT_LEAST_ONE = 'Contains at least one'
+
+TEXT_EXACTNESS_OPTIONS = [
+    (TEXT_EXACT, TEXT_EXACT),
+    (TEXT_CONTAINS_ALL, TEXT_CONTAINS_ALL),
+    (TEXT_CONTAINS_AT_LEAST_ONE, TEXT_CONTAINS_AT_LEAST_ONE)
+]

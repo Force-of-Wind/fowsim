@@ -76,8 +76,8 @@ class Command(BaseCommand):
                             divinity=card['divinity'].replace("∞", CONS.INFINITY_STRING),
                             flavour=card['flavor'],
                             rarity=card['rarity'],
-                            ATK=card['ATK'],
-                            DEF=card['DEF'],
+                            ATK=card['ATK'] or None,
+                            DEF=card['DEF'] or None,
                         )
                         for card_ability in card_abilities:
                             ability_text, created = AbilityText.objects.get_or_create(text=card_ability)

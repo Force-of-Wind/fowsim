@@ -71,6 +71,12 @@ def get_divinity_query(data):
     return divinity_query
 
 
+def get_atk_def_query(value, comparator, field_name):
+    if value and comparator:
+        return Q(**{f'{field_name}__{comparator}': value})
+    return Q()
+
+
 def search(request):
     ctx = get_search_form_ctx()
     if request.method == 'GET':
@@ -107,6 +113,12 @@ def search(request):
                 card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
                 rarity_query = get_rarity_query(advanced_form.cleaned_data['rarity'])
                 divinity_query = get_divinity_query(advanced_form.cleaned_data['divinity'])
+                atk_query = get_atk_def_query(advanced_form.cleaned_data['atk_value'],
+                                                  advanced_form.cleaned_data['atk_comparator'], 'ATK')
+                def_query = get_atk_def_query(advanced_form.cleaned_data['def_value'],
+                                                      advanced_form.cleaned_data['def_comparator'], 'DEF')
+                print(atk_query)
+                print(def_query)
 
                 # TODO fix ordering
                 ctx['cards'] = (Card.objects.filter(text_query).
@@ -115,6 +127,8 @@ def search(request):
                                 filter(card_type_query).
                                 filter(rarity_query).
                                 filter(divinity_query).
+                                filter(atk_query).
+                                filter(def_query).
                                 exclude(unsupported_sets).
                                 distinct().
                                 order_by('-id')

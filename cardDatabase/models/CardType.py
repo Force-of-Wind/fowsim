@@ -55,8 +55,8 @@ class Card(AbstractModel):
     flavour = models.TextField(null=False, blank=False)
     races = models.ManyToManyField('Race', related_name='races')
     rarity = models.CharField(max_length=200, null=False, blank=False, choices=CONS.RARITY_CHOICE_VALUES)
-    ATK = models.CharField(max_length=200, null=False, blank=False)
-    DEF = models.CharField(max_length=200, null=False, blank=False)
+    ATK = models.IntegerField(null=True, blank=True)
+    DEF = models.IntegerField(null=True, blank=True)
     types = models.ManyToManyField('Type', related_name='types')
     ability_texts = models.ManyToManyField('AbilityText', related_name='ability_texts')
 

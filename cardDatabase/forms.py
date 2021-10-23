@@ -18,3 +18,7 @@ class AdvancedSearchForm(forms.Form):
     card_type = forms.MultipleChoiceField(label='Card Type(s):', choices=CONS.DATABASE_CARD_TYPE_CHOICES, required=False)
     rarity = forms.MultipleChoiceField(label='Rarity:', choices=CONS.RARITY_CHOICE_VALUES, required=False)
     divinity = forms.MultipleChoiceField(label='Divinity:', choices=CONS.DIVINITY_CHOICES, required=False)
+    atk_value = forms.IntegerField(label='ATK', required=False, min_value=0, widget=forms.NumberInput(attrs={'placeholder': 'Attack'}))
+    atk_comparator = forms.ChoiceField(required=False, choices=CONS.ATK_DEF_COMPARATOR_CHOICES)
+    def_value = forms.IntegerField(label='DEF', required=False, min_value=0, widget=forms.NumberInput(attrs={'placeholder': 'Defense'}))
+    def_comparator = forms.ChoiceField(required=False, choices=CONS.ATK_DEF_COMPARATOR_CHOICES)

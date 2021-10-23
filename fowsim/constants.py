@@ -417,3 +417,9 @@ DIVINITY_CHOICES = [
     (3, 3),
     (INFINITY_STRING, mark_safe('&infin;'))
 ]
+
+ATK_DEF_COMPARATOR_CHOICES = [
+    ('exact', '='),
+    ('gt', mark_safe('&gt;')),
+    ('lt', mark_safe('&lt;')),
+]

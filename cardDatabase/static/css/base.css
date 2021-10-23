@@ -170,3 +170,28 @@ input:checked + .selected-backgrounds{
     width: max-content;
     font-weight: bold;
 }
+
+.atk-def-stats div{
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.atk-inputs, .def-inputs{
+    width: calc(50% - 1px);
+}
+
+.atk-comparator select, .def-comparator select{
+    height: 30px;
+}
+
+.atk-label, .def-label{
+    padding-right: 10px;
+}
+
+.atk-comparator, .def-comparator{
+    padding-right: 10px;
+}
+
+.divinity-select, .cost-select, .select-colours{
+    border-bottom: 1px solid rgb(0 0 0 / 16%);
+}

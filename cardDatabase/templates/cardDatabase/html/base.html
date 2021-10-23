@@ -148,6 +148,33 @@
                                     </label>
                                 {% endfor %}
                             </div>
+                            <div class="atk-def-stats fieldWrapper">
+                                <div class="atk-inputs">
+                                    <div class="atk-label">
+                                        Attack
+                                    </div>
+                                    <div class="atk-comparator">
+                                        {{ advanced_form.atk_comparator }}
+                                    </div>
+                                    <div class="atk-value">
+                                        <div class="atk-value-input">
+                                            {{ advanced_form.atk_value }}
+                                        </div>
+                                    </div>
+                                </div>{% comment %} Not pretty, but need no whitespace between them for 50% width {% endcomment %}<div class="def-inputs">
+                                    <div class="def-label">
+                                        Defense
+                                    </div>
+                                    <div class="def-comparator">
+                                        {{ advanced_form.def_comparator }}
+                                    </div>
+                                    <div class="def-value">
+                                        <div class="def-value-input">
+                                            {{ advanced_form.def_value }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <input type="submit" value="Search" name="advanced-form">
                         </form>
                     </div>

@@ -1,6 +1,6 @@
 {% load static card_database_tags %}
 <div class="card">
-    <img class="card-img" src="{% static 'cards/'%}{{ card.card_id }}.jpg">
+    <img class="card-img" src="{% static 'cards/'%}{{ card.card_image_filename }}">
     <div class="card-text-info">Name: {{ card.name }}</div>
     <div class="card-text-info">ID: {{ card.card_id }}</div>
     {% if card.cost %}<div class="card-text-info">Cost: {%  format_cost_text card.cost %}</div>{% endif %}

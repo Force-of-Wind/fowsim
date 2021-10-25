@@ -316,18 +316,20 @@ TEXT_SEARCH_FIELD_CHOICES = [
 ]
 TOTAL_COST_CHOICES = listToChoices(list(range(0, 13)) + ['X'])
 
-# Valhalla and Promos. Data exists in the database so we want to exclude it from
+# Valhalla and Promos. Data exists in the database so we want to exclude it from.
+# Checks 'startswith' so codes that will clash need trailing - if possible. Good luck otherwise :)
 UNSUPPORTED_DATABASE_SETS = [
     'AO2 Buy a Box',
     'AO2 Buy a BoxJ',
     'SOUVENIR038',
     'SOUVENIR039',
     'AOA V3 Buy 2',
+    'AO1 Buy a Box',
     'AO1 Buy a BoxJ',
     'AO3 Buy a Box',
-    '1',
-    '2',
-    '3',
+    '1-',
+    '2-',
+    '3-',
     'S',
 ]
 

@@ -134,7 +134,7 @@ def search(request):
     elif request.method == 'POST':
         unsupported_sets = Q()
         for unsupported_set in CONS.UNSUPPORTED_DATABASE_SETS:
-            unsupported_sets |= Q(card_id__istartswith=unsupported_set + '-')
+            unsupported_sets |= Q(card_id__istartswith=unsupported_set)
 
         if 'basic-form' in request.POST:
             basic_form = SearchForm(request.POST)

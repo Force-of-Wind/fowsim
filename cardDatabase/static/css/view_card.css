@@ -81,3 +81,11 @@
 .card-text-info:not(:first-child){
     padding-top: 6px;
 }
+
+.ability-text .card-text-info-text{
+    display: block;
+}
+
+.ability-text .card-text-info-text:not(:first-child){
+    padding-top: 6px;
+}

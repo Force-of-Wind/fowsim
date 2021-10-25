@@ -1,8 +1,7 @@
 .card-img{
-    margin: 0 auto;
-    width: 50%;
-    max-width: 400px;
+    width: 480px;
     display: block;
+    padding-bottom: 20px;
 }
 
 .cost-img{
@@ -16,12 +15,13 @@
     padding: 0 5px;
 }
 
-.card{
+.card-container{
     padding: 20px;
+    display: block;
 }
 
 .card-img{
-    padding-bottom: 20px;
+
 }
 
 #referred-by{
@@ -48,4 +48,36 @@
     display: block;
     position: absolute;
     top: -680px;
+}
+
+.card-left-half{
+    width: max-content;
+    display: inline-block;
+}
+
+.card-right-half{
+    display: inline-block;
+    width: calc(100% - 500px);
+    position: absolute;
+    padding-left: 20px;
+}
+
+.card-right-half > div{
+    padding-bottom: 10px;
+}
+
+.card-text-info-title, .card-text-info-text{
+    display: inline-block;
+}
+
+.card-text-info-title{
+    font-weight: bold;
+}
+
+.card-text-info{
+    border-bottom: 1px solid rgb(0 0 0 / 16%);
+}
+
+.card-text-info:not(:first-child){
+    padding-top: 6px;
 }

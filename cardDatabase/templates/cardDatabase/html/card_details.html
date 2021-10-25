@@ -20,8 +20,9 @@
             {% for card_referred_by in referred_by %}
                 <div class="referred-card">
                     <a href="{% card_id_to_url card_referred_by.card_id %}">
-                        <div class="referred-link">
+                        <div class="referenced-card">
                             {{ card_referred_by.name }}
+                            <img class="hover-card-img" src="{% static 'cards/'|add:card_referred_by.card_image_filename %}">
                         </div>
                     </a>
                 </div>

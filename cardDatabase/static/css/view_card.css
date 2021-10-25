@@ -92,3 +92,7 @@
 .ability-text .card-text-info-text:not(:first-child){
     padding-top: 6px;
 }
+
+.flavour-text{
+    font-style: italic;
+}

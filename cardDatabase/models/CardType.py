@@ -75,8 +75,9 @@ class Card(AbstractModel):
     def card_image_filename(self):
         if finders.find(f'cards/{self.card_id}.jpg'):
             return self.card_id + '.jpg'
-        else:  # Try use the "front" side of a card, might be an alternative card
-            return self.card_id.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, '') + '.jpg'
+        second_attempt = self.card_id.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, '') + '.jpg'
+        if finders.find(f'cards/{second_attempt}'):  # Try use the "front" side of a card, might be an alternative card
+            return second_attempt
 
     @property
     def set_code(self):

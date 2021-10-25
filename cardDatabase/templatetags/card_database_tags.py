@@ -20,7 +20,20 @@ WILL_TYPE_TO_FILENAMES = {
     CONS.ATTRIBUTE_WIND_CODE: 'wind.png',
     CONS.ATTRIBUTE_VOID_CODE: 'void.png',
     CONS.WILL_MOON_CODE: 'moon.png,',
-    CONS.WILL_TIME_CODE: 'time.png'
+    CONS.WILL_TIME_CODE: 'time.png',
+    '0': '0.png',
+    '1': '1.png',
+    '2': '2.png',
+    '3': '3.png',
+    '4': '4.png',
+    '5': '5.png',
+    '6': '6.png',
+    '7': '7.png',
+    '8': '8.png',
+    '9': '9.png',
+    '10': '10.png',
+    '11': '11.png',
+    '12': '12.png',
 }
 
 

@@ -16,8 +16,11 @@
 }
 
 .card-container{
-    padding: 20px;
+    padding: 20px 0;
     display: block;
+    width: 85%;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .card-img{
@@ -57,9 +60,9 @@
 
 .card-right-half{
     display: inline-block;
-    width: calc(100% - 500px);
-    position: absolute;
     padding-left: 20px;
+    width: calc(100% - 500px);
+    vertical-align: top;
 }
 
 .card-right-half > div{

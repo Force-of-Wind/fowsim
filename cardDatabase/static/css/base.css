@@ -215,3 +215,7 @@ input:checked + .selected-backgrounds{
 .reverse-sort-input, .reverse-sort-label{
     display: inline-block;
 }
+
+.referred-card{
+    width: max-content;
+}

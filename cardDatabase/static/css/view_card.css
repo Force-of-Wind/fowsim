@@ -19,7 +19,7 @@
     padding: 20px 0;
     display: block;
     width: 85%;
-    max-width: 900px;
+    max-width: 965px;
     margin: 0 auto;
 }
 
@@ -61,7 +61,7 @@
 .card-right-half{
     display: inline-block;
     padding-left: 20px;
-    width: calc(100% - 500px);
+    max-width: 480px;
     vertical-align: top;
 }
 

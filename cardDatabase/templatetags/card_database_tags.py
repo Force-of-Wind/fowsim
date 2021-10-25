@@ -12,19 +12,21 @@ from cardDatabase.models.CardType import Card
 register = template.Library()
 
 
-ATTR_TO_FILENAMES = {
+WILL_TYPE_TO_FILENAMES = {
     CONS.ATTRIBUTE_FIRE_CODE: 'fire.png',
     CONS.ATTRIBUTE_DARKNESS_CODE: 'darkness.png',
     CONS.ATTRIBUTE_LIGHT_CODE: 'light.png',
     CONS.ATTRIBUTE_WATER_CODE: 'water.png',
     CONS.ATTRIBUTE_WIND_CODE: 'wind.png',
-    CONS.ATTRIBUTE_VOID_CODE: 'void.png'
+    CONS.ATTRIBUTE_VOID_CODE: 'void.png',
+    CONS.WILL_MOON_CODE: 'moon.png,',
+    CONS.WILL_TIME_CODE: 'time.png'
 }
 
 
 @register.simple_tag
 def format_cost_text(text):
-    for attr in ATTR_TO_FILENAMES:
+    for attr in WILL_TYPE_TO_FILENAMES:
         text = text.replace('{%s}' % attr, attribute_to_img_html(attr))
 
     return mark_safe(text)
@@ -37,7 +39,7 @@ def attribute_to_img_html(attr):
 
 @register.simple_tag
 def attribute_to_img_src(attr):
-    return mark_safe(static('costs/' + ATTR_TO_FILENAMES[attr]))
+    return mark_safe(static('costs/' + WILL_TYPE_TO_FILENAMES[attr]))
 
 
 def make_bubble_html(text):
@@ -127,3 +129,8 @@ def get_random_chibi(category):
 @register.filter
 def card_referenced_by(card):
     return Card.objects.filter(ability_texts__text__contains=f'"{card.name}"')
+
+
+@register.simple_tag
+def format_id_text(text):
+    return text.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, '*')

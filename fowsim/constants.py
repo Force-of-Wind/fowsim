@@ -492,7 +492,7 @@ SETS_IN_ORDER = [
     'GITS2045SD',
     'GITS2045',
     'AO3',
-    'POFA',
+    'PofA',
     'EDL',
     'MSW',
     'ROL',

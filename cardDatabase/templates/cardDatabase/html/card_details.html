@@ -64,13 +64,25 @@
                 </div>
             </div>
         {% endif %}
-        <div class="card-text-info ability-text">
-            {% for ability in card.ability_texts.all %}
-                <div class="card-text-info-text">
-                    {% format_ability_text ability.text %}
+        {% if card.divinity %}
+            <div class="card-text-info">
+                <div class="card-text-info-title">
+                    Divinity:
                 </div>
-            {% endfor %}
-        </div>
+                <div class="card-text-info-text">
+                    {{ card.divinity }}
+                </div>
+            </div>
+        {% endif %}
+        {% if card.ability_texts.all %}
+            <div class="card-text-info ability-text">
+                {% for ability in card.ability_texts.all %}
+                    <div class="card-text-info-text">
+                        {% format_ability_text ability.text %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% if card.flavour %}
             <div class="card-text-info">
                 <div class="card-text-info-title">
@@ -89,16 +101,6 @@
                 {% format_id_text  card.card_id %}
             </div>
         </div>
-        {% if card.divinity %}
-            <div class="card-text-info">
-                <div class="card-text-info-title">
-                    Divinity:
-                </div>
-                <div class="card-text-info-text">
-                    {{ card.divinity }}
-                </div>
-            </div>
-        {% endif %}
         {% if card.rarity %}
             <div class="card-text-info">
                 <div class="card-text-info-title">

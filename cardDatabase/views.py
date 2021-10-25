@@ -105,7 +105,6 @@ def get_atk_def_query(value, comparator, field_name):
 
 
 def sort_cards(cards, sort_by, is_reversed):
-    print(is_reversed)
     if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT:
         return sorted(cards, key=lambda item:
                       (CONS.SETS_IN_ORDER.index(item.card_id.split('-')[0]),  # Set first
@@ -133,7 +132,6 @@ def search(request):
         advanced_form = AdvancedSearchForm()
 
     elif request.method == 'POST':
-        print()
         unsupported_sets = Q()
         for unsupported_set in CONS.UNSUPPORTED_DATABASE_SETS:
             unsupported_sets |= Q(card_id__istartswith=unsupported_set + '-')
@@ -145,11 +143,9 @@ def search(request):
                 # Filter cards and show them
                 search_text = basic_form.cleaned_data['generic_text']
                 #TODO Sort by something useful, dont assume id
-                ctx['cards'] = Card.objects.filter(Q(name__icontains=search_text) |
-                                                   Q(name_without_punctuation__icontains=search_text) |
-                                                   Q(ability_texts__text__icontains=search_text) |
-                                                   Q(races__name__icontains=search_text)
-                ).exclude(unsupported_sets).distinct().order_by('-id')
+                text_query = get_text_query(search_text, ['name', 'name_without_punctuation', 'ability_texts__text', 'races__name'], CONS.TEXT_CONTAINS_ALL)
+                cards = Card.objects.filter(text_query).exclude(unsupported_sets).distinct()
+                ctx['cards'] = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
         elif 'advanced-form' in request.POST:
             basic_form = SearchForm()
             advanced_form = AdvancedSearchForm(request.POST)

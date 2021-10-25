@@ -112,6 +112,14 @@ def text_search_fields_is_in_data(form_values, value):
 
 
 @register.simple_tag
+def sort_by_is_in_data(form_values, value):
+    default_value = ''
+    if value in [CONS.DATABASE_SORT_BY_MOST_RECENT]:
+        default_value = 'checked'
+    return advanced_form_is_in_data(form_values, value, default_value, 'checked')
+
+
+@register.simple_tag
 def get_random_chibi(category):
     return static(f'chibis/{category}/{random.choice(CONS.CHIBI_NAMES)}.png')
 

@@ -101,7 +101,11 @@ body{
     width: 35px;
 }
 
-input[type="checkbox"][name="text_search_fields"], input[type="checkbox"].fow-checkbox, input[type="checkbox"][name="text_exactness"] {
+input[type="checkbox"][name="text_search_fields"],
+input[type="checkbox"].fow-checkbox,
+input[type="checkbox"][name="text_exactness"],
+input[type="checkbox"][name="sort_by"],
+input[type="checkbox"][name="reverse_sort"]{
     position: static;
     opacity: 1;
 }
@@ -195,7 +199,7 @@ input:checked + .selected-backgrounds{
     padding-right: 10px;
 }
 
-.divinity-select, .cost-select, .select-colours, .select-text-search-fields, .select-text-exactness, .atk-def-stats{
+.divinity-select, .cost-select, .select-colours, .select-text-search-fields, .select-text-exactness, .atk-def-stats, .select-sort-by{
     border-bottom: 1px solid rgb(0 0 0 / 16%);
     margin-bottom: 20px;
 }
@@ -206,4 +210,8 @@ input:checked + .selected-backgrounds{
 
 .select-text-exactness{
     padding-top: 10px;
+}
+
+.reverse-sort-input, .reverse-sort-label{
+    display: inline-block;
 }

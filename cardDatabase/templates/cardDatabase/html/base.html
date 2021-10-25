@@ -89,6 +89,26 @@
                                     </label>
                                 {% endfor %}
                             </div>
+                            <div class="fieldWrapper select-sort-by">
+                                <div class="sort-by-title field-title">
+                                    Sort by:
+                                </div>
+                                {% for value, display in advanced_form.sort_by.field.choices %}
+                                    <label for="id_sort_by_{{ forloop.counter0 }}">
+                                        <input type="checkbox" name="sort_by" id="id_sort_by_{{ forloop.counter0 }}"
+                                               value="{{ value }}" {% sort_by_is_in_data advanced_form_data.sort_by value %}>
+                                        {{ display }}
+                                    </label>
+                                {% endfor %}
+                                <div class="reverse-sort">
+                                    <div class="reverse-sort-input">
+                                        {{ advanced_form.reverse_sort }}
+                                    </div>
+                                    <label class="reverse-sort-label" for="id_reverse_sort">
+                                        Reverse sorting
+                                    </label>
+                                </div>
+                            </div>
                             <div class="fieldWrapper select-colours">
                                 {% for value, display in advanced_form.colours.field.choices %}
                                     <input type="checkbox" class="fow-checkbox hidden-checkbox" name="colours" id="id_colours_{{ forloop.counter0 }}"

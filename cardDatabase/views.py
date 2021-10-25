@@ -104,6 +104,28 @@ def get_atk_def_query(value, comparator, field_name):
     return Q()
 
 
+def sort_cards(cards, sort_by, is_reversed):
+    print(is_reversed)
+    if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT:
+        return sorted(cards, key=lambda item:
+                      (CONS.SETS_IN_ORDER.index(item.card_id.split('-')[0]),  # Set first
+                       item.card_id.split('-')[1]),  # Set code second
+                      reverse=not is_reversed)  # (last set comes first, flip the reversed flag
+    elif sort_by == CONS.DATABASE_SORT_BY_TOTAL_COST:
+        return sorted(cards, key=lambda item:
+                      (item.total_cost,
+                       CONS.SETS_IN_ORDER.index(item.card_id.split('-')[0]),
+                       item.card_id.split('-')[1]),
+                      reverse=is_reversed)
+    elif sort_by == CONS.DATABASE_SORT_BY_ALPHABETICAL:
+        return sorted(cards, key=lambda item:
+                      (item.name,
+                       CONS.SETS_IN_ORDER.index(item.card_id.split('-')[0]),
+                       item.card_id.split('-')[1]),
+                      reverse=is_reversed)
+    raise Exception('Attempting to sort card by no selection')
+
+
 def search(request):
     ctx = get_search_form_ctx()
     if request.method == 'GET':
@@ -111,6 +133,7 @@ def search(request):
         advanced_form = AdvancedSearchForm()
 
     elif request.method == 'POST':
+        print()
         unsupported_sets = Q()
         for unsupported_set in CONS.UNSUPPORTED_DATABASE_SETS:
             unsupported_sets |= Q(card_id__istartswith=unsupported_set + '-')
@@ -135,7 +158,6 @@ def search(request):
                 text_query = get_text_query(advanced_form.cleaned_data['generic_text'],
                                             advanced_form.cleaned_data['text_search_fields'],
                                             advanced_form.cleaned_data['text_exactness'])
-                print(text_query)
 
                 attr_query = get_attr_query(advanced_form.cleaned_data['colours'])
                 set_query = get_set_query(advanced_form.cleaned_data['sets'])
@@ -146,22 +168,20 @@ def search(request):
                                                   advanced_form.cleaned_data['atk_comparator'], 'ATK')
                 def_query = get_atk_def_query(advanced_form.cleaned_data['def_value'],
                                                       advanced_form.cleaned_data['def_comparator'], 'DEF')
-                print(atk_query)
-                print(def_query)
 
                 # TODO fix ordering
-                ctx['cards'] = (Card.objects.filter(text_query).
-                                filter(attr_query).
-                                filter(set_query).
-                                filter(card_type_query).
-                                filter(rarity_query).
-                                filter(divinity_query).
-                                filter(atk_query).
-                                filter(def_query).
-                                exclude(unsupported_sets).
-                                distinct().
-                                order_by('-id')
-                                )
+                cards = (Card.objects.filter(text_query).
+                         filter(attr_query).
+                         filter(set_query).
+                         filter(card_type_query).
+                         filter(rarity_query).
+                         filter(divinity_query).
+                         filter(atk_query).
+                         filter(def_query).
+                         exclude(unsupported_sets).
+                         distinct())
+                ctx['cards'] = sort_cards(cards, advanced_form.cleaned_data['sort_by'],
+                                          advanced_form.cleaned_data['reverse_sort'] or False)
                 cost_filters = advanced_form.cleaned_data['cost']
                 if len(cost_filters) > 0:
                     # Don't need DB query to do total cost, remove all that don't match if any were chosen

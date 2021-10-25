@@ -433,3 +433,70 @@ TEXT_EXACTNESS_OPTIONS = [
     (TEXT_CONTAINS_ALL, TEXT_CONTAINS_ALL),
     (TEXT_CONTAINS_AT_LEAST_ONE, TEXT_CONTAINS_AT_LEAST_ONE)
 ]
+
+DATABASE_SORT_BY_MOST_RECENT = 'Most Recent'
+DATABASE_SORT_BY_TOTAL_COST = 'Increasing Total Cost'
+DATABASE_SORT_BY_ALPHABETICAL = 'Alphabetically'
+DATABASE_SORT_BY_CHOICES = [
+    (DATABASE_SORT_BY_MOST_RECENT, DATABASE_SORT_BY_MOST_RECENT),
+    (DATABASE_SORT_BY_TOTAL_COST, DATABASE_SORT_BY_TOTAL_COST),
+    (DATABASE_SORT_BY_ALPHABETICAL, DATABASE_SORT_BY_ALPHABETICAL),
+]
+
+SETS_IN_ORDER = [
+    'PR',
+    'CMF',
+    'TAT',
+    'MPR',
+    'MOA',
+    'VIN001',
+    'VS01',
+    'SKL',
+    'TTW',
+    'TMS',
+    'BFA',
+    'VIN002',
+    'SDL1',
+    'SDL2',
+    'SDL3',
+    'SDL4',
+    'SDL5',
+    'CFC',
+    'LEL',
+    'VIN003',
+    'RDE',
+    'ENW',
+    'SDR1',
+    'SDR2'
+    'SDR3',
+    'SDR4',
+    'SDR5',
+    'ACN',
+    'ADK',
+    'TSW',
+    'SDR6',
+    'WOM',
+    'SDV1',
+    'SDV2',
+    'SDV3',
+    'SDV4',
+    'SDV5',
+    'NDR',
+    'SNV',
+    'AOA',
+    'DBV',
+    'SDAO1',
+    'AO1',
+    'SDAO2',
+    'AO2',
+    'GITS2045SD',
+    'GITS2045',
+    'AO3',
+    'POFA',
+    'EDL',
+    'MSW',
+    'ROL',
+    'ADW',
+    'TST',
+    'GDG'
+]

@@ -22,7 +22,7 @@
                 {% endfor %}
             </div>
         </div>
-        {% if not card.cost  == None %}
+        {% if not card.cost %}
             <div class="card-text-info">
                 <div class="card-text-info-title">
                     Cost:
@@ -76,6 +76,9 @@
         {% endif %}
         {% if card.ability_texts.all %}
             <div class="card-text-info ability-text">
+                <div class="card-text-info-title">
+                    Text:
+                </div>
                 {% for ability in card.ability_texts.all %}
                     <div class="card-text-info-text">
                         {% format_ability_text ability.text %}
@@ -88,7 +91,7 @@
                 <div class="card-text-info-title">
                     Flavour:
                 </div>
-                <div class="card-text-info-text flavour-text">
+                <div class="card-text-info-text less-important-text">
                     {{ card.flavour }}
                 </div>
             </div>
@@ -116,7 +119,7 @@
                 <div class="referred-by-title">
                     This card is referenced by:
                 </div>
-                {% for card_referred_by in referred_by %}
+                {% for card_referred_by in referred_by.distinct %}
                     <div class="referred-card">
                         <a href="{% card_id_to_url card_referred_by.card_id %}">
                             <div class="referenced-card">

@@ -12,22 +12,17 @@
                 {{ card.name }}
             </div>
         </div>
-        <div class="card-text-info ability-text">
-            {% for ability in card.ability_texts.all %}
-                <div class="card-text-info-text">
-                    {% format_ability_text ability.text %}
-                </div>
-            {% endfor %}
-        </div>
         <div class="card-text-info">
             <div class="card-text-info-title">
-                ID:
+                Type(s):
             </div>
             <div class="card-text-info-text">
-                {% format_id_text  card.card_id %}
+                {% for card_type in card.types.all %}
+                    {{ card_type.name }}{% if not forloop.last %},{% endif %}
+                {% endfor %}
             </div>
         </div>
-        {% if card.cost %}
+        {% if not card.cost  == None %}
             <div class="card-text-info">
                 <div class="card-text-info-title">
                     Cost:
@@ -37,16 +32,45 @@
                 </div>
             </div>
         {% endif %}
-        {% if card.divinity %}
+        {% if card.races %}
             <div class="card-text-info">
                 <div class="card-text-info-title">
-                    Divinity:
+                    Race/Trait(s):
                 </div>
                 <div class="card-text-info-text">
-                    {{ card.divinity }}
+                    {% for race in card.races.all %}
+                        {{ race.name }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
                 </div>
             </div>
         {% endif %}
+        {% if not card.ATK == None %}
+            <div class="card-text-info">
+                <div class="card-text-info-title">
+                    ATK:
+                </div>
+                <div class="card-text-info-text">
+                    {{ card.ATK }}
+                </div>
+            </div>
+        {% endif %}
+        {% if not card.DEF == None %}
+            <div class="card-text-info">
+                <div class="card-text-info-title">
+                    DEF:
+                </div>
+                <div class="card-text-info-text">
+                    {{ card.DEF }}
+                </div>
+            </div>
+        {% endif %}
+        <div class="card-text-info ability-text">
+            {% for ability in card.ability_texts.all %}
+                <div class="card-text-info-text">
+                    {% format_ability_text ability.text %}
+                </div>
+            {% endfor %}
+        </div>
         {% if card.flavour %}
             <div class="card-text-info">
                 <div class="card-text-info-title">
@@ -57,6 +81,24 @@
                 </div>
             </div>
         {% endif %}
+        <div class="card-text-info">
+            <div class="card-text-info-title">
+                ID:
+            </div>
+            <div class="card-text-info-text">
+                {% format_id_text  card.card_id %}
+            </div>
+        </div>
+        {% if card.divinity %}
+            <div class="card-text-info">
+                <div class="card-text-info-title">
+                    Divinity:
+                </div>
+                <div class="card-text-info-text">
+                    {{ card.divinity }}
+                </div>
+            </div>
+        {% endif %}
         {% if card.rarity %}
             <div class="card-text-info">
                 <div class="card-text-info-title">
@@ -64,26 +106,6 @@
                 </div>
                 <div class="card-text-info-text">
                     {{ card.rarity }}
-                </div>
-            </div>
-        {% endif %}
-        {% if card.ATK %}
-            <div class="card-text-info">
-                <div class="card-text-info-title">
-                    ATK:
-                </div>
-                <div class="card-text-info-text">
-                    {{ card.ATK }}
-                </div>
-            </div>
-        {% endif %}
-        {% if card.DEF %}
-            <div class="card-text-info">
-                <div class="card-text-info-title">
-                    DEF:
-                </div>
-                <div class="card-text-info-text">
-                    {{ card.DEF }}
                 </div>
             </div>
         {% endif %}

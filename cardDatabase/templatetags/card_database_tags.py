@@ -92,7 +92,10 @@ def add_card_reference_links(ability_text):
     matches = re.findall(r'"[^\"\"]+"', ability_text)
     for match in matches:
         try:
-            card = Card.objects.get(name=match[1:-1])  # Trim apostrophes
+            try:
+                card = Card.objects.get(name=match[1:-1])
+            except Card.MultipleObjectsReturned:
+                card = Card.objects.filter(name=match[1:-1]).first()
             card_url = card_id_to_url(card.card_id)
             card_img_url = static('cards/' + card.card_image_filename)
             ability_text = ability_text.replace(match, f'"<a class="referenced-card" href="{card_url}">{card.name}<img class="hover-card-img" src="{card_img_url}"/></a>"')

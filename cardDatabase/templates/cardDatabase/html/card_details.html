@@ -22,7 +22,7 @@
                 {% endfor %}
             </div>
         </div>
-        {% if not card.cost %}
+        {% if not card.cost == None %}
             <div class="card-text-info">
                 <div class="card-text-info-title">
                     Cost:
@@ -64,7 +64,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if card.divinity %}
+        {% if not card.divinity == None %}
             <div class="card-text-info">
                 <div class="card-text-info-title">
                     Divinity:
@@ -86,7 +86,7 @@
                 {% endfor %}
             </div>
         {% endif %}
-        {% if card.flavour %}
+        {% if not card.flavour == None %}
             <div class="card-text-info">
                 <div class="card-text-info-title">
                     Flavour:

@@ -32,7 +32,13 @@ def get_card_type_query(data):
 
 def get_set_query(data):
     set_query = Q()
+    print(data)
     for fow_set in data:
+        if fow_set in CONS.SEARCH_SETS_INCLUDE:
+            #  Search implies more than just itself, e.g. AO3 includes AO3 Buy a Box, so that those sets too
+            for also_included_set in CONS.SEARCH_SETS_INCLUDE[fow_set]:
+                # No trailing '-' because the '-' is included in CONS
+                set_query |= Q(card_id__istartswith=also_included_set)
         set_query |= Q(card_id__istartswith=fow_set + '-')
     return set_query
 
@@ -133,7 +139,7 @@ def search(request):
 
     elif request.method == 'POST':
         unsupported_sets = Q()
-        for unsupported_set in CONS.UNSUPPORTED_DATABASE_SETS:
+        for unsupported_set in CONS.UNSEARCHED_DATABASE_SETS:
             unsupported_sets |= Q(card_id__istartswith=unsupported_set)
 
         if 'basic-form' in request.POST:

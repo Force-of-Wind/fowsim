@@ -56,6 +56,9 @@ class Command(BaseCommand):
                 for fow_set in sets:
                     cards = fow_set['cards']
                     for card in cards:
+                        for unused_set in CONS.UNSEARCHED_DATABASE_SETS:  # Mostly just old Valhalla
+                            if card['id'].startswith(unused_set):
+                                continue
                         card_types = []
 
                         for card_type in card['type'].split(' / '):

@@ -318,15 +318,9 @@ TOTAL_COST_CHOICES = listToChoices(list(range(0, 13)) + ['X'])
 
 # Valhalla and Promos. Data exists in the database so we want to exclude it from.
 # Checks 'startswith' so codes that will clash need trailing - if possible. Good luck otherwise :)
-UNSUPPORTED_DATABASE_SETS = [
-    'AO2 Buy a Box',
-    'AO2 Buy a BoxJ',
+UNSEARCHED_DATABASE_SETS = [
     'SOUVENIR038',
     'SOUVENIR039',
-    'AOA V3 Buy 2',
-    'AO1 Buy a Box',
-    'AO1 Buy a BoxJ',
-    'AO3 Buy a Box',
     '1-',
     '2-',
     '3-',
@@ -490,12 +484,16 @@ SETS_IN_ORDER = [
     'AOA',
     'DBV',
     'SDAO1',
+    'AO1 Buy a Box',
     'AO1',
     'SDAO2',
+    'AO2 Buy a Box',
     'AO2',
     'GITS2045SD',
     'GITS2045',
+    'AO3 Buy a Box',
     'AO3',
+    'AO4 Buy a Box',
     'PofA',
     'EDL',
     'MSW',
@@ -504,3 +502,21 @@ SETS_IN_ORDER = [
     'TST',
     'GDG',
 ]
+
+SEARCH_SETS_INCLUDE = {
+    'AOA': [
+        'AOA V3 Buy 2'
+    ],
+    'AO1': [
+        'AO1 Buy a Box'
+        ],
+    'AO2': [
+        'AO2 Buy a Box'
+    ],
+    'AO3': [
+        'AO3 Buy a Box'
+    ],
+    'POFA': [
+        'AO4 Buy a Box'
+    ]
+}

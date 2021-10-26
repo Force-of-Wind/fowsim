@@ -140,9 +140,7 @@ def search(request):
             basic_form = SearchForm(request.POST)
             advanced_form = AdvancedSearchForm()
             if basic_form.is_valid():
-                # Filter cards and show them
                 search_text = basic_form.cleaned_data['generic_text']
-                #TODO Sort by something useful, dont assume id
                 text_query = get_text_query(search_text, ['name', 'name_without_punctuation', 'ability_texts__text', 'races__name'], CONS.TEXT_CONTAINS_ALL)
                 cards = Card.objects.filter(text_query).exclude(unsupported_sets).distinct()
                 ctx['cards'] = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
@@ -165,7 +163,6 @@ def search(request):
                 def_query = get_atk_def_query(advanced_form.cleaned_data['def_value'],
                                                       advanced_form.cleaned_data['def_comparator'], 'DEF')
 
-                # TODO fix ordering
                 cards = (Card.objects.filter(text_query).
                          filter(attr_query).
                          filter(set_query).
@@ -181,7 +178,6 @@ def search(request):
                 cost_filters = advanced_form.cleaned_data['cost']
                 if len(cost_filters) > 0:
                     # Don't need DB query to do total cost, remove all that don't match if any were chosen
-                    # TODO
                     if 'X' in cost_filters:
                         ctx['cards'] = [x for x in ctx['cards']
                                         if str(x.total_cost) in cost_filters

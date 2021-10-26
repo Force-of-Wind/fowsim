@@ -32,20 +32,16 @@ python -c 'from django.core.management.utils import get_random_secret_key; print
 7. Import card data to the database:
 `python manage.py importjson`
 
-8. Download card images (may take a little while and can be done while doing other things).
-    - Create a directory in `cardDatabase/static` called "cards"
-    - Execute `python manage.py downloadCardImages`
-
-9. Setup a redis queue (This might not be necessary if you aren't working on the game sim parts yet, so can try skip this). If you do, add the port and address for the redis queue to your .env file:
+8. Setup a redis queue (This might not be necessary if you aren't working on the game sim parts yet, so can try skip this). If you do, add the port and address for the redis queue to your .env file:
 ```
 REDIS_HOST=
 REDIS_PORT=
 ```
 
-10. create your own user:
+9. create your own user:
 `python manage.py createsuperuser`
 
-11. run the server:
+10. run the server:
 `python manage.py runserver`
 
 You can now access all the pages at localhost e.g. http://127.0.0.1:8000/search/

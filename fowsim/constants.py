@@ -471,7 +471,7 @@ SETS_IN_ORDER = [
     'RDE',
     'ENW',
     'SDR1',
-    'SDR2'
+    'SDR2',
     'SDR3',
     'SDR4',
     'SDR5',
@@ -502,5 +502,5 @@ SETS_IN_ORDER = [
     'ROL',
     'ADW',
     'TST',
-    'GDG'
+    'GDG',
 ]

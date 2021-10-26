@@ -330,7 +330,7 @@ UNSUPPORTED_DATABASE_SETS = [
     '1-',
     '2-',
     '3-',
-    'S',
+    'S-',
 ]
 
 DATABASE_CARD_TYPE_GROUPS = [

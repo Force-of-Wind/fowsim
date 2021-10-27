@@ -133,15 +133,85 @@ def sort_cards(cards, sort_by, is_reversed):
 
 def search(request):
     ctx = get_search_form_ctx()
+    cards = None
+    if request.METHOD == 'GET':
+        basic_form = SearchForm()
+        advanced_form = AdvancedSearchForm()
+
+    elif request.method == 'POST':
+        if 'basic-form' in request.POST:
+            basic_form = SearchForm(request.POST)
+
+    return render(request, 'cardDatabase/html/search.html', context={})
+
+
+def get_unsupported_sets_query():
+    unsupported_sets = Q()
+    for unsupported_set in CONS.UNSEARCHED_DATABASE_SETS:
+        unsupported_sets |= Q(card_id__istartswith=unsupported_set)
+
+    return unsupported_sets
+
+
+def basic_search(basic_form):
+    cards = None
+    if basic_form.is_valid():
+        search_text = basic_form.cleaned_data['generic_text']
+        text_query = get_text_query(search_text, ['name', 'name_without_punctuation', 'ability_texts__text', 'races__name'], CONS.TEXT_CONTAINS_ALL)
+        cards = Card.objects.filter(text_query).exclude(get_unsupported_sets_query()).distinct()
+        cards = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
+    return {'cards': cards}
+
+
+def advanced_search(advanced_form):
+    ctx = {}
+    if advanced_form.is_valid():
+        ctx['advanced_form_data'] = advanced_form.cleaned_data
+        text_query = get_text_query(advanced_form.cleaned_data['generic_text'],
+                                    advanced_form.cleaned_data['text_search_fields'],
+                                    advanced_form.cleaned_data['text_exactness'])
+
+        attr_query = get_attr_query(advanced_form.cleaned_data['colours'])
+        set_query = get_set_query(advanced_form.cleaned_data['sets'])
+        card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
+        rarity_query = get_rarity_query(advanced_form.cleaned_data['rarity'])
+        divinity_query = get_divinity_query(advanced_form.cleaned_data['divinity'])
+        atk_query = get_atk_def_query(advanced_form.cleaned_data['atk_value'],
+                                      advanced_form.cleaned_data['atk_comparator'], 'ATK')
+        def_query = get_atk_def_query(advanced_form.cleaned_data['def_value'],
+                                      advanced_form.cleaned_data['def_comparator'], 'DEF')
+
+        cards = (Card.objects.filter(text_query).
+                 filter(attr_query).
+                 filter(set_query).
+                 filter(card_type_query).
+                 filter(rarity_query).
+                 filter(divinity_query).
+                 filter(atk_query).
+                 filter(def_query).
+                 exclude(get_unsupported_sets_query()).
+                 distinct())
+        cards = sort_cards(cards, advanced_form.cleaned_data['sort_by'],
+                           advanced_form.cleaned_data['reverse_sort'] or False)
+        cost_filters = advanced_form.cleaned_data['cost']
+        if len(cost_filters) > 0:
+            # Don't need DB query to do total cost, remove all that don't match if any were chosen
+            if 'X' in cost_filters:
+                cards = [x for x in cards
+                         if str(x.total_cost) in cost_filters
+                         or '{X}' in x.cost]
+            else:
+                cards = [x for x in cards if str(x.total_cost) in cost_filters]
+    return ctx | {'cards': cards}
+
+
+def search_for_cards(request):
+    ctx = get_search_form_ctx()
     if request.method == 'GET':
         basic_form = SearchForm()
         advanced_form = AdvancedSearchForm()
 
     elif request.method == 'POST':
-        unsupported_sets = Q()
-        for unsupported_set in CONS.UNSEARCHED_DATABASE_SETS:
-            unsupported_sets |= Q(card_id__istartswith=unsupported_set)
-
         if 'basic-form' in request.POST:
             basic_form = SearchForm(request.POST)
             advanced_form = AdvancedSearchForm()

@@ -113,20 +113,20 @@ def get_atk_def_query(value, comparator, field_name):
 def sort_cards(cards, sort_by, is_reversed):
     if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT:
         return sorted(cards, key=lambda item:
-                      (CONS.SETS_IN_ORDER.index(item.card_id.split('-')[0]),  # Set first
-                       item.card_id.split('-')[1]),  # Set code second
+                      (CONS.SETS_IN_ORDER.index(item.set_code),
+                       item.set_number),
                       reverse=not is_reversed)  # (last set comes first, flip the reversed flag
     elif sort_by == CONS.DATABASE_SORT_BY_TOTAL_COST:
         return sorted(cards, key=lambda item:
                       (item.total_cost,
-                       CONS.SETS_IN_ORDER.index(item.card_id.split('-')[0]),
-                       item.card_id.split('-')[1]),
+                       CONS.SETS_IN_ORDER.index(item.set_code),
+                       item.set_number),
                       reverse=is_reversed)
     elif sort_by == CONS.DATABASE_SORT_BY_ALPHABETICAL:
         return sorted(cards, key=lambda item:
                       (item.name,
-                       CONS.SETS_IN_ORDER.index(item.card_id.split('-')[0]),
-                       item.card_id.split('-')[1]),
+                       CONS.SETS_IN_ORDER.index(item.set_code),
+                       item.set_number),
                       reverse=is_reversed)
     raise Exception('Attempting to sort card by no selection')
 

@@ -84,6 +84,13 @@ class Card(AbstractModel):
         return self.card_id.split('-')[0]
 
     @property
+    def set_number(self):
+        splits = self.card_id.split('-')
+        if len(splits) > 1:
+            return splits[1]
+        return None
+
+    @property
     def total_cost(self):
         total = 0
         matches = re.findall('{[a-zA-Z0-9]*}', self.cost)

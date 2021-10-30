@@ -131,20 +131,6 @@ def sort_cards(cards, sort_by, is_reversed):
     raise Exception('Attempting to sort card by no selection')
 
 
-def search(request):
-    ctx = get_search_form_ctx()
-    cards = None
-    if request.METHOD == 'GET':
-        basic_form = SearchForm()
-        advanced_form = AdvancedSearchForm()
-
-    elif request.method == 'POST':
-        if 'basic-form' in request.POST:
-            basic_form = SearchForm(request.POST)
-
-    return render(request, 'cardDatabase/html/search.html', context={})
-
-
 def get_unsupported_sets_query():
     unsupported_sets = Q()
     for unsupported_set in CONS.UNSEARCHED_DATABASE_SETS:
@@ -207,11 +193,10 @@ def advanced_search(advanced_form):
 
 def search_for_cards(request):
     ctx = get_search_form_ctx()
-    if request.method == 'GET':
-        basic_form = SearchForm()
-        advanced_form = AdvancedSearchForm()
+    basic_form = None
+    advanced_form = None
 
-    elif request.method == 'POST':
+    if request.method == 'POST':
         if 'basic-form' in request.POST:
             basic_form = SearchForm(request.POST)
             advanced_form = AdvancedSearchForm()
@@ -221,7 +206,6 @@ def search_for_cards(request):
                 cards = Card.objects.filter(text_query).exclude(unsupported_sets).distinct()
                 ctx['cards'] = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
         elif 'advanced-form' in request.POST:
-            basic_form = SearchForm()
             advanced_form = AdvancedSearchForm(request.POST)
             if advanced_form.is_valid():
                 ctx['advanced_form_data'] = advanced_form.cleaned_data
@@ -261,8 +245,8 @@ def search_for_cards(request):
                     else:
                         ctx['cards'] = [x for x in ctx['cards'] if str(x.total_cost) in cost_filters]
 
-    ctx['basic_form'] = basic_form
-    ctx['advanced_form'] = advanced_form
+    ctx['basic_form'] = basic_form or SearchForm()
+    ctx['advanced_form'] = advanced_form or AdvancedSearchForm()
     return render(request, 'cardDatabase/html/search.html', context=ctx)
 
 

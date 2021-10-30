@@ -442,7 +442,8 @@ DATABASE_SORT_BY_CHOICES = [
 ]
 
 SETS_IN_ORDER = [
-    'PR',
+    'PR',  # Promos
+    'BSR',  # Basic Rulers
     'CMF',
     'TAT',
     'MPR',

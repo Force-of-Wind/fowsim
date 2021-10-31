@@ -487,6 +487,7 @@ SETS_IN_ORDER = [
     'DBV',
     'SDAO1',
     'AO1 Buy a Box',
+    'AO1 Buy a BoxJ',
     'AO1',
     'SDAO2',
     'AO2 Buy a Box',

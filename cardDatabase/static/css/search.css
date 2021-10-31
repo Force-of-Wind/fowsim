@@ -34,3 +34,31 @@
     margin: 0 auto;
     padding-top: 30px;
 }
+
+#other-pages{
+    padding: 25px 0 40px 0;
+    width: max-content;
+    margin: 0 auto;
+    line-height: 2.5;
+}
+
+#other-pages .pagination-page{
+    padding: 0 7px;
+}
+
+#other-pages .current-page{
+    background: #dc0800;
+    color: white;
+    border-radius: 5px;
+}
+
+#other-pages a, #other-pages > div{
+    width: 40px;
+    text-align: center;
+    background-color: #ededed;
+}
+
+#other-pages a:hover:not(.active){
+    background-color: #ddd;
+    border-radius: 5px;
+}

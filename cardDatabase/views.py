@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.forms.fields import MultipleChoiceField
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 
 from .forms import SearchForm, AdvancedSearchForm
 from .models.CardType import Card
@@ -222,6 +223,12 @@ def search_for_cards(request):
 
     ctx['basic_form'] = basic_form or SearchForm()
     ctx['advanced_form'] = advanced_form or AdvancedSearchForm()
+    if 'cards' in ctx:
+        paginator = Paginator(ctx['cards'], request.GET.get('num_per_page', 30))
+        page_number = request.GET.get('page', 1)
+        ctx['page_range'] = paginator.get_elided_page_range(number=page_number)
+        ctx['total_count'] = len(ctx['cards'])
+        ctx['cards'] = paginator.get_page(page_number)
     return render(request, 'cardDatabase/html/search.html', context=ctx)
 
 

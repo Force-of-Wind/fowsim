@@ -46,4 +46,12 @@ $(function(){
     $('.referenced-card').mouseout(function(event){
         $(this).find('img').removeClass('show-hover');
     });
+
+    $('form').on('submit', function(event){
+        event.preventDefault();
+        let formData = new FormData(this);
+        let params = new URLSearchParams(formData);
+        params.append('form_type', this.id);
+        window.location.replace(window.location.pathname + '?' + params.toString());
+    })
 });

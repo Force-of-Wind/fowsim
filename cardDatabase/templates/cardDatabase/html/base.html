@@ -47,14 +47,12 @@
                     </div>
                     <div id="basic-search">
                         <form id="basic-form" method="post" action="{% url 'cardDatabase-search' %}">
-                            {% csrf_token %}
                             {{ basic_form }}
                             <input type="submit" value="Search" name="basic-form">
                         </form>
                     </div>
                     <div id="advanced-search">
                         <form id="advanced-form" method="post" action="{% url 'cardDatabase-search' %}">
-                            {% csrf_token %}
                             {{ advanced_form.non_field_errors }}
                             <div class="fieldWrapper">
                                 {{ advanced_form.generic_text }}

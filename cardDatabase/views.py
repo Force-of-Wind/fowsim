@@ -32,7 +32,6 @@ def get_card_type_query(data):
 
 def get_set_query(data):
     set_query = Q()
-    print(data)
     for fow_set in data:
         if fow_set in CONS.SEARCH_SETS_INCLUDE:
             #  Search implies more than just itself, e.g. AO3 includes AO3 Buy a Box, so that those sets too
@@ -151,6 +150,7 @@ def basic_search(basic_form):
 
 def advanced_search(advanced_form):
     ctx = {}
+    cards = None
     if advanced_form.is_valid():
         ctx['advanced_form_data'] = advanced_form.cleaned_data
         text_query = get_text_query(advanced_form.cleaned_data['generic_text'],
@@ -191,59 +191,32 @@ def advanced_search(advanced_form):
     return ctx | {'cards': cards}
 
 
+def get_form_from_params(form_class, request):
+    # Grab what query params from request.GET match the expected form values and put them into the dictionary input_data
+    # Then instantiate the form using those values
+    input_data = {}
+    for form_field_name in form_class.__dict__['declared_fields']:
+        if type(form_class.__dict__['declared_fields'][form_field_name]) == MultipleChoiceField:
+            query_param_value = request.GET.getlist(form_field_name, None)
+        else:
+            query_param_value = request.GET.get(form_field_name, None)
+        if query_param_value:
+            input_data[form_field_name] = query_param_value
+    return form_class(input_data)
+
+
+@csrf_exempt
 def search_for_cards(request):
     ctx = get_search_form_ctx()
     basic_form = None
     advanced_form = None
-
-    if request.method == 'POST':
-        if 'basic-form' in request.POST:
-            basic_form = SearchForm(request.POST)
-            advanced_form = AdvancedSearchForm()
-            if basic_form.is_valid():
-                search_text = basic_form.cleaned_data['generic_text']
-                text_query = get_text_query(search_text, ['name', 'name_without_punctuation', 'ability_texts__text', 'races__name'], CONS.TEXT_CONTAINS_ALL)
-                cards = Card.objects.filter(text_query).exclude(unsupported_sets).distinct()
-                ctx['cards'] = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
-        elif 'advanced-form' in request.POST:
-            advanced_form = AdvancedSearchForm(request.POST)
-            if advanced_form.is_valid():
-                ctx['advanced_form_data'] = advanced_form.cleaned_data
-                text_query = get_text_query(advanced_form.cleaned_data['generic_text'],
-                                            advanced_form.cleaned_data['text_search_fields'],
-                                            advanced_form.cleaned_data['text_exactness'])
-
-                attr_query = get_attr_query(advanced_form.cleaned_data['colours'])
-                set_query = get_set_query(advanced_form.cleaned_data['sets'])
-                card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
-                rarity_query = get_rarity_query(advanced_form.cleaned_data['rarity'])
-                divinity_query = get_divinity_query(advanced_form.cleaned_data['divinity'])
-                atk_query = get_atk_def_query(advanced_form.cleaned_data['atk_value'],
-                                                  advanced_form.cleaned_data['atk_comparator'], 'ATK')
-                def_query = get_atk_def_query(advanced_form.cleaned_data['def_value'],
-                                                      advanced_form.cleaned_data['def_comparator'], 'DEF')
-
-                cards = (Card.objects.filter(text_query).
-                         filter(attr_query).
-                         filter(set_query).
-                         filter(card_type_query).
-                         filter(rarity_query).
-                         filter(divinity_query).
-                         filter(atk_query).
-                         filter(def_query).
-                         exclude(unsupported_sets).
-                         distinct())
-                ctx['cards'] = sort_cards(cards, advanced_form.cleaned_data['sort_by'],
-                                          advanced_form.cleaned_data['reverse_sort'] or False)
-                cost_filters = advanced_form.cleaned_data['cost']
-                if len(cost_filters) > 0:
-                    # Don't need DB query to do total cost, remove all that don't match if any were chosen
-                    if 'X' in cost_filters:
-                        ctx['cards'] = [x for x in ctx['cards']
-                                        if str(x.total_cost) in cost_filters
-                                        or '{X}' in x.cost]
-                    else:
-                        ctx['cards'] = [x for x in ctx['cards'] if str(x.total_cost) in cost_filters]
+    form_type = request.GET.get('form_type', None)
+    if form_type == 'basic-form':
+        basic_form = get_form_from_params(SearchForm, request)
+        ctx = ctx | basic_search(basic_form)
+    elif form_type == 'advanced-form':
+        advanced_form = get_form_from_params(AdvancedSearchForm, request)
+        ctx = ctx | advanced_search(advanced_form)
 
     ctx['basic_form'] = basic_form or SearchForm()
     ctx['advanced_form'] = advanced_form or AdvancedSearchForm()

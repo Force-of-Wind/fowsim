@@ -52,6 +52,6 @@ $(function(){
         let formData = new FormData(this);
         let params = new URLSearchParams(formData);
         params.append('form_type', this.id);
-        window.location.replace(window.location.pathname + '?' + params.toString());
+        window.location.replace('/search/' + '?' + params.toString());
     })
 });

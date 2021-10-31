@@ -3,6 +3,8 @@ import json
 
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
+from django.forms.fields import MultipleChoiceField
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import SearchForm, AdvancedSearchForm
 from .models.CardType import Card

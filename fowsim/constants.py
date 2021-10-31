@@ -482,6 +482,7 @@ SETS_IN_ORDER = [
     'SDV5',
     'NDR',
     'SNV',
+    'AOA V3 Buy 2',
     'AOA',
     'DBV',
     'SDAO1',

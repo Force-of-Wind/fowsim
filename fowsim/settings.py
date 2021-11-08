@@ -24,10 +24,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+# SECURITY WARNING: don't run with debug turned on in production!
+if os.environ.get('PRODUCTION'):
+    print('Running in PRODUCTION mode...')
+    DEBUG = False
+else:
+    print('Running in DEBUG mode...')
+    DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+AWS_STORAGE_BUCKET_NAME = 'fowsim'
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+AWS_DEFAULT_ACL = None
+
+MEDIAFILES_LOCATION = 'media'
+STATICFILES_LOCATION = 'static'
+
+if os.environ.get('PRODUCTION'):
+    DEFAULT_FILE_STORAGE = 'fowsim.custom_storages.MediaStorage'
+    STATICFILES_STORAGE = 'fowsim.custom_storages.StaticStorage'
 
 # Application definition
 
@@ -126,6 +147,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -137,12 +160,6 @@ ADMIN_SITE_TITLE = 'FoW Simulator Admin'
 ADMIN_INDEX_TITLE = 'Welcome to the FoW Simulator Admin'
 
 ASGI_APPLICATION = 'fowsim.asgi.application'
-
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    BASE_DIR / "cardDatabase/static",
-    BASE_DIR / "game/static",
-]
 
 CHANNEL_LAYERS = {
     'default': {

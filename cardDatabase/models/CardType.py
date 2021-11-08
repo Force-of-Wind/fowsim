@@ -1,16 +1,20 @@
 import os
 import re
+import sys
 
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.staticfiles import finders
 from django.db.models import Q
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from cardDatabase.models.Effects import Effect
 from fowsim.utils import listToChoices, AbstractModel
 from fowsim import constants as CONS
 
+from io import BytesIO
+from PIL import Image
 
 class Cluster(models.Model):
     class Meta:
@@ -50,6 +54,7 @@ class Card(AbstractModel):
     name = models.CharField(max_length=200, null=False, blank=False)
     name_without_punctuation = models.CharField(max_length=200, null=False, blank=False)
     card_id = models.CharField(max_length=200, null=False, blank=False)
+    card_image = models.ImageField(default=None, blank=True, null=True, upload_to='cards')
     cost = models.CharField(max_length=200, null=True, blank=True)
     divinity = models.CharField(max_length=200, null=True, blank=True)
     flavour = models.TextField(null=True, blank=True)
@@ -62,6 +67,23 @@ class Card(AbstractModel):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.card_image:
+            size = 480, 670
+            im = Image.open(self.card_image)
+            if im.mode == "RGBA":
+                new_image = Image.new("RGBA", im.size, "WHITE")
+                new_image.paste(im, (0, 0), im)
+                im = new_image
+                im = im.convert("RGB")
+            im = im.resize(size, Image.ANTIALIAS)
+            im_io = BytesIO()
+            im.save(im_io, 'JPEG', quality=70)
+            
+            self.card_image = InMemoryUploadedFile(im_io,'ImageField', "%s.jpg" % self.card_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(im_io), None)
+
+        super(Card, self).save(*args, **kwargs)
 
     @classmethod
     def get_cls(cls):

@@ -1,7 +1,11 @@
 {% load static card_database_tags %}
 <div class="card-container">
     <div class="card-left-half">
-        <img class="card-img" src="{{ card.card_image.url }}">
+        {% if card.card_image %}
+            <img class="card-img" src="{{ card.card_image.url }}">
+        {% else %}
+            Image Missing
+        {% endif %}
     </div>
     <div class="card-right-half">
         <div class="card-text-info">
@@ -123,8 +127,12 @@
                     <div class="referred-card">
                         <a href="{% card_id_to_url card_referred_by.card_id %}">
                             <div class="referenced-card">
-                                {{ card_referred_by.name }}
-                                <img class="hover-card-img" src="{{ card_referred_by.card_image.url }}">
+                                {{ card_referred_by.name }}                                
+                                {% if card_referred_by.card_image %}
+                                    <img class="hover-card-img" src="{{ card_referred_by.card_image.url }}">
+                                {% else %}
+                                    Image Missing
+                                {% endif %}                                
                             </div>
                         </a>
                     </div>

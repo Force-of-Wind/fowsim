@@ -18,7 +18,11 @@
             {% for card in cards %}
                 <div class="card">
                     <a href="{% url 'cardDatabase-view-card' card.card_id %}">
-                        <img class="card-img" src="{{ card.card_image.url }}">
+                        {% if card.card_image %}
+                            <img class="card-img" src="{{ card.card_image.url }}">
+                        {% else %}
+                            Image Missing
+                        {% endif %}
                     </a>
                 </div>
             {% endfor %}

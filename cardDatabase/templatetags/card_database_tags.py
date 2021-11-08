@@ -52,7 +52,7 @@ def attribute_to_img_html(attr):
 
 @register.simple_tag
 def attribute_to_img_src(attr):
-    return mark_safe(static('costs/' + WILL_TYPE_TO_FILENAMES[attr]))
+    return mark_safe(static('img/costs/' + WILL_TYPE_TO_FILENAMES[attr]))
 
 
 def make_bubble_html(text):
@@ -69,7 +69,7 @@ def make_bubbles(text):
 
 
 def add_rest_icon(text):
-    rest_url = static('imgs/rest.png')
+    rest_url = static('img/rest.png')
     return text.replace('{Rest}', f'<img class="ability-rest-icon" src="{rest_url}"> ')
 
 
@@ -140,7 +140,7 @@ def sort_by_is_in_data(form_values, value):
 
 @register.simple_tag
 def get_random_chibi(category):
-    return static(f'chibis/{category}/{random.choice(CONS.CHIBI_NAMES)}.png')
+    return static(f'img/chibis/{category}/{random.choice(CONS.CHIBI_NAMES)}.png')
 
 
 @register.filter

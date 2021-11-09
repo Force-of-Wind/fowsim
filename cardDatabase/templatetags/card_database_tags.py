@@ -63,7 +63,8 @@ def make_bubble_html(text):
 def make_bubbles(text):
     matches = re.findall('\[[^\]]*\]', text)
     for match in matches:
-        if '+' not in text:  # Skip [+X/+Y]
+        print(match)
+        if '/' not in match:  # Skip any ATK/DEF
             text = text.replace(match, make_bubble_html(match))
     return text
 
@@ -97,9 +98,7 @@ def add_card_reference_links(ability_text):
             except Card.MultipleObjectsReturned:
                 card = Card.objects.filter(name=match[1:-1]).first()
             card_url = card_id_to_url(card.card_id)
-            if card.card_image_filename:
-                card_img_url = static('cards/' + card.card_image_filename)
-                ability_text = ability_text.replace(match, f'"<a class="referenced-card" href="{card_url}">{card.name}<img class="hover-card-img" src="{card_img_url}"/></a>"')
+            ability_text = ability_text.replace(match, f'"<a class="referenced-card" href="{card_url}">{card.name}<img class="hover-card-img" src="{card.card_image.url}"/></a>"')
         except Card.DoesNotExist:
             pass
     return ability_text

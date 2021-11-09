@@ -63,7 +63,6 @@ def make_bubble_html(text):
 def make_bubbles(text):
     matches = re.findall('\[[^\]]*\]', text)
     for match in matches:
-        print(match)
         if '/' not in match:  # Skip any ATK/DEF
             text = text.replace(match, make_bubble_html(match))
     return text

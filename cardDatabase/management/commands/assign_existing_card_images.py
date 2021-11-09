@@ -13,7 +13,7 @@ class Command(BaseCommand):
             try:
                 print(f'Trying to add image for {card.card_id}... ', end='')
                 card.card_image = os.path.join('cards', f'{card.card_id}.jpg')
-                card.save()
+                card.save(use_resize=False)
                 print('Success!')
             except:
                 print('Failed, image doesn\'t exist?')

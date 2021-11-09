@@ -68,8 +68,8 @@ class Card(AbstractModel):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        if self.card_image:
+    def save(self, use_resize=True, *args, **kwargs):
+        if self.card_image and use_resize:
             size = 480, 670
             im = Image.open(self.card_image)
             if im.mode == "RGBA":

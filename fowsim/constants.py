@@ -499,6 +499,7 @@ SETS_IN_ORDER = [
     'AO3',
     'AO4 Buy a Box',
     'PofA',
+    'PofAMS',
     'EDL',
     'MSW',
     'ROL',

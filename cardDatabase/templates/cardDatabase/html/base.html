@@ -6,6 +6,7 @@
             {% block head %}
                 <meta charset="UTF-8">
                 <title>{% block title %}Force of Wind{% block subtitle %} - Database{% endblock %}{% endblock %}</title>
+                {% block favicon %}<link rel="shortcut icon" type="image/png" href="{% static 'img/wind.png' %}"/>{% endblock %}
                 {% block js %}
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
                             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -32,12 +33,12 @@
                     <div class="header-content">
                         <a href="{% url 'cardDatabase-search' %}">
                             <div id="site-title">{% block header-title %}Force of Wind{% endblock %}</div>
-                            <img id="site-icon" src="{% static 'imgs/wind.png'%}">
+                            <img id="site-icon" src="{% static 'img/wind.png'%}">
                         </a>
                     </div>
                     <div id="social-media">
                         <a href="https://discord.com/invite/8S5XW6pUEF" target="_blank">
-                            <img class="discord" src="{% static 'imgs/discord.png' %}">
+                            <img class="discord" src="{% static 'img/discord.png' %}">
                         </a>
                     </div>
                 </div>

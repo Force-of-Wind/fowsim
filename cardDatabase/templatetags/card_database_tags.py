@@ -1,3 +1,5 @@
+import ast
+import json
 import random
 import re
 
@@ -149,3 +151,8 @@ def card_referenced_by(card):
 @register.simple_tag
 def format_id_text(text):
     return text.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, '*')
+
+
+@register.simple_tag
+def dict_to_json(dict_obj):
+    return mark_safe(json.dumps(ast.literal_eval(str(dict_obj))))

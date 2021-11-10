@@ -246,7 +246,7 @@ SET_DATA = {
         },
         {
             'name': 'Reiya',
-            'sets':[
+            'sets': [
                 {'code': 'SDR1', 'name': 'King of the Mountain'},
                 {'code': 'SDR2', 'name': 'Blood of the Dragons'},
                 {'code': 'SDR3', 'name': 'Below the Waves'},
@@ -481,6 +481,7 @@ SETS_IN_ORDER = [
     'SDV4',
     'SDV5',
     'NDR',
+    'AO2 Buy a BoxJ',
     'SNV',
     'AOA V3 Buy 2',
     'AOA',

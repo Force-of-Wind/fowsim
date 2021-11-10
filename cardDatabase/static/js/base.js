@@ -5,6 +5,7 @@ $(function(){
         $('#advanced-search').show();
         $('#search-toggles').removeClass('basic-showing');
         $('#search-toggles').addClass('advanced-showing');
+        $('#advanced-form input[name="generic_text"]').focus();
     });
     $('#basic-search-toggle').on('click',
         function(event){
@@ -12,6 +13,7 @@ $(function(){
             $('#advanced-search').hide();
             $('#search-toggles').addClass('basic-showing');
             $('#search-toggles').removeClass('advanced-showing');
+            $('#basic-form input[name="generic_text"]').focus();
         });
 
     $('.sets-select .mdb-select').materialSelect({
@@ -81,5 +83,7 @@ $(function(){
     $('#clear-all-sets').click(function(event){
         event.preventDefault();
         select_format_sets(FOWDB_SET_JSON.clusters, false);
-    })
+    });
+
+    $('#basic-form input[type="text"]').focus();
 });

@@ -25,7 +25,7 @@ PUNCTUATION_REPLACEMENTS = {
 
 
 def remove_punctuation(name):
-    matches = re.findall('[^a-zA-Z0-9"\' ]', name)
+    matches = re.findall('[^a-zA-Z0-9 ]', name)
     for match in matches:
         if match in PUNCTUATION_REPLACEMENTS:
             name = name.replace(match, PUNCTUATION_REPLACEMENTS[match])

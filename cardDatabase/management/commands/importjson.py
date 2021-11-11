@@ -1,8 +1,10 @@
 import json
 import re
 
-from fowsim import constants as CONS
 from django.core.management.base import BaseCommand
+from django.core.management import call_command
+
+from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card, AbilityText, Race, Type
 
 
@@ -93,3 +95,4 @@ class Command(BaseCommand):
                             card.types.add(type_obj)
 
                         card.save()
+        call_command('assign_existing_card_images')

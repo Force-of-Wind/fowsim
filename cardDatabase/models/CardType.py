@@ -59,7 +59,7 @@ class Card(AbstractModel):
     divinity = models.CharField(max_length=200, null=True, blank=True)
     flavour = models.TextField(null=True, blank=True)
     races = models.ManyToManyField('Race', related_name='races')
-    rarity = models.CharField(max_length=200, null=False, blank=False, choices=CONS.RARITY_CHOICE_VALUES)
+    rarity = models.CharField(max_length=200, null=False, blank=True, choices=CONS.RARITY_CHOICE_VALUES)
     ATK = models.IntegerField(null=True, blank=True)
     DEF = models.IntegerField(null=True, blank=True)
     types = models.ManyToManyField('Type', related_name='types')

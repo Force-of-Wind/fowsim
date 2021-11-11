@@ -5,7 +5,7 @@ from cardDatabase.models.Effects import OneTimeEffect
 
 class CardAdmin(admin.ModelAdmin):
     list_display = ('name', 'card_id', )
-    search_fields = ['name', 'ability_texts__text']
+    search_fields = ['name', 'ability_texts__text', 'card_id']
 
 class AbilityTextAdmin(admin.ModelAdmin):
     list_display = ('text',)

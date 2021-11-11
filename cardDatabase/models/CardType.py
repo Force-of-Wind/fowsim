@@ -36,14 +36,22 @@ class Race(models.Model):
     class Meta:
         app_label = 'cardDatabase'
 
+    def __str__(self):
+        return self.name
+
     name = models.CharField(max_length=200, null=False, blank=False)
 
 
 class AbilityText(models.Model):
+    def __str__(self):
+        return self.text
     text = models.TextField(null=False, blank=False)
 
 
 class Type(models.Model):
+    def __str__(self):
+        return self.name
+
     name = models.CharField(max_length=200, null=False, blank=False, choices=listToChoices(CONS.CARD_TYPE_VALUES))
 
 

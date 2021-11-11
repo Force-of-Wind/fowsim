@@ -173,4 +173,4 @@ CHANNEL_LAYERS = {
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
-ADMINS = [os.environ.get('ADMINS')]
+ADMINS = [(x.strip(), x.strip()) for x in os.environ.get('ADMINS').split(',')]

@@ -60,39 +60,41 @@ class Command(BaseCommand):
                     for card in cards:
                         for unused_set in CONS.UNSEARCHED_DATABASE_SETS:  # Mostly just old Valhalla
                             if card['id'].startswith(unused_set):
-                                continue
-                        card_types = []
+                                break
+                        else:
+                            # In a used set
+                            card_types = []
 
-                        for card_type in card['type'].split(' / '):
-                            if any(x in card_type for x in MIXED_TYPES):
-                                for mixed_type in MIXED_TYPES:
-                                    if mixed_type in card_type:
-                                        card_types = card_types + mixed_type.split('/')
-                            else:
-                                card_types.append(card_type)
+                            for card_type in card['type'].split(' / '):
+                                if any(x in card_type for x in MIXED_TYPES):
+                                    for mixed_type in MIXED_TYPES:
+                                        if mixed_type in card_type:
+                                            card_types = card_types + mixed_type.split('/')
+                                else:
+                                    card_types.append(card_type)
 
-                        card_races = card['race']
-                        card_abilities = card['abilities']
-                        card, created = Card.objects.get_or_create(
-                            name=replace_name_errors(card['name']),
-                            name_without_punctuation=remove_punctuation(card['name']),
-                            card_id=card['id'].replace('*', CONS.DOUBLE_SIDED_CARD_CHARACTER),
-                            cost=card['cost'] or None,
-                            divinity=card['divinity'].replace("∞", CONS.INFINITY_STRING) or None,
-                            flavour=card['flavor'] or None,
-                            rarity=card['rarity'],
-                            ATK=card['ATK'] or None,
-                            DEF=card['DEF'] or None,
-                        )
-                        for card_ability in card_abilities:
-                            ability_text, created = AbilityText.objects.get_or_create(text=card_ability)
-                            card.ability_texts.add(ability_text)
-                        for card_race in card_races:
-                            race, created = Race.objects.get_or_create(name=card_race)
-                            card.races.add(race)
-                        for card_type in card_types:
-                            type_obj, created = Type.objects.get_or_create(name=card_type)
-                            card.types.add(type_obj)
+                            card_races = card['race']
+                            card_abilities = card['abilities']
+                            card, created = Card.objects.get_or_create(
+                                name=replace_name_errors(card['name']),
+                                name_without_punctuation=remove_punctuation(card['name']),
+                                card_id=card['id'].replace('*', CONS.DOUBLE_SIDED_CARD_CHARACTER),
+                                cost=card['cost'] or None,
+                                divinity=card['divinity'].replace("∞", CONS.INFINITY_STRING) or None,
+                                flavour=card['flavor'] or None,
+                                rarity=card['rarity'],
+                                ATK=card['ATK'] or None,
+                                DEF=card['DEF'] or None,
+                            )
+                            for card_ability in card_abilities:
+                                ability_text, created = AbilityText.objects.get_or_create(text=card_ability)
+                                card.ability_texts.add(ability_text)
+                            for card_race in card_races:
+                                race, created = Race.objects.get_or_create(name=card_race)
+                                card.races.add(race)
+                            for card_type in card_types:
+                                type_obj, created = Type.objects.get_or_create(name=card_type)
+                                card.types.add(type_obj)
 
-                        card.save()
+                            card.save()
         call_command('assign_existing_card_images')

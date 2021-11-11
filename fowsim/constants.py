@@ -296,6 +296,12 @@ SET_DATA = {
                 {'code': 'ADW', 'name': 'Assault into the Demonic World'},
                 {'code': 'TST', 'name': 'The Seventh'}
             ]
+        },
+        {
+            'name': 'Duel',
+            'sets': [
+                {'code': 'GOG', 'name': 'Game of Gods'}
+            ]
         }
     ]
 }

@@ -172,5 +172,5 @@ CHANNEL_LAYERS = {
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-
-ADMINS = [(x.strip(), x.strip()) for x in os.environ.get('ADMINS').split(',')]
+if os.environ.get('PRODUCTION'):
+    ADMINS = [(x.strip(), x.strip()) for x in os.environ.get('ADMINS').split(',')]

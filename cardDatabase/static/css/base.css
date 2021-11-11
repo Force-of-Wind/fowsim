@@ -219,3 +219,7 @@ input:checked + .selected-backgrounds{
 .referred-card{
     width: max-content;
 }
+
+.form-submit-button{
+    display: inline-block;
+}

@@ -1,11 +1,17 @@
 $(function(){
+    function focusOnInit(el){
+        if (!FOWDB_IS_MOBILE){
+            el.focus()
+        }
+    }
+
     $('#advanced-search-toggle').on('click',
     function (event){
         $('#basic-search').hide();
         $('#advanced-search').show();
         $('#search-toggles').removeClass('basic-showing');
         $('#search-toggles').addClass('advanced-showing');
-        $('#advanced-form input[name="generic_text"]').focus();
+        focusOnInit($('#advanced-form input[name="generic_text"]'));
     });
     $('#basic-search-toggle').on('click',
         function(event){
@@ -13,7 +19,7 @@ $(function(){
             $('#advanced-search').hide();
             $('#search-toggles').addClass('basic-showing');
             $('#search-toggles').removeClass('advanced-showing');
-            $('#basic-form input[name="generic_text"]').focus();
+            focusOnInit($('#basic-form input[name="generic_text"]'));
         });
 
     $('.sets-select .mdb-select').materialSelect({
@@ -85,5 +91,5 @@ $(function(){
         select_format_sets(FOWDB_SET_JSON.clusters, false);
     });
 
-    $('#basic-form input[type="text"]').focus();
+    focusOnInit($('#basic-form input[type="text"]'));
 });

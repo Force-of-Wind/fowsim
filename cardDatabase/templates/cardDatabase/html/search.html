@@ -3,6 +3,9 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/search_mobile.css' %}">
+    {% endif %}
 {% endblock %}
 {% block js %}
     {{ block.super }}

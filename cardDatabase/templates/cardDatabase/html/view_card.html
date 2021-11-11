@@ -3,6 +3,9 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/view_card.css' %}">
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/view_card_mobile.css' %}">
+    {% endif %}
 {% endblock %}
 {% block body %}
     {{ block.super }}

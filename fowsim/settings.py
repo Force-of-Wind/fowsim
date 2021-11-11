@@ -172,5 +172,20 @@ CHANNEL_LAYERS = {
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-if os.environ.get('PRODUCTION'):
+
+if os.environ.get('PRODUCTION') and os.environ.get('ADMINS'):
     ADMINS = [(x.strip(), x.strip()) for x in os.environ.get('ADMINS').split(',')]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}

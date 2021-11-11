@@ -21,7 +21,7 @@ WILL_TYPE_TO_FILENAMES = {
     CONS.ATTRIBUTE_WATER_CODE: 'water.png',
     CONS.ATTRIBUTE_WIND_CODE: 'wind.png',
     CONS.ATTRIBUTE_VOID_CODE: 'void.png',
-    CONS.WILL_MOON_CODE: 'moon.png,',
+    CONS.WILL_MOON_CODE: 'moon.png',
     CONS.WILL_TIME_CODE: 'time.png',
     '0': '0.png',
     '1': '1.png',

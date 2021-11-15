@@ -188,7 +188,7 @@ def advanced_search(advanced_form):
             if 'X' in cost_filters:
                 cards = [x for x in cards
                          if str(x.total_cost) in cost_filters
-                         or '{X}' in x.cost]
+                         or x.cost and '{X}' in x.cost]
             else:
                 cards = [x for x in cards if str(x.total_cost) in cost_filters]
     return ctx | {'cards': cards}

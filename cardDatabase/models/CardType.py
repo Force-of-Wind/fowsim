@@ -123,15 +123,16 @@ class Card(AbstractModel):
     @property
     def total_cost(self):
         total = 0
-        matches = re.findall('{[a-zA-Z0-9]*}', self.cost)
-        for match in matches:  # "{W}" or "{R}" or "{3}" etc.
-            cost_value = match[1]
-            if cost_value.isnumeric():
-                total += int(cost_value)
-            elif cost_value == 'X':
-                pass
-            else:
-                total += 1
+        if self.cost:
+            matches = re.findall('{[a-zA-Z0-9]*}', self.cost)
+            for match in matches:  # "{W}" or "{R}" or "{3}" etc.
+                cost_value = match[1]
+                if cost_value.isnumeric():
+                    total += int(cost_value)
+                elif cost_value == 'X':
+                    pass
+                else:
+                    total += 1
 
         return total
 

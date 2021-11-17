@@ -1,15 +1,9 @@
-{% load static %}
-<!DOCTYPE html>
+{% extends 'cardDatabase/html/base.html' %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% block body %}
     <form id="add_card" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ add_card_form.as_p }}
         <input type="submit" value="Add card">
     </form>
-</body>
-</html>
+{% endblock %}

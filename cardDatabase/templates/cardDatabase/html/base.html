@@ -12,227 +12,30 @@
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
                             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
                             crossorigin="anonymous"></script>
-                    <script src="{% static 'js/bootstrap/bootstrap.js' %}" type="text/javascript"></script>
-                    <script src="{% static 'js/bootstrap/mdb.js' %}" type="text/javascript"></script>
-                    <script src="{% static 'js/base.js' %}" type="text/javascript"></script>
-                    <script type="text/javascript">
-                        let FOWDB_SET_JSON = {% dict_to_json sets_json %};
-                        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-                            let FOWDB_IS_MOBILE = true;
-                        {% else %}
-                            let FOWDB_IS_MOBILE = false;
-                        {% endif %}
-                    </script>
                 {% endblock %}
                 {% block css %}
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
-                          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-                    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.css' %}">
-                    <link rel="stylesheet" href="{% static 'css/bootstrap/mdb.css' %}">
-                    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-                    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-                        <link rel="stylesheet" href="{% static 'css/base_mobile.css' %}">
-                    {% endif %}
                 {% endblock %}
 
             {% endblock %}
         </head>
         <body>
-            {% block header %}
-                <div id="header">
-                    <div class="header-content">
-                        <a href="{% url 'cardDatabase-search' %}">
-                            <div id="site-title">{% block header-title %}Force of Wind{% endblock %}</div>
-                            <img id="site-icon" src="{% static 'img/wind.png'%}">
-                        </a>
-                    </div>
-                    <div id="social-media">
-                        <a href="https://discord.com/invite/8S5XW6pUEF" target="_blank">
-                            <img class="discord" src="{% static 'img/discord.png' %}">
-                        </a>
-                    </div>
+        {% block header %}
+            <div id="header">
+                <div class="header-content">
+                    <a href="{% url 'cardDatabase-search' %}">
+                        <div id="site-title">{% block header-title %}Force of Wind{% endblock %}</div>
+                        <img id="site-icon" src="{% static 'img/wind.png'%}">
+                    </a>
                 </div>
-            {% endblock %}
-            {% block body %}
-                {% block search_form %}
-                    <div id="search-toggles" class="basic-showing no-select">
-                        <div id="basic-search-toggle" class="search-toggle">Basic Search</div>
-                        <div id="advanced-search-toggle" class="search-toggle">Advanced Search</div>
-                    </div>
-                    <div id="basic-search">
-                        <form id="basic-form" method="post" action="{% url 'cardDatabase-search' %}">
-                            {{ basic_form }}
-                            <div class="form-submit-button">
-                                <input type="submit" value="Search" name="basic-form">
-                            </div>
-                        </form>
-                    </div>
-                    <div id="advanced-search">
-                        <form id="advanced-form" method="post" action="{% url 'cardDatabase-search' %}">
-                            <div class="fieldWrapper">
-                                {{ advanced_form.generic_text }}
-                            </div>
-                            <div class="fieldWrapper select-text-exactness">
-                                <div class="text-exactness-title field-title">
-                                    Search terms match:
-                                </div>
-                                {% for value, display in advanced_form.text_exactness.field.choices %}
-                                    <label for="id_text_exactness_fields_{{ forloop.counter0 }}">
-                                        <input type="checkbox" name="text_exactness" id="id_text_exactness_fields_{{ forloop.counter0 }}"
-                                               value="{{ value }}" {% text_exactness_is_in_data advanced_form_data.text_exactness value %}>
-                                        {{ display }}
-                                    </label>
-                                {% endfor %}
-                            </div>
-                            <div class="fieldWrapper select-text-search-fields">
-                                <div class="text-search-fields-title field-title">
-                                    Search in:
-                                </div>
-                                {% for value, display in advanced_form.text_search_fields.field.choices %}
-                                    <label for="id_text_search_fields_{{ forloop.counter0 }}">
-                                        <input type="checkbox" name="text_search_fields" id="id_text_search_fields_{{ forloop.counter0 }}"
-                                               value="{{ value }}"  {% text_search_fields_is_in_data advanced_form_data.text_search_fields value %}>
-                                        {{ display }}
-                                    </label>
-                                {% endfor %}
-                            </div>
-                            <div class="fieldWrapper select-sort-by">
-                                <div class="sort-by-title field-title">
-                                    Sort by:
-                                </div>
-                                {% for value, display in advanced_form.sort_by.field.choices %}
-                                    <label for="id_sort_by_{{ forloop.counter0 }}">
-                                        <input type="checkbox" name="sort_by" id="id_sort_by_{{ forloop.counter0 }}"
-                                               value="{{ value }}" {% sort_by_is_in_data advanced_form_data.sort_by value %}>
-                                        {{ display }}
-                                    </label>
-                                {% endfor %}
-                                <div class="reverse-sort">
-                                    <div class="reverse-sort-input">
-                                        {{ advanced_form.reverse_sort }}
-                                    </div>
-                                    <label class="reverse-sort-label" for="id_reverse_sort">
-                                        Reverse sorting
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="fieldWrapper select-colours">
-                                {% for value, display in advanced_form.colours.field.choices %}
-                                    <input type="checkbox" class="fow-checkbox hidden-checkbox" name="colours" id="id_colours_{{ forloop.counter0 }}"
-                                           value="{{ value }}" {% advanced_form_is_in_data advanced_form_data.colours value '' 'checked' %}>
-                                    <label class="selected-backgrounds" for="id_colours_{{ forloop.counter0 }}">
-                                        {% attribute_to_img_html value %}
-                                    </label>
-                                {% endfor %}
-                            </div>
-                            <div class="fieldWrapper cost-select no-select">
-                                <div class="search-field-title field-title">
-                                    Total cost:
-                                </div>
-                                {% for value, display in advanced_form.cost.field.choices %}
-                                    <input type="checkbox" class="hidden-checkbox fow-checkbox" name="cost" id="id_cost_{{ forloop.counter0 }}"
-                                           value="{{ value }}" {% if value|slugify in advanced_form_data.cost %}checked{% endif %}>
-                                    <label class="selected-backgrounds" for="id_cost_{{ forloop.counter0 }}">
-                                        <div class="cost-value-wrapper">
-                                            {{ value }}
-                                        </div>
-                                    </label>
-                                {% endfor %}
-                            </div>
-                            <div class="fieldWrapper sets-select">
-                                <select class="mdb-select md-form" multiple form="advanced-form" name="sets" searchable="Search here...">
-                                    {% for cluster in sets_json.clusters reversed %}
-                                        <optgroup label="{{ cluster.name }} Cluster">
-                                            {% for set in cluster.sets reversed %}
-                                                <option value="{{ set.code }}"
-                                                {% if set.code in advanced_form_data.sets %}selected{% endif %}>
-                                                    {{ set.name }}
-                                                </option>
-                                            {% endfor %}
-                                        </optgroup>
-                                    {% endfor %}
-                                </select>
-                                <button id="new-frontiers-select" type="button">
-                                    Add New Frontiers
-                                </button>
-                                <button id="wanderer-select" type="button">
-                                    Add Wanderer
-                                </button>
-                                <button id="clear-all-sets" type="button">
-                                    Clear All Sets
-                                </button>
-                            </div>
-                            <div class="fieldWrapper card-type-select">
-                                <select class="mdb-select md-form" multiple form="advanced-form" name="card_type" searchable="Search here...">
-                                    {% for deck_group in card_types_list %}
-                                        <optgroup label="{{ deck_group.name }}">
-                                            {% for value in deck_group.types %}
-                                                <option value="{{ value }}" {% if value in advanced_form_data.card_type %}selected{% endif %}>
-                                                    {{ value }}
-                                                </option>
-                                            {% endfor %}
-                                        </optgroup>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="fieldWrapper rarity-select">
-                                <select class="mdb-select md-form" multiple form="advanced-form" name="rarity" searchable="Search here...">
-                                    {% for value, display in advanced_form.rarity.field.choices %}
-                                        <option value="{{ value }}"
-                                            {% if value in advanced_form_data.rarity %}selected{% endif %}>
-                                                {{ value }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="fieldWrapper divinity-select no-select">
-                                <div class="search-field-title field-title">
-                                    Divinity:
-                                </div>
-                                {% for value, display in advanced_form.divinity.field.choices %}
-                                    <input type="checkbox" class="hidden-checkbox fow-checkbox" name="divinity" id="id_divinity_{{ forloop.counter0 }}"
-                                           value="{{ value }}" {% if value|slugify in advanced_form_data.divinity %}checked{% endif %}>
-                                    <label class="selected-backgrounds" for="id_divinity_{{ forloop.counter0 }}">
-                                        <div class="divinity-value-wrapper">
-                                            {{ display }}
-                                        </div>
-                                    </label>
-                                {% endfor %}
-                            </div>
-                            <div class="atk-def-stats fieldWrapper">
-                                <div class="atk-inputs">
-                                    <div class="atk-label field-title">
-                                        Attack
-                                    </div>
-                                    <div class="stats-comparator atk-comparator">
-                                        {{ advanced_form.atk_comparator }}
-                                    </div>
-                                    <div class="stats-value atk-value">
-                                        <div class="atk-def-input atk-value-input">
-                                            {{ advanced_form.atk_value }}
-                                        </div>
-                                    </div>
-                                </div>{% comment %} Not pretty, but need no whitespace between them for 50% width {% endcomment %}<div class="def-inputs">
-                                    <div class="def-label field-title">
-                                        Defense
-                                    </div>
-                                    <div class="stats-comparator def-comparator">
-                                        {{ advanced_form.def_comparator }}
-                                    </div>
-                                    <div class="stats-value def-value">
-                                        <div class=" atk-def-input def-value-input">
-                                            {{ advanced_form.def_value }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-submit-button">
-                                <input type="submit" value="Search" name="advanced-form">
-                            </div>
-                        </form>
-                    </div>
-                {% endblock %}
-            {% endblock %}
+                <div id="social-media">
+                    <a href="https://discord.com/invite/8S5XW6pUEF" target="_blank">
+                        <img class="discord" src="{% static 'img/discord.png' %}">
+                    </a>
+                </div>
+            </div>
+        {% endblock %}
+        {% block body %}
+        {% endblock %}
         </body>
     </html>
 {% endblock %}

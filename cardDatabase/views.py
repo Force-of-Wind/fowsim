@@ -254,7 +254,6 @@ def add_card(request):
     elif request.method == 'POST':
         add_card_form = AddCardForm(request.POST, request.FILES)
         if add_card_form.is_valid():
-            print(request.FILES)
             new_card = add_card_form.save()
             return HttpResponseRedirect(reverse('cardDatabase-view-card', kwargs={'card_id': new_card.card_id}))
         else:

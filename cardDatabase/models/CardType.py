@@ -66,12 +66,12 @@ class Card(AbstractModel):
     cost = models.CharField(max_length=200, null=True, blank=True)
     divinity = models.CharField(max_length=200, null=True, blank=True)
     flavour = models.TextField(null=True, blank=True)
-    races = models.ManyToManyField('Race', related_name='races')
+    races = models.ManyToManyField('Race', related_name='races', blank=True)
     rarity = models.CharField(max_length=200, null=False, blank=True, choices=CONS.RARITY_CHOICE_VALUES)
     ATK = models.IntegerField(null=True, blank=True)
     DEF = models.IntegerField(null=True, blank=True)
     types = models.ManyToManyField('Type', related_name='types')
-    ability_texts = models.ManyToManyField('AbilityText', related_name='ability_texts')
+    ability_texts = models.ManyToManyField('AbilityText', related_name='ability_texts', blank=True)
 
     def __str__(self):
         return self.name
@@ -88,9 +88,7 @@ class Card(AbstractModel):
             im = im.resize(size, Image.ANTIALIAS)
             im_io = BytesIO()
             im.save(im_io, 'JPEG', quality=70)
-            
-            self.card_image = InMemoryUploadedFile(im_io,'ImageField', "%s.jpg" % self.card_image.name.split('.')[0], 'image/jpeg', sys.getsizeof(im_io), None)
-
+            self.card_image = InMemoryUploadedFile(im_io, 'ImageField', f"{self.card_id}.jpg", 'image/jpeg', sys.getsizeof(im_io), None)
         super(Card, self).save(*args, **kwargs)
 
     @classmethod

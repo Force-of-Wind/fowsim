@@ -7,5 +7,6 @@ from . import views
 urlpatterns = [
     path('', lambda req: redirect('/search/')),
     path('search/', views.search_for_cards, name='cardDatabase-search'),
-    path('card/<str:card_id>/', views.view_card, name='cardDatabase-view-card')
+    path('card/<str:card_id>/', views.view_card, name='cardDatabase-view-card'),
+    path('add_card/', views.add_card, name='cardDatabase-add-card'),
 ]

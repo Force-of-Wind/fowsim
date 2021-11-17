@@ -1,15 +1,16 @@
-import re
-import json
-
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.forms.fields import MultipleChoiceField
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
-from .forms import SearchForm, AdvancedSearchForm
+from .forms import SearchForm, AdvancedSearchForm, AddCardForm
 from .models.CardType import Card
 from fowsim import constants as CONS
+from fowsim.decorators import site_admins
 
 
 def get_search_form_ctx():
@@ -242,3 +243,20 @@ def view_card(request, card_id=None):
     ctx['advanced_form'] = AdvancedSearchForm()
 
     return render(request, 'cardDatabase/html/view_card.html', context=ctx)
+
+
+@login_required
+@site_admins
+def add_card(request):
+    ctx = {}
+    if request.method == 'GET':
+        ctx |= {'add_card_form': AddCardForm()}
+    elif request.method == 'POST':
+        add_card_form = AddCardForm(request.POST, request.FILES)
+        if add_card_form.is_valid():
+            print(request.FILES)
+            new_card = add_card_form.save()
+            return HttpResponseRedirect(reverse('cardDatabase-view-card', kwargs={'card_id': new_card.card_id}))
+        else:
+            ctx |= {'add_card_form': add_card_form}
+    return render(request, 'cardDatabase/html/add_card.html', context=ctx)

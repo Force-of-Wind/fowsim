@@ -40135,7 +40135,7 @@
               {
                 "id": "VIN003-005",
                 "name": "Gloria's Castle Town",
-                "type": "Addition/Addition: Field",
+                "type": "Addition / Addition: Field",
                 "race": [
                   "Castle"
                 ],
@@ -40520,7 +40520,7 @@
               {
                 "id": "VIN003-022",
                 "name": "Certo, the Blazing Volcano",
-                "type": "Addition/Addition: Field",
+                "type": "Addition / Addition: Field",
                 "race": [
                   "Mountain"
                 ],
@@ -41400,7 +41400,7 @@
               {
                 "id": "VIN003-060",
                 "name": "Wind-Secluded Refuge",
-                "type": "Addition/Addition: Field",
+                "type": "Addition / Addition: Field",
                 "race": [],
                 "cost": "{G}{1}",
                 "colour": [

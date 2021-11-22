@@ -72,6 +72,7 @@ class Card(AbstractModel):
     DEF = models.IntegerField(null=True, blank=True)
     types = models.ManyToManyField('Type', related_name='types')
     ability_texts = models.ManyToManyField('AbilityText', related_name='ability_texts', blank=True)
+    colours = models.ManyToManyField('CardColour', related_name='cards', blank=False)
 
     def __str__(self):
         return self.name
@@ -166,3 +167,8 @@ class Chant(models.Model):
     effect_type_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=Effect.get_type_choices)
     effect_type_id = models.PositiveIntegerField()
     effect_type = GenericForeignKey('effect_type_type', 'effect_type_id')
+
+
+class CardColour(models.Model):
+    name = models.CharField(max_length=200, blank=False, null=False)
+    db_representation = models.CharField(max_length=200, blank=False, null=False)

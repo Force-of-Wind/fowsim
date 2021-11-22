@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from django.core.management import call_command
 
 from fowsim import constants as CONS
-from cardDatabase.models.CardType import Card, AbilityText, Race, Type
+from cardDatabase.models.CardType import Card, AbilityText, Race, Type, CardColour
 
 
 #  Types separated by / that don't have spaces e.g. "Chant / Rune".
@@ -75,13 +75,14 @@ class Command(BaseCommand):
 
                             card_races = card['race']
                             card_abilities = card['abilities']
+                            card_colours = card['colour']
                             card, created = Card.objects.get_or_create(
                                 name=replace_name_errors(card['name']),
                                 name_without_punctuation=remove_punctuation(card['name']),
                                 card_id=card['id'].replace('*', CONS.DOUBLE_SIDED_CARD_CHARACTER),
                                 cost=card['cost'] or None,
                                 divinity=card['divinity'].replace("∞", CONS.INFINITY_STRING) or None,
-                                flavour=card['flavor'] or None,
+                                flavour=card['flavour'] or None,
                                 rarity=card['rarity'],
                                 ATK=card['ATK'] or None,
                                 DEF=card['DEF'] or None,
@@ -95,6 +96,9 @@ class Command(BaseCommand):
                             for card_type in card_types:
                                 type_obj, created = Type.objects.get_or_create(name=card_type)
                                 card.types.add(type_obj)
+                            for card_colour in card_colours:
+                                colour_obj, created = CardColour.objects.get_or_create(db_representation=card_colour)
+                                card.colours.add(colour_obj)
 
                             card.save()
         call_command('assign_existing_card_images')

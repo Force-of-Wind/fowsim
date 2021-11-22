@@ -72,5 +72,8 @@ class AddCardForm(forms.ModelForm):
         for race_to_add in races_to_add:
             card_instance.races.add(Race.objects.get_or_create(name=race_to_add)[0])
 
+        for colour_to_add in self.cleaned_data['colours']:
+            card_instance.colours.add(colour_to_add)
+
         return card_instance
 

@@ -93,16 +93,16 @@ class Command(BaseCommand):
                                 DEF=card['DEF'] or None,
                             )
                             for card_ability in card_abilities:
-                                ability_text, created = AbilityText.objects.get_or_create(text=card_ability)
+                                ability_text, created = AbilityText.objects.get_or_create(text=card_ability.strip())
                                 card.ability_texts.add(ability_text)
                             for card_race in card_races:
-                                race, created = Race.objects.get_or_create(name=card_race)
+                                race, created = Race.objects.get_or_create(name=card_race.strip())
                                 card.races.add(race)
                             for card_type in card_types:
-                                type_obj, created = Type.objects.get_or_create(name=card_type)
+                                type_obj, created = Type.objects.get_or_create(name=card_type.strip())
                                 card.types.add(type_obj)
                             for card_colour in card_colours:
-                                colour_obj, created = CardColour.objects.get_or_create(db_representation=card_colour, name=get_colour_name(card_colour))
+                                colour_obj, created = CardColour.objects.get_or_create(db_representation=card_colour.strip(), name=get_colour_name(card_colour.strip()))
                                 card.colours.add(colour_obj)
 
                             card.save()

@@ -47,6 +47,11 @@ def replace_name_errors(name):
     return name
 
 
+def get_colour_name(code):
+    for choice_code, choice_name in CONS.COLOUR_CHOICES:
+        if code == choice_code:
+            return choice_name
+
 class Command(BaseCommand):
     help = 'imports cardDatabase/static/cards.json to the database'
 
@@ -97,7 +102,7 @@ class Command(BaseCommand):
                                 type_obj, created = Type.objects.get_or_create(name=card_type)
                                 card.types.add(type_obj)
                             for card_colour in card_colours:
-                                colour_obj, created = CardColour.objects.get_or_create(db_representation=card_colour)
+                                colour_obj, created = CardColour.objects.get_or_create(db_representation=card_colour, name=get_colour_name(card_colour))
                                 card.colours.add(colour_obj)
 
                             card.save()

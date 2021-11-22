@@ -49,14 +49,7 @@ def get_set_query(data):
 def get_attr_query(data):
     attr_query = Q()
     for card_attr in data:
-        if card_attr == CONS.ATTRIBUTE_VOID_CODE:
-            void_query = Q()
-            # Build query to exclude cards with any attribute in the cost e.g. not 'R' and not 'G' etc.
-            for attr_code in CONS.ATTRIBUTE_CODES:
-                void_query &= ~Q(cost__contains=attr_code)
-            attr_query |= void_query
-        else:
-            attr_query |= Q(cost__contains=card_attr)
+        attr_query |= Q(colours__db_representation=card_attr)
     return attr_query
 
 

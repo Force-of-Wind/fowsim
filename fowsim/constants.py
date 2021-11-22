@@ -300,6 +300,7 @@ SET_DATA = {
         {
             'name': 'Duel',
             'sets': [
+                {'code': 'DSD', 'name': 'Starter Decks'},
                 {'code': 'GOG', 'name': 'Game of Gods'}
             ]
         }

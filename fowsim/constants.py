@@ -513,7 +513,7 @@ SETS_IN_ORDER = [
     'ADW',
     'TST',
     'DSD',
-    'GDG',
+    'GOG',
 ]
 
 SEARCH_SETS_INCLUDE = {

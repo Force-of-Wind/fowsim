@@ -512,6 +512,7 @@ SETS_IN_ORDER = [
     'ROL',
     'ADW',
     'TST',
+    'DSD',
     'GDG',
 ]
 

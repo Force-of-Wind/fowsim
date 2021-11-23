@@ -14,16 +14,18 @@ from fowsim import constants as CONS
 
 
 class Command(BaseCommand):
-    help = 'Downloads all jpg files to img_dir labelled by set ID e.g. TSW-001.jpg, TSW-001*.jpg, etc'
+    help = 'Downloads all jpg files to img_dir labelled by set ID e.g. TSW-001.jpg, TSW-001^.jpg, etc'
 
     def add_arguments(self, parser):
-        parser.add_argument('-d', '--destination', type=str, default='./cardDatabase/static/cards/',
-                            help='define a destination directory other than cardDatabase/static/cards/')
+        parser.add_argument('-d', '--destination', type=str, default='./media/cards/',
+                            help='define a destination directory other than ./media/cards/')
 
     def handle(self, *args, **kwargs):
         # Based off code provided by Achifaifa and Kossetsu
         destination = kwargs['destination']
-        results = Parallel(n_jobs=4)(delayed(Command.downloadCardAtIndex)(i, destination) for i in range(0, 6000))
+        #results = Parallel(n_jobs=4)(delayed(Command.downloadCardAtIndex)(i, destination) for i in range(0, 6000))
+        for i in range(0, 6000):
+            Command.downloadCardAtIndex(i, destination)
 
     @classmethod
     def downloadCardAtIndex(cls, index, dir_to_save):
@@ -58,6 +60,9 @@ class Command(BaseCommand):
 
                 size = 480, 670
                 im = Image.open(temp)
+                if im.mode == 'P':
+                    im = im.convert('RGBA')
+
                 if im.mode == "RGBA":
                     new_image = Image.new("RGBA", im.size, "WHITE")
                     new_image.paste(im, (0, 0), im)

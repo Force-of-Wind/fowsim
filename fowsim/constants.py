@@ -300,6 +300,7 @@ SET_DATA = {
         {
             'name': 'Duel',
             'sets': [
+                {'code': 'DSD', 'name': 'Duel Cluster Starter Decks'},
                 {'code': 'GOG', 'name': 'Game of Gods'}
             ]
         }
@@ -340,6 +341,7 @@ DATABASE_CARD_TYPE_GROUPS = [
             'Basic J-Ruler',
             'Basic Ruler',
             'J-Ruler',
+            'Order',
             'Ruler',
         ]
     },
@@ -511,7 +513,8 @@ SETS_IN_ORDER = [
     'ROL',
     'ADW',
     'TST',
-    'GDG',
+    'DSD',
+    'GOG',
 ]
 
 SEARCH_SETS_INCLUDE = {

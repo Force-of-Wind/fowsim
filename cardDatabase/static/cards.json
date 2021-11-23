@@ -15816,7 +15816,7 @@
               {
                 "id": "TAT-091",
                 "name": "Almerius, the Levitating Stone",
-                "type": "Special Magic Stone/True Magic Stone",
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -15837,7 +15837,7 @@
               {
                 "id": "TAT-092",
                 "name": "Feethsing, the Holy Wind Stone",
-                "type": "Special Magic Stone/True Magic Stone",
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -15858,7 +15858,7 @@
               {
                 "id": "TAT-093",
                 "name": "Grusbalesta, the Sealing Stone",
-                "type": "Special Magic Stone/True Magic Stone",
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -15979,7 +15979,7 @@
               {
                 "id": "TAT-099",
                 "name": "Milest, the Ghostly Flame Stone",
-                "type": "Special Magic Stone/True Magic Stone",
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -16000,7 +16000,7 @@
               {
                 "id": "TAT-100",
                 "name": "Moojdart, the Fantasy Stone",
-                "type": "Special Magic Stone/True Magic Stone",
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -18289,7 +18289,7 @@
               {
                 "id": "MPR-098",
                 "name": "Little Red, the Pure Stone",
-                "type": "Special Magic Stone/True Magic Stone",
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -59960,7 +59960,7 @@
               {
                 "id": "SDR6-012",
                 "name": "Alhama'at's Ultra Magic Stone",
-                "type": "Special Magic Stone/True Magic Stone",
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -77820,7 +77820,7 @@
               {
                 "id": "SDAO2-034",
                 "name": "Magic Stone of Blasting Waves",
-                "type": "Special Magic Stone/Fire Magic Stone/Wind Magic Stone",
+                "type": "Special Magic Stone / Fire Magic Stone / Wind Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -77840,7 +77840,7 @@
               {
                 "id": "SDAO2-035",
                 "name": "Magic Stone of Dark Depth",
-                "type": "Special Magic Stone/Water Magic Stone/Darkness Magic Stone",
+                "type": "Special Magic Stone / Water Magic Stone / Darkness Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -79320,7 +79320,7 @@
               {
                 "id": "AO2-064",
                 "name": "Magic Stone of Deep Wood",
-                "type": "Special Magic Stone/Water Magic Stone/Wind Magic Stone",
+                "type": "Special Magic Stone / Water Magic Stone / Wind Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -83313,7 +83313,7 @@
               {
                 "id": "AO3-090",
                 "name": "Magic Stone of Black Silence",
-                "type": "Special Magic Stone/Wind Magic Stone/Darkness Magic Stone",
+                "type": "Special Magic Stone / Wind Magic Stone / Darkness Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -83333,7 +83333,7 @@
               {
                 "id": "AO3-091",
                 "name": "Magic Stone of Gusting Skies",
-                "type": "Special Magic Stone/Light Magic Stone/Wind Magic Stone",
+                "type": "Special Magic Stone / Light Magic Stone / Wind Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -83353,7 +83353,7 @@
               {
                 "id": "AO3-092",
                 "name": "Magic Stone of Hearth's Core",
-                "type": "Special Magic Stone/Fire Magic Stone/Water Magic Stone",
+                "type": "Special Magic Stone / Fire Magic Stone / Water Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -92490,7 +92490,7 @@
           },
           {
             "name": "Assault into the Demonic World",
-            "code": "",
+            "code": "ADW",
             "cards": [
               {
                 "id": "ADW-001",

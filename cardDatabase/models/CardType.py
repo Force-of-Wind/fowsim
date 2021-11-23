@@ -81,6 +81,9 @@ class Card(AbstractModel):
         if self.card_image and use_resize:
             size = 480, 670
             im = Image.open(self.card_image)
+            if im.mode == 'P':
+                im = im.convert('RGBA')
+
             if im.mode == "RGBA":
                 new_image = Image.new("RGBA", im.size, "WHITE")
                 new_image.paste(im, (0, 0), im)

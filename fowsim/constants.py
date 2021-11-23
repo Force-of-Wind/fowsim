@@ -300,7 +300,7 @@ SET_DATA = {
         {
             'name': 'Duel',
             'sets': [
-                {'code': 'DSD', 'name': 'Starter Decks'},
+                {'code': 'DSD', 'name': 'Duel Cluster Starter Decks'},
                 {'code': 'GOG', 'name': 'Game of Gods'}
             ]
         }

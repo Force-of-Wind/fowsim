@@ -15816,7 +15816,7 @@
               {
                 "id": "TAT-091",
                 "name": "Almerius, the Levitating Stone",
-                "type": "Special Magic Stone / True Magic Stone " ,
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -15837,7 +15837,7 @@
               {
                 "id": "TAT-092",
                 "name": "Feethsing, the Holy Wind Stone",
-                "type": "Special Magic Stone / True Magic Stone " ,
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -15858,7 +15858,7 @@
               {
                 "id": "TAT-093",
                 "name": "Grusbalesta, the Sealing Stone",
-                "type": "Special Magic Stone / True Magic Stone " ,
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -15979,7 +15979,7 @@
               {
                 "id": "TAT-099",
                 "name": "Milest, the Ghostly Flame Stone",
-                "type": "Special Magic Stone / True Magic Stone " ,
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -16000,7 +16000,7 @@
               {
                 "id": "TAT-100",
                 "name": "Moojdart, the Fantasy Stone",
-                "type": "Special Magic Stone / True Magic Stone " ,
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -18289,7 +18289,7 @@
               {
                 "id": "MPR-098",
                 "name": "Little Red, the Pure Stone",
-                "type": "Special Magic Stone / True Magic Stone " ,
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -59960,7 +59960,7 @@
               {
                 "id": "SDR6-012",
                 "name": "Alhama'at's Ultra Magic Stone",
-                "type": "Special Magic Stone / True Magic Stone " ,
+                "type": "Special Magic Stone / True Magic Stone",
                 "race": [],
                 "cost": "",
                 "colour": [
@@ -92490,7 +92490,7 @@
           },
           {
             "name": "Assault into the Demonic World",
-            "code": "",
+            "code": "ADW",
             "cards": [
               {
                 "id": "ADW-001",
@@ -97094,7 +97094,2851 @@
             ]
           }
         ]
-      }
-    ]
-  }
+      }, {
+				"name": "Duel",
+				"sets": [
+					{
+						"name": "Starter Deck - Tales Deck",
+						"code": "DSD",
+						"cards": [
+							{
+								"id": "DSD-001",
+								"name": "Barbatos, Aspiring Ascendant",
+								"type": "Resonator",
+								"race": [
+									"Human"
+								],
+								"cost": "{R}{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "1000",
+								"DEF": "400",
+								"abilities": [
+									"[Tales]",
+									"[Resonance] Fire Magic Stone >>> You may rest target J/resonator.",
+									"{R}: This card deals 200 damage to your opponent.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Put the top card of your magic stone deck into the field. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\".",
+									"Whenever damage is dealt to your opponent >>> Target J/resonator you control gains [Swiftness] until end of turn."
+								],
+								"divinity": "",
+								"flavour": "\"You summoned me, so I came! Why the long face?!\"",
+								"rarity": "",
+								"fowID": "5426"
+							},
+							{
+								"id": "DSD-002",
+								"name": "Cthulhu's Intimidation",
+								"type": "Chant",
+								"race": [],
+								"cost": "{R}{R}{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"You may pay {R} less to play this card for each fire magic stone that entered the field under your control this turn.",
+									"This card deals 600 damage to each J/resonator your opponent controls. If two or more fire magic stones were put into the field under your control this turn, damaged J/resonators cannot block until end of turn. If three or more fire magic stones were put into the field under your control this turn, draw a card."
+								],
+								"divinity": "",
+								"flavour": "One does not simply ignore the intimidating aura of a greater Cthulhu.",
+								"rarity": "",
+								"fowID": "5427"
+							},
+							{
+								"id": "DSD-003",
+								"name": "Flame Soldier of Ma'at",
+								"type": "Resonator",
+								"race": [
+									"Human"
+								],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"[Pierce]",
+									"[Resonance] Fire Magic Stone >>> This card gains [+200/+200] until end of turn.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Draw a card. If you control four or more magic stones, draw two cards instead."
+								],
+								"divinity": "",
+								"flavour": "The flame soldiers of Ma'at get better and better at fighting, until they die.",
+								"rarity": "",
+								"fowID": "5428"
+							},
+							{
+								"id": "DSD-004",
+								"name": "Flaming Salamander",
+								"type": "Resonator",
+								"race": [
+									"Beast"
+								],
+								"cost": "{R}{1}",
+								"colour": [
+									"R"
+								],
+								"ATK": "700",
+								"DEF": "700",
+								"abilities": [
+									"[Resonance] Fire Magic Stone >>> This card deals 600 damage to target J/resonator. If damage was dealt to the chosen target this way, destroy it."
+								],
+								"divinity": "",
+								"flavour": "Once is a burn, twice a fatality.",
+								"rarity": "",
+								"fowID": "5429"
+							},
+							{
+								"id": "DSD-005",
+								"name": "Lovecraft, Dragon of Chaos",
+								"type": "Resonator",
+								"race": [
+									"Dragon"
+								],
+								"cost": "{R}{R}{R}{1}",
+								"colour": [
+									"R"
+								],
+								"ATK": "1800",
+								"DEF": "400",
+								"abilities": [
+									"[Tales]",
+									"[Flying]",
+									"Banish a magic stone: Destroy the J/resonator blocking this card.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> This card deals damage equal to its ATK to target player or J/resonator.",
+									"At end of turn >>> Destroy this card."
+								],
+								"divinity": "",
+								"flavour": "\"Be careful not to burn yourself out! And don't think about fading away, either!\" Nyarlathotep",
+								"rarity": "",
+								"fowID": "5430"
+							},
+							{
+								"id": "DSD-006",
+								"name": "Phantasmal Ascendant",
+								"type": "Resonator",
+								"race": [
+									"Cthulhu"
+								],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"[Quickcast]",
+									"[Enter] >>> Put the top card of your magic stone deck into the field. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\".",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"Banish a magic stone: Target J/resonator loses all abilities until end of turn. Then this card deals 1000 damage to it."
+								],
+								"divinity": "",
+								"flavour": "Nyarlathotep's favorite food is raw power, the power of those who challenge gods with all their might.",
+								"rarity": "",
+								"fowID": "5431"
+							},
+							{
+								"id": "DSD-007",
+								"name": "Red Flame",
+								"type": "Chant",
+								"race": [],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"This card deals 200 damage to target player or J/resonator.",
+									"[Force Resonance] <Chaos> (This card gains the following text in all zones as long as you control [Force Command] <Chaos>.)",
+									"This card deals 200 damage plus an additional 200 damage multiplied by the number of magic stones you control instead."
+								],
+								"divinity": "",
+								"flavour": "The flames of chaos shine brighter than anything else in this world.",
+								"rarity": "",
+								"fowID": "5432"
+							},
+							{
+								"id": "DSD-008",
+								"name": "Red Wine and Bread",
+								"type": "Addition",
+								"race": [],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Resonance] Fire Magic Stone >>> J/resonators you control gain [+200/+200] until end of turn.",
+									"[Enter] >>> Put the top card of your magic stone deck into the field. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\".",
+									"[Force Resonance] <Chaos>",
+									"Whenever a J-ruler you control is destroyed >>> Draw a card."
+								],
+								"divinity": "",
+								"flavour": "\"Wine from another world! Oh, I'd love to take a sip.\" Odin",
+								"rarity": "",
+								"fowID": "5433"
+							},
+							{
+								"id": "DSD-009",
+								"name": "Spirit of Ma'at",
+								"type": "Resonator",
+								"race": [
+									"Spirit"
+								],
+								"cost": "{R}{R}{1}",
+								"colour": [
+									"R"
+								],
+								"ATK": "900",
+								"DEF": "900",
+								"abilities": [
+									"[Quickcast]",
+									"[Resonance] Fire Magic Stone >>> This card gains [+400/+400] and [Swiftness] until end of turn.",
+									"{R}, discard this card: Target J/resonator gains [+400/+400] and [Swiftness] until end of turn.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Put the top card of your magic stone deck into the field. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\"."
+								],
+								"divinity": "",
+								"flavour": "Only the ascendants can control this flame.",
+								"rarity": "",
+								"fowID": "5434"
+							},
+							{
+								"id": "DSD-010",
+								"name": "Sudden Manifestation of Power",
+								"type": "Chant",
+								"race": [],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Put the top card of your magic stone deck into the field. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\". Draw a card."
+								],
+								"divinity": "",
+								"flavour": "In the world of Ma'at, a sudden manifestation of power can mean two things: growth or destruction.",
+								"rarity": "",
+								"fowID": "5435"
+							},
+							{
+								"id": "DSD-011",
+								"name": "Nyarlathotep, Game Master",
+								"type": "Ruler",
+								"race": [
+									"High God"
+								],
+								"cost": "",
+								"colour": [
+									"W",
+									"R",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Tales]",
+									"You cannot have cards with [Villains] in your deck or magic stone deck.",
+									"[Revolution Order] {0} (Once per turn, as you play a resonator spell, you may choose to order it. If you do, that resonator spell gains \"Players cannot chase to this card. This card cannot be canceled or moved to any zone other than the field.\". As that resonator enters the field, put this card with its order side up into your order area.)",
+									"[Force Command] <Chaos> (Apply all [Force Resonance] <Chaos> abilities of cards you control in all zones.)"
+								],
+								"divinity": "",
+								"flavour": "Nyarlathotep invited the gods into her world to enter the game of gods.",
+								"rarity": "RR",
+								"fowID": "5436"
+							},
+							{
+								"id": "DSD-011J",
+								"name": "Order of the Game",
+								"type": "Order",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"(The ordered card becomes a J-ruler with play cost (and is no longer a resonator) and gains the following abilities as long as this card is in your order area. The J-ruler type and those abilities cannot be removed from or lost by the ordered card in any way.)",
+									"[Force Command] <Chaos>",
+									"The ordered card gains [+X00/+X00], where X is the number of magic stones you control.",
+									"You may call a magic stone while the ordered card is rested and calling a magic stone does not cause the ordered card to rest."
+								],
+								"divinity": "",
+								"flavour": "The game of gods begins here and now.",
+								"rarity": "JR",
+								"fowID": "5437"
+							},
+							{
+								"id": "DSD-023",
+								"name": "Fire Magic Stone",
+								"type": "Basic Magic Stone",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[rest]: Produce {R}."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5438"
+							}
+						]
+					},
+					{
+						"name": "Starter Deck - Villains Deck",
+						"code": "DSD",
+						"cards": [
+							{
+								"id": "DSD-012",
+								"name": "Artillerist of Faith",
+								"type": "Resonator",
+								"race": [
+									"Soldier"
+								],
+								"cost": "{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "300",
+								"DEF": "300",
+								"abilities": [
+									"[Pierce]",
+									"This card gains [+X00/+X00], where X is the highest total cost among entities you control.",
+									"[Enter] >>> You may discard a card. If you do, this card deals 200 damage multiplied by the total cost of the card discarded this way to target player. Draw a card."
+								],
+								"divinity": "",
+								"flavour": "\"Quick! I need something to throw! Anything!\"",
+								"rarity": "",
+								"fowID": "5439"
+							},
+							{
+								"id": "DSD-013",
+								"name": "Choir of the Valkyries",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Put two [400/400] light Soldier resonator tokens into the field.",
+									"[Force Resonance] <Faith> (This card gains the following text in all zones as long as you control [Force Command] <Faith>.)",
+									"Put X [400/400] light Soldier resonator tokens into the field instead, where X is the highest total cost among entities you control."
+								],
+								"divinity": "",
+								"flavour": "The song of the Valkyries rekindles the soul.",
+								"rarity": "",
+								"fowID": "5440"
+							},
+							{
+								"id": "DSD-014",
+								"name": "Geri and Freki, Greedy Wolves",
+								"type": "Resonator",
+								"race": [
+									"Beast"
+								],
+								"cost": "{W}{W}{W}{2}",
+								"colour": [
+									"W"
+								],
+								"ATK": "1300",
+								"DEF": "1300",
+								"abilities": [
+									"[Villains]",
+									"[Enter] >>> Remove target non-magic stone, non-J-ruler entity your opponent controls from the game.",
+									"When this card is put into a graveyard from the field >>> Remove target non-magic stone, non-J-ruler entity your opponent controls from the game."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5452"
+							},
+							{
+								"id": "DSD-015",
+								"name": "Kara, Swift Valkyrie",
+								"type": "Resonator",
+								"race": [
+									"Valkyrie"
+								],
+								"cost": "{W}{1}",
+								"colour": [
+									"W"
+								],
+								"ATK": "600",
+								"DEF": "700",
+								"abilities": [
+									"[Villains]",
+									"[Swiftness]",
+									"[Flying]",
+									"{Rest}: Produce {W}.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Destroy target attacking J/resonator."
+								],
+								"divinity": "",
+								"flavour": "Nyarlathotep looked right up at the Valkyrie, staring at her like a hungry predator at its prey.",
+								"rarity": "",
+								"fowID": "5442"
+							},
+							{
+								"id": "DSD-016",
+								"name": "Keep the Faith!",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Choose one;\n- Target J/resonator gains [+400/+400], [Flying] and [Drain] until end of turn.\n- Put target non-magic stone, non-chant card with total cost 1 or less from your graveyard into the field.\n- Put the resonator part of target alternative card with a resonator part with total cost 1 or less from your graveyard into the field.",
+									"[Force Resonance] <Faith>",
+									"Instead add the following option and then choose one;\n- Destroy target J-ruler you control. If you do, draw cards equal to its total cost."
+								],
+								"divinity": "",
+								"flavour": "The light may go out, but faith remains. Always.",
+								"rarity": "",
+								"fowID": "5560"
+							},
+							{
+								"id": "DSD-017",
+								"name": "Praying Valkyrie",
+								"type": "Resonator",
+								"race": [
+									"Valkyrie"
+								],
+								"cost": "{W}{W}{1}",
+								"colour": [
+									"W"
+								],
+								"ATK": "900",
+								"DEF": "900",
+								"abilities": [
+									"[Flying]",
+									"If this card would be put into a graveyard from anywhere, remove it from the game instead. If you do, it gains \"If an effect you control would refer to the total cost of a light card in any zone, you may have it refer to that total cost plus 1 instead.\" as long as it is in your removed area.",
+									"{W}, discard this card: Draw a card.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> You gain 1000 life. Draw two cards, if the total cost of this card is 5 or more."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5454"
+							},
+							{
+								"id": "DSD-018",
+								"name": "Randgrid",
+								"type": "Resonator",
+								"race": [
+									"Valkyrie"
+								],
+								"cost": "{W}{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "500",
+								"DEF": "500",
+								"abilities": [
+									"[Villains]",
+									"[Flying]",
+									"This card gains [+X00/+X00], where X is the highest total cost among entities you control.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Destroy all J/resonators your opponent controls with ATK less than or equal to the ATK of this card."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5455"
+							},
+							{
+								"id": "DSD-019",
+								"name": "Repeating Faith Revival",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}{2}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Put target light resonator or light alternative card from your graveyard into the field. You may only put a resonator part of that alternative card into the field.",
+									"[Force Resonance] <Faith> (This card gains the following text in all zones as long as you control [Force Command] <Faith>.)",
+									"Players cannot chase to this card. Put this card into its owner's hand as it resolves."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5456"
+							},
+							{
+								"id": "DSD-020",
+								"name": "Soldier of Minerva",
+								"type": "Resonator",
+								"race": [
+									"Soldier"
+								],
+								"cost": "{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"If this card would be put into a graveyard from anywhere, remove it from the game instead. If you do, it gains \"If an effect you control would refer to the total cost of a light card in any zone, you may have it refer to that total cost plus 1 instead.\" as long as it is in your removed area.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Draw a card. Put two [+100/+100] counters on this card."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5457"
+							},
+							{
+								"id": "DSD-021",
+								"name": "The Holy Shield of Misteltein",
+								"type": "Addition",
+								"race": [],
+								"cost": "{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"{Rest}: If you control a J-ruler, until end of turn the next damage that would be dealt to you while you control a J-ruler is dealt to a J-ruler you control instead. Play this ability only if you control a J-ruler.",
+									"If an effect you control would refer to the total cost of this card in any zone, you may have it refer to that total cost plus 3 instead."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5458"
+							},
+							{
+								"id": "DSD-022",
+								"name": "Odin, God of War",
+								"type": "Ruler",
+								"race": [
+									"High God"
+								],
+								"cost": "",
+								"colour": [
+									"W",
+									"G",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Villains]",
+									"You cannot have cards with [Tales] in your deck or magic stone deck.",
+									"[Revolution Order] {0} (Once per turn, as you play a resonator spell, you may choose to order it. If you do, that resonator spell gains \"Players cannot chase to this card. This card cannot be canceled or moved to any zone other than the field.\". As that resonator enters the field, put this card with its order side up into your order area.)",
+									"[Force Command] <Faith> (Apply all [Force Resonance] <Faith> abilities of cards you control in all zones.)"
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "RR",
+								"fowID": "5459"
+							},
+							{
+								"id": "DSD-022J",
+								"name": "Order of War",
+								"type": "Order",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"(The ordered card becomes a J-ruler with play cost (and is no longer a resonator)and gains the following abilities as long as this card is in your order area. The J-ruler type and those abilities cannot be removed from or lost by the ordered card in any way.)",
+									"[Force Command] <Faith>",
+									"The ordered card gains [+200/+200] and [Pierce].",
+									"You may call a magic stone while the ordered card is rested and calling a magic stone does not cause the ordered card to rest."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "JR",
+								"fowID": "5460"
+							}
+						]
+					},
+					{
+						"name": "Game of Gods",
+						"code": "GOG",
+						"cards": [
+							{
+								"id": "GOG-001",
+								"name": "Artillerist of Faith",
+								"type": "Resonator",
+								"race": [
+									"Soldier"
+								],
+								"cost": "{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "300",
+								"DEF": "300",
+								"abilities": [
+									"[Pierce]",
+									"This card gains [+X00/+X00], where X is the highest total cost among entities you control.",
+									"[Enter] >>> You may discard a card. If you do, this card deals 200 damage multiplied by the total cost of the card discarded this way to target player. Draw a card."
+								],
+								"divinity": "",
+								"flavour": "\"Quick! I need something to throw! Anything!\"",
+								"rarity": "N",
+								"fowID": "5461"
+							},
+							{
+								"id": "GOG-002",
+								"name": "Brunhild, Sign of Faith",
+								"type": "Resonator",
+								"race": [
+									"Valkyrie"
+								],
+								"cost": "{W}{W}{1}",
+								"colour": [
+									"W"
+								],
+								"ATK": "1000",
+								"DEF": "1000",
+								"abilities": [
+									"[Villains]",
+									"[Flying]",
+									"[Drain]",
+									"[Enter] >>> Put target non-chant light card from your graveyard into the field.",
+									"If this card would be put into a graveyard from anywhere, remove it from the game instead. If you do, it gains \"If an effect you control would refer to the total cost of a light card in any zone, you may have it refer to that total cost plus 2 instead.\" as long as it is in your removed area.",
+									"[Revolution]",
+									"Apply the [Revolution] abilities of all light resonators you control."
+								],
+								"divinity": "",
+								"flavour": "With Odin entering the game of gods, parts of Minerva also manifested in this world.",
+								"rarity": "SR",
+								"fowID": "5462"
+							},
+							{
+								"id": "GOG-003",
+								"name": "Choir of the Valkyries",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Put two [400/400] light Soldier resonator tokens into the field.",
+									"[Force Resonance] <Faith> (This card gains the following text in all zones as long as you control [Force Command] <Faith>.)",
+									"Put X [400/400] light Soldier resonator tokens into the field instead, where X is the highest total cost among entities you control."
+								],
+								"divinity": "",
+								"flavour": "The song of the Valkyries rekindles the soul.",
+								"rarity": "N",
+								"fowID": "5463"
+							},
+							{
+								"id": "GOG-004",
+								"name": "Hegel, Giant of the Dark Sun",
+								"type": "Resonator",
+								"race": [
+									"Giant"
+								],
+								"cost": "{W}{W}{1}",
+								"colour": [
+									"W"
+								],
+								"ATK": "1000",
+								"DEF": "1000",
+								"abilities": [
+									"[Villains]",
+									"[Drain]",
+									"[Revolution]",
+									"[Enter] >>> Choose resonator or chant. Your opponent cannot play cards of the chosen type as long as this card is in the field."
+								],
+								"divinity": "",
+								"flavour": "The sun of Minerva shines strangely in the sky over the arena.",
+								"rarity": "R",
+								"fowID": "5464"
+							},
+							{
+								"id": "GOG-005",
+								"name": "Kara, Swift Valkyrie",
+								"type": "Resonator",
+								"race": [
+									"Valkyrie"
+								],
+								"cost": "{W}{1}",
+								"colour": [
+									"W"
+								],
+								"ATK": "600",
+								"DEF": "700",
+								"abilities": [
+									"[Villains]",
+									"[Swiftness]",
+									"[Flying]",
+									"{Rest}: Produce {W}.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Destroy target attacking J/resonator."
+								],
+								"divinity": "",
+								"flavour": "Nyarlathotep looked right up at the Valkyrie, staring at her like a hungry predator at its prey.",
+								"rarity": "N",
+								"fowID": "5465"
+							},
+							{
+								"id": "GOG-006",
+								"name": "Keep the Faith!",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Choose one;\n- Target J/resonator gains [+400/+400], [Flying] and [Drain] until end of turn.\n- Put target non-magic stone, non-chant card with total cost 1 or less from your graveyard into the field.\n- Put the resonator part of target alternative card with a resonator part with total cost 1 or less from your graveyard into the field.",
+									"[Force Resonance] <Faith>",
+									"Instead add the following option and then choose one;\n- Destroy target J-ruler you control. If you do, draw cards equal to its total cost."
+								],
+								"divinity": "",
+								"flavour": "The light may go out, but faith remains. Always.",
+								"rarity": "N",
+								"fowID": "5466"
+							},
+							{
+								"id": "GOG-007",
+								"name": "Light Mage of Ma'at",
+								"type": "Resonator",
+								"race": [
+									"Wizard"
+								],
+								"cost": "{W}{1}",
+								"colour": [
+									"W"
+								],
+								"ATK": "600",
+								"DEF": "600",
+								"abilities": [
+									"You may pay {1} less to play this card if you control a J-ruler.",
+									"[Enter] >>> This card deals damage equal to its ATK to target J/resonator.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Prevent all damage that would be dealt by target chant spell until end of turn."
+								],
+								"divinity": "",
+								"flavour": "Light governs both cause and effect.",
+								"rarity": "N",
+								"fowID": "5467"
+							},
+							{
+								"id": "GOG-008",
+								"name": "Misteltein, Dark Sword Saint",
+								"type": "Resonator",
+								"race": [
+									"Wanderer"
+								],
+								"cost": "{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"[Villains]",
+									"[Pierce]",
+									"Non-will activate abilities of other J/resonators cannot be played.",
+									"[Revolution]",
+									"Prevent all damage that would be dealt to this card.",
+									"At the end of your turn >>> Recover this card.",
+									"Discard a card: Put X [+100/+100] counters on this card, where X is the total cost of the discarded card. Draw a card. Play this ability only during your turn and only once per turn."
+								],
+								"divinity": "",
+								"flavour": "She descends on the arena to become the sword and shield of her god.",
+								"rarity": "MR",
+								"fowID": "5468"
+							},
+							{
+								"id": "GOG-009",
+								"name": "Odin Enters the Game of Gods",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Choose one;\n- Look at the top three cards of your deck. Put one of them into your hand, put one of them into your graveyard and remove one of them from the game.\n- Put X [+100/+100] counters on target J/resonator you control, where X is the highest total cost among entities you control.",
+									"[Force Resonance] <Faith>",
+									"Destroy up to one target non-magic stone entity with total cost X or less, where X is the highest total cost among entities you control."
+								],
+								"divinity": "",
+								"flavour": "\"Odin is a good test for your strength. Come on, Kaguya.\" \"What!? I have to fight!?\" Nyarlathotep and Kaguya",
+								"rarity": "SR",
+								"fowID": "5469"
+							},
+							{
+								"id": "GOG-010",
+								"name": "Odin's Intimidation",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}{3}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"You may pay {3} less to play this card if a J-ruler was put into the field under your control this turn.",
+									"Your opponent banishes X non-magic stone, non-J-ruler entities, where X is the number of entities with [Villains] you control."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "N",
+								"fowID": "5470"
+							},
+							{
+								"id": "GOG-011",
+								"name": "Praying Valkyrie",
+								"type": "Resonator",
+								"race": [
+									"Valkyrie"
+								],
+								"cost": "{W}{W}{1}",
+								"colour": [
+									"W"
+								],
+								"ATK": "900",
+								"DEF": "900",
+								"abilities": [
+									"[Flying]",
+									"If this card would be put into a graveyard from anywhere, remove it from the game instead. If you do, it gains \"If an effect you control would refer to the total cost of a light card in any zone, you may have it refer to that total cost plus 1 instead.\" as long as it is in your removed area.",
+									"{W}, discard this card: Draw a card.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> You gain 1000 life. Draw two cards, if the total cost of this card is 5 or more."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "N",
+								"fowID": "5471"
+							},
+							{
+								"id": "GOG-012",
+								"name": "Randgrid",
+								"type": "Resonator",
+								"race": [
+									"Valkyrie"
+								],
+								"cost": "{W}{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "500",
+								"DEF": "500",
+								"abilities": [
+									"[Villains]",
+									"[Flying]",
+									"This card gains [+X00/+X00], where X is the highest total cost among entities you control.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Destroy all J/resonators your opponent controls with ATK less than or equal to the ATK of this card."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "R",
+								"fowID": "5472"
+							},
+							{
+								"id": "GOG-013",
+								"name": "Repeating Faith Revival",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}{2}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Put target light resonator or light alternative card from your graveyard into the field. You may only put a resonator part of that alternative card into the field.",
+									"[Force Resonance] <Faith> (This card gains the following text in all zones as long as you control [Force Command] <Faith>.)",
+									"Players cannot chase to this card. Put this card into its owner's hand as it resolves."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "N",
+								"fowID": "5473"
+							},
+							{
+								"id": "GOG-014",
+								"name": "Soldier of Minerva",
+								"type": "Resonator",
+								"race": [
+									"Soldier"
+								],
+								"cost": "{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"If this card would be put into a graveyard from anywhere, remove it from the game instead. If you do, it gains \"If an effect you control would refer to the total cost of a light card in any zone, you may have it refer to that total cost plus 1 instead.\" as long as it is in your removed area.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Draw a card. Put two [+100/+100] counters on this card."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "N",
+								"fowID": "5474"
+							},
+							{
+								"id": "GOG-015",
+								"name": "The Holy Sword of Misteltein",
+								"type": "Addition",
+								"race": [],
+								"cost": "{W}{6}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"[Eternal]",
+									"If more than 1000 damage would be dealt to you, 1000 damage is dealt to you instead.",
+									"[Awakening]",
+									"{W}: [Enter] >>> Destroy target rested J/resonator.",
+									"[Force Resonance] <Faith>",
+									"You may pay {6} less to play this card."
+								],
+								"divinity": "",
+								"flavour": "Your power is also about how many legends are told about you.",
+								"rarity": "R",
+								"fowID": "5475"
+							},
+							{
+								"id": "GOG-016",
+								"name": "Wind of Asgard",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}",
+								"colour": [
+									"W"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"You and entities you control gain [Barrier] until end of turn.",
+									"[Force Resonance] <Faith>",
+									"You may play this card without paying its cost."
+								],
+								"divinity": "",
+								"flavour": "Odin still remembers the winds of the original Valhalla, a world which does no longer exist.",
+								"rarity": "R",
+								"fowID": "5476"
+							},
+							{
+								"id": "GOG-017",
+								"name": "Ambushing Scorpion",
+								"type": "Resonator",
+								"race": [
+									"Insect"
+								],
+								"cost": "{R}{1}",
+								"colour": [
+									"R"
+								],
+								"ATK": "700",
+								"DEF": "700",
+								"abilities": [
+									"[Quickcast]",
+									"[Bane]",
+									"[Enter] >>> Put the top card of your magic stone deck into the field. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\"."
+								],
+								"divinity": "",
+								"flavour": "\"No one is dumb enough to get stung by a scorpion.\" Famous last words in the world of Ma'at",
+								"rarity": "N",
+								"fowID": "5477"
+							},
+							{
+								"id": "GOG-018",
+								"name": "Barbatos, Aspiring Ascendant",
+								"type": "Resonator",
+								"race": [
+									"Human"
+								],
+								"cost": "{R}{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "1000",
+								"DEF": "400",
+								"abilities": [
+									"[Tales]",
+									"[Resonance] Fire Magic Stone >>> You may rest target J/resonator.",
+									"{R}: This card deals 200 damage to your opponent.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Put the top card of your magic stone deck into the field. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\".",
+									"Whenever damage is dealt to your opponent >>> Target J/resonator you control gains [Swiftness] until end of turn."
+								],
+								"divinity": "",
+								"flavour": "\"You summoned me, so I came! Why the long face?!\"",
+								"rarity": "R",
+								"fowID": "5478"
+							},
+							{
+								"id": "GOG-019",
+								"name": "Cthulhu's Intimidation",
+								"type": "Chant",
+								"race": [],
+								"cost": "{R}{R}{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"You may pay {R} less to play this card for each fire magic stone that entered the field under your control this turn.",
+									"This card deals 600 damage to each J/resonator your opponent controls. If two or more fire magic stones were put into the field under your control this turn, damaged J/resonators cannot block until end of turn. If three or more fire magic stones were put into the field under your control this turn, draw a card."
+								],
+								"divinity": "",
+								"flavour": "One does not simply ignore the intimidating aura of a greater Cthulhu.",
+								"rarity": "N",
+								"fowID": "5479"
+							},
+							{
+								"id": "GOG-020",
+								"name": "Explosive Withdrawal",
+								"type": "Chant",
+								"race": [],
+								"cost": "{R}{1}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Destroy target J-ruler you control. This card deals damage equal to the ATK of the chosen J-ruler to target player or J/resonator.",
+									"[Force Resonance] <Chaos>",
+									"You may banish a magic stone rather than pay this card's cost."
+								],
+								"divinity": "",
+								"flavour": "\"Retreat is the best offense!\" Nyarlathotep",
+								"rarity": "N",
+								"fowID": "5480"
+							},
+							{
+								"id": "GOG-021",
+								"name": "Flame Soldier of Ma'at",
+								"type": "Resonator",
+								"race": [
+									"Human"
+								],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"[Pierce]",
+									"[Resonance] Fire Magic Stone >>> This card gains [+200/+200] until end of turn.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Draw a card. If you control four or more magic stones, draw two cards instead."
+								],
+								"divinity": "",
+								"flavour": "The flame soldiers of Ma'at get better and better at fighting, until they die.",
+								"rarity": "N",
+								"fowID": "5481"
+							},
+							{
+								"id": "GOG-022",
+								"name": "Flaming Salamander",
+								"type": "Resonator",
+								"race": [
+									"Beast"
+								],
+								"cost": "{R}{1}",
+								"colour": [
+									"R"
+								],
+								"ATK": "700",
+								"DEF": "700",
+								"abilities": [
+									"[Resonance] Fire Magic Stone >>> This card deals 600 damage to target J/resonator. If damage was dealt to the chosen target this way, destroy it."
+								],
+								"divinity": "",
+								"flavour": "Once is a burn, twice a fatality.",
+								"rarity": "N",
+								"fowID": "5482"
+							},
+							{
+								"id": "GOG-023",
+								"name": "Isis, Heat of the Sand",
+								"type": "Resonator",
+								"race": [
+									"Ascendant"
+								],
+								"cost": "{R}{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "700",
+								"DEF": "700",
+								"abilities": [
+									"[Tales]",
+									"[Quickcast]",
+									"[Resonance] Fire Magic Stone >>> Produce {R}.",
+									"Banish a magic stone: Draw a card.",
+									"[Revolution]",
+									"[Enter] >>> Put the top card of your magic stone deck into the field rested. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\"."
+								],
+								"divinity": "",
+								"flavour": "Although the battlefield has shifted, the heat of the sand remains the same, as it always was and will ever be.",
+								"rarity": "SR",
+								"fowID": "5483"
+							},
+							{
+								"id": "GOG-024",
+								"name": "Magic Stone Dance of Chaos",
+								"type": "Chant",
+								"race": [],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Put the top three cards of your magic stone deck into the field rested. They gain \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\".",
+									"[Force Resonance] <Chaos>",
+									"Then you may banish any number of magic stones. Destroy all J/resonators with total cost equal to the number of magic stones banished this way."
+								],
+								"divinity": "",
+								"flavour": "In this world, magic stones are symbols of power, their shape and power constantly adapting to their bearers.",
+								"rarity": "SR",
+								"fowID": "5484"
+							},
+							{
+								"id": "GOG-025",
+								"name": "Melua, Mage of Ma'at",
+								"type": "Resonator",
+								"race": [
+									"Wizard"
+								],
+								"cost": "{R}{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "700",
+								"DEF": "700",
+								"abilities": [
+									"[Tales]",
+									"[Quickcast]",
+									"When this card is destroyed >>> It deals damage equal to its ATK to your opponent.",
+									"[Revolution]",
+									"[Enter] >>> Discard your hand. This card deals 1000 damage multiplied by the number of cards discarded this way to each J/resonator. Then draw four cards."
+								],
+								"divinity": "",
+								"flavour": "Magic leads to glory and ruin.",
+								"rarity": "R",
+								"fowID": "5485"
+							},
+							{
+								"id": "GOG-026",
+								"name": "Phantasmal Ascendant",
+								"type": "Resonator",
+								"race": [
+									"Cthulhu"
+								],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"[Quickcast]",
+									"[Enter] >>> Put the top card of your magic stone deck into the field. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\".",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"Banish a magic stone: Target J/resonator loses all abilities until end of turn. Then this card deals 1000 damage to it."
+								],
+								"divinity": "",
+								"flavour": "Nyarlathotep's favorite food is raw power, the power of those who challenge gods with all their might.",
+								"rarity": "N",
+								"fowID": "5486"
+							},
+							{
+								"id": "GOG-027",
+								"name": "Rebirth of Flaming Disaster",
+								"type": "Chant",
+								"race": [],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Destroy target J-ruler you control. Put a [400/400] fire Cthulhu resonator token with [Swiftness] into the field.",
+									"[Force Resonance] <Chaos>",
+									"Put X [400/400] fire Cthulhu resonator tokens with [Swiftness] into the field, where X is the number of magic stones you control."
+								],
+								"divinity": "",
+								"flavour": "\"Seriously, Nyarlathotep, do you really think your wisdom and cunning can match mine?\" Loki",
+								"rarity": "R",
+								"fowID": "5487"
+							},
+							{
+								"id": "GOG-028",
+								"name": "Red Flame",
+								"type": "Chant",
+								"race": [],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"This card deals 200 damage to target player or J/resonator.",
+									"[Force Resonance] <Chaos> (This card gains the following text in all zones as long as you control [Force Command] <Chaos>.)",
+									"This card deals 200 damage plus an additional 200 damage multiplied by the number of magic stones you control instead."
+								],
+								"divinity": "",
+								"flavour": "The flames of chaos shine brighter than anything else in this world.",
+								"rarity": "N",
+								"fowID": "5488"
+							},
+							{
+								"id": "GOG-029",
+								"name": "Red Riding Hood, Crimson Wolf",
+								"type": "Resonator",
+								"race": [
+									"Fairy Tale"
+								],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "200",
+								"DEF": "500",
+								"abilities": [
+									"[Tales]",
+									"Whenever damage is dealt to your opponent >>> This card gains [+200/+200] until end of turn.",
+									"{R}: Destroy target damaged J/resonator.",
+									"[Resonance] Fire Magic Stone >>> This card deals 200 damage to your opponent and each J/resonator your opponent controls.",
+									"[Revolution]",
+									"[Enter] >>> Put the top two cards of your magic stone deck into the field rested. They gain \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\"."
+								],
+								"divinity": "",
+								"flavour": "\"Well, first they told me to deliver wine and bread to my grandmother, but then I was summoned to a weird world and forced to fight bad gods...\" First words of the \"Little Red Riding Hood of Chaos'' fairy tale written by Nyarlathotep",
+								"rarity": "MR",
+								"fowID": "5489"
+							},
+							{
+								"id": "GOG-030",
+								"name": "Spirit of Ma'at",
+								"type": "Resonator",
+								"race": [
+									"Spirit"
+								],
+								"cost": "{R}{R}{1}",
+								"colour": [
+									"R"
+								],
+								"ATK": "900",
+								"DEF": "900",
+								"abilities": [
+									"[Quickcast]",
+									"[Resonance] Fire Magic Stone >>> This card gains [+400/+400] and [Swiftness] until end of turn.",
+									"{R}, discard this card: Target J/resonator gains [+400/+400] and [Swiftness] until end of turn.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Put the top card of your magic stone deck into the field. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\"."
+								],
+								"divinity": "",
+								"flavour": "Only the ascendants can control this flame.",
+								"rarity": "N",
+								"fowID": "5490"
+							},
+							{
+								"id": "GOG-031",
+								"name": "Sudden Manifestation of Power",
+								"type": "Chant",
+								"race": [],
+								"cost": "{R}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Put the top card of your magic stone deck into the field. It gains \"At the next end of turn >>> Put this card on the bottom of its owner's magic stone deck.\". Draw a card."
+								],
+								"divinity": "",
+								"flavour": "In the world of Ma'at, a sudden manifestation of power can mean two things: growth or destruction.",
+								"rarity": "N",
+								"fowID": "5491"
+							},
+							{
+								"id": "GOG-032",
+								"name": "This Means War!",
+								"type": "Chant",
+								"race": [],
+								"cost": "{R}{R}{1}",
+								"colour": [
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"You may play this card without paying its cost if it is your first spell this game.",
+									"Draw two cards. Reveal any number of cards with [Tales] from your hand. This card deals 200 damage multiplied by the number of cards with [Tales] revealed this way to target player or J/resonator."
+								],
+								"divinity": "",
+								"flavour": "\"It's time to...I mean, let the game of gods begin!\" Nyarlathotep",
+								"rarity": "R",
+								"fowID": "5492"
+							},
+							{
+								"id": "GOG-033",
+								"name": "Fairy of Trickery",
+								"type": "Resonator",
+								"race": [
+									"Fairy"
+								],
+								"cost": "{U}{U}",
+								"colour": [
+									"U"
+								],
+								"ATK": "600",
+								"DEF": "700",
+								"abilities": [
+									"[Quickcast]",
+									"[Flying]",
+									"You may pay {U} less to play this card if you control a J-ruler.",
+									"[Enter] >>> Rest target J/resonator. It doesn't recover during its controller's next recovery phase.",
+									"When this card is destroyed >>> Rest target J/resonator. It doesn't recover during its controller's next recovery phase."
+								],
+								"divinity": "",
+								"flavour": "Fairies of a feather flock together.",
+								"rarity": "N",
+								"fowID": "5493"
+							},
+							{
+								"id": "GOG-034",
+								"name": "Fenrir",
+								"type": "Resonator",
+								"race": [
+									"Beast"
+								],
+								"cost": "{U}{U}",
+								"colour": [
+									"U"
+								],
+								"ATK": "600",
+								"DEF": "800",
+								"abilities": [
+									"[Villains]",
+									"[Quickcast]",
+									"[Enter] >>> J/resonators your opponent controls gain [-1000/0] until end of turn.",
+									"When this card is destroyed >>> Draw a card.",
+									"[Revolution]",
+									"This card gains [+400/+400].",
+									"[Enter] >>> Destroy target J/resonator your opponent controls if its ATK is 0 or less."
+								],
+								"divinity": "",
+								"flavour": "Fenrir will always be Loki's good boi.",
+								"rarity": "R",
+								"fowID": "5494"
+							},
+							{
+								"id": "GOG-035",
+								"name": "Garmheld",
+								"type": "Resonator",
+								"race": [
+									"God"
+								],
+								"cost": "{U}{U}{1}",
+								"colour": [
+									"U"
+								],
+								"ATK": "800",
+								"DEF": "800",
+								"abilities": [
+									"[Villains]",
+									"Remove this card in your graveyard from the game: Produce {U}. Spend this will only to play cards named \"Garmheld\".",
+									"[Revolution]",
+									"As this card enters the field, you may reveal a resonator with [Tales] you own from outside the game and remove it from the game. If you do, this card enters the field as a copy of the card removed this way."
+								],
+								"divinity": "",
+								"flavour": "\"Any lie makes a deeper impression on people than the truth ever could.\" Loki",
+								"rarity": "MR",
+								"fowID": "5495"
+							},
+							{
+								"id": "GOG-036",
+								"name": "Giants, Advance!",
+								"type": "Chant",
+								"race": [],
+								"cost": "{U}",
+								"colour": [
+									"U"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Choose one;\n- Recover target Giant resonator you control.\n- Produce two wills in any combination of attributes. Spend this will only to play Giants."
+								],
+								"divinity": "",
+								"flavour": "\"Hey, that's illegal!\" Kaguya",
+								"rarity": "N",
+								"fowID": "5496"
+							},
+							{
+								"id": "GOG-037",
+								"name": "Loki Enters the Game of Gods",
+								"type": "Chant",
+								"race": [],
+								"cost": "{U}",
+								"colour": [
+									"U"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Choose one;\n- Target J/resonator gains [-2000/0] until end of turn. Draw a card.\n- Produce one will of any attribute. Draw a card.",
+									"[Force Resonance] <Trickery>",
+									"Resonators in your hand gain [Quickcast] until end of turn."
+								],
+								"divinity": "",
+								"flavour": "\"Loki? Seriously?!\" Nyarlathotep",
+								"rarity": "R",
+								"fowID": "5497"
+							},
+							{
+								"id": "GOG-038",
+								"name": "Loki's Curse",
+								"type": "Chant",
+								"race": [],
+								"cost": "{U}",
+								"colour": [
+									"U"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Rest target J/resonator.",
+									"[Force Resonance] <Trickery>",
+									"At the beginning of your turn >>> Put this card from your graveyard into your hand."
+								],
+								"divinity": "",
+								"flavour": "This curse will never end.",
+								"rarity": "N",
+								"fowID": "5498"
+							},
+							{
+								"id": "GOG-039",
+								"name": "Loki's Deception",
+								"type": "Chant",
+								"race": [],
+								"cost": "{U}{U}{U}",
+								"colour": [
+									"U"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Choose one;\n- Gain control of target [Enter] ability.\n- Change the target of target spell or ability with a single target.",
+									"[Force Resonance] <Trickery>",
+									"You may remove two water cards in your hand from the game rather than pay this card's cost."
+								],
+								"divinity": "",
+								"flavour": "Loki's trick was to turn her opponent's move against them.",
+								"rarity": "SR",
+								"fowID": "5499"
+							},
+							{
+								"id": "GOG-040",
+								"name": "Masked Giant of Trickery",
+								"type": "Resonator",
+								"race": [
+									"Giant"
+								],
+								"cost": "{U}{U}{1}",
+								"colour": [
+									"U"
+								],
+								"ATK": "1000",
+								"DEF": "1000",
+								"abilities": [
+									"You may play this card without paying its cost if you control an entity with [Tales] and an entity with [Villains].",
+									"Your opponent must target this card with spells or abilities, if able."
+								],
+								"divinity": "",
+								"flavour": "A mask will cover everything, truth and deception.",
+								"rarity": "N",
+								"fowID": "5500"
+							},
+							{
+								"id": "GOG-041",
+								"name": "Roar of the Underground Giant",
+								"type": "Chant",
+								"race": [],
+								"cost": "{U}",
+								"colour": [
+									"U"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Return target non-magic stone, non-J-ruler entity to its owner's hand.",
+									"[Force Resonance] <Trickery>",
+									"You may put target Giant card from your graveyard into your hand."
+								],
+								"divinity": "",
+								"flavour": "A cry of pure grief.",
+								"rarity": "N",
+								"fowID": "5501"
+							},
+							{
+								"id": "GOG-042",
+								"name": "Skidbladnir, Magical Sailing Ship",
+								"type": "Addition",
+								"race": [],
+								"cost": "{U}",
+								"colour": [
+									"U"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"[Enter] >>> You may search your deck for a Giant, reveal it and put it into your hand. If you do, shuffle your deck.",
+									"Whenever a J-ruler you control is destroyed >>> You may return this card to its owner's hand.",
+									"{Rest}: Target J/resonator you control cannot be blocked until end of turn."
+								],
+								"divinity": "",
+								"flavour": "A ship worthy of a trickster god.",
+								"rarity": "R",
+								"fowID": "5502"
+							},
+							{
+								"id": "GOG-043",
+								"name": "Underground Giant",
+								"type": "Resonator",
+								"race": [
+									"Giant"
+								],
+								"cost": "{U}{U}{2}",
+								"colour": [
+									"U"
+								],
+								"ATK": "1700",
+								"DEF": "1700",
+								"abilities": [
+									"[Barrier]",
+									"You may pay {2} less to play this card if a J-ruler you controlled was destroyed this turn.",
+									"This card enters the field rested.",
+									"[Revolution]",
+									"Return all resonators your opponent controls to their owners' hands."
+								],
+								"divinity": "",
+								"flavour": "This giant was imprisoned by Loki, who then tried to use its anger as a weapon.",
+								"rarity": "N",
+								"fowID": "5503"
+							},
+							{
+								"id": "GOG-044",
+								"name": "Volmol, Snake of Knowledge",
+								"type": "Resonator",
+								"race": [
+									"Snake"
+								],
+								"cost": "{U}",
+								"colour": [
+									"U"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"[Villains]",
+									"[Eternal]",
+									"{U}: Target J/resonator and this card lose all abilities until end of turn.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Draw three cards."
+								],
+								"divinity": "",
+								"flavour": "Knowledge is more intoxicating than any good wine.",
+								"rarity": "SR",
+								"fowID": "5504"
+							},
+							{
+								"id": "GOG-045",
+								"name": "Water Mage of Ma'at",
+								"type": "Resonator",
+								"race": [
+									"Wizard"
+								],
+								"cost": "{U}",
+								"colour": [
+									"U"
+								],
+								"ATK": "200",
+								"DEF": "400",
+								"abilities": [
+									"When this card is destroyed >>> Draw a card.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Put up to one target resonator and up to one target addition on the bottom of their owners' decks in any order."
+								],
+								"divinity": "",
+								"flavour": "In the world of Ma'at, water is a very precious resource.",
+								"rarity": "N",
+								"fowID": "5505"
+							},
+							{
+								"id": "GOG-046",
+								"name": "And War it Shall Be!",
+								"type": "Chant",
+								"race": [],
+								"cost": "{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"You may search your deck for a card with [Tales], reveal it and put it into your hand. If you do, shuffle your deck.",
+									"[Force Resonance] <Moon>",
+									"If this is the first spell you played this turn, recover target magic stone you control."
+								],
+								"divinity": "",
+								"flavour": "\"There is no other way!\" Kaguya",
+								"rarity": "N",
+								"fowID": "5506"
+							},
+							{
+								"id": "GOG-047",
+								"name": "Fiethsing, 100 Years of Wizardry",
+								"type": "Resonator",
+								"race": [
+									"Wizard"
+								],
+								"cost": "{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"[Tales]",
+									"[Quickcast]",
+									"[Enter] >>> Cancel target spell or activate or automatic ability your opponent controls unless its controller pays {X}, where X is the number of entities you control.",
+									"[Revolution]",
+									"{0}: Return the order card ordering this card to your ruler area as a ruler. If you do, draw a card. (This card is now a non-ordered resonator in the field.)"
+								],
+								"divinity": "",
+								"flavour": "After spending a century in New Valhalla, Fiethsing finally returned to life, looking younger than ever. And seeing that look on Kaguya's face really made every single day worth it.",
+								"rarity": "MR",
+								"fowID": "5507"
+							},
+							{
+								"id": "GOG-048",
+								"name": "Gale of the Moon",
+								"type": "Chant",
+								"race": [],
+								"cost": "{G}{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Cancel target spell. Put a wind Moon addition token into the field."
+								],
+								"divinity": "",
+								"flavour": "\"Banned! The reason, uh, ... it's not pretty enough!\" Fiethsing, 100 Years of Wizardry",
+								"rarity": "N",
+								"fowID": "5508"
+							},
+							{
+								"id": "GOG-049",
+								"name": "Galileo, Polymath",
+								"type": "Resonator",
+								"race": [
+									"Cat"
+								],
+								"cost": "{G}{G}{G}{1}",
+								"colour": [
+									"G"
+								],
+								"ATK": "1200",
+								"DEF": "1200",
+								"abilities": [
+									"[Tales]",
+									"[Flying]",
+									"[Barrier]",
+									"[Enter] >>> Draw a card.",
+									"J/resonators you control gain [Flying].",
+									"Whenever a resonator you control attacks >>> Recover target magic stone you control.",
+									"[Revolution]",
+									"Moon additions you control become [1000/1000] resonators. They are still additions."
+								],
+								"divinity": "",
+								"flavour": "\"I win! Celestial motion theory, proven!\"",
+								"rarity": "R",
+								"fowID": "5509"
+							},
+							{
+								"id": "GOG-050",
+								"name": "Hanzo, Ninja of the Moon",
+								"type": "Resonator",
+								"race": [
+									"Cat",
+									"Ninja"
+								],
+								"cost": "{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"[Tales]",
+									"Banish a Moon: Cancel target chant spell your opponent controls unless its controller pays {1}.",
+									"Banish a Moon: This card gains [+400/+400] until end of turn.",
+									"[Revolution]",
+									"[Enter] >>> You may pay {X}. If you do, put X wind Moon addition tokens into the field and recover up to X target magic stones you control.",
+									"Moons you control gain \"{Rest}: Produce {W}, {U} or {G}.\"."
+								],
+								"divinity": "",
+								"flavour": "\"Ninpo, the secret moon technique! You'll never know which one is real! ...Well, I don't know, either.\"",
+								"rarity": "SR",
+								"fowID": "5510"
+							},
+							{
+								"id": "GOG-051",
+								"name": "Kaguya Enters the Game of Gods",
+								"type": "Chant",
+								"race": [],
+								"cost": "{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Choose one;\n- Put a wind Moon addition token into the field. Draw a card.\n- Target entity you control gains [Barrier] until end of turn. Draw a card.",
+									"[Force Resonance] <Moon>",
+									"You may destroy all Moons you control. This card deals 500 damage multiplied by the number of Moons destroyed this way to target player or J/resonator."
+								],
+								"divinity": "",
+								"flavour": "\"Moon worship. I don't like it... I don't like it!\" Odin",
+								"rarity": "SR",
+								"fowID": "5511"
+							},
+							{
+								"id": "GOG-052",
+								"name": "Kaguya's Moonwatching",
+								"type": "Chant",
+								"race": [],
+								"cost": "{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Recover X magic stones you control, where X is the number of Moons you control.",
+									"[Force Resonance] <Moon>",
+									"Players cannot chase to this card."
+								],
+								"divinity": "",
+								"flavour": "The moon does not betray anyone.",
+								"rarity": "N",
+								"fowID": "5512"
+							},
+							{
+								"id": "GOG-053",
+								"name": "Kotaro, Ninja of Silence",
+								"type": "Resonator",
+								"race": [
+									"Cat",
+									"Ninja"
+								],
+								"cost": "{G}{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "600",
+								"DEF": "600",
+								"abilities": [
+									"[Tales]",
+									"[Quickcast]",
+									"This card gains [+200/+200] for each Moon you control.",
+									"[Revolution]",
+									"[Enter] >>> Choose one;\n- Destroy all additions your opponent controls.\n- Target player cannot play chants until end of turn."
+								],
+								"divinity": "",
+								"flavour": "After gaining the power of the moon, the Kouga ninja entered the arena as moon ninja.",
+								"rarity": "R",
+								"fowID": "5513"
+							},
+							{
+								"id": "GOG-054",
+								"name": "Mimi Tribe Spectator",
+								"type": "Resonator",
+								"race": [
+									"Mimi Tribe"
+								],
+								"cost": "{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"J/resonators with [Villains] you control gain [+400/+400]."
+								],
+								"divinity": "",
+								"flavour": "\"Go, go, go mi-! Come on mi-!\"",
+								"rarity": "N",
+								"fowID": "5514"
+							},
+							{
+								"id": "GOG-055",
+								"name": "Moon Rabbit Spectator",
+								"type": "Resonator",
+								"race": [
+									"Rabbit"
+								],
+								"cost": "{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"J/resonators with [Tales] you control gain [+400/+400]."
+								],
+								"divinity": "",
+								"flavour": "\"Come on! You got this!\"",
+								"rarity": "N",
+								"fowID": "5515"
+							},
+							{
+								"id": "GOG-056",
+								"name": "Ninja of Silence",
+								"type": "Resonator",
+								"race": [
+									"Cat",
+									"Ninja"
+								],
+								"cost": "{G}{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "600",
+								"DEF": "600",
+								"abilities": [
+									"[Quickcast]",
+									"You may pay {G} less to play this card if you control a J-ruler.",
+									"[Enter] >>> Prevent all damage that would be dealt by target J/resonator until end of turn."
+								],
+								"divinity": "",
+								"flavour": "\"And the silence will continue, just for a little while.\"",
+								"rarity": "N",
+								"fowID": "5516"
+							},
+							{
+								"id": "GOG-057",
+								"name": "Rabbit Ninja",
+								"type": "Resonator",
+								"race": [
+									"Rabbit",
+									"Ninja"
+								],
+								"cost": "{G}{G}{1}",
+								"colour": [
+									"G"
+								],
+								"ATK": "800",
+								"DEF": "800",
+								"abilities": [
+									"[Tales]",
+									"Whenever this card attacks >>> It gains [Flying] until end of turn.",
+									"Rest a recovered Moon you control: This card gains [Swiftness] until end of turn.",
+									"Rest two recovered Moons you control: Recover this card.",
+									"[Revolution]",
+									"[Enter] >>> Draw two cards. Put two wind Moon addition tokens into the field."
+								],
+								"divinity": "",
+								"flavour": "\"Hop, hop, play, play.\"",
+								"rarity": "R",
+								"fowID": "5517"
+							},
+							{
+								"id": "GOG-058",
+								"name": "Wind Knight of Ma'at",
+								"type": "Resonator",
+								"race": [
+									"Knight"
+								],
+								"cost": "{G}{G}{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "800",
+								"DEF": "900",
+								"abilities": [
+									"[Quickcast]",
+									"[Enter] >>> Put up to one wind chant from your graveyard into your hand.",
+									"[Revolution]",
+									"[Enter] >>> Recover up to two target magic stones you control."
+								],
+								"divinity": "",
+								"flavour": "The winds of Ma'at are always blowing from above, which makes climbing very tricky.",
+								"rarity": "R",
+								"fowID": "5518"
+							},
+							{
+								"id": "GOG-059",
+								"name": "Wind Moon",
+								"type": "Addition",
+								"race": [
+									"Moon"
+								],
+								"cost": "{G}",
+								"colour": [
+									"G"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"You may play this card without paying its cost if a wind J-ruler was put into the field under your control this turn.",
+									"[Enter] >>> Draw a card."
+								],
+								"divinity": "",
+								"flavour": "The moon is just there, and a lot of it.",
+								"rarity": "N",
+								"fowID": "5519"
+							},
+							{
+								"id": "GOG-060",
+								"name": "Call of Darkness",
+								"type": "Chant",
+								"race": [],
+								"cost": "{B}",
+								"colour": [
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"You may search your deck for a card with [Villains], reveal it and put it into your hand. If you do, shuffle your deck.",
+									"[Force Resonance] <Faith>",
+									"You may search your deck for a Valkyrie without [Villains], reveal it and put it into your hand. If you do, shuffle your deck.",
+									"[Force Resonance] <Trickery>",
+									"You may search your deck for a Giant without [Villains], reveal it and put it into your hand. If you do, shuffle your deck."
+								],
+								"divinity": "",
+								"flavour": "Loki and Odin trust each other even less than they trust their opponents.",
+								"rarity": "N",
+								"fowID": "5520"
+							},
+							{
+								"id": "GOG-061",
+								"name": "Dark Mage of Ma'at",
+								"type": "Resonator",
+								"race": [
+									"Wizard"
+								],
+								"cost": "{B}",
+								"colour": [
+									"B"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"[Bane]",
+									"[Enter] >>> Target J/resonator gains [-400/-400] until end of turn.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Your opponent banishes two resonators. If they don't, your opponent discards a card for each resonator not banished this way."
+								],
+								"divinity": "",
+								"flavour": "In Ma'at many lives are lost during the night.",
+								"rarity": "N",
+								"fowID": "5521"
+							},
+							{
+								"id": "GOG-062",
+								"name": "Dark Sun",
+								"type": "Addition",
+								"race": [],
+								"cost": "{B}",
+								"colour": [
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"[Enter] >>> Your opponent banishes a non-magic stone, non-J-ruler entity.",
+									"[Force Resonance] <Faith>",
+									"Entities your opponent controls lose all races.",
+									"[Force Resonance] <Trickery>",
+									"Your opponent cannot pay any costs that include banishing an entity."
+								],
+								"divinity": "",
+								"flavour": "While this dark sun is in the sky, nobody can see the moon.",
+								"rarity": "SR",
+								"fowID": "5522"
+							},
+							{
+								"id": "GOG-063",
+								"name": "Falling from Fate",
+								"type": "Chant",
+								"race": [],
+								"cost": "{B}",
+								"colour": [
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Target opponent reveals their hand. Choose a card with [Tales] or [Villains] from among them and remove it from the game."
+								],
+								"divinity": "",
+								"flavour": "Fate is equally cruel to everybody.",
+								"rarity": "N",
+								"fowID": "5523"
+							},
+							{
+								"id": "GOG-064",
+								"name": "Night Moon",
+								"type": "Addition",
+								"race": [
+									"Moon"
+								],
+								"cost": "{B}",
+								"colour": [
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"You may play this card without paying its cost if a Moon you controlled was banished or destroyed this turn.",
+									"[Enter] >>> Your opponent discards a card."
+								],
+								"divinity": "",
+								"flavour": "\"It's so nice to see the moon like this once in a while.\" Kaguya",
+								"rarity": "N",
+								"fowID": "5524"
+							},
+							{
+								"id": "GOG-065",
+								"name": "Phantasmal Scarlet",
+								"type": "Chant",
+								"race": [],
+								"cost": "{B}",
+								"colour": [
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Target J/resonator loses all abilities until end of turn. Then destroy it.",
+									"[Force Resonance] <Chaos>",
+									"[Quickcast]",
+									"You may banish a darkness magic stone rather than pay this card's cost."
+								],
+								"divinity": "",
+								"flavour": "The illusion of a power that once might have been.",
+								"rarity": "SR",
+								"fowID": "5525"
+							},
+							{
+								"id": "GOG-066",
+								"name": "Schmel, Giant of Distrust",
+								"type": "Resonator",
+								"race": [
+									"Giant"
+								],
+								"cost": "{B}{3}",
+								"colour": [
+									"B"
+								],
+								"ATK": "1300",
+								"DEF": "1300",
+								"abilities": [
+									"[Villains]",
+									"You may pay {3} less to play this card if a J-ruler you controlled was destroyed this turn.",
+									"When this card is destroyed >>> J/resonators gain [-1000/-1000] until end of turn.",
+									"[Revolution]",
+									"[Enter] >>> Your opponent discards two cards."
+								],
+								"divinity": "",
+								"flavour": "Believes in nothing but revenge.",
+								"rarity": "SR",
+								"fowID": "5526"
+							},
+							{
+								"id": "GOG-067",
+								"name": "Soulstealing Valkyrie",
+								"type": "Resonator",
+								"race": [
+									"Valkyrie"
+								],
+								"cost": "{B}",
+								"colour": [
+									"B"
+								],
+								"ATK": "400",
+								"DEF": "400",
+								"abilities": [
+									"[Flying]",
+									"[Enter] >>> Destroy a J-ruler you control. Your opponent loses 200 life multiplied by the total cost of that J-ruler and you gain that much life."
+								],
+								"divinity": "",
+								"flavour": "\"Let's see what your soul is worth.\" Odin",
+								"rarity": "N",
+								"fowID": "5527"
+							},
+							{
+								"id": "GOG-068",
+								"name": "Arena Expansion: Asgard",
+								"type": "Addition",
+								"race": [],
+								"cost": "{W}{G}{B}",
+								"colour": [
+									"W",
+									"G",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"J-rulers you control  gain [Drain].",
+									"[Force Resonance] <Faith>",
+									"When this card is put into your graveyard from your deck >>> Put it into the field."
+								],
+								"divinity": "",
+								"flavour": "Even a god feels nostalgic once a while.",
+								"rarity": "R",
+								"fowID": "5528"
+							},
+							{
+								"id": "GOG-069",
+								"name": "Arena Expansion: Eien no Tsuki no Miyako",
+								"type": "Addition",
+								"race": [
+									"Moon"
+								],
+								"cost": "{W}{U}{G}",
+								"colour": [
+									"W",
+									"U",
+									"G"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Moon additions you control gain [Eternal] and [Barrier].",
+									"[Force Resonance] <Moon>",
+									"You may pay {W}{U} less to play this card if you control three or more Moons."
+								],
+								"divinity": "",
+								"flavour": "Eternity has a special place in the heart.",
+								"rarity": "R",
+								"fowID": "5529"
+							},
+							{
+								"id": "GOG-070",
+								"name": "Arena Expansion: R'lyeh",
+								"type": "Addition",
+								"race": [],
+								"cost": "{W}{R}{B}",
+								"colour": [
+									"W",
+									"R",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Eternal]",
+									"[Enter] >>> Shuffle any number of magic stones from your graveyard and/or your removed area into your magic stone deck. Draw a card.",
+									"Treat fire magic stones you control also as light magic stones and darkness magic stones.",
+									"[Force Resonance] <Chaos>",
+									"You may banish a magic stone rather than pay this card's cost."
+								],
+								"divinity": "",
+								"flavour": "\"Hmm... I wonder if people would think this place is suitable for a family vacation?\" Nyarlathotep",
+								"rarity": "R",
+								"fowID": "5530"
+							},
+							{
+								"id": "GOG-071",
+								"name": "Arena Expansion: Utgard",
+								"type": "Addition",
+								"race": [
+									"Giant"
+								],
+								"cost": "{U}{G}{B}",
+								"colour": [
+									"U",
+									"G",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Whenever a J-ruler you control is destroyed >>> This card becomes a [2000/2000] resonator until end of turn. It's still an addition.",
+									"{U}: This card gains [Barrier] until end of turn.",
+									"[Force Resonance] <Trickery>",
+									"You may pay {G}{B} less to play this card if a J-ruler you controlled was destroyed this turn."
+								],
+								"divinity": "",
+								"flavour": "\"This game is fun.\" Loki",
+								"rarity": "R",
+								"fowID": "5531"
+							},
+							{
+								"id": "GOG-072",
+								"name": "Calamity Shield",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}{R}",
+								"colour": [
+									"W",
+									"R"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Choose one;\n- If damage would be dealt to you this turn, it's dealt to your opponent instead.\n- If damage would be dealt to target J/resonator you control this turn, it's dealt to your opponent instead.\n- If damage would be dealt by target spell or ability with a single target this turn, it's dealt to your opponent instead.",
+									"[Force Resonance] <Chaos>",
+									"You may pay {W} less to play this card if you control a J-ruler with [Tales]."
+								],
+								"divinity": "",
+								"flavour": "\"Don't mind me, I am just trying to help.\" Nyarlathotep",
+								"rarity": "N",
+								"fowID": "5532"
+							},
+							{
+								"id": "GOG-073",
+								"name": "Demon Beast of Hellfire",
+								"type": "Resonator",
+								"race": [
+									"Cthulhu"
+								],
+								"cost": "{R}{B}",
+								"colour": [
+									"R",
+									"B"
+								],
+								"ATK": "600",
+								"DEF": "600",
+								"abilities": [
+									"[Swiftness]",
+									"[Precision]",
+									"[Bane]",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Your opponent banishes a non-magic-stone, non-J-ruler entity. Repeat this process until the combined total cost of entities banished this way is equal to or greater than X, where X is the number of magic stones you control."
+								],
+								"divinity": "",
+								"flavour": "Fire is hell, death is salvation.",
+								"rarity": "N",
+								"fowID": "5533"
+							},
+							{
+								"id": "GOG-074",
+								"name": "Dogra Magra",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}{R}{B}",
+								"colour": [
+									"W",
+									"R",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"This card deals X00 damage to target player or J/resonator and you gain X00 life, where X is a randomly determined number between 1 and 20. If the combined number of magic stones you control and magic stones in your graveyard is 10 or more, X is 20 instead.",
+									"[Force Resonance] <Chaos>",
+									"You may banish two magic stones rather than pay this card's cost."
+								],
+								"divinity": "",
+								"flavour": "The flames of chaos are impossible to predict, unless you are chaos.",
+								"rarity": "SR",
+								"fowID": "5534"
+							},
+							{
+								"id": "GOG-075",
+								"name": "Double Bind",
+								"type": "Chant",
+								"race": [],
+								"cost": "{U}{B}",
+								"colour": [
+									"U",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Choose one;\n- Cancel target spell with [Tales].\n- Destroy target J/resonator with [Tales].",
+									"[Force Resonance] <Trickery>",
+									"You may pay {B} less to play this card if you control a resonator with [Villains].",
+									"You may pay {U} less to play this card if you control a resonator with [Tales]."
+								],
+								"divinity": "",
+								"flavour": "Even tales can be killed.",
+								"rarity": "N",
+								"fowID": "5535"
+							},
+							{
+								"id": "GOG-076",
+								"name": "Gungnir, Magic Spear of Devotion",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}{G}{B}",
+								"colour": [
+									"W",
+									"G",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Destroy target J/resonator you control. Destroy all J/resonators your opponent controls and then remove all cards in your opponent's graveyard from the game.",
+									"[Force Resonance] <Faith>",
+									"You may pay {W}{B} less to play this card during your main phase."
+								],
+								"divinity": "",
+								"flavour": "Piercing many souls, dominating the arena.",
+								"rarity": "SR",
+								"fowID": "5536"
+							},
+							{
+								"id": "GOG-077",
+								"name": "Huginn and Muninn",
+								"type": "Resonator",
+								"race": [
+									"Beast"
+								],
+								"cost": "{W}{W}{B}",
+								"colour": [
+									"W",
+									"B"
+								],
+								"ATK": "100",
+								"DEF": "100",
+								"abilities": [
+									"[Villains]",
+									"[Flying]",
+									"[Bane]",
+									"[Enter] >>> Remove all cards in all graveyards from the game. Then put X [+100/+100] counters on this card, where X is the highest total cost among entities you control.",
+									"[Revolution] (This card gains the following text as long as it is ordered.)",
+									"[Enter] >>> Each player discards their hand."
+								],
+								"divinity": "",
+								"flavour": "Never get close to a grumpy raven of Odin. But who knows if it is grumpy or not?!",
+								"rarity": "R",
+								"fowID": "5537"
+							},
+							{
+								"id": "GOG-078",
+								"name": "Kaguya, God of Cats and the Moon",
+								"type": "Ruler",
+								"race": [
+									"High God"
+								],
+								"cost": "",
+								"colour": [
+									"W",
+									"U",
+									"G"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Tales]",
+									"You cannot have cards with [Villains] in your deck or magic stone deck.",
+									"[Revolution Order] {0} (Once per turn, as you play a resonator spell, you may choose to order it. If you do, that resonator spell gains \"Players cannot chase to this card. This card cannot be canceled or moved to any zone other than the field.\". As that resonator enters the field, put this card with its order side up into your order area.)",
+									"[Force Command] <Moon> (Apply all [Force Resonance] <Moon> abilities of cards you control in all zones.)"
+								],
+								"divinity": "",
+								"flavour": "Kaguya had no choice but to go along with Nyarlathotep's arbitrary decision, and clearly didn't like it. Nyarlathotep, on the other hand, enjoyed every second of it.",
+								"rarity": "RR",
+								"fowID": "5538"
+							},
+							{
+								"id": "GOG-078J",
+								"name": "Order of the Moon",
+								"type": "Order",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"(The ordered card becomes a J-ruler with play cost (and is no longer a resonator) and gains the following abilities as long as this card is in your order area. The J-ruler type and those abilities cannot be removed from or lost by the ordered card in any way.)",
+									"[Force Command] <Moon>",
+									"[Enter] >>> Put a wind Moon addition token into the field.",
+									"The ordered card gains [+X00/+X00] and [Flying], where X is the number of additions you control.",
+									"You may call a magic stone while the ordered card is rested and calling a magic stone does not cause the ordered card to rest."
+								],
+								"divinity": "",
+								"flavour": "\"Good luck, everyone, in the name of the moon!\" Kaguya",
+								"rarity": "JR",
+								"fowID": "5539"
+							},
+							{
+								"id": "GOG-079",
+								"name": "Loki, Master of Trickery",
+								"type": "Ruler",
+								"race": [
+									"High God"
+								],
+								"cost": "",
+								"colour": [
+									"U",
+									"G",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Villains]",
+									"You cannot have cards with [Tales] in your deck or magic stone deck.",
+									"[Revolution Order] {0} (Once per turn, as you play a resonator spell, you may choose to order it. If you do, that resonator spell gains \"Players cannot chase to this card. This card cannot be canceled or moved to any zone other than the field.\". As that resonator enters the field, put this card with its order side up into your order area.)",
+									"[Force Command] <Trickery> (Apply all [Force Resonance] <Trickery> abilities of cards you control in all zones.)"
+								],
+								"divinity": "",
+								"flavour": "Although Loki had other plans, she still decided to enter the game, hoping to get an opportunity to be perfect again.",
+								"rarity": "RR",
+								"fowID": "5540"
+							},
+							{
+								"id": "GOG-079J",
+								"name": "Order of Trickery",
+								"type": "Order",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"(The ordered card becomes a J-ruler with play cost (and is no longer a resonator) and gains the following abilities as long as this card is in your order area. The J-ruler type and those abilities cannot be removed from or lost by the ordered card in any way.)",
+									"[Force Command] <Trickery>",
+									"{0}: Destroy target ordered card. Play this ability only once per turn.",
+									"You may call a magic stone while the ordered card is rested and calling a magic stone does not cause the ordered card to rest."
+								],
+								"divinity": "",
+								"flavour": "Trickery sometimes can be more real than the real thing.",
+								"rarity": "JR",
+								"fowID": "5541"
+							},
+							{
+								"id": "GOG-080",
+								"name": "Loki's Strategy",
+								"type": "Chant",
+								"race": [],
+								"cost": "{U}{G}{B}",
+								"colour": [
+									"U",
+									"G",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Choose one;\n- Put target resonator or addition on the bottom of its owner's deck.\n- Draw a card.\n- Recover up to three target magic stones you control.",
+									"[Force Resonance] <Trickery>",
+									"If you control a resonator with [Tales] and a resonator with [Villains], you may choose up to three instead.",
+									"You may pay {W}{B} less to play this card if you control a resonator with [Tales] and a resonator with [Villains]."
+								],
+								"divinity": "",
+								"flavour": "\"Don't bother planning three moves ahead, I always make three moves at a time anyway.\" Loki",
+								"rarity": "SR",
+								"fowID": "5542"
+							},
+							{
+								"id": "GOG-081",
+								"name": "Nyarlathotep, Game Master",
+								"type": "Ruler",
+								"race": [
+									"High God"
+								],
+								"cost": "",
+								"colour": [
+									"W",
+									"R",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Tales]",
+									"You cannot have cards with [Villains] in your deck or magic stone deck.",
+									"[Revolution Order] {0} (Once per turn, as you play a resonator spell, you may choose to order it. If you do, that resonator spell gains \"Players cannot chase to this card. This card cannot be canceled or moved to any zone other than the field.\". As that resonator enters the field, put this card with its order side up into your order area.)",
+									"[Force Command] <Chaos> (Apply all [Force Resonance] <Chaos> abilities of cards you control in all zones.)"
+								],
+								"divinity": "",
+								"flavour": "Nyarlathotep invited the gods into her world to enter the game of gods.",
+								"rarity": "RR",
+								"fowID": "5543"
+							},
+							{
+								"id": "GOG-081J",
+								"name": "Order of Chaos",
+								"type": "Order",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"(The ordered card becomes a J-ruler with play cost (and is no longer a resonator) and gains the following abilities as long as this card is in your order area. The J-ruler type and those abilities cannot be removed from or lost by the ordered card in any way.)",
+									"[Force Command] <Chaos>",
+									"The ordered card gains [+200/+200] and [Swiftness].",
+									"You may call a magic stone while the ordered card is rested and calling a magic stone does not cause the ordered card to rest."
+								],
+								"divinity": "",
+								"flavour": "A part of the essence of Nyarlathotep.",
+								"rarity": "JR",
+								"fowID": "5544"
+							},
+							{
+								"id": "GOG-082",
+								"name": "Odin, God of War",
+								"type": "Ruler",
+								"race": [
+									"High God"
+								],
+								"cost": "",
+								"colour": [
+									"W",
+									"G",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Villains]",
+									"You cannot have cards with [Tales] in your deck or magic stone deck.",
+									"[Revolution Order] {0} (Once per turn, as you play a resonator spell, you may choose to order it. If you do, that resonator spell gains \"Players cannot chase to this card. This card cannot be canceled or moved to any zone other than the field.\". As that resonator enters the field, put this card with its order side up into your order area.)",
+									"[Force Command] <Faith> (Apply all [Force Resonance] <Faith> abilities of cards you control in all zones.)"
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "RR",
+								"fowID": "5545"
+							},
+							{
+								"id": "GOG-082J",
+								"name": "Order of Faith",
+								"type": "Order",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"(The ordered card becomes a J-ruler with play cost (and is no longer a resonator) and gains the following abilities as long as this card is in your order area. The J-ruler type and those abilities cannot be removed from or lost by the ordered card in any way.)",
+									"[Force Command] <Faith>",
+									"[Enter] >>> You may search your deck for a light card and put it into your graveyard. If you do, shuffle your deck.",
+									"The ordered card gains [+X00/+X00], where X is its total cost.",
+									"You may call a magic stone while the ordered card is rested and calling a magic stone does not cause the ordered card to rest."
+								],
+								"divinity": "",
+								"flavour": "Faith is based on sacrifice.",
+								"rarity": "JR",
+								"fowID": "5546"
+							},
+							{
+								"id": "GOG-083",
+								"name": "Odin's Gloom",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}{B}",
+								"colour": [
+									"W",
+									"B"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"Choose one;\n- Destroy target J-ruler.\n- Your opponent banishes a resonator.\n- Your opponent discards a card.",
+									"[Force Resonance] <Faith>",
+									"You may choose up to three instead."
+								],
+								"divinity": "",
+								"flavour": "\"Do they let everyone and their zoo be a high god now?!\" Odin",
+								"rarity": "N",
+								"fowID": "5547"
+							},
+							{
+								"id": "GOG-084",
+								"name": "Seal of Wind and Water",
+								"type": "Chant",
+								"race": [],
+								"cost": "{U}{G}",
+								"colour": [
+									"U",
+									"G"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Return target non-magic stone, non-J-ruler entity you control to its owner's hand. Recover up to two target magic stones you control.",
+									"[Force Resonance] <Moon>",
+									"Players cannot chase to this card."
+								],
+								"divinity": "",
+								"flavour": "The wind directs.",
+								"rarity": "N",
+								"fowID": "5548"
+							},
+							{
+								"id": "GOG-085",
+								"name": "Teachings of the Moon",
+								"type": "Chant",
+								"race": [],
+								"cost": "{W}{U}{G}",
+								"colour": [
+									"W",
+									"U",
+									"G"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Quickcast]",
+									"Choose one;\n- Destroy all J/resonators that attacked this turn.\n- Draw two cards. Then put a card from your hand on top of your deck.\n- Put two wind Moon addition tokens into the field.",
+									"[Force Resonance] <Moon>",
+									"You may banish a Moon addition rather than pay this card's cost."
+								],
+								"divinity": "",
+								"flavour": "The moon is bright and radiant, it teaches us everything we need to know.",
+								"rarity": "SR",
+								"fowID": "5549"
+							},
+							{
+								"id": "GOG-086",
+								"name": "Ma'at, World of Duels and Ascendants",
+								"type": "Addition",
+								"race": [],
+								"cost": "{1}",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Mythic] (When you control two or more entities with [Mythic] that share a name >>> Banish all but one of them.)",
+									"[Enter] >>> Draw a card.",
+									"Players pay {2} more to play [Judgment] abilities.",
+									"Prevent all damage that would be dealt to J/resonators with [Tales] or J/resonators with [Villains] by J/resonators with neither [Tales] nor [Villains]."
+								],
+								"divinity": "",
+								"flavour": "This world is entered by gods to settle their conflicts, ordering their resonators to fight in an arena. Even Nyarlathotep, current master of this world, must abide by these rules, which is a powerful restriction she is not really happy about.",
+								"rarity": "MR",
+								"fowID": "5550"
+							},
+							{
+								"id": "GOG-087",
+								"name": "The Tales' Magic Stone",
+								"type": "Special Magic Stone",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Tales]",
+									"{Rest}: Produce {1}.",
+									"{Rest}: Produce one will of any attribute. Spend this will only to play resonators with [Tales]."
+								],
+								"divinity": "",
+								"flavour": "\"Now isn't it hilarious that I am on the Tales team now?\" Nyarlathotep",
+								"rarity": "R",
+								"fowID": "5558"
+							},
+							{
+								"id": "GOG-088",
+								"name": "The Villains' Magic Stone",
+								"type": "Special Magic Stone",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[Villains]",
+									"{Rest}: Produce {1}.",
+									"{Rest}: Produce one will of any attribute. Spend this will only to play resonators with [Villains]."
+								],
+								"divinity": "",
+								"flavour": "\"Now, just follow my script.\" Loki",
+								"rarity": "R",
+								"fowID": "5559"
+							},
+							{
+								"id": "GOG-089",
+								"name": "Darkness Magic Stone",
+								"type": "Basic Magic Stone",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[rest]: Produce {U}."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5553"
+							},
+							{
+								"id": "GOG-090",
+								"name": "Fire Magic Stone",
+								"type": "Basic Magic Stone",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[rest]: Produce {R}."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5554"
+							},
+							{
+								"id": "GOG-091",
+								"name": "Light Magic Stone",
+								"type": "Basic Magic Stone",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[rest]: Produce {W}."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5555"
+							},
+							{
+								"id": "GOG-092",
+								"name": "Water Magic Stone",
+								"type": "Basic Magic Stone",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[rest]: Produce {U}."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5556"
+							},
+							{
+								"id": "GOG-093",
+								"name": "Wind Magic Stone",
+								"type": "Basic Magic Stone",
+								"race": [],
+								"cost": "",
+								"colour": [
+									"V"
+								],
+								"ATK": "",
+								"DEF": "",
+								"abilities": [
+									"[rest]: Produce {G}."
+								],
+								"divinity": "",
+								"flavour": "",
+								"rarity": "",
+								"fowID": "5557"
+							}
+						]
+					}
+				]
+            }
+        ]
+    }
 }

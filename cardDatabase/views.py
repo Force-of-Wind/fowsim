@@ -245,6 +245,7 @@ def view_card(request, card_id=None):
     ctx['referred_by'] = referred_by
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
+    ctx['set_name'] = [set for set in CONS.SET_CHOICES if set[0] == card.set_code][0][1]
 
     return render(request, 'cardDatabase/html/view_card.html', context=ctx)
 

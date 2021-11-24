@@ -12,7 +12,6 @@ class SearchForm(forms.Form):
 
 class AdvancedSearchForm(forms.Form):
     race_values = Race.objects.values('name')
-    print(race_values)
     race_map = map(lambda x : (x['name'], x['name']), race_values)
     
     generic_text = forms.CharField(label='', strip=True,

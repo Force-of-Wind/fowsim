@@ -36,6 +36,18 @@
                 </div>
             </div>
         {% endif %}
+        {% if card.colours.all %}
+            <div class="card-text-info">
+                <div class="card-text-info-title">
+                    Attribute(s):
+                </div>
+                <div class="card-text-info-text">
+                    {% for colour in card.colours.all %}
+                        {% format_attribute_text colour.db_representation %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
         {% if card.races.all %}
             <div class="card-text-info">
                 <div class="card-text-info-title">

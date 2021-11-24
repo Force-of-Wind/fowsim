@@ -65,7 +65,7 @@ RARITY_CHOICE_VALUES = (
     (RARITY_J_RULER_VALUE, RARITY_J_RULER),
     (RARITY_COLOSSAL_J_RULER_VALUE, RARITY_COLOSSAL_J_RULER),
     (RARITY_NORMAL_VALUE, RARITY_NORMAL),
-    (RARITY_SECRET_RARE_VALUE, RARITY_SECRET_RARE),
+    #(RARITY_SECRET_RARE_VALUE, RARITY_SECRET_RARE),  We don't have any yet
     (RARITY_ASCENDED_RULER_VALUE, RARITY_ASCENDED_RULER),
     (RARITY_ASCENDED_J_RULER_VALUE, RARITY_ASCENDED_J_RULER)
 )
@@ -310,7 +310,7 @@ SET_DATA = {
 SET_CHOICES = []
 for cluster in SET_DATA['clusters']:
     for fow_set in cluster['sets']:
-        SET_CHOICES.append((fow_set['code'], fow_set['name']))
+        SET_CHOICES.append((fow_set['code'], f'{fow_set["name"]} ({fow_set["code"]})'))
 
 SET_CHOICES.reverse()
 

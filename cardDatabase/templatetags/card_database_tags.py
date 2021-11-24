@@ -36,6 +36,7 @@ WILL_TYPE_TO_FILENAMES = {
     '10': '10.png',
     '11': '11.png',
     '12': '12.png',
+    'X': 'X.png',
 }
 
 
@@ -45,6 +46,11 @@ def format_cost_text(text):
         text = text.replace('{%s}' % attr, attribute_to_img_html(attr))
 
     return mark_safe(text)
+
+
+@register.simple_tag
+def format_attribute_text(attr):
+    return attribute_to_img_html(attr)
 
 
 @register.simple_tag

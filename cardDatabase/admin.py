@@ -22,6 +22,7 @@ class CardAdmin(admin.ModelAdmin):
 class AbilityTextAdmin(admin.ModelAdmin):
     list_display = ('text',)
     inlines = [CardsWithAbilityTextInline]
+    search_fields = ['text']
 
 
 admin.site.register(OneTimeEffect)

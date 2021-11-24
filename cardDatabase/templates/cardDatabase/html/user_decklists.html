@@ -1,0 +1,19 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="decklist-container">
+        <div class="new-decklist">
+            <a href="{% url 'cardDatabase-create-decklist' %}">Create New Deck</a>
+        </div>
+        {% if decklists %}
+            {% for decklist in decklists %}
+                <a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">{{ decklist.name }}</a>
+            {% endfor %}
+        {% else %}
+            <div class="no-decklists-title">
+                No decklists available.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

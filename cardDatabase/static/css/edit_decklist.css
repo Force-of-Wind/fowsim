@@ -1,0 +1,120 @@
+#database-container{
+    width: 75%;
+}
+
+#decklist-container{
+    position: absolute;
+    right: 0;
+    top: 60px;
+    height: calc(100% - 60px);
+    width: 25%;
+    padding-left: 10px;
+    border-left: 1px solid rgb(0 0 0 / 16%);
+}
+
+.deck-zone-title{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.deck-zone{
+    padding-bottom: 30px;
+}
+
+.deck-zone-card-count{
+    display: inline-block;
+}
+
+.deck-zone-card-name{
+    display: inline-block;
+}
+
+#advanced-form{
+    max-width: 100%;
+    padding: 0 50px 0 30px;
+}
+
+.decklist-name{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.decklist-name{
+    padding-bottom: 15px;
+}
+
+.deck-zone{
+    border-bottom: 1px solid rgb(0 0 0 / 16%);
+    margin-bottom: 5px;
+}
+
+.card-quantity{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.card-quantity-minus,
+.card-quantity-plus {
+    display: block;
+    width: 22px;
+    height: 23px;
+    margin: 0;
+    background: #dc0800;
+    text-decoration: none;
+    text-align: center;
+    line-height: 23px;
+}
+.card-quantity-minus:hover,
+.card-quantity-plus:hover {
+    background: #575b71;
+    color: #fff;
+}
+.card-quantity-minus {
+    border-radius: 3px 0 0 3px;
+}
+.card-quantity-plus {
+    border-radius: 0 3px 3px 0;
+}
+.card-quantity-input {
+    width: 25px;
+    height: 19px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    border-top: 2px solid #dc0800;
+    border-bottom: 2px solid #dc0800;
+    border-left: 1px solid #dc0800;
+    border-right: 2px solid #dc0800;
+    background: #fff;
+    color: #8184a1;
+    box-sizing: initial;
+}
+.card-quantity-minus:link,
+.card-quantity-plus:link {
+    color: #8184a1;
+}
+.card-quantity-minus:visited,
+.card-quantity-plus:visited {
+    color: #fff;
+}
+
+.deck-zone-card{
+    padding-bottom: 2px;
+}
+
+.hover-card-img{
+    display: none;
+}
+
+.hover-card-img.show-hover{
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    padding: 3px;
+    background-color: black;
+}

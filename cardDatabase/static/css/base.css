@@ -1,0 +1,43 @@
+body{
+    margin: 0;
+}
+
+#header{
+    width: 100%;
+    height: max-content;
+    background-color: #dc0800;
+    margin-bottom: 30px;
+    padding: 5px 0;
+}
+
+.header-content{
+    margin: 0 auto;
+    width: max-content;
+}
+
+.header-content a{
+    text-decoration: none;
+}
+
+#social-media{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.discord{
+    width: 30px;
+    height: 30px;
+}
+
+#site-title{
+    display: inline-block;
+    line-height: 10px;
+    bottom: 10px;
+    color: white;
+}
+
+#site-icon{
+    display: inline-block;
+    height: 30px;
+}

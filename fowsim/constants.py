@@ -533,3 +533,10 @@ SEARCH_SETS_INCLUDE = {
         'AO4 Buy a Box'
     ]
 }
+
+
+ZONES_SHOWN_BY_DEFAULT = [
+    'Ruler Area',
+    'Main Deck',
+    'Magic Stone Deck'
+]

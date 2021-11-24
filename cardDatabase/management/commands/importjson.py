@@ -6,6 +6,7 @@ from django.core.management import call_command
 
 from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card, AbilityText, Race, Type, CardColour
+from cardDatabase.models.DeckList import DeckListZone
 
 
 #  Types separated by / that don't have spaces e.g. "Chant / Rune".
@@ -52,11 +53,19 @@ def get_colour_name(code):
         if code == choice_code:
             return choice_name
 
+
+
+def setup_db():
+    for zone in CONS.ZONES_SHOWN_BY_DEFAULT:
+        DeckListZone.objects.get_or_create(name=zone, show_by_default=True)
+
+
 class Command(BaseCommand):
     help = 'imports cardDatabase/static/cards.json to the database'
 
     def handle(self, *args, **options):
         with open('cardDatabase/static/cards.json', encoding='utf-8') as json_file:
+            setup_db()
             data = json.load(json_file)
             for cluster in data['fow']['clusters']:
                 sets = cluster['sets']

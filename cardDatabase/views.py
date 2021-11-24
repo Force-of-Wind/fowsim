@@ -9,6 +9,8 @@ from django.urls import reverse
 
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm
 from .models.CardType import Card
+from .models.User import Profile
+from .models.DeckList import DeckList, DeckListZone, DeckListCard
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins
 
@@ -252,3 +254,29 @@ def add_card(request):
         else:
             ctx |= {'add_card_form': add_card_form}
     return render(request, 'cardDatabase/html/add_card.html', context=ctx)
+
+
+@login_required
+def user_decklists(request):
+    ctx = dict()
+    ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile)
+    return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
+
+
+@login_required
+def create_decklist(request):
+    decklist = DeckList.objects.create(profile=request.user.profile, name='Untitled Deck')
+    return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': decklist.id}))
+
+
+@login_required
+def edit_decklist(request, decklist_id=None):
+    decklist = get_object_or_404(DeckList, pk=decklist_id)
+    ctx = get_search_form_ctx()
+    ctx['basic_form'] = SearchForm()
+    ctx['advanced_form'] = AdvancedSearchForm()
+    ctx['default_zones'] = DeckListZone.objects.filter(show_by_default=True).values_list('name', )
+    ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
+    #ctx['zones_to_show'] = set(ctx['decklist_cards'].exclude(zone__name__in=CONS.ZONES_SHOWN_BY_DEFAULT).values_list('zone__name', flat=True))
+    ctx['decklist'] = decklist
+    return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)

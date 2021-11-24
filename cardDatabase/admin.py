@@ -5,13 +5,23 @@ from cardDatabase.models.Effects import OneTimeEffect
 from cardDatabase.models.User import Profile
 
 
+class AbilityTextInline(admin.TabularInline):
+    model = AbilityText.cards.through
+
+
+class CardsWithAbilityTextInline(admin.TabularInline):
+    model = Card.ability_texts.through
+
+
 class CardAdmin(admin.ModelAdmin):
     list_display = ('name', 'card_id', )
     search_fields = ['name', 'ability_texts__text', 'card_id']
+    inlines = [AbilityTextInline]
 
 
 class AbilityTextAdmin(admin.ModelAdmin):
     list_display = ('text',)
+    inlines = [CardsWithAbilityTextInline]
 
 
 admin.site.register(OneTimeEffect)

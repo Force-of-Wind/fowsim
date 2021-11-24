@@ -43,7 +43,7 @@
                 </div>
                 <div class="card-text-info-text">
                     {% for colour in card.colours.all %}
-                        {% format_attribute_text colour.db_representation %}
+                        <a href='/search?colours={{ colour.db_representation }}&form_type=advanced-form'>{% format_attribute_text colour.db_representation %}</a>
                     {% endfor %}
                 </div>
             </div>

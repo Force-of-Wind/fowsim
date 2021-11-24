@@ -43,7 +43,7 @@
                 </div>
                 <div class="card-text-info-text">
                     {% for race in card.races.all %}
-                        {{ race.name }}{% if not forloop.last %},{% endif %}
+                        <a href='/search?race={{ race.name }}&form_type=advanced-form'>{{ race.name }}</a>{% if not forloop.last %},{% endif %}
                     {% endfor %}
                 </div>
             </div>

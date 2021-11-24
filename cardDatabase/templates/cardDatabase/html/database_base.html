@@ -116,7 +116,7 @@
                                 {% for set in cluster.sets reversed %}
                                     <option value="{{ set.code }}"
                                     {% if set.code in advanced_form_data.sets %}selected{% endif %}>
-                                        {{ set.name }}
+                                        {{ set.name }} ({{ set.code }})
                                     </option>
                                 {% endfor %}
                             </optgroup>

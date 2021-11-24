@@ -22,7 +22,7 @@
             </div>
             <div class="card-text-info-text">
                 {% for card_type in card.types.all %}
-                    {{ card_type.name }}{% if not forloop.last %},{% endif %}
+                    <a href='/search?card_type={{ card_type.name }}&form_type=advanced-form'>{{ card_type.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -122,7 +122,7 @@
                     Rarity:
                 </div>
                 <div class="card-text-info-text">
-                    {{ card.rarity }}
+                    <a href='/search?rarity={{ card.rarity }}&form_type=advanced-form'>{{ card.rarity }}</a>
                 </div>
             </div>
         {% endif %}

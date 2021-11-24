@@ -18,6 +18,11 @@ class CardAdmin(admin.ModelAdmin):
     search_fields = ['name', 'ability_texts__text', 'card_id']
     inlines = [AbilityTextInline]
 
+    def get_form(self, request, obj=None, **kwargs):
+        if obj:
+            self.exclude = ('ability_texts',)
+        return super().get_form(request, obj=obj, **kwargs)
+
 
 class AbilityTextAdmin(admin.ModelAdmin):
     list_display = ('text',)

@@ -11,6 +11,9 @@ class SearchForm(forms.Form):
 
 
 class AdvancedSearchForm(forms.Form):
+    race_values = Race.objects.values('name')
+    race_map = map(lambda x : (x['name'], x['name']), race_values)
+    
     generic_text = forms.CharField(label='', strip=True,
                                    widget=forms.TextInput(attrs={'placeholder': 'Search...'}), required=False)
     text_exactness = forms.ChoiceField(label='Search card for:', required=False, choices=CONS.TEXT_EXACTNESS_OPTIONS)
@@ -18,6 +21,7 @@ class AdvancedSearchForm(forms.Form):
     sort_by = forms.ChoiceField(label='Sort results by:', choices=CONS.DATABASE_SORT_BY_CHOICES, required=False)
     reverse_sort = forms.BooleanField(label='Reverse sorting:', required=False)
     colours = forms.MultipleChoiceField(label='Color(s):', choices=CONS.COLOUR_CHOICES, required=False)
+    race = forms.MultipleChoiceField(label='Race(s):', choices=list(race_map), required=False)
     sets = forms.MultipleChoiceField(label='Set(s):', choices=CONS.SET_CHOICES, required=False)
     cost = forms.MultipleChoiceField(label='Total Cost(s):', choices=CONS.TOTAL_COST_CHOICES, required=False)
     card_type = forms.MultipleChoiceField(label='Card Type(s):', choices=CONS.DATABASE_CARD_TYPE_CHOICES, required=False)

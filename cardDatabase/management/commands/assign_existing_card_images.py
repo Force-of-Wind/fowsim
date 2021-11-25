@@ -14,7 +14,7 @@ class Command(BaseCommand):
         for card in models:
             try:
                 print(f'Trying to add image for {card.card_id}... ', end='')
-                card_image_path = os.path.join('cards', f'{card.card_id.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, "")}.jpg')
+                card_image_path = os.path.join('cards', f'{card.card_id}.jpg')
                 card.card_image = card_image_path
                 card.save(use_resize=False)
                 print('Success!')

@@ -7,7 +7,7 @@ from cardDatabase.management.commands.importjson import remove_punctuation
 
 class SearchForm(forms.Form):
     generic_text = forms.CharField(label='', strip=True,
-                                   widget=forms.TextInput(attrs={'placeholder': 'Search...'}))
+                                   widget=forms.TextInput(attrs={'placeholder': 'Search...'}), required=False)
 
 
 class AdvancedSearchForm(forms.Form):

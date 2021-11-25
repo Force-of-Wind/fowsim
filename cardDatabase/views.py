@@ -145,7 +145,7 @@ def get_unsupported_sets_query():
 
 
 def basic_search(basic_form):
-    cards = None
+    cards = []
     if basic_form.is_valid():
         search_text = basic_form.cleaned_data['generic_text']
         text_query = get_text_query(search_text, ['name', 'name_without_punctuation', 'ability_texts__text', 'races__name'], CONS.TEXT_CONTAINS_ALL)

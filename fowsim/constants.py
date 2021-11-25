@@ -316,7 +316,6 @@ SET_CHOICES.reverse()
 
 TEXT_SEARCH_FIELD_CHOICES = [
     ('name', 'Name'),
-    ('races__name', 'Race/Trait'),
     ('ability_texts__text', 'Abilities'),
     ('card_id', 'Set Code'),
     ('flavour', 'Flavour')

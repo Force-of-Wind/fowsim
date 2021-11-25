@@ -8,17 +8,26 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm
-from .models.CardType import Card
+from .models.CardType import Card, Race
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins
 
 
 def get_search_form_ctx():
+    race_values = Race.objects.values('name')
+    race_map = map(lambda x : x['name'], race_values)
+
     return {
+        'races_list': list(race_map),
         'card_types_list': CONS.DATABASE_CARD_TYPE_GROUPS,
         'sets_json': CONS.SET_DATA
     }
 
+def get_race_query(data):
+    race_query = Q()
+    for race in data:
+        race_query |= Q(races__name=race)
+    return race_query
 
 def get_rarity_query(data):
     rarity_query = Q()
@@ -107,7 +116,7 @@ def get_atk_def_query(value, comparator, field_name):
 
 
 def sort_cards(cards, sort_by, is_reversed):
-    if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT:
+    if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT or not sort_by:
         return sorted(cards, key=lambda item:
                       (CONS.SETS_IN_ORDER.index(item.set_code),
                        item.set_number),
@@ -124,7 +133,7 @@ def sort_cards(cards, sort_by, is_reversed):
                        CONS.SETS_IN_ORDER.index(item.set_code),
                        item.set_number),
                       reverse=is_reversed)
-    raise Exception('Attempting to sort card by no selection')
+    raise Exception('Attempting to sort card by invalid selection')
 
 
 def get_unsupported_sets_query():
@@ -155,6 +164,7 @@ def advanced_search(advanced_form):
                                     advanced_form.cleaned_data['text_exactness'])
 
         attr_query = get_attr_query(advanced_form.cleaned_data['colours'])
+        race_query = get_race_query(advanced_form.cleaned_data['race'])
         set_query = get_set_query(advanced_form.cleaned_data['sets'])
         card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
         rarity_query = get_rarity_query(advanced_form.cleaned_data['rarity'])
@@ -166,6 +176,7 @@ def advanced_search(advanced_form):
 
         cards = (Card.objects.filter(text_query).
                  filter(attr_query).
+                 filter(race_query).
                  filter(set_query).
                  filter(card_type_query).
                  filter(rarity_query).
@@ -234,6 +245,7 @@ def view_card(request, card_id=None):
     ctx['referred_by'] = referred_by
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
+    ctx['set_name'] = [set for set in CONS.SET_CHOICES if set[0] == card.set_code][0][1]
 
     return render(request, 'cardDatabase/html/view_card.html', context=ctx)
 

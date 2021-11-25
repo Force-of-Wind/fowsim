@@ -22,6 +22,11 @@ $(function(){
             focusOnInit($('#basic-form input[name="generic_text"]'));
         });
 
+    $('.race-select .mdb-select').materialSelect({
+        'visibleOptions': 14,
+        'placeholder': 'Search Race(s)...',
+        'maxSelectedOptions': 2
+    });
     $('.sets-select .mdb-select').materialSelect({
         'visibleOptions': 14,
         'placeholder': 'Search Set(s)...',

@@ -266,7 +266,7 @@ SET_DATA = {
                 {'code': 'SDV2', 'name': 'New Valhalla Entry Set [Fire] '},
                 {'code': 'SDV3', 'name': 'New Valhalla Entry Set [Water] '},
                 {'code': 'SDV4', 'name': 'New Valhalla Entry Set [Wind] '},
-                {'code': 'SDV5', 'name': 'New Valhalla Entry Set [Darkness] '},
+                {'code': 'SDV5', 'name': 'New Valhalla Entry Set [Darkness] '},comm
                 {'code': 'NDR', 'name': 'New Dawn Rises'},
                 {'code': 'SNV', 'name': 'The Strangers of New Valhalla'},
                 {'code': 'AOA', 'name': 'Awakening of the Ancients'},
@@ -283,7 +283,7 @@ SET_DATA = {
                 {'code': 'GITS2045', 'name': 'GHOST IN THE SHELL SAC_2045'},
                 {'code': 'GITS2045SD', 'name': 'Starter Deck GHOST IN THE SHELL SAC_2045'},
                 {'code': 'AO3', 'name': 'Alice Origin III'},
-                {'code': 'POFA', 'name': 'Prologue of Attoractia'},
+                {'code': 'PofA', 'name': 'Prologue of Attoractia'},
 
             ]
         },

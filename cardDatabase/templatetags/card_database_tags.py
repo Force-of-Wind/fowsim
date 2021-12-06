@@ -81,8 +81,15 @@ def add_rest_icon(text):
     return text.replace('{Rest}', f'<img class="ability-rest-icon" src="{rest_url}"> ')
 
 
+def escape_tags(text):
+    text = text.replace('<', '&lt;')
+    text = text.replace('>', '&gt;')
+    return text
+
+
 @register.simple_tag
 def format_ability_text(text):
+    text = escape_tags(text)  # Must be first to escape <> before mark_safe e.g. "Force Resonance <Chaos>"
     text = format_cost_text(text)
     text = make_bubbles(text)
     text = add_rest_icon(text)

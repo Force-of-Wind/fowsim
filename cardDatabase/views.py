@@ -156,7 +156,7 @@ def basic_search(basic_form):
 
 def advanced_search(advanced_form):
     ctx = {}
-    cards = None
+    cards = []
     if advanced_form.is_valid():
         ctx['advanced_form_data'] = advanced_form.cleaned_data
         text_query = get_text_query(advanced_form.cleaned_data['generic_text'],
@@ -237,6 +237,26 @@ def search_for_cards(request):
     return render(request, 'cardDatabase/html/search.html', context=ctx)
 
 
+def full_set_code_to_name(set_code):
+    for cluster in CONS.SET_DATA['clusters']:
+        for fow_set in cluster['sets']:
+            if fow_set['code'] == set_code:
+                return fow_set['name']
+
+
+def searchable_set_and_name(set_code):
+    #  Check CONS.SET_DATA first, not all sets are in there, some are extra things like 'Buy a Box'
+    #  which should be included in CONS.SEARCH_SETS_INCLUDE
+    to_return = full_set_code_to_name(set_code)
+    if to_return:
+        return set_code, to_return
+
+    #  Search for "parent" set, e.g. "AO2 Buy a Box" becomes "AO2"
+    for fow_set in CONS.SEARCH_SETS_INCLUDE:
+        if set_code in CONS.SEARCH_SETS_INCLUDE[fow_set]:
+            return fow_set, full_set_code_to_name(fow_set)
+
+
 def view_card(request, card_id=None):
     card = get_object_or_404(Card, card_id=card_id)
     referred_by = Card.objects.filter(ability_texts__text__contains=f'"{card.name}"')
@@ -245,7 +265,9 @@ def view_card(request, card_id=None):
     ctx['referred_by'] = referred_by
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
-    ctx['set_name'] = [set for set in CONS.SET_CHOICES if set[0] == card.set_code][0][1]
+    set_code, set_name = searchable_set_and_name(card.set_code)
+    ctx['set_name'] = set_name
+    ctx['set_code'] = set_code
 
     return render(request, 'cardDatabase/html/view_card.html', context=ctx)
 

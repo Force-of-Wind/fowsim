@@ -239,7 +239,7 @@ SET_DATA = {
                 {'code': 'SDL5', 'name': 'Vampiric Hunger'},
                 {'code': 'CFC', 'name': 'Curse of the Frozen Casket'},
                 {'code': 'LEL', 'name': 'Legacy Lost'},
-                {'code': 'VIN003', 'name': 'Vingolf "Ruler All Stars'},
+                {'code': 'VIN003', 'name': 'Vingolf "Ruler All Stars"'},
                 {'code': 'RDE', 'name': 'Return of the Dragon Emperor'},
                 {'code': 'ENW', 'name': 'Echoes of the New World'}
             ]
@@ -520,15 +520,19 @@ SEARCH_SETS_INCLUDE = {
         'AOA V3 Buy 2'
     ],
     'AO1': [
-        'AO1 Buy a Box'
+        'AO1 Buy a Box',
+        'AO1 Buy a BoxJ'
         ],
     'AO2': [
-        'AO2 Buy a Box'
+        'AO2 Buy a Box',
+        'AO2 Buy a BoxJ'
     ],
     'AO3': [
-        'AO3 Buy a Box'
+        'AO3 Buy a Box',
+        'AO3 Buy a BoxJ'
     ],
     'POFA': [
-        'AO4 Buy a Box'
+        'AO4 Buy a Box',
+        'AO4 Buy a BoxJ'
     ]
 }

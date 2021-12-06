@@ -52,13 +52,15 @@ $(function(){
         }
     });
 
-    $('.referenced-card').mouseover(function(event){
-       $(this).find('img').addClass('show-hover');
-    });
+    if (!FOWDB_IS_MOBILE) {
+        $('.referenced-card').mouseover(function (event) {
+            $(this).find('img').addClass('show-hover');
+        });
 
-    $('.referenced-card').mouseout(function(event){
-        $(this).find('img').removeClass('show-hover');
-    });
+        $('.referenced-card').mouseout(function (event) {
+            $(this).find('img').removeClass('show-hover');
+        });
+    }
 
     $('form').on('submit', function(event){
         event.preventDefault();

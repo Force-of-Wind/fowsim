@@ -15,10 +15,12 @@ from fowsim.decorators import site_admins
 
 def get_search_form_ctx():
     race_values = Race.objects.values('name')
-    race_map = map(lambda x : x['name'], race_values)
+    races_list = list(map(lambda x : x['name'], race_values))  # Remove blank string
+    races_list.sort()
+    races_list.remove('')
 
     return {
-        'races_list': list(race_map),
+        'races_list': list(races_list),
         'card_types_list': CONS.DATABASE_CARD_TYPE_GROUPS,
         'sets_json': CONS.SET_DATA
     }

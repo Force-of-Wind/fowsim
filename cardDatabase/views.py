@@ -288,3 +288,9 @@ def add_card(request):
         else:
             ctx |= {'add_card_form': add_card_form}
     return render(request, 'cardDatabase/html/add_card.html', context=ctx)
+
+
+@login_required
+@site_admins
+def test_error(request):
+    return 1 / 0

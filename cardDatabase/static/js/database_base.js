@@ -42,6 +42,11 @@ $(function(){
         'placeholder': 'Search Rarity(s)...',
         'maxSelectedOptions': 2
     });
+    $('.keywords-select .mdb-select').materialSelect({
+        'visibleOptions': 14,
+        'placeholder': 'Search Keyword(s)...',
+        'maxSelectedOptions': 2
+    });
 
     $('.select-text-exactness input, .select-sort-by input').change(function(){
         //Act like radio buttons, uncheck all the other ones in this form field

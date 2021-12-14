@@ -22,8 +22,10 @@ def get_races():
 
 
 def get_keywords_choices():
-    return []
-    #return [(x.search_string, x.name) for x in Keyword.objects.all().order_by('name')]
+    try:
+        return [(x.search_string, x.name) for x in Keyword.objects.all().order_by('name')]
+    except:
+        return []
 
 
 class AdvancedSearchForm(forms.Form):

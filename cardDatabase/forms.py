@@ -2,12 +2,17 @@ from django import forms
 
 from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card, Race, AbilityText
+from cardDatabase.models.Ability import Keyword
 from cardDatabase.management.commands.importjson import remove_punctuation
 
 
 class SearchForm(forms.Form):
     generic_text = forms.CharField(label='', strip=True,
                                    widget=forms.TextInput(attrs={'placeholder': 'Search...'}), required=False)
+
+
+def get_keywords_choices():
+    return [(x.search_string, x.name) for x in Keyword.objects.all().order_by('name')]
 
 
 class AdvancedSearchForm(forms.Form):
@@ -31,6 +36,7 @@ class AdvancedSearchForm(forms.Form):
     atk_comparator = forms.ChoiceField(required=False, choices=CONS.ATK_DEF_COMPARATOR_CHOICES)
     def_value = forms.IntegerField(label='DEF', required=False, min_value=0, widget=forms.NumberInput(attrs={'placeholder': 'Defense'}))
     def_comparator = forms.ChoiceField(required=False, choices=CONS.ATK_DEF_COMPARATOR_CHOICES)
+    keywords = forms.MultipleChoiceField(label='Keyword(s):', choices=get_keywords_choices(), required=False)
 
 
 class AddCardForm(forms.ModelForm):

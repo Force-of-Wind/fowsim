@@ -155,6 +155,16 @@
                         {% endfor %}
                     </select>
                 </div>
+                <div class="fieldWrapper keywords-select">
+                    <select class="mdb-select md-form" multiple form="advanced-form" name="keywords" searchable="Search here...">
+                        {% for value, display in advanced_form.keywords.field.choices %}
+                            <option value="{{ value }}"
+                                    {% if value in advanced_form_data.keywords %}selected{% endif %}>
+                                {{ display }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="fieldWrapper rarity-select">
                     <select class="mdb-select md-form" multiple form="advanced-form" name="rarity" searchable="Search here...">
                         {% for value, display in advanced_form.rarity.field.choices %}

@@ -117,6 +117,13 @@ def get_atk_def_query(value, comparator, field_name):
     return Q()
 
 
+def get_keywords_query(data):
+    keywords_query = Q()
+    for keyword in data:
+        keywords_query |= Q(ability_texts__text__icontains=keyword)
+    return keywords_query
+
+
 def sort_cards(cards, sort_by, is_reversed):
     if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT or not sort_by:
         return sorted(cards, key=lambda item:
@@ -175,6 +182,7 @@ def advanced_search(advanced_form):
                                       advanced_form.cleaned_data['atk_comparator'], 'ATK')
         def_query = get_atk_def_query(advanced_form.cleaned_data['def_value'],
                                       advanced_form.cleaned_data['def_comparator'], 'DEF')
+        keywords_query = get_keywords_query(advanced_form.cleaned_data['keywords'])
 
         cards = (Card.objects.filter(text_query).
                  filter(attr_query).
@@ -185,6 +193,7 @@ def advanced_search(advanced_form):
                  filter(divinity_query).
                  filter(atk_query).
                  filter(def_query).
+                 filter(keywords_query).
                  exclude(get_unsupported_sets_query()).
                  distinct())
         cards = sort_cards(cards, advanced_form.cleaned_data['sort_by'],

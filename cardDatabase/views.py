@@ -267,6 +267,8 @@ def searchable_set_and_name(set_code):
         if set_code in CONS.SEARCH_SETS_INCLUDE[fow_set]:
             return fow_set, full_set_code_to_name(fow_set)
 
+    return set_code, None
+
 
 def view_card(request, card_id=None):
     card = get_object_or_404(Card, card_id=card_id)

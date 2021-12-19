@@ -117,7 +117,12 @@
                 Set:
             </div>
             <div class="card-text-info-text">
-                <a href='/search?sets={{ set_code }}&form_type=advanced-form'>{{ set_name }}</a>
+                {% if set_name %}
+                    <a href='/search?sets={{ set_code }}&form_type=advanced-form'>{{ set_name }} ({{set_code}})
+                {% else %}
+                    {{ set_code }}
+                {% endif %}
+                </a>
             </div>
         </div>
         <div class="card-text-info">

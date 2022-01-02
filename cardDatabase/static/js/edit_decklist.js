@@ -46,7 +46,6 @@ $(function() {
             },
             error: function(data){
                 console.log('Error');
-                console.log(data);
             },
             contentType: 'application/json',
             dataType: 'json'

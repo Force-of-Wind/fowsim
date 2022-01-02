@@ -29,6 +29,7 @@
     display: inline-flex;
     flex: 1;
     padding-left: 10px;
+    margin: auto 0;
 }
 
 #advanced-form{
@@ -168,4 +169,17 @@
 
 .overlay-zone-title{
     color: white;
+}
+
+.remove-card{
+    padding-right: 10px;
+    height: max-content;
+    width: max-content;
+    margin: auto 0;
+    font-size: 20px;
+}
+
+.remove-card:hover{
+    color: red;
+    cursor: pointer;
 }

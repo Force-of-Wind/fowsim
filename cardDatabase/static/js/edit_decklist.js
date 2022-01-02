@@ -1,6 +1,6 @@
 $(function() {
     let LAST_DATABASE_URL = '';
-    function setupCardQuantityInputs(){
+    function setupCardClickables(){
         // Remove duplicate listeners when it gets called multiple times while generating new card html
         $('.card-quantity-plus').unbind('click');
         $('.card-quantity-minus').unbind('click');
@@ -15,8 +15,11 @@ $(function() {
                 return parseInt(oldVal, 10) + 1;
             });
         });
+        $('.deck-zone-cards .remove-card').on('click', function(event){
+            $(this).closest('.deck-zone-card').remove();
+        });
     }
-    setupCardQuantityInputs();
+    setupCardClickables();
     $('#save-deck-button').click(function(event){
         let decklist_data = {
             "zones": [],
@@ -153,7 +156,7 @@ $(function() {
             if (!card_matches.length) {
                 let deck_card_html = createCardHtml(card_name, card_img_url, card_id);
                 deck_zone.find('.deck-zone-cards').append(deck_card_html);
-                setupCardQuantityInputs();
+                setupCardClickables();
             } else {
                 // Already exists, just increment the value
                 let input_el = card_matches.find('.card-quantity input');

@@ -18,6 +18,10 @@ $(function() {
         $('.deck-zone-cards .remove-card').on('click', function(event){
             $(this).closest('.deck-zone-card').remove();
         });
+
+        $('.deck-zone-title').on('blur keyup paste copy cut delete mouseup', function(event){
+            setupCardOverlay();
+        })
     }
     setupCardClickables();
     $('#save-deck-button').click(function(event){
@@ -59,6 +63,14 @@ $(function() {
             },
             contentType: 'application/json',
         })
+    });
+
+    $('#new-zone-button').on('click', function(event){
+        let output = `<div class="deck-zone"><div class="deck-zone-title" contenteditable="true">New Zone</div><div class="deck-zone-cards"></div></div>`;
+        $('.deck-zones-container').append(output);
+        // If any search results are showing, add the new zone to those cards
+        setupCardOverlay();
+        setupCardClickables();
     });
 
     $('.deck-zone-card').mouseover(function(event){
@@ -141,6 +153,7 @@ $(function() {
     }
 
     function setupCardOverlay(){
+        $('.overlay-container').remove();
         $('#search-results .card img').each(function(index){
             $(this).parent().append(getOverlayHTML());
         });

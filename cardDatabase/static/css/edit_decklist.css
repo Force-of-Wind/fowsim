@@ -16,6 +16,7 @@
 .deck-zone-title{
     font-weight: bold;
     font-size: 18px;
+    margin-right: 10px;
 }
 
 .deck-zone{
@@ -43,9 +44,10 @@
     font-size: 18px;
     padding-bottom: 15px;
     margin-right: 10px;
+    border-bottom: 1px solid rgb(0 0 0 / 16%);
 }
 
-.decklist-name:hover{
+.decklist-name:hover, .deck-zone-title:hover{
     background-color: rgba(0, 0, 0, 0.06);
 }
 
@@ -157,6 +159,7 @@
 
 .overlay-zone{
     width: max-content;
+    max-width: 100%;
     margin: 0 auto;
     background: black;
     padding: 10px 30px;

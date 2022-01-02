@@ -33,7 +33,7 @@
         <div class="deck-zones-container">
         {% for zone in default_zones %}
             <div class="deck-zone">
-                <div class="deck-zone-title">
+                <div class="deck-zone-title" contenteditable="true">
                     {{ zone.name }}
                 </div>
                 {# .deck-zone-cards is duplicated in the js in edit_decklist.js #}
@@ -63,6 +63,7 @@
             <a href="{% url 'cardDatabase-user-decklists' %}">
                 <button type="button">Cancel</button>
             </a>
+            <button id="new-zone-button" type="button">Add New Zone</button>
         </div>
     </div>
 {% endblock %}

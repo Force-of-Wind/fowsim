@@ -36,6 +36,7 @@
                 <div class="deck-zone-title">
                     {{ zone.name }}
                 </div>
+                {# .deck-zone-cards is duplicated in the js in edit_decklist.js #}
                 <div class="deck-zone-cards">
                     {% for card in decklist_cards %}
                         {% if card.zone == zone %}

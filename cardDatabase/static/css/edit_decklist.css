@@ -121,3 +121,51 @@
     padding: 3px;
     background-color: black;
 }
+
+.card a{
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    cursor: default;
+}
+
+.overlay-container{
+    display: none;
+}
+
+.card:hover .overlay-container{
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    top: 0;
+    z-index: 100;
+}
+
+.card-overlay{
+    width: 100%;
+    top:50%;
+    transform: translateY(-50%);
+    display: block;
+    position: absolute;
+}
+
+.overlay-zone{
+    width: max-content;
+    margin: 0 auto;
+    background: black;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.overlay-zone:not(:last-child){
+    margin-bottom: 10px;
+}
+
+.overlay-zone-title{
+    color: white;
+}

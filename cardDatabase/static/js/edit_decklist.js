@@ -1,16 +1,22 @@
 $(function() {
     let LAST_DATABASE_URL = '';
-    $('.card-quantity-minus').click(function(event){
-        $(this).siblings('input').val(function(i, oldVal){
-            return Math.max(parseInt(oldVal, 10) - 1, 1);
-        });
-    });
-    $('.card-quantity-plus').click(function(event){
-        $(this).siblings('input').val(function(i, oldVal){
-            return parseInt(oldVal, 10) + 1;
-        });
-    });
+    function setupCardQuantityInputs(){
+        // Remove duplicate listeners when it gets called multiple times while generating new card html
+        $('.card-quantity-plus').unbind('click');
+        $('.card-quantity-minus').unbind('click');
 
+        $('.card-quantity-minus').click(function(event){
+            $(this).siblings('input').val(function(i, oldVal){
+                return Math.max(parseInt(oldVal, 10) - 1, 1);
+            });
+        });
+        $('.card-quantity-plus').click(function(event){
+            $(this).siblings('input').val(function(i, oldVal){
+                return parseInt(oldVal, 10) + 1;
+            });
+        });
+    }
+    setupCardQuantityInputs();
     $('#save-deck-button').click(function(event){
         let decklist_data = {
             "zones": [],
@@ -49,7 +55,6 @@ $(function() {
                 console.log('Error');
             },
             contentType: 'application/json',
-            dataType: 'json'
         })
     });
 
@@ -110,8 +115,63 @@ $(function() {
                 $('#database-container').html(result);
                 initDatabaseBase();
                 setupOtherPages();
+                setupCardOverlay();
                 $('#advanced-form, #basic-form').on('submit', handleSubmit)
             }
         })
+    }
+
+    function createCardHtml(name, img_url, card_id){
+        return `<div class="deck-zone-card" data-card-id="${card_id}">
+                    <div class="card-quantity">
+                        <a href="#" class="card-quantity-minus">
+                            <span>-</span>
+                        </a>
+                        <input type="text" class="card-quantity-input" value="1">
+                        <a href="#" class="card-quantity-plus">
+                            <span>+</span>
+                        </a>
+                    </div>
+                    <div class="deck-zone-card-name">${name}<img class="hover-card-img" src="${img_url}">
+                    </div>
+                </div>`
+    }
+
+    function setupCardOverlay(){
+        $('#search-results .card img').each(function(index){
+            $(this).parent().append(getOverlayHTML());
+        });
+        $('.overlay-zone').on('click', function(event){
+            event.preventDefault();
+            let card_name = $(this).closest('.card').data('card-name');
+            let zone_name = $(this).data('zone-name');
+            let deck_zone = $(`.deck-zone .deck-zone-title:contains('${zone_name}')`).parent();
+            let card_id = $(this).closest('.card').data('card-id');
+            let card_img_url = $(this).closest('.card').data('card-image-url');
+            let deck_zone_cards = $(`.deck-zone .deck-zone-title:contains('${zone_name}')`).parent().find('.deck-zone-cards');
+            let card_matches = deck_zone_cards.find(`.deck-zone-card:contains('${card_name}')`)
+            if (!card_matches.length) {
+                let deck_card_html = createCardHtml(card_name, card_img_url, card_id);
+                deck_zone.find('.deck-zone-cards').append(deck_card_html);
+                setupCardQuantityInputs();
+            } else {
+                // Already exists, just increment the value
+                let input_el = card_matches.find('.card-quantity input');
+                input_el.val(parseInt(input_el.val()) + 1);
+            }
+        });
+    }
+
+    function getOverlayHTML(){
+
+        let zones_titles = $('.deck-zone-title');
+
+        let output = `<div class="overlay-container"><div class="card-overlay">`;
+        zones_titles.each(function(index){
+            let zone_name = $(this).html().trim();
+            output += `<div class="overlay-zone" data-zone-name="${zone_name}"><div class="overlay-zone-title">Add to <b>${zone_name}</b></div></div>`;
+        });
+        output += `</div></div>`;
+        return output;
     }
 });

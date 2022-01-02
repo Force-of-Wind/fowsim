@@ -291,6 +291,8 @@ def save_decklist(request, decklist_id=None):
 
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    decklist.name = decklist_data['name']
+    decklist.save()
     #  Remove old cards, then rebuild it
     DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()
     for zone_data in decklist_data['zones']:

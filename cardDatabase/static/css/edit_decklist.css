@@ -41,10 +41,12 @@
 .decklist-name{
     font-weight: bold;
     font-size: 18px;
+    padding-bottom: 15px;
+    margin-right: 10px;
 }
 
-.decklist-name{
-    padding-bottom: 15px;
+.decklist-name:hover{
+    background-color: rgba(0, 0, 0, 0.06);
 }
 
 .deck-zone{

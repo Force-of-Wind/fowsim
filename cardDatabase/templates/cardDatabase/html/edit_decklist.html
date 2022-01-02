@@ -27,7 +27,7 @@
     </div>
     <div id="decklist-container">
         {% csrf_token %}
-        <div class="decklist-name">
+        <div class="decklist-name" contenteditable="true">
             {{ decklist.name }}
         </div>
         <div class="deck-zones-container">

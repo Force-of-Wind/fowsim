@@ -1,4 +1,5 @@
 $(function() {
+    let LAST_DATABASE_URL = '';
     $('.card-quantity-minus').click(function(event){
         $(this).siblings('input').val(function(i, oldVal){
             return Math.max(parseInt(oldVal, 10) - 1, 1);
@@ -75,5 +76,42 @@ $(function() {
             }
         }
         return "";
+    }
+
+    function setupOtherPages(){
+        $('#other-pages a').each(function(index){
+            $(this).on('click', function(event) {
+                let page_num = $(this).data('page-index');
+                if (page_num) {
+                    let search_url = new URL(LAST_DATABASE_URL);
+                    search_url.searchParams.set('page', page_num);
+                    requestAndSetDatabaseContent(search_url.toString());
+                }
+            });
+        });
+    }
+
+    function handleSubmit(event){
+        event.preventDefault();
+        let params = form_to_url_params(this);
+        let search_url = window.location.origin + '/search/' + '?' + params.toString();
+        requestAndSetDatabaseContent(search_url)
+    }
+    $('#advanced-form, #basic-form').on('submit', handleSubmit);
+
+    function requestAndSetDatabaseContent(search_url){
+        $.ajax({
+            url: search_url,
+            type: 'GET',
+            dataType: 'html',
+            success: function(data){
+                LAST_DATABASE_URL = search_url;
+                let result = $('<div />').append(data).find('#base-body').html();
+                $('#database-container').html(result);
+                initDatabaseBase();
+                setupOtherPages();
+                $('#advanced-form, #basic-form').on('submit', handleSubmit)
+            }
+        })
     }
 });

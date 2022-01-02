@@ -2,13 +2,20 @@
 {% load static %}
 {% block subtitle %} - {{ decklist.name }}{% endblock %}
 
+{% block use_default_submit %}false{% endblock %}
+
 {% block css %}
     {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/search_mobile.css' %}">
+    {% endif %}
     <link rel="stylesheet" href="{% static 'css/edit_decklist.css' %}">
 {% endblock %}
 
 {% block js %}
     {{ block.super }}
+    <script src="{% static 'js/search.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/edit_decklist.js' %}" type="text/javascript"></script>
 {% endblock %}
 

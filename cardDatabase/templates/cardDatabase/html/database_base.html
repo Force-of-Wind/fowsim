@@ -19,6 +19,7 @@
         {% else %}
             let FOWDB_IS_MOBILE = false;
         {% endif %}
+        let FOWDB_USE_DEFAULT_DATABASE_SUBMIT = {% block use_default_submit %}true{% endblock %};
     </script>
 {% endblock %}
 {% block body %}

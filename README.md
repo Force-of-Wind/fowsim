@@ -5,7 +5,7 @@ Setup instructions:
 
 2. Use that virtual environment (must activate every time you open a new prompt)
     - Windows: `/path/to/venv/Scripts/activate` 
-    - Linux: `. /path/to/venv/Scripts/activate`
+    - Linux/MacOS: `. /path/to/venv/bin/activate`
 
 3. Install requirements (If you add packages with pip, add them to requirements.txt using "pip freeze > requirements.txt")
 pip install -r requirements.txt

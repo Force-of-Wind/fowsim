@@ -19,6 +19,7 @@
         {% endblock %}
     </div>
     <div id="decklist-container">
+        {% csrf_token %}
         <div class="decklist-name">
             {{ decklist.name }}
         </div>

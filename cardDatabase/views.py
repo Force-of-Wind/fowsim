@@ -1,10 +1,13 @@
+import json
+
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.forms.fields import MultipleChoiceField
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm
@@ -275,8 +278,35 @@ def edit_decklist(request, decklist_id=None):
     ctx = get_search_form_ctx()
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
-    ctx['default_zones'] = DeckListZone.objects.filter(show_by_default=True).values_list('name', )
+    ctx['default_zones'] = DeckListZone.objects.filter(show_by_default=True)
     ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
-    #ctx['zones_to_show'] = set(ctx['decklist_cards'].exclude(zone__name__in=CONS.ZONES_SHOWN_BY_DEFAULT).values_list('zone__name', flat=True))
     ctx['decklist'] = decklist
     return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)
+
+
+@login_required
+@require_POST
+def save_decklist(request, decklist_id=None):
+    decklist_data = json.loads(request.body.decode('UTF-8'))['decklist_data']
+
+    # Check user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    #  Remove old cards, then rebuild it
+    DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()
+    for zone_data in decklist_data['zones']:
+        zone, created = DeckListZone.objects.get_or_create(name=zone_data['name'])
+        for card_data in zone_data['cards']:
+            card = Card.objects.get(card_id=card_data['id'])
+            DeckListCard.objects.get_or_create(
+                decklist=decklist,
+                card=card,
+                position=card_data['position'],
+                zone=zone,
+                quantity=card_data['quantity']
+            )
+
+    return HttpResponse('')
+
+
+def view_decklist(request, decklist_id):
+    return None

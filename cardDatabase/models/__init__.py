@@ -4,6 +4,7 @@ from pathlib import Path
 from importlib import import_module
 from .CardType import Card, CardColour
 from .User import Profile
+from .DeckList import DeckListCard, DeckListZone, DeckList
 '''
 # iterate through the modules in the current package
 package_dir = Path(__file__).resolve().parent

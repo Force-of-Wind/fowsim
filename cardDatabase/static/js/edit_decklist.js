@@ -135,8 +135,8 @@ $(function() {
                             <span>+</span>
                         </a>
                     </div>
-                    <div class="deck-zone-card-name">${name}<img class="hover-card-img" src="${img_url}">
-                    </div>
+                    <div class="deck-zone-card-name">${name}<img class="hover-card-img" src="${img_url}"></div>
+                    <div class="remove-card">&#10006;</div>
                 </div>`
     }
 

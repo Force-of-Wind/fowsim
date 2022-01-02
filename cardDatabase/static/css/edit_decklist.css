@@ -3,7 +3,8 @@
 }
 
 #decklist-container{
-    position: absolute;
+    position: fixed;
+    overflow-y: auto;
     right: 0;
     top: 60px;
     height: calc(100% - 60px);
@@ -173,6 +174,7 @@
 
 .remove-card{
     padding-right: 10px;
+    padding-left: 5px;
     height: max-content;
     width: max-content;
     margin: auto 0;

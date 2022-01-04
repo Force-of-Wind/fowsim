@@ -531,7 +531,7 @@ SEARCH_SETS_INCLUDE = {
         'AO3 Buy a Box',
         'AO3 Buy a BoxJ'
     ],
-    'POFA': [
+    'PofA': [
         'AO4 Buy a Box',
         'AO4 Buy a BoxJ'
     ]

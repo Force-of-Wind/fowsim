@@ -157,9 +157,9 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ADMIN_SITE_HEADER = 'FoW Simulator'
-ADMIN_SITE_TITLE = 'FoW Simulator Admin'
-ADMIN_INDEX_TITLE = 'Welcome to the FoW Simulator Admin'
+ADMIN_SITE_HEADER = 'Force of Wind'
+ADMIN_SITE_TITLE = 'Force of Wind Admin'
+ADMIN_INDEX_TITLE = 'Welcome to the Force of Wind Admin'
 
 ASGI_APPLICATION = 'fowsim.asgi.application'
 

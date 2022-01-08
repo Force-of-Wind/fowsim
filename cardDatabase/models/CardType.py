@@ -127,8 +127,8 @@ class Card(AbstractModel):
         total = 0
         if self.cost:
             matches = re.findall('{[a-zA-Z0-9]*}', self.cost)
-            for match in matches:  # "{W}" or "{R}" or "{3}" etc.
-                cost_value = match[1]
+            for match in matches:  # "{W}" or "{R}" or "{3}" or "{10}" etc.
+                cost_value = match[1:-1]
                 if cost_value.isnumeric():
                     total += int(cost_value)
                 elif cost_value == 'X':

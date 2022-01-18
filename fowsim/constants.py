@@ -335,6 +335,24 @@ UNSEARCHED_DATABASE_SETS = [
 
 DATABASE_CARD_TYPE_GROUPS = [
     {
+        'name': 'Main Deck',
+        'types': [
+            'Addition',
+            'Addition: Field',
+            'Addition:J/Resonator',
+            'Addition:Ruler/J-Ruler',
+            'Chant',
+            'Regalia',
+            'Regalia (Shift)',
+            'Resonator',
+            'Resonator (Shift)',
+            'Resonator (Stranger)',
+            'Spell:Chant',
+            'Spell:Chant-Instant',
+            'Spell:Chant-Standby',
+        ]
+    },
+    {
         'name': 'J/Ruler',
         'types': [
             'Basic J-Ruler',
@@ -355,24 +373,6 @@ DATABASE_CARD_TYPE_GROUPS = [
             'True Magic Stone',
             'Water Magic Stone',
             'Wind Magic Stone'
-        ]
-    },
-    {
-        'name': 'Main Deck',
-        'types': [
-            'Addition',
-            'Addition: Field',
-            'Addition:J/Resonator',
-            'Addition:Ruler/J-Ruler',
-            'Chant',
-            'Regalia',
-            'Regalia (Shift)',
-            'Resonator',
-            'Resonator (Shift)',
-            'Resonator (Stranger)',
-            'Spell:Chant',
-            'Spell:Chant-Instant',
-            'Spell:Chant-Standby',
         ]
     },
     {

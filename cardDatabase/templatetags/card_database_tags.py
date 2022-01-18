@@ -87,6 +87,10 @@ def escape_tags(text):
     return text
 
 
+def replace_newlines(text):
+    return text.replace('\n', '<br />')
+
+
 @register.simple_tag
 def format_ability_text(text):
     text = escape_tags(text)  # Must be first to escape <> before mark_safe e.g. "Force Resonance <Chaos>"
@@ -94,6 +98,7 @@ def format_ability_text(text):
     text = make_bubbles(text)
     text = add_rest_icon(text)
     text = add_card_reference_links(text)
+    text = replace_newlines(text)
     return mark_safe(text)
 
 

@@ -78,7 +78,7 @@ class AddCardForm(forms.ModelForm):
             else:  # Two newlines, new ability
                 output.append(current_ability)
                 current_ability = ''
-
+        output.append(current_ability)
         return output
 
     def save(self):

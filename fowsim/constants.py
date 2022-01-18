@@ -513,6 +513,9 @@ SETS_IN_ORDER = [
     'TST',
     'DSD',
     'GOG',
+    'D2 Buy a Box',
+    'D2 Pre-release Party',
+    'GRL'
 ]
 
 SEARCH_SETS_INCLUDE = {
@@ -534,6 +537,10 @@ SEARCH_SETS_INCLUDE = {
     'PofA': [
         'AO4 Buy a Box',
         'AO4 Buy a BoxJ'
+    ],
+    'GRL': [
+        'D2 Buy a Box',
+        'D2 Pre-release Party'
     ]
 }
 

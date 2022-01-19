@@ -295,6 +295,7 @@ def add_card(request):
         add_card_form = AddCardForm(request.POST, request.FILES)
         if add_card_form.is_valid():
             new_card = add_card_form.save()
+            add_card_form.save_m2m()
             return HttpResponseRedirect(reverse('cardDatabase-view-card', kwargs={'card_id': new_card.card_id}))
         else:
             ctx |= {'add_card_form': add_card_form}

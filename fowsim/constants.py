@@ -515,7 +515,7 @@ SETS_IN_ORDER = [
     'DSD',
     'GOG',
     'D2 Buy a Box',
-    'D2 Pre-release Party',
+    'D2 Prerelease Party',
     'GRL'
 ]
 
@@ -541,7 +541,7 @@ SEARCH_SETS_INCLUDE = {
     ],
     'GRL': [
         'D2 Buy a Box',
-        'D2 Pre-release Party'
+        'D2 Prerelease Party'
     ]
 }
 

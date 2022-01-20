@@ -356,10 +356,11 @@ DATABASE_CARD_TYPE_GROUPS = [
     {
         'name': 'J/Ruler',
         'types': [
-            'Basic J-Ruler',
-            'Basic Ruler',
-            'J-Ruler',
             'Ruler',
+            'J-Ruler',
+            'Order',
+            'Basic Ruler',
+            'Basic J-Ruler',
         ]
     },
     {

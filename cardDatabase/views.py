@@ -1,3 +1,5 @@
+import re
+
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.forms.fields import MultipleChoiceField
@@ -124,23 +126,33 @@ def get_keywords_query(data):
     return keywords_query
 
 
+def get_set_number_sort_value(set_number):
+    #  Need to sort them backwards since it gets reversed to show most recent first
+    #  Just make them a negative integer of itself (removing characters)
+    if set_number:
+        num = re.sub('[^0-9]', '', set_number)  # Remove non-numeric
+        if num.isnumeric():
+            return -1 * int(num)
+    return float('-inf')
+
+
 def sort_cards(cards, sort_by, is_reversed):
     if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT or not sort_by:
         return sorted(cards, key=lambda item:
                       (CONS.SETS_IN_ORDER.index(item.set_code),
-                       item.set_number),
+                       get_set_number_sort_value(item.set_number)),
                       reverse=not is_reversed)  # (last set comes first, flip the reversed flag
     elif sort_by == CONS.DATABASE_SORT_BY_TOTAL_COST:
         return sorted(cards, key=lambda item:
                       (item.total_cost,
-                       CONS.SETS_IN_ORDER.index(item.set_code),
-                       item.set_number),
+                       -CONS.SETS_IN_ORDER.index(item.set_code),
+                       get_set_number_sort_value(item.set_number)),
                       reverse=is_reversed)
     elif sort_by == CONS.DATABASE_SORT_BY_ALPHABETICAL:
         return sorted(cards, key=lambda item:
                       (item.name,
                        CONS.SETS_IN_ORDER.index(item.set_code),
-                       item.set_number),
+                       get_set_number_sort_value(item.set_number)),
                       reverse=is_reversed)
     raise Exception('Attempting to sort card by invalid selection')
 

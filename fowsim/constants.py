@@ -520,6 +520,52 @@ SETS_IN_ORDER = [
     'GRL'
 ]
 
+SEARCH_CARD_TYPES_INCLUDE = {
+    'Addition': [
+        'Addition:Field',
+        'Addition:J/Resonator',
+        'Addition:Ruler/J-ruler'
+    ],
+    'Resonator': [
+        'Resonator (Shift)',
+        'Resonator (Stranger)'
+    ],
+    'Chant': [
+        'Spell:Chant',
+        'Spell:Chant-Instant',
+        'Spell:Chant-Standby'
+    ],
+    'Regalia': [
+        'Regalia (Shift)'
+    ],
+    'Ruler': [
+        'Basic Ruler'
+    ],
+    'J-Ruler': [
+        'Basic J-Ruler'
+    ],
+    'Basic Magic Stone': [
+        'Darkness Magic Stone',
+        'Fire Magic Stone',
+        'Light Magic Stone',
+        'Water Magic Stone',
+        'Wind Magic Stone'
+    ],
+    'Magic Stone': [
+        'Basic Magic Stone',
+        'Darkness Magic Stone',
+        'Fire Magic Stone',
+        'Light Magic Stone',
+        'Special Magic Stone',
+        'True Magic Stone',
+        'Water Magic Stone',
+        'Wind Magic Stone'
+    ],
+    'Rune': [
+        'Master Rune'
+    ]
+}
+
 SEARCH_SETS_INCLUDE = {
     'AOA': [
         'AOA V3 Buy 2'

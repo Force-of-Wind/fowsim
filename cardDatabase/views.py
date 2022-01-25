@@ -44,6 +44,9 @@ def get_card_type_query(data):
     card_type_query = Q()
     for card_type in data:
         card_type_query |= Q(types__name=card_type)
+        if card_type in CONS.SEARCH_CARD_TYPES_INCLUDE:
+            for also_included_type in CONS.SEARCH_CARD_TYPES_INCLUDE[card_type]:
+                card_type_query |= Q(types__name=also_included_type)
     return card_type_query
 
 

@@ -95,6 +95,30 @@
                         </label>
                     {% endfor %}
                 </div>
+                <div class="fieldWrapper colour-match">
+                    <div class="colour-match-title field-title">
+                        {{ advanced_form.colour_match.label }}
+                    </div>
+                    {% for value, display in advanced_form.colour_match.field.choices %}
+                        <label for="id_colour_match_fields_{{ forloop.counter0 }}">
+                            <input type="checkbox" name="colour_match" id="id_colour_match_fields_{{ forloop.counter0 }}"
+                                   value="{{ value }}" {% colour_match_is_in_data advanced_form_data.colour_match value %}>
+                            {{ display }}
+                        </label>
+                    {% endfor %}
+                </div>
+                <div class="fieldWrapper colour-combination">
+                    <div class="colour-combination-title field-title">
+                        {{ advanced_form.colour_combination.label }}
+                    </div>
+                    {% for value, display in advanced_form.colour_combination.field.choices %}
+                        <label for="id_colour_combination_fields_{{ forloop.counter0 }}">
+                            <input type="checkbox" name="colour_combination" id="id_colour_combination_fields_{{ forloop.counter0 }}"
+                                   value="{{ value }}" {% advanced_form_is_in_data advanced_form_data.colour_combination value  '' 'checked' %}>
+                            {{ display }}
+                        </label>
+                    {% endfor %}
+                </div>
                 <div class="fieldWrapper cost-select no-select">
                     <div class="search-field-title field-title">
                         Total cost:

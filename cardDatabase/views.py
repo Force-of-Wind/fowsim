@@ -1,7 +1,7 @@
 import re
 
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.forms.fields import MultipleChoiceField
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -62,11 +62,37 @@ def get_set_query(data):
     return set_query
 
 
-def get_attr_query(data):
+def get_attr_query(data, colour_match, colour_combination):
+    extra_queries = []
     attr_query = Q()
-    for card_attr in data:
-        attr_query |= Q(colours__db_representation=card_attr)
-    return attr_query
+    attr_annotation = {'colour_combination_count': Count('colours__db_representation')}
+    annotation_filter = Q()
+    if colour_match == CONS.DATABASE_COLOUR_MATCH_ANY or not colour_match:
+        for card_attr in data:
+            attr_query |= Q(colours__db_representation=card_attr)
+
+    if colour_match == CONS.DATABASE_COLOUR_MATCH_EXACT:
+        for fow_attr, attr_name in CONS.COLOUR_CHOICES:
+            if fow_attr not in data:
+                attr_query &= ~Q(colours__db_representation=fow_attr)
+
+        annotation_filter &= Q(colour_combination_count=len(data))
+
+    elif colour_match == CONS.DATABASE_COLOUR_MATCH_ALL:
+        #  This behaves super weird and I don't understand it so there's just a list of queries to run when searching
+        #  by all instead of one large one because it filters everything and seems wrong.
+        #  It's inefficient so try avoid using it if possible since it does another db call for each query
+        for data_attr in data:
+            extra_queries.append(Q(colours__db_representation=data_attr))
+        annotation_filter &= Q(colour_combination_count__gte=len(data))
+
+    if colour_combination == CONS.DATABASE_COLOUR_COMBINATION_MONO:
+        annotation_filter &= Q(colour_combination_count=1)
+
+    elif colour_combination == CONS.DATABASE_COLOUR_COMBINATION_MULTI:
+        annotation_filter &= Q(colour_combination_count__gte=2)
+
+    return attr_query & annotation_filter, attr_annotation, extra_queries
 
 
 def separate_text_query(field, search_text, exactness_option):
@@ -187,7 +213,9 @@ def advanced_search(advanced_form):
                                     advanced_form.cleaned_data['text_search_fields'],
                                     advanced_form.cleaned_data['text_exactness'])
 
-        attr_query = get_attr_query(advanced_form.cleaned_data['colours'])
+        attr_query, attr_annotation, attr_extra_queries = get_attr_query(
+            advanced_form.cleaned_data['colours'], advanced_form.cleaned_data['colour_match'],
+            advanced_form.cleaned_data['colour_combination'])
         race_query = get_race_query(advanced_form.cleaned_data['race'])
         set_query = get_set_query(advanced_form.cleaned_data['sets'])
         card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
@@ -200,7 +228,7 @@ def advanced_search(advanced_form):
         keywords_query = get_keywords_query(advanced_form.cleaned_data['keywords'])
 
         cards = (Card.objects.filter(text_query).
-                 filter(attr_query).
+                 annotate(**attr_annotation).filter(attr_query).
                  filter(race_query).
                  filter(set_query).
                  filter(card_type_query).
@@ -211,6 +239,9 @@ def advanced_search(advanced_form):
                  filter(keywords_query).
                  exclude(get_unsupported_sets_query()).
                  distinct())
+
+        for q in attr_extra_queries:
+            cards = cards.filter(q)
         cards = sort_cards(cards, advanced_form.cleaned_data['sort_by'],
                            advanced_form.cleaned_data['reverse_sort'] or False)
         cost_filters = advanced_form.cleaned_data['cost']

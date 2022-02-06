@@ -39,6 +39,8 @@ class AdvancedSearchForm(forms.Form):
     sort_by = forms.ChoiceField(label='Sort results by:', choices=CONS.DATABASE_SORT_BY_CHOICES, required=False)
     reverse_sort = forms.BooleanField(label='Reverse sorting:', required=False)
     colours = forms.MultipleChoiceField(label='Color(s):', choices=CONS.COLOUR_CHOICES, required=False)
+    colour_match = forms.ChoiceField(label='Color(s) match:', choices=CONS.DATABASE_COLOUR_MATCH_CHOICES, required=False)
+    colour_combination = forms.ChoiceField(label='Color combinations:', choices=CONS.DATABASE_COLOUR_COMBINATION_CHOICES, required=False)
     race = forms.MultipleChoiceField(label='Race(s):', choices=get_races(), required=False)
     sets = forms.MultipleChoiceField(label='Set(s):', choices=CONS.SET_CHOICES, required=False)
     cost = forms.MultipleChoiceField(label='Total Cost(s):', choices=CONS.TOTAL_COST_CHOICES, required=False)

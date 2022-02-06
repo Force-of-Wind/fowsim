@@ -149,6 +149,14 @@ def text_search_fields_is_in_data(form_values, value):
 
 
 @register.simple_tag
+def colour_match_is_in_data(form_values, value):
+    default_value = ''
+    if value in [CONS.DATABASE_COLOUR_MATCH_ANY]:
+        default_value = 'checked'
+    return advanced_form_is_in_data(form_values, value, default_value, 'checked')
+
+
+@register.simple_tag
 def sort_by_is_in_data(form_values, value):
     default_value = ''
     if value in [CONS.DATABASE_SORT_BY_MOST_RECENT]:

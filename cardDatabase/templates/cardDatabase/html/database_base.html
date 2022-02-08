@@ -95,6 +95,30 @@
                             </label>
                         {% endfor %}
                     </div>
+                    <div class="fieldWrapper colour-match">
+                        <div class="colour-match-title field-title">
+                            {{ advanced_form.colour_match.label }}
+                        </div>
+                        {% for value, display in advanced_form.colour_match.field.choices %}
+                            <label for="id_colour_match_fields_{{ forloop.counter0 }}">
+                                <input type="checkbox" name="colour_match" id="id_colour_match_fields_{{ forloop.counter0 }}"
+                                       value="{{ value }}" {% colour_match_is_in_data advanced_form_data.colour_match value %}>
+                                {{ display }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                    <div class="fieldWrapper colour-combination">
+                        <div class="colour-combination-title field-title">
+                            {{ advanced_form.colour_combination.label }}
+                        </div>
+                        {% for value, display in advanced_form.colour_combination.field.choices %}
+                            <label for="id_colour_combination_fields_{{ forloop.counter0 }}">
+                                <input type="checkbox" name="colour_combination" id="id_colour_combination_fields_{{ forloop.counter0 }}"
+                                       value="{{ value }}" {% advanced_form_is_in_data advanced_form_data.colour_combination value  '' 'checked' %}>
+                                {{ display }}
+                            </label>
+                        {% endfor %}
+                    </div>
                     <div class="fieldWrapper cost-select no-select">
                         <div class="search-field-title field-title">
                             Total cost:
@@ -109,6 +133,16 @@
                             </label>
                         {% endfor %}
                     </div>
+                    <div class="fieldWrapper race-select">
+                        <select class="mdb-select md-form" multiple form="advanced-form" name="race" searchable="Search here...">
+                            {% for value in races_list %}
+                                <option value="{{ value }}"
+                                    {% if value in advanced_form_data.race %}selected{% endif %}>
+                                        {{ value }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <div class="fieldWrapper sets-select">
                         <select class="mdb-select md-form" multiple form="advanced-form" name="sets" searchable="Search here...">
                             {% for cluster in sets_json.clusters reversed %}
@@ -116,7 +150,7 @@
                                     {% for set in cluster.sets reversed %}
                                         <option value="{{ set.code }}"
                                         {% if set.code in advanced_form_data.sets %}selected{% endif %}>
-                                            {{ set.name }}
+                                            {{ set.name }} ({{ set.code }})
                                         </option>
                                     {% endfor %}
                                 </optgroup>
@@ -142,6 +176,16 @@
                                         </option>
                                     {% endfor %}
                                 </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="fieldWrapper keywords-select">
+                        <select class="mdb-select md-form" multiple form="advanced-form" name="keywords" searchable="Search here...">
+                            {% for value, display in advanced_form.keywords.field.choices %}
+                                <option value="{{ value }}"
+                                        {% if value in advanced_form_data.keywords %}selected{% endif %}>
+                                    {{ display }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>

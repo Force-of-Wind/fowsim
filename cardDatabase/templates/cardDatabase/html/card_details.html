@@ -22,7 +22,7 @@
             </div>
             <div class="card-text-info-text">
                 {% for card_type in card.types.all %}
-                    {{ card_type.name }}{% if not forloop.last %},{% endif %}
+                    <a href='/search?card_type={{ card_type.name }}&form_type=advanced-form'>{{ card_type.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="card-text-info-text">
                     {% for colour in card.colours.all %}
-                        {% format_attribute_text colour.db_representation %}
+                        <a href='/search?colours={{ colour.db_representation }}&form_type=advanced-form'>{% format_attribute_text colour.db_representation %}</a>
                     {% endfor %}
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="card-text-info-text">
                     {% for race in card.races.all %}
-                        {{ race.name }}{% if not forloop.last %},{% endif %}
+                        <a href='/search?race={{ race.name }}&form_type=advanced-form'>{{ race.name }}</a>{% if not forloop.last %},{% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -114,6 +114,19 @@
         {% endif %}
         <div class="card-text-info">
             <div class="card-text-info-title">
+                Set:
+            </div>
+            <div class="card-text-info-text">
+                {% if set_name %}
+                    <a href='/search?sets={{ set_code }}&form_type=advanced-form'>{{ set_name }} ({{set_code}})
+                {% else %}
+                    {{ set_code }}
+                {% endif %}
+                </a>
+            </div>
+        </div>
+        <div class="card-text-info">
+            <div class="card-text-info-title">
                 ID:
             </div>
             <div class="card-text-info-text">
@@ -126,7 +139,7 @@
                     Rarity:
                 </div>
                 <div class="card-text-info-text">
-                    {{ card.rarity }}
+                    <a href='/search?rarity={{ card.rarity }}&form_type=advanced-form'>{{ card.rarity }}</a>
                 </div>
             </div>
         {% endif %}

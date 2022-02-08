@@ -10,5 +10,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print(f'Deleting {Card.objects.all().count()} cards')
         Card.objects.all().delete()
+
         print('Running importjson')
         call_command('importjson')
+
+        print('Running importKeywords')
+        call_command('importKeywords')

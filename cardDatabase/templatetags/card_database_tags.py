@@ -81,12 +81,24 @@ def add_rest_icon(text):
     return text.replace('{Rest}', f'<img class="ability-rest-icon" src="{rest_url}"> ')
 
 
+def escape_tags(text):
+    text = text.replace('<', '&lt;')
+    text = text.replace('>', '&gt;')
+    return text
+
+
+def replace_newlines(text):
+    return text.replace('\n', '<br />')
+
+
 @register.simple_tag
 def format_ability_text(text):
+    text = escape_tags(text)  # Must be first to escape <> before mark_safe e.g. "Force Resonance <Chaos>"
     text = format_cost_text(text)
     text = make_bubbles(text)
     text = add_rest_icon(text)
     text = add_card_reference_links(text)
+    text = replace_newlines(text)
     return mark_safe(text)
 
 
@@ -132,6 +144,14 @@ def text_exactness_is_in_data(form_values, value):
 def text_search_fields_is_in_data(form_values, value):
     default_value = ''
     if value in ['name', 'races__name', 'ability_texts__text']:
+        default_value = 'checked'
+    return advanced_form_is_in_data(form_values, value, default_value, 'checked')
+
+
+@register.simple_tag
+def colour_match_is_in_data(form_values, value):
+    default_value = ''
+    if value in [CONS.DATABASE_COLOUR_MATCH_ANY]:
         default_value = 'checked'
     return advanced_form_is_in_data(form_values, value, default_value, 'checked')
 

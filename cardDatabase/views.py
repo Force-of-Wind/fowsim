@@ -1,4 +1,5 @@
 import json
+import re
 
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
@@ -11,19 +12,30 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm
-from .models.CardType import Card
 from .models.User import Profile
 from .models.DeckList import DeckList, DeckListZone, DeckListCard
+from .models.CardType import Card, Race
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins
 
 
 def get_search_form_ctx():
+    race_values = Race.objects.values('name')
+    races_list = list(map(lambda x : x['name'], race_values))  # Remove blank string
+    races_list.sort()
+    races_list.remove('')
+
     return {
+        'races_list': list(races_list),
         'card_types_list': CONS.DATABASE_CARD_TYPE_GROUPS,
         'sets_json': CONS.SET_DATA
     }
 
+def get_race_query(data):
+    race_query = Q()
+    for race in data:
+        race_query |= Q(races__name=race)
+    return race_query
 
 def get_rarity_query(data):
     rarity_query = Q()
@@ -36,6 +48,9 @@ def get_card_type_query(data):
     card_type_query = Q()
     for card_type in data:
         card_type_query |= Q(types__name=card_type)
+        if card_type in CONS.SEARCH_CARD_TYPES_INCLUDE:
+            for also_included_type in CONS.SEARCH_CARD_TYPES_INCLUDE[card_type]:
+                card_type_query |= Q(types__name=also_included_type)
     return card_type_query
 
 
@@ -51,11 +66,37 @@ def get_set_query(data):
     return set_query
 
 
-def get_attr_query(data):
+def get_attr_query(data, colour_match, colour_combination):
+    extra_queries = []
     attr_query = Q()
-    for card_attr in data:
-        attr_query |= Q(colours__db_representation=card_attr)
-    return attr_query
+    attr_annotation = {'colour_combination_count': Count('colours__db_representation')}
+    annotation_filter = Q()
+    if colour_match == CONS.DATABASE_COLOUR_MATCH_ANY or not colour_match:
+        for card_attr in data:
+            attr_query |= Q(colours__db_representation=card_attr)
+
+    if colour_match == CONS.DATABASE_COLOUR_MATCH_EXACT:
+        for fow_attr, attr_name in CONS.COLOUR_CHOICES:
+            if fow_attr not in data:
+                attr_query &= ~Q(colours__db_representation=fow_attr)
+
+        annotation_filter &= Q(colour_combination_count=len(data))
+
+    elif colour_match == CONS.DATABASE_COLOUR_MATCH_ALL:
+        #  This behaves super weird and I don't understand it so there's just a list of queries to run when searching
+        #  by all instead of one large one because it filters everything and seems wrong.
+        #  It's inefficient so try avoid using it if possible since it does another db call for each query
+        for data_attr in data:
+            extra_queries.append(Q(colours__db_representation=data_attr))
+        annotation_filter &= Q(colour_combination_count__gte=len(data))
+
+    if colour_combination == CONS.DATABASE_COLOUR_COMBINATION_MONO:
+        annotation_filter &= Q(colour_combination_count=1)
+
+    elif colour_combination == CONS.DATABASE_COLOUR_COMBINATION_MULTI:
+        annotation_filter &= Q(colour_combination_count__gte=2)
+
+    return attr_query & annotation_filter, attr_annotation, extra_queries
 
 
 def separate_text_query(field, search_text, exactness_option):
@@ -111,25 +152,42 @@ def get_atk_def_query(value, comparator, field_name):
     return Q()
 
 
+def get_keywords_query(data):
+    keywords_query = Q()
+    for keyword in data:
+        keywords_query |= Q(ability_texts__text__icontains=keyword)
+    return keywords_query
+
+
+def get_set_number_sort_value(set_number):
+    #  Need to sort them backwards since it gets reversed to show most recent first
+    #  Just make them a negative integer of itself (removing characters)
+    if set_number:
+        num = re.sub('[^0-9]', '', set_number)  # Remove non-numeric
+        if num.isnumeric():
+            return -1 * int(num)
+    return float('-inf')
+
+
 def sort_cards(cards, sort_by, is_reversed):
-    if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT:
+    if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT or not sort_by:
         return sorted(cards, key=lambda item:
                       (CONS.SETS_IN_ORDER.index(item.set_code),
-                       item.set_number),
+                       get_set_number_sort_value(item.set_number)),
                       reverse=not is_reversed)  # (last set comes first, flip the reversed flag
     elif sort_by == CONS.DATABASE_SORT_BY_TOTAL_COST:
         return sorted(cards, key=lambda item:
                       (item.total_cost,
-                       CONS.SETS_IN_ORDER.index(item.set_code),
-                       item.set_number),
+                       -CONS.SETS_IN_ORDER.index(item.set_code),
+                       get_set_number_sort_value(item.set_number)),
                       reverse=is_reversed)
     elif sort_by == CONS.DATABASE_SORT_BY_ALPHABETICAL:
         return sorted(cards, key=lambda item:
                       (item.name,
                        CONS.SETS_IN_ORDER.index(item.set_code),
-                       item.set_number),
+                       get_set_number_sort_value(item.set_number)),
                       reverse=is_reversed)
-    raise Exception('Attempting to sort card by no selection')
+    raise Exception('Attempting to sort card by invalid selection')
 
 
 def get_unsupported_sets_query():
@@ -141,7 +199,7 @@ def get_unsupported_sets_query():
 
 
 def basic_search(basic_form):
-    cards = None
+    cards = []
     if basic_form.is_valid():
         search_text = basic_form.cleaned_data['generic_text']
         text_query = get_text_query(search_text, ['name', 'name_without_punctuation', 'ability_texts__text', 'races__name'], CONS.TEXT_CONTAINS_ALL)
@@ -152,14 +210,17 @@ def basic_search(basic_form):
 
 def advanced_search(advanced_form):
     ctx = {}
-    cards = None
+    cards = []
     if advanced_form.is_valid():
         ctx['advanced_form_data'] = advanced_form.cleaned_data
         text_query = get_text_query(advanced_form.cleaned_data['generic_text'],
                                     advanced_form.cleaned_data['text_search_fields'],
                                     advanced_form.cleaned_data['text_exactness'])
 
-        attr_query = get_attr_query(advanced_form.cleaned_data['colours'])
+        attr_query, attr_annotation, attr_extra_queries = get_attr_query(
+            advanced_form.cleaned_data['colours'], advanced_form.cleaned_data['colour_match'],
+            advanced_form.cleaned_data['colour_combination'])
+        race_query = get_race_query(advanced_form.cleaned_data['race'])
         set_query = get_set_query(advanced_form.cleaned_data['sets'])
         card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
         rarity_query = get_rarity_query(advanced_form.cleaned_data['rarity'])
@@ -168,17 +229,23 @@ def advanced_search(advanced_form):
                                       advanced_form.cleaned_data['atk_comparator'], 'ATK')
         def_query = get_atk_def_query(advanced_form.cleaned_data['def_value'],
                                       advanced_form.cleaned_data['def_comparator'], 'DEF')
+        keywords_query = get_keywords_query(advanced_form.cleaned_data['keywords'])
 
         cards = (Card.objects.filter(text_query).
-                 filter(attr_query).
+                 annotate(**attr_annotation).filter(attr_query).
+                 filter(race_query).
                  filter(set_query).
                  filter(card_type_query).
                  filter(rarity_query).
                  filter(divinity_query).
                  filter(atk_query).
                  filter(def_query).
+                 filter(keywords_query).
                  exclude(get_unsupported_sets_query()).
                  distinct())
+
+        for q in attr_extra_queries:
+            cards = cards.filter(q)
         cards = sort_cards(cards, advanced_form.cleaned_data['sort_by'],
                            advanced_form.cleaned_data['reverse_sort'] or False)
         cost_filters = advanced_form.cleaned_data['cost']
@@ -231,6 +298,28 @@ def search_for_cards(request):
     return render(request, 'cardDatabase/html/search.html', context=ctx)
 
 
+def full_set_code_to_name(set_code):
+    for cluster in CONS.SET_DATA['clusters']:
+        for fow_set in cluster['sets']:
+            if fow_set['code'] == set_code:
+                return fow_set['name']
+
+
+def searchable_set_and_name(set_code):
+    #  Check CONS.SET_DATA first, not all sets are in there, some are extra things like 'Buy a Box'
+    #  which should be included in CONS.SEARCH_SETS_INCLUDE
+    to_return = full_set_code_to_name(set_code)
+    if to_return:
+        return set_code, to_return
+
+    #  Search for "parent" set, e.g. "AO2 Buy a Box" becomes "AO2"
+    for fow_set in CONS.SEARCH_SETS_INCLUDE:
+        if set_code in CONS.SEARCH_SETS_INCLUDE[fow_set]:
+            return fow_set, full_set_code_to_name(fow_set)
+
+    return set_code, None
+
+
 def view_card(request, card_id=None):
     card = get_object_or_404(Card, card_id=card_id)
     referred_by = Card.objects.filter(ability_texts__text__contains=f'"{card.name}"')
@@ -239,6 +328,9 @@ def view_card(request, card_id=None):
     ctx['referred_by'] = referred_by
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
+    set_code, set_name = searchable_set_and_name(card.set_code)
+    ctx['set_name'] = set_name
+    ctx['set_code'] = set_code
 
     return render(request, 'cardDatabase/html/view_card.html', context=ctx)
 
@@ -253,10 +345,17 @@ def add_card(request):
         add_card_form = AddCardForm(request.POST, request.FILES)
         if add_card_form.is_valid():
             new_card = add_card_form.save()
+            add_card_form.save_m2m()
             return HttpResponseRedirect(reverse('cardDatabase-view-card', kwargs={'card_id': new_card.card_id}))
         else:
             ctx |= {'add_card_form': add_card_form}
     return render(request, 'cardDatabase/html/add_card.html', context=ctx)
+
+
+@login_required
+@site_admins
+def test_error(request):
+    return 1 / 0
 
 
 @login_required

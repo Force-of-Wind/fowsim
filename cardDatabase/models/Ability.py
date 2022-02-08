@@ -46,3 +46,11 @@ class ActivateAbility(Ability):
     class Meta:
         abstract = False
         app_label = 'cardDatabase'
+
+
+class Keyword(models.Model):
+    def __str__(self):
+        return self.name
+
+    name = models.CharField(max_length=200, blank=False, null=False)
+    search_string = models.CharField(max_length=200, blank=False, null=False)

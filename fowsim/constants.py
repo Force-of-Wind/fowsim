@@ -239,7 +239,7 @@ SET_DATA = {
                 {'code': 'SDL5', 'name': 'Vampiric Hunger'},
                 {'code': 'CFC', 'name': 'Curse of the Frozen Casket'},
                 {'code': 'LEL', 'name': 'Legacy Lost'},
-                {'code': 'VIN003', 'name': 'Vingolf "Ruler All Stars'},
+                {'code': 'VIN003', 'name': 'Vingolf "Ruler All Stars"'},
                 {'code': 'RDE', 'name': 'Return of the Dragon Emperor'},
                 {'code': 'ENW', 'name': 'Echoes of the New World'}
             ]
@@ -283,7 +283,7 @@ SET_DATA = {
                 {'code': 'GITS2045', 'name': 'GHOST IN THE SHELL SAC_2045'},
                 {'code': 'GITS2045SD', 'name': 'Starter Deck GHOST IN THE SHELL SAC_2045'},
                 {'code': 'AO3', 'name': 'Alice Origin III'},
-                {'code': 'POFA', 'name': 'Prologue of Attoractia'},
+                {'code': 'PofA', 'name': 'Prologue of Attoractia'},
 
             ]
         },
@@ -301,7 +301,8 @@ SET_DATA = {
             'name': 'Duel',
             'sets': [
                 {'code': 'DSD', 'name': 'Duel Cluster Starter Decks'},
-                {'code': 'GOG', 'name': 'Game of Gods'}
+                {'code': 'GOG', 'name': 'Game of Gods'},
+                {'code': 'GRL', 'name': 'Game of Gods Reloaded'}
             ]
         }
     ]
@@ -316,7 +317,6 @@ SET_CHOICES.reverse()
 
 TEXT_SEARCH_FIELD_CHOICES = [
     ('name', 'Name'),
-    ('races__name', 'Race/Trait'),
     ('ability_texts__text', 'Abilities'),
     ('card_id', 'Set Code'),
     ('flavour', 'Flavour')
@@ -326,8 +326,6 @@ TOTAL_COST_CHOICES = listToChoices(list(range(0, 13)) + ['X'])
 # Valhalla and Promos. Data exists in the database so we want to exclude it from.
 # Checks 'startswith' so codes that will clash need trailing - if possible. Good luck otherwise :)
 UNSEARCHED_DATABASE_SETS = [
-    'SOUVENIR038',
-    'SOUVENIR039',
     '1-',
     '2-',
     '3-',
@@ -335,29 +333,6 @@ UNSEARCHED_DATABASE_SETS = [
 ]
 
 DATABASE_CARD_TYPE_GROUPS = [
-    {
-        'name': 'J/Ruler',
-        'types': [
-            'Basic J-Ruler',
-            'Basic Ruler',
-            'J-Ruler',
-            'Ruler',
-        ]
-    },
-    {
-        'name': 'Magic Stone Deck',
-        'types': [
-            'Basic Magic Stone',
-            'Darkness Magic Stone',
-            'Fire Magic Stone',
-            'Light Magic Stone',
-            'Magic Stone',
-            'Special Magic Stone',
-            'True Magic Stone',
-            'Water Magic Stone',
-            'Wind Magic Stone'
-        ]
-    },
     {
         'name': 'Main Deck',
         'types': [
@@ -374,6 +349,30 @@ DATABASE_CARD_TYPE_GROUPS = [
             'Spell:Chant',
             'Spell:Chant-Instant',
             'Spell:Chant-Standby',
+        ]
+    },
+    {
+        'name': 'J/Ruler',
+        'types': [
+            'Ruler',
+            'J-Ruler',
+            'Order',
+            'Basic Ruler',
+            'Basic J-Ruler',
+        ]
+    },
+    {
+        'name': 'Magic Stone Deck',
+        'types': [
+            'Basic Magic Stone',
+            'Darkness Magic Stone',
+            'Fire Magic Stone',
+            'Light Magic Stone',
+            'Magic Stone',
+            'Special Magic Stone',
+            'True Magic Stone',
+            'Water Magic Stone',
+            'Wind Magic Stone'
         ]
     },
     {
@@ -448,6 +447,22 @@ DATABASE_SORT_BY_CHOICES = [
     (DATABASE_SORT_BY_ALPHABETICAL, DATABASE_SORT_BY_ALPHABETICAL),
 ]
 
+DATABASE_COLOUR_MATCH_ALL = 'All'
+DATABASE_COLOUR_MATCH_ANY = 'Any'
+DATABASE_COLOUR_MATCH_EXACT = 'Exact'
+DATABASE_COLOUR_MATCH_CHOICES = [
+    (DATABASE_COLOUR_MATCH_ANY, 'Any selected color'),
+    (DATABASE_COLOUR_MATCH_ALL, 'All selected colors'),
+    (DATABASE_COLOUR_MATCH_EXACT, 'Exact colors selected'),
+]
+
+DATABASE_COLOUR_COMBINATION_MULTI = 'Multi'
+DATABASE_COLOUR_COMBINATION_MONO = 'Mono'
+DATABASE_COLOUR_COMBINATION_CHOICES = [
+    (DATABASE_COLOUR_COMBINATION_MULTI, 'Multi color only'),
+    (DATABASE_COLOUR_COMBINATION_MONO, 'Single color only')
+]
+
 SETS_IN_ORDER = [
     'PR',  # Promos
     'BSR',  # Basic Rulers
@@ -502,6 +517,8 @@ SETS_IN_ORDER = [
     'AO2',
     'GITS2045SD',
     'GITS2045',
+    'SOUVENIR038',
+    'SOUVENIR039',
     'AO3 Buy a Box',
     'AO3',
     'AO4 Buy a Box',
@@ -514,25 +531,147 @@ SETS_IN_ORDER = [
     'TST',
     'DSD',
     'GOG',
+    'D2 Buy a Box',
+    'D2 Prerelease Party',
+    'GRL'
 ]
+
+SEARCH_CARD_TYPES_INCLUDE = {
+    'Addition': [
+        'Addition:Field',
+        'Addition:J/Resonator',
+        'Addition:Ruler/J-ruler'
+    ],
+    'Resonator': [
+        'Resonator (Shift)',
+        'Resonator (Stranger)'
+    ],
+    'Chant': [
+        'Spell:Chant',
+        'Spell:Chant-Instant',
+        'Spell:Chant-Standby'
+    ],
+    'Regalia': [
+        'Regalia (Shift)'
+    ],
+    'Ruler': [
+        'Basic Ruler'
+    ],
+    'J-Ruler': [
+        'Basic J-Ruler'
+    ],
+    'Basic Magic Stone': [
+        'Darkness Magic Stone',
+        'Fire Magic Stone',
+        'Light Magic Stone',
+        'Water Magic Stone',
+        'Wind Magic Stone'
+    ],
+    'Magic Stone': [
+        'Basic Magic Stone',
+        'Darkness Magic Stone',
+        'Fire Magic Stone',
+        'Light Magic Stone',
+        'Special Magic Stone',
+        'True Magic Stone',
+        'Water Magic Stone',
+        'Wind Magic Stone'
+    ],
+    'Rune': [
+        'Master Rune'
+    ]
+}
 
 SEARCH_SETS_INCLUDE = {
     'AOA': [
         'AOA V3 Buy 2'
     ],
     'AO1': [
-        'AO1 Buy a Box'
+        'AO1 Buy a Box',
+        'AO1 Buy a BoxJ'
         ],
     'AO2': [
-        'AO2 Buy a Box'
+        'AO2 Buy a Box',
+        'AO2 Buy a BoxJ'
     ],
     'AO3': [
-        'AO3 Buy a Box'
+        'AO3 Buy a Box',
+        'AO3 Buy a BoxJ'
     ],
-    'POFA': [
-        'AO4 Buy a Box'
+    'PofA': [
+        'AO4 Buy a Box',
+        'AO4 Buy a BoxJ'
+    ],
+    'GRL': [
+        'D2 Buy a Box',
+        'D2 Prerelease Party'
     ]
 }
+
+KEYWORDS_CHOICES = [
+    ('[Tales]', 'Tales'),
+    ('[Villains]', 'Villains'),
+    ('[Precision]', 'Precision'),
+    ('[Flying]', 'Flying'),
+    ('[Explode]', 'Explode'),
+    ('[First Strike]', 'First Strike'),
+    ('[Swiftness]', 'Swiftness'),
+    ('[Imperishable]', 'Imperishable'),
+    ('[Quickcast]', 'Quickcast'),
+    ('[Remnant]', 'Remnant'),
+    ('[Barrier]', 'Barrier'),
+    ('[Will of Despair]', 'Will of Despair'),
+    ('[Will of Hope]', 'Will of Hope'),
+    ('[Seal]', 'Seal'),
+    ('[Drain]', 'Drain'),
+    ('[Null]', 'Null'),
+    ('[Drain]', 'Drain'),
+    ('[Bloodlust]', 'Bloodlust'),
+    ('[Pierce]', 'Pierce'),
+    ('[Barrier]', 'Barrier'),
+    ('[Divinity]', 'Divinity'),
+    ('[Bane]', 'Bane'),
+    ('[Rune]', 'Rune'),
+    ('[Mythic]', 'Mythic'),
+    ('[Eternal]', 'Eternal'),
+    ('[Limit Break]', 'Limit Break'),
+    ('[Revenge]', 'Revenge'),
+    ('[Fallen]', 'Fallen'),
+    ('[Revolution]', 'Revolution'),
+    ('[Awakening]', 'Awakening'),
+    ('[Incarnation]', 'Incarnation'),
+    ('God\'s Art', 'God\'s Art'),
+    ('[Trigger]', 'Trigger'),
+    ('[Stealth]', 'Stealth'),
+    ('[Evolution]', 'Evolution'),
+    ('[Shift]', 'Shift'),
+    ('[Limit]', 'Limit'),
+    ('[Energize]', 'Energize'),
+    ('[Bestow]', 'Bestow'),
+    ('[Mana]', 'Mana'),
+    ('[Torrent]', 'Torrent'),
+    ('[Judgment]', 'Judgment'),
+    ('[Inheritance]', 'Inheritance'),
+    ('[Resonance]', 'Resonance'),
+    ('[Mobilize]', 'Mobilize'),
+    ('Sealed Item', 'Sealed Item'),
+    ('[Crest]', 'Crest'),
+    ('[Grimoire]', 'Grimoire'),
+    ('[Legend]', 'Legend'),
+    ('[Enter]', 'Enter'),
+    ('[Faith]', 'Faith'),
+    ('[Stranger]', 'Stranger'),
+    ('[Target Attack]', 'Target Attack'),
+    ('[Dive]', 'Dive'),
+    ('[Tag]', 'Tag'),
+    ('[Guidance]', 'Guidance'),
+    ('[Revolution Order]', 'Revolution Order'),
+    ('[Revolution]', 'Revolution'),
+    ('[Force Command]', 'Force Command'),
+    ('[Force Resonance]', 'Force Resonance'),
+    ('[Dragon Emblem]', 'Dragon Emblem'),
+    ('[Force]', 'Force')
+]
 
 
 ZONES_SHOWN_BY_DEFAULT = [

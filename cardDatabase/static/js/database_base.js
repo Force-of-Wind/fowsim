@@ -29,6 +29,11 @@ function initDatabaseBase(){
             focusOnInit($('#basic-form input[name="generic_text"]'));
         });
 
+    $('.race-select .mdb-select').materialSelect({
+        'visibleOptions': 14,
+        'placeholder': 'Search Race(s)...',
+        'maxSelectedOptions': 2
+    });
     $('.sets-select .mdb-select').materialSelect({
         'visibleOptions': 14,
         'placeholder': 'Search Set(s)...',
@@ -44,8 +49,13 @@ function initDatabaseBase(){
         'placeholder': 'Search Rarity(s)...',
         'maxSelectedOptions': 2
     });
+    $('.keywords-select .mdb-select').materialSelect({
+        'visibleOptions': 14,
+        'placeholder': 'Search Keyword(s)...',
+        'maxSelectedOptions': 2
+    });
 
-    $('.select-text-exactness input, .select-sort-by input').change(function(){
+    $('.select-text-exactness input, .select-sort-by input, .colour-match input, .colour-combination input').change(function(){
         //Act like radio buttons, uncheck all the other ones in this form field
         if (this.checked){
             $(this).parent().siblings('label').each(function(index){
@@ -54,21 +64,23 @@ function initDatabaseBase(){
         }
     });
 
-    $('.referenced-card').mouseover(function(event){
-        $(this).find('img').addClass('show-hover');
-    });
+    if (!FOWDB_IS_MOBILE) {
+        $('.referenced-card').mouseover(function (event) {
+            $(this).find('img').addClass('show-hover');
+        });
 
-    $('.referenced-card').mouseout(function(event){
-        $(this).find('img').removeClass('show-hover');
-    });
-
-    if (FOWDB_USE_DEFAULT_DATABASE_SUBMIT){
-        $('form').on('submit', function(event){
-            event.preventDefault();
-            let params = form_to_url_params(this);
-            window.location.replace('/search/' + '?' + params.toString());
+        $('.referenced-card').mouseout(function (event) {
+            $(this).find('img').removeClass('show-hover');
         });
     }
+
+    $('form').on('submit', function(event){
+        event.preventDefault();
+        let formData = new FormData(this);
+        let params = new URLSearchParams(formData);
+        params.append('form_type', this.id);
+        window.location.assign('/search/' + '?' + params.toString());
+    });
 
     function select_format_sets(format_clusters, set_active){
         for (let i = 0; i < format_clusters.length; i++){

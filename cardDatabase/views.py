@@ -2,11 +2,12 @@ import json
 import re
 
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.forms.fields import MultipleChoiceField
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
+from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -411,3 +412,8 @@ def save_decklist(request, decklist_id=None):
 
 def view_decklist(request, decklist_id):
     return None
+
+
+def logout(request):
+    django_logout(request)
+    return HttpResponseRedirect(reverse('cardDatabase-search'))

@@ -56,6 +56,8 @@ $(function() {
                 decklist_data: decklist_data,
             }),
             success: function(data){
+                window.onbeforeunload = undefined; // Remove warning of unsaved changes
+                window.location.assign('/decklists/');
                 console.log('Success');
             },
             error: function(data){
@@ -191,3 +193,7 @@ $(function() {
         return output;
     }
 });
+
+window.onbeforeunload = function(e){
+    return 'Are you sure? You may have unsaved changes.';
+}

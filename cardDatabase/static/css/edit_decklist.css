@@ -17,6 +17,7 @@
     font-weight: bold;
     font-size: 18px;
     margin-right: 10px;
+    flex: 1 0 auto;
 }
 
 .deck-zone{
@@ -177,7 +178,7 @@
     color: white;
 }
 
-.remove-card{
+.remove-card, .remove-zone{
     padding-right: 10px;
     padding-left: 5px;
     height: max-content;
@@ -186,7 +187,11 @@
     font-size: 20px;
 }
 
-.remove-card:hover{
+.remove-card:hover, .remove-zone:hover{
     color: red;
     cursor: pointer;
+}
+
+.deck-zone-title-container{
+    display: flex;
 }

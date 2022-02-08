@@ -19,6 +19,12 @@ $(function() {
             $(this).closest('.deck-zone-card').remove();
         });
 
+        $('.remove-zone').on('click', function(event){
+            if(confirm(`Are you sure you want to delete the zone: ${$(this).siblings('.deck-zone-title').text().trim()}`)){
+                $(this).parents('.deck-zone').remove();
+            }
+        });
+
         $('.deck-zone-title').on('blur keyup paste copy cut delete mouseup', function(event){
             setupCardOverlay();
         })
@@ -68,7 +74,7 @@ $(function() {
     });
 
     $('#new-zone-button').on('click', function(event){
-        let output = `<div class="deck-zone"><div class="deck-zone-title" contenteditable="true">New Zone</div><div class="deck-zone-cards"></div></div>`;
+        let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="deck-zone-title" contenteditable="true">New Zone</div><div class="remove-zone">&#10006;</div></div><div class="deck-zone-cards"></div></div>`;
         $('.deck-zones-container').append(output);
         // If any search results are showing, add the new zone to those cards
         setupCardOverlay();

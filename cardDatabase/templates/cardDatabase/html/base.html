@@ -43,9 +43,14 @@
                             <div id="login">Login</div>
                         </a>
                     {% else %}
-                        <a href="{% url 'cardDatabase-logout' %}?next={{ request.path }}">
-                            <div id="logout">Logout</div>
-                        </a>
+                        <div id="user-options" class="fow-dropdown">
+                            <button class="fow-dropbtn"><i class="arrow down"></i></button>
+                            <div class="fow-dropdown-content">
+                                <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>
+                                <a href="{% url 'cardDatabase-user-preferences' %}">Preferences</a>
+                                <a href="{% url 'cardDatabase-logout' %}?next={{ request.path }}">Logout</a>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </div>

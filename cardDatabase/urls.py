@@ -16,4 +16,5 @@ urlpatterns = [
     path('view_decklist/<int:decklist_id>/', views.view_decklist, name='cardDatabase-view-decklist'),
     path('test_error/', views.test_error, name='cardDatabase-test-error'),
     path('logout/', views.logout, name='cardDatabase-logout'),
+    path('preferences/', views.userPreferences, name='cardDatabase-user-preferences'),
 ]

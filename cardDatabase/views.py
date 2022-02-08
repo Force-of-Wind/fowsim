@@ -417,3 +417,7 @@ def view_decklist(request, decklist_id):
 def logout(request):
     django_logout(request)
     return HttpResponseRedirect(reverse('cardDatabase-search'))
+
+
+def userPreferences(request):
+    return HttpResponse('')

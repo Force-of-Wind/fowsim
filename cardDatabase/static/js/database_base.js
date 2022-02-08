@@ -73,14 +73,15 @@ function initDatabaseBase(){
             $(this).find('img').removeClass('show-hover');
         });
     }
-
-    $('form').on('submit', function(event){
-        event.preventDefault();
-        let formData = new FormData(this);
-        let params = new URLSearchParams(formData);
-        params.append('form_type', this.id);
-        window.location.assign('/search/' + '?' + params.toString());
-    });
+    if (FOWDB_USE_DEFAULT_DATABASE_SUBMIT) {
+        $('form').on('submit', function (event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+            let params = new URLSearchParams(formData);
+            params.append('form_type', this.id);
+            window.location.assign('/search/' + '?' + params.toString());
+        });
+    }
 
     function select_format_sets(format_clusters, set_active){
         for (let i = 0; i < format_clusters.length; i++){

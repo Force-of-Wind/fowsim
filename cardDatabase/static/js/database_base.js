@@ -72,7 +72,7 @@ $(function(){
         let formData = new FormData(this);
         let params = new URLSearchParams(formData);
         params.append('form_type', this.id);
-        window.location.replace('/search/' + '?' + params.toString());
+        window.location.assign('/search/' + '?' + params.toString());
     });
 
     function select_format_sets(format_clusters, set_active){

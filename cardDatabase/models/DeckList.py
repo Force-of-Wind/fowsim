@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 from .User import Profile
@@ -9,6 +11,15 @@ class DeckList(models.Model):
 
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=False, blank=False)
+    last_modified = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.last_modified = datetime.datetime.now()
+        super().save(*args, **kwargs)
+
+    @property
+    def get_colours(self):
+        return ""
 
 
 class DeckListCard(models.Model):

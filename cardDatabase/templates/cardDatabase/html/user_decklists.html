@@ -1,15 +1,38 @@
 {% extends 'cardDatabase/html/base.html' %}
 {% load static %}
 
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/user_decklists.css' %}">
+{% endblock %}
+
 {% block body %}
+    <div class="my-decklists">My Decklists</div>
+    <div class="new-decklist">
+        <a href="{% url 'cardDatabase-create-decklist' %}">
+            <button type="button">
+                <b>&plus;</b> Create New Deck
+            </button>
+        </a>
+    </div>
     <div class="decklist-container">
-        <div class="new-decklist">
-            <a href="{% url 'cardDatabase-create-decklist' %}">Create New Deck</a>
-        </div>
         {% if decklists %}
-            {% for decklist in decklists %}
-                <a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">{{ decklist.name }}</a>
-            {% endfor %}
+            <table id="user-decklists">
+                <tr>
+                    <th>Deck Name</th>
+                    <th>Colour(s)</th>
+                    <th>Last Modified</th>
+                    <th>Delete Deck</th>
+                </tr>
+                {% for decklist in decklists %}
+                    <tr>
+                        <td><a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
+                        <td>{{ decklist.get_colours }}</td>
+                        <td>{{ decklist.last_modified }}</td>
+                        <td>&#10006;</td>
+                    </tr>
+                {% endfor %}
+            </table>
         {% else %}
             <div class="no-decklists-title">
                 No decklists available.

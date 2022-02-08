@@ -1,0 +1,18 @@
+.my-decklists{
+    width: max-content;
+    margin: 0 auto;
+    font-size: 24px;
+}
+
+.decklist-container{
+    margin: 0 100px 100px 100px;
+}
+
+.new-decklist{
+    padding-left: 100px;
+    padding-bottom: 50px;
+}
+
+#user-decklists{
+    width: calc(100% - 200px);
+}

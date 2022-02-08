@@ -64,7 +64,6 @@ $(function() {
             success: function(data){
                 window.onbeforeunload = undefined; // Remove warning of unsaved changes
                 window.location.assign('/decklists/');
-                console.log('Success');
             },
             error: function(data){
                 console.log('Error');
@@ -81,13 +80,17 @@ $(function() {
         setupCardClickables();
     });
 
-    $('.deck-zone-card').mouseover(function(event){
+    function hoverCardMouseOver(event){
         $(this).find('img').addClass('show-hover');
-    });
+    }
 
-    $('.deck-zone-card').mouseout(function(event){
+    function hoverCardMouseOut(event){
         $(this).find('img').removeClass('show-hover');
-    });
+    }
+
+    $('.deck-zone-card-name').mouseover(hoverCardMouseOver);
+
+    $('.deck-zone-card-name').mouseout(hoverCardMouseOut);
 
     function getCookie(c_name)
     {
@@ -169,14 +172,16 @@ $(function() {
             event.preventDefault();
             let card_name = $(this).closest('.card').data('card-name');
             let zone_name = $(this).data('zone-name');
-            let deck_zone = $(`.deck-zone .deck-zone-title:contains('${zone_name}')`).parent();
+            let deck_zone = $(`.deck-zone .deck-zone-title:contains('${zone_name}')`).parent().parent();
             let card_id = $(this).closest('.card').data('card-id');
             let card_img_url = $(this).closest('.card').data('card-image-url');
-            let deck_zone_cards = $(`.deck-zone .deck-zone-title:contains('${zone_name}')`).parent().find('.deck-zone-cards');
+            let deck_zone_cards = deck_zone.find('.deck-zone-cards');
             let card_matches = deck_zone_cards.find(`.deck-zone-card:contains('${card_name}')`)
             if (!card_matches.length) {
                 let deck_card_html = createCardHtml(card_name, card_img_url, card_id);
                 deck_zone.find('.deck-zone-cards').append(deck_card_html);
+                deck_zone.find('.deck-zone-card-name').mouseout(hoverCardMouseOut);
+                deck_zone.find('.deck-zone-card-name').mouseover(hoverCardMouseOver);
                 setupCardClickables();
             } else {
                 // Already exists, just increment the value

@@ -46,6 +46,7 @@
                         <div id="user-options" class="fow-dropdown">
                             <button class="fow-dropbtn"><i class="arrow down"></i></button>
                             <div class="fow-dropdown-content">
+                                <a href="{% url 'cardDatabase-search' %}">Card Database</a>
                                 <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>
                                 <a href="{% url 'cardDatabase-user-preferences' %}">Preferences</a>
                                 <a href="{% url 'cardDatabase-logout' %}?next={{ request.path }}">Logout</a>

@@ -16,7 +16,9 @@
     {% if cards|length > 0 %}
         <div id="search-results">
             <div class="number-of-results">
-                Showing <b>{{ cards|length }}</b> of <b>{{ total_count }}</b> results:
+                <div class="number-of-results-text">
+                    Showing <b>{{ cards|length }}</b> of <b>{{ total_count }}</b> results:
+                </div>
             </div>
             {% for card in cards %}
                 <div class="card">

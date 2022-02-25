@@ -16,10 +16,14 @@ from fowsim.decorators import site_admins
 
 
 def get_search_form_ctx():
-    race_values = Race.objects.values('name')
-    races_list = list(map(lambda x : x['name'], race_values))  # Remove blank string
-    races_list.sort()
-    races_list.remove('')
+    try:
+        race_values = Race.objects.values('name')
+        races_list = list(map(lambda x : x['name'], race_values))  # Remove blank string
+        races_list.sort()
+        races_list.remove('')
+    except Exception:
+        races_list = []
+
 
     return {
         'races_list': list(races_list),

@@ -1,5 +1,5 @@
 {% extends 'cardDatabase/html/base.html' %}
-{% load static %}
+{% load static card_database_tags %}
 
 {% block css %}
     {{ block.super }}
@@ -20,14 +20,14 @@
             <table id="user-decklists">
                 <tr>
                     <th>Deck Name</th>
-                    <th>Colour(s)</th>
+                    <th>Color(s)</th>
                     <th>Last Modified</th>
                     <th>Delete Deck</th>
                 </tr>
                 {% for decklist in decklists %}
                     <tr>
                         <td><a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
-                        <td>{{ decklist.get_colours }}</td>
+                        <td>{% colours_to_imgs decklist.get_colours %}</td>
                         <td>{{ decklist.last_modified }}</td>
                         <td>&#10006;</td>
                     </tr>

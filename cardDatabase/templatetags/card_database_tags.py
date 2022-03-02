@@ -182,3 +182,11 @@ def format_id_text(text):
 @register.simple_tag
 def dict_to_json(dict_obj):
     return mark_safe(json.dumps(ast.literal_eval(str(dict_obj))))
+
+
+@register.simple_tag
+def colours_to_imgs(colours):
+    output = ''
+    for colour in colours:
+        output += attribute_to_img_html(colour)
+    return mark_safe(output)

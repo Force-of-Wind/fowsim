@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 
 from .User import Profile
+from fowsim import constants as CONS
 
 
 class DeckList(models.Model):
@@ -19,7 +20,11 @@ class DeckList(models.Model):
 
     @property
     def get_colours(self):
-        return ""
+        colours = self.cards.all().values_list('card__colours__db_representation', flat=True).distinct()
+        colours = [x for x in colours if not x == CONS.ATTRIBUTE_VOID_CODE]
+        if len(colours) == 0:
+            colours = [CONS.ATTRIBUTE_VOID_CODE]
+        return colours
 
 
 class DeckListCard(models.Model):

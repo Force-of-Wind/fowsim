@@ -16,3 +16,11 @@
 #user-decklists{
     width: calc(100% - 200px);
 }
+
+.cost-img{
+    height: 19px;
+}
+
+.cost-img:not(:last-child){
+    padding-right: 5px;
+}

@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="{% static 'css/user_decklists.css' %}">
 {% endblock %}
 
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/user_decklists.js' %}"></script>
+{% endblock %}
+
 {% block body %}
     <div class="my-decklists">My Decklists</div>
     <div class="new-decklist">
@@ -26,12 +31,12 @@
                     <th>Delete Deck</th>
                 </tr>
                 {% for decklist in decklists %}
-                    <tr>
+                    <tr data-decklist-pk="{{ decklist.pk }}">
                         <td><a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
                         <td>{% colours_to_imgs decklist.get_colours %}</td>
                         <td>{{ decklist.cards.all.count }}</td>
                         <td>{{ decklist.last_modified }}</td>
-                        <td>&#10006;</td>
+                        <td><div class="delete-deck-button">&#10006;</div></td>
                     </tr>
                 {% endfor %}
             </table>

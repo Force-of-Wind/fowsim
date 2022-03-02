@@ -421,3 +421,15 @@ def logout(request):
 
 def userPreferences(request):
     return HttpResponse('')
+
+
+@csrf_exempt
+def delete_decklist(request, decklist_id=None):
+    if decklist_id:
+        try:
+            decklist = DeckList.objects.get(pk=decklist_id)
+            if decklist.profile.user == request.user:  # Check they aren't deleting other people's lists
+                decklist.delete()
+        except DeckList.DoesNotExist:
+            pass
+    return HttpResponseRedirect(reverse('cardDatabase-user-decklists'))

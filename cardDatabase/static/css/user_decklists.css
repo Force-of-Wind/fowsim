@@ -28,3 +28,8 @@
 #user-decklists th{
     font-weight: bold;
 }
+
+#user-decklists .delete-deck-button:hover{
+    color: red;
+    cursor: pointer;
+}

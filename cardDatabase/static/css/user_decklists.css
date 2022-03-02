@@ -24,3 +24,7 @@
 .cost-img:not(:last-child){
     padding-right: 5px;
 }
+
+#user-decklists th{
+    font-weight: bold;
+}

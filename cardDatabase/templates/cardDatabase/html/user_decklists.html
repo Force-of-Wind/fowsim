@@ -21,6 +21,7 @@
                 <tr>
                     <th>Deck Name</th>
                     <th>Color(s)</th>
+                    <th>Number of cards</th>
                     <th>Last Modified</th>
                     <th>Delete Deck</th>
                 </tr>
@@ -28,6 +29,7 @@
                     <tr>
                         <td><a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
                         <td>{% colours_to_imgs decklist.get_colours %}</td>
+                        <td>{{ decklist.cards.all.count }}</td>
                         <td>{{ decklist.last_modified }}</td>
                         <td>&#10006;</td>
                     </tr>

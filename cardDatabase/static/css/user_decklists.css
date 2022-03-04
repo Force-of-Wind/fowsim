@@ -29,7 +29,37 @@
     font-weight: bold;
 }
 
-#user-decklists .delete-deck-button:hover{
-    color: red;
+
+.deck-actions > div{
+    display: inline-block;
+}
+
+.edit-icon{
+    height: 23px;
+}
+
+.share-icon{
+    height: 19px;
+}
+
+.delete-icon, .view-icon{
+    height: 21px;
+}
+
+.deck-actions > div:hover{
+    -webkit-filter: opacity(.5) drop-shadow(0 0 0 red);
+    filter: opacity(.5) drop-shadow(0 0 0 red);
     cursor: pointer;
+}
+
+.deck-actions > div:not(:first-child){
+    padding-left: 10px;
+}
+
+#user-decklists tr:nth-child(even){
+    background-color: #a9a9a924;
+}
+
+#user-decklists tr:not(:first-child):hover{
+    background-color: #a9a9a98c;
 }

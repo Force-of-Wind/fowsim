@@ -1,5 +1,8 @@
 $(function() {
    $('.delete-deck-button').on('click', function(event){
+       if (!(confirm(`Are you sure you want to delete deck: ${$(this).parents('tr').data('decklist-name')}? This cannot be undone`))){
+           return;
+       }
        let deck_pk = $(this).parents('tr').data('decklist-pk');
        $.ajax({
            type: 'POST',
@@ -11,5 +14,14 @@ $(function() {
                console.log('Error');
            },
        })
+   });
+
+   $('.share-deck-button').on('click', function(event){
+       let deck_url = $(this).parents('tr').find(`.view-deck-button a`).attr('href');
+       navigator.clipboard.writeText(window.location.origin + deck_url).then(function() {
+           alert("Copied link");
+       }, function(err){
+           console.log('error:' + err);
+       });
    });
 });

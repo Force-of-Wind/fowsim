@@ -28,15 +28,28 @@
                     <th>Color(s)</th>
                     <th>Number of cards</th>
                     <th>Last Modified</th>
-                    <th>Delete Deck</th>
+                    <th>Actions</th>
                 </tr>
                 {% for decklist in decklists %}
-                    <tr data-decklist-pk="{{ decklist.pk }}">
+                    <tr data-decklist-pk="{{ decklist.pk }}" data-decklist-name="{{ decklist.name }}">
                         <td><a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
                         <td>{% colours_to_imgs decklist.get_colours %}</td>
                         <td>{{ decklist.cards.all.count }}</td>
                         <td>{{ decklist.last_modified }}</td>
-                        <td><div class="delete-deck-button">&#10006;</div></td>
+                        <td class="deck-actions">
+                            <div class="view-deck-button">
+                                <a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">
+                                    <img src="{% static 'img/view-icon.png' %}" class="view-icon">
+                                </a>
+                            </div>
+                            <div class="edit-deck-button">
+                                <a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">
+                                    <img src="{% static 'img/edit-icon.png' %}" class="edit-icon">
+                                </a>
+                            </div>
+                            <div class="share-deck-button"><img src="{% static 'img/share-icon.png' %}" class="share-icon"></div>
+                            <div class="delete-deck-button"><img src="{% static 'img/delete-icon.png' %}" class="delete-icon"></div>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>

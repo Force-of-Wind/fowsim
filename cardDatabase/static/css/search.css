@@ -5,6 +5,10 @@
     box-shadow: none;
 }
 
+.card:not(:last-child){
+    padding-right: 5px;
+}
+
 .card-img{
     width: 300px;
 }

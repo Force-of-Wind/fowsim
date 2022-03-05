@@ -32,7 +32,7 @@
                 </tr>
                 {% for decklist in decklists %}
                     <tr data-decklist-pk="{{ decklist.pk }}" data-decklist-name="{{ decklist.name }}">
-                        <td><a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
+                        <td><a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
                         <td>{% colours_to_imgs decklist.get_colours %}</td>
                         <td>{% decklist_card_count decklist %}</td>
                         <td>{{ decklist.last_modified }}</td>

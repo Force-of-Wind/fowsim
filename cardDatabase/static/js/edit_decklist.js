@@ -18,13 +18,14 @@ $(function() {
         $('.deck-zone-cards .remove-card').on('click', function(event){
             $(this).closest('.deck-zone-card').remove();
         });
-
-        $('.remove-zone').on('click', function(event){
+        $('.remove-zone').unbind('click');
+        $('.remove-zone').click(function(event){
             if(confirm(`Are you sure you want to delete the zone: ${$(this).siblings('.deck-zone-title').text().trim()}`)){
                 $(this).parents('.deck-zone').remove();
+                setupCardOverlay();
             }
         });
-
+        $('.deck-zone-title').unbind('blur keyup paste copy cut delete mouseup');
         $('.deck-zone-title').on('blur keyup paste copy cut delete mouseup', function(event){
             setupCardOverlay();
         })

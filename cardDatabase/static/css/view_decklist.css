@@ -45,3 +45,7 @@
     gap: 3px;
     row-gap: 3px;
 }
+
+#header{
+    margin-bottom: 10px;
+}

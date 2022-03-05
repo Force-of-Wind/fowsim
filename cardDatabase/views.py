@@ -13,8 +13,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm
-from .models.User import Profile
-from .models.DeckList import DeckList, DeckListZone, DeckListCard
+from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins
@@ -369,16 +368,20 @@ def user_decklists(request):
 @login_required
 def create_decklist(request):
     decklist = DeckList.objects.create(profile=request.user.profile, name='Untitled Deck')
+    for default_zone in DeckListZone.objects.filter(show_by_default=True):
+        UserDeckListZone.objects.create(zone=default_zone, position=default_zone.position, decklist=decklist)
     return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': decklist.id}))
 
 
 @login_required
 def edit_decklist(request, decklist_id=None):
-    decklist = get_object_or_404(DeckList, pk=decklist_id)
+    # Check that the user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
     ctx = get_search_form_ctx()
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
-    ctx['default_zones'] = DeckListZone.objects.filter(show_by_default=True)
+    ctx['zones'] = UserDeckListZone.objects.filter(decklist__pk=decklist.pk).\
+        order_by('-zone__show_by_default', 'position')
     ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
     ctx['decklist'] = decklist
     return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)
@@ -395,17 +398,21 @@ def save_decklist(request, decklist_id=None):
     decklist.save()
     #  Remove old cards, then rebuild it
     DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()
+    UserDeckListZone.objects.filter(decklist__pk=decklist.pk).delete()
+    zone_count = 0
     for zone_data in decklist_data['zones']:
         zone, created = DeckListZone.objects.get_or_create(name=zone_data['name'])
+        user_zone, created = UserDeckListZone.objects.get_or_create(zone=zone, position=zone_count, decklist=decklist)
         for card_data in zone_data['cards']:
             card = Card.objects.get(card_id=card_data['id'])
             DeckListCard.objects.get_or_create(
                 decklist=decklist,
                 card=card,
                 position=card_data['position'],
-                zone=zone,
+                zone=user_zone,
                 quantity=card_data['quantity']
             )
+        zone_count += 1
 
     return HttpResponse('')
 
@@ -413,7 +420,7 @@ def save_decklist(request, decklist_id=None):
 def view_decklist(request, decklist_id):
     decklist = get_object_or_404(DeckList, pk=decklist_id)
     cards = decklist.cards.all()
-    zones = cards.values_list('zone__name', flat=True).distinct()
+    zones = UserDeckListZone.objects.filter(decklist=decklist).order_by('position').values_list('zone__name', flat=True).distinct()
     return render(request, 'cardDatabase/html/view_decklist.html', context={'decklist': decklist, 'zones': zones, 'cards': cards})
 
 

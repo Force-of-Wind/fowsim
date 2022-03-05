@@ -3,7 +3,7 @@ from cardDatabase.models.Ability import *
 from cardDatabase.models.CardType import *
 from cardDatabase.models.Effects import OneTimeEffect
 from cardDatabase.models.User import Profile
-from cardDatabase.models.DeckList import DeckList, DeckListCard, DeckListZone
+from cardDatabase.models.DeckList import DeckList, DeckListCard, DeckListZone, UserDeckListZone
 
 
 class AbilityTextInline(admin.TabularInline):
@@ -39,3 +39,4 @@ admin.site.register(Keyword)
 admin.site.register(DeckList)
 admin.site.register(DeckListCard)
 admin.site.register(DeckListZone)
+admin.site.register(UserDeckListZone)

@@ -31,35 +31,35 @@
             {{ decklist.name }}
         </div>
         <div class="deck-zones-container">
-        {% for zone in default_zones %}
-            <div class="deck-zone">
-                <div class="deck-zone-title-container">
-                    <div class="deck-zone-title" contenteditable="true">
-                        {{ zone.name }}
+            {% for zone in zones %}
+                <div class="deck-zone">
+                    <div class="deck-zone-title-container">
+                        <div class="deck-zone-title" contenteditable="true">
+                            {{ zone.zone.name }}
+                        </div>
+                        <div class="remove-zone">&#10006;</div>
                     </div>
-                    <div class="remove-zone">&#10006;</div>
-                </div>
-                {# .deck-zone-cards is duplicated in the js in edit_decklist.js #}
-                <div class="deck-zone-cards">
-                    {% for card in decklist_cards %}
-                        {% if card.zone == zone %}
-                            <div class="deck-zone-card" data-card-id="{{ card.card.card_id }}">
-                                <div class="card-quantity">
-                                    <a href="#" class="card-quantity-minus"><span>-</span></a>
-                                    <input type="text" class="card-quantity-input" value="{{ card.quantity }}">
-                                    <a href="#" class="card-quantity-plus"><span>+</span></a>
+                    {# .deck-zone-cards is duplicated in the js in edit_decklist.js #}
+                    <div class="deck-zone-cards">
+                        {% for card in decklist_cards %}
+                            {% if card.zone == zone %}
+                                <div class="deck-zone-card" data-card-id="{{ card.card.card_id }}">
+                                    <div class="card-quantity">
+                                        <a href="#" class="card-quantity-minus"><span>-</span></a>
+                                        <input type="text" class="card-quantity-input" value="{{ card.quantity }}">
+                                        <a href="#" class="card-quantity-plus"><span>+</span></a>
+                                    </div>
+                                    <div class="deck-zone-card-name">
+                                        {{ card.card.name }}
+                                        <img class="hover-card-img" src="{{ card.card.card_image.url }}">
+                                    </div>
+                                    <div class="remove-card">&#10006;</div>
                                 </div>
-                                <div class="deck-zone-card-name">
-                                    {{ card.card.name }}
-                                    <img class="hover-card-img" src="{{ card.card.card_image.url }}">
-                                </div>
-                                <div class="remove-card">&#10006;</div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
         </div>
         <div class="deck-actions">
             <button id="save-deck-button" type="button">Save</button>

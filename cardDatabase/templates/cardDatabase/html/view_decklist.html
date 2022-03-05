@@ -28,7 +28,7 @@
                 {% if cards %}
                     <div class="deck-zone-card-container">
                         {% for card in cards %}
-                            {% if card.zone.name == zone %}
+                            {% if card.zone.zone.name == zone %}
                                 {% with ''|center:card.quantity as range %}
                                     {% for _ in range %}
                                         <div class="deck-card">

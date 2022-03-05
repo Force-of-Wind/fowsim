@@ -33,7 +33,7 @@ class DeckListCard(models.Model):
     decklist = models.ForeignKey(DeckList, null=False, blank=False, related_name='cards', on_delete=models.CASCADE)
     card = models.ForeignKey('Card', null=False, blank=False, on_delete=models.CASCADE)
     position = models.IntegerField(blank=False, null=False)
-    zone = models.ForeignKey('DeckListZone', blank=False, null=False, on_delete=models.CASCADE)
+    zone = models.ForeignKey('UserDeckListZone', blank=False, null=False, on_delete=models.CASCADE)
     quantity = models.IntegerField(blank=False, null=False, default=1)
 
 
@@ -43,3 +43,10 @@ class DeckListZone(models.Model):
 
     name = models.CharField(max_length=200, blank=False, null=False)
     show_by_default = models.BooleanField(blank=False, null=False, default=False)
+    position = models.IntegerField(blank=True, null=True)
+
+
+class UserDeckListZone(models.Model):
+    decklist = models.ForeignKey('DeckList', on_delete=models.CASCADE)
+    position = models.IntegerField(blank=False, null=False)
+    zone = models.ForeignKey('DeckListZone', on_delete=models.CASCADE)

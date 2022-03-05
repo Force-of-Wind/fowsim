@@ -411,7 +411,10 @@ def save_decklist(request, decklist_id=None):
 
 
 def view_decklist(request, decklist_id):
-    return None
+    decklist = get_object_or_404(DeckList, pk=decklist_id)
+    cards = decklist.cards.all()
+    zones = cards.values_list('zone__name', flat=True).distinct()
+    return render(request, 'cardDatabase/html/view_decklist.html', context={'decklist': decklist, 'zones': zones, 'cards': cards})
 
 
 def logout(request):
@@ -424,6 +427,7 @@ def userPreferences(request):
 
 
 @csrf_exempt
+@login_required
 def delete_decklist(request, decklist_id=None):
     if decklist_id:
         try:

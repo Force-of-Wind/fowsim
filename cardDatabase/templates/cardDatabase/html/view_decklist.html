@@ -1,0 +1,38 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static %}
+{% block subtitle %} - {{ decklist.name }}{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/view_decklist.css' %}">
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/view_decklist.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="deck-view-container">
+        {% for zone in zones %}
+            <div class="deck-zone">
+                <div class="deck-zone-title">
+                    {{ zone }}
+                </div>
+                {% if cards %}
+                    {% for card in cards %}
+                        {% if card.zone.name == zone %}
+                            {% with ''|center:card.quantity as range %}
+                                {% for _ in range %}
+                                    <div class="deck-card">
+                                        <img class="deck-card-img" src="{{ card.card.card_image.url }}">
+                                    </div>
+                                {% endfor %}
+                            {% endwith %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

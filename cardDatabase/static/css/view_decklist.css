@@ -1,0 +1,18 @@
+.deck-card{
+    display: inline-block;
+    padding-bottom: 6px;
+}
+
+.deck-card img{
+    width: 120px;
+}
+
+.deck-view-container{
+    width: 100%;
+    padding: 0 100px;
+}
+
+.deck-zone-title{
+    font-weight: bold;
+    font-size: 24px;
+}

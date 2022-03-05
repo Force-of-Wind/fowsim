@@ -195,3 +195,7 @@
 .deck-zone-title-container{
     display: flex;
 }
+
+.deck-zone-cards{
+    cursor: pointer;
+}

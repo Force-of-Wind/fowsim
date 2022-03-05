@@ -204,6 +204,8 @@ $(function() {
         output += `</div></div>`;
         return output;
     }
+
+    $('.deck-zone-cards').sortable({delay: 85});
 });
 
 window.onbeforeunload = function(e){

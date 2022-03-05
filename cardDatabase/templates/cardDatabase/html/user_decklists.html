@@ -34,7 +34,7 @@
                     <tr data-decklist-pk="{{ decklist.pk }}" data-decklist-name="{{ decklist.name }}">
                         <td><a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
                         <td>{% colours_to_imgs decklist.get_colours %}</td>
-                        <td>{{ decklist.cards.all.count }}</td>
+                        <td>{% decklist_card_count decklist %}</td>
                         <td>{{ decklist.last_modified }}</td>
                         <td class="deck-actions">
                             <div class="view-deck-button">

@@ -1,18 +1,46 @@
 .deck-card{
     display: inline-block;
-    padding-bottom: 6px;
+    flex: 0 0 auto;
 }
 
 .deck-card img{
-    width: 120px;
+    width: 80px;
 }
 
 .deck-view-container{
     width: 100%;
-    padding: 0 100px;
+    padding-left: calc((100% - 850px) / 2);
+    padding-right: calc((100% - 850px) / 2);
 }
 
 .deck-zone-title{
     font-weight: bold;
+    font-size: 18px;
+}
+
+.deck-title{
+    font-weight: bold;
     font-size: 24px;
+}
+
+.deck-creator-name{
+    font-style: italic;
+}
+
+.deck-title, .deck-creator-name{
+    display: inline-block;
+}
+
+.deck-zone{
+    border-bottom: 1px solid rgb(0 0 0 / 16%);
+    margin-bottom: 10px;
+}
+
+.deck-zone-card-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 3px;
+    row-gap: 3px;
 }

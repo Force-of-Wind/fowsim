@@ -14,23 +14,31 @@
 
 {% block body %}
     <div class="deck-view-container">
+        <div class="deck-title">
+            {{ decklist.name }}
+        </div>
+        <div class="deck-creator-name">
+            by {{ decklist.profile.user.username }}
+        </div>
         {% for zone in zones %}
             <div class="deck-zone">
                 <div class="deck-zone-title">
                     {{ zone }}
                 </div>
                 {% if cards %}
-                    {% for card in cards %}
-                        {% if card.zone.name == zone %}
-                            {% with ''|center:card.quantity as range %}
-                                {% for _ in range %}
-                                    <div class="deck-card">
-                                        <img class="deck-card-img" src="{{ card.card.card_image.url }}">
-                                    </div>
-                                {% endfor %}
-                            {% endwith %}
-                        {% endif %}
-                    {% endfor %}
+                    <div class="deck-zone-card-container">
+                        {% for card in cards %}
+                            {% if card.zone.name == zone %}
+                                {% with ''|center:card.quantity as range %}
+                                    {% for _ in range %}
+                                        <div class="deck-card">
+                                            <img class="deck-card-img" src="{{ card.card.card_image.url }}">
+                                        </div>
+                                    {% endfor %}
+                                {% endwith %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 {% endif %}
             </div>
         {% endfor %}

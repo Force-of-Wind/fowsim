@@ -177,7 +177,9 @@ $(function() {
             let card_id = $(this).closest('.card').data('card-id');
             let card_img_url = $(this).closest('.card').data('card-image-url');
             let deck_zone_cards = deck_zone.find('.deck-zone-cards');
-            let card_matches = deck_zone_cards.find(`.deck-zone-card:contains('${card_name}')`);
+            let card_matches = deck_zone_cards.find(`.deck-zone-card`).filter(function(){
+                return $(this).find('.deck-zone-card-name').text() === card_name;
+            });
             if (!card_matches.length) {
                 let deck_card_html = createCardHtml(card_name, card_img_url, card_id);
                 deck_zone.find('.deck-zone-cards').append(deck_card_html);

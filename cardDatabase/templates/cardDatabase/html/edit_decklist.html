@@ -51,9 +51,9 @@
                             {% if card.zone == zone %}
                                 <div class="deck-zone-card" data-card-id="{{ card.card.card_id }}">
                                     <div class="card-quantity">
-                                        <a href="#" class="card-quantity-minus"><span>-</span></a>
+                                        <a href="#/" class="card-quantity-minus"><span>-</span></a>
                                         <input type="text" class="card-quantity-input" value="{{ card.quantity }}">
-                                        <a href="#" class="card-quantity-plus"><span>+</span></a>
+                                        <a href="#/" class="card-quantity-plus"><span>+</span></a>
                                     </div>
                                     {# Can't have whitespace around card name to match jquery #}
                                     <div class="deck-zone-card-name">{{ card.card.name }}<img class="hover-card-img" src="{{ card.card.card_image.url }}"></div>

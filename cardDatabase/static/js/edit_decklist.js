@@ -177,7 +177,7 @@ $(function() {
             let card_id = $(this).closest('.card').data('card-id');
             let card_img_url = $(this).closest('.card').data('card-image-url');
             let deck_zone_cards = deck_zone.find('.deck-zone-cards');
-            let card_matches = deck_zone_cards.find(`.deck-zone-card:contains('${card_name}')`)
+            let card_matches = deck_zone_cards.find(`.deck-zone-card:contains('${card_name}')`);
             if (!card_matches.length) {
                 let deck_card_html = createCardHtml(card_name, card_img_url, card_id);
                 deck_zone.find('.deck-zone-cards').append(deck_card_html);
@@ -205,7 +205,7 @@ $(function() {
         return output;
     }
 
-    $('.deck-zone-cards').sortable({delay: 85});
+    jQuery_3_6_0('.deck-zone-cards').sortable({delay: 85});
 });
 
 window.onbeforeunload = function(e){

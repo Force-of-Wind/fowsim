@@ -14,9 +14,13 @@
 {% endblock %}
 
 {% block js %}
-    {{ block.super }}
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        //uses 3.6.0 for sortable (drag and drop), dont want it to override normal jQuery as $, so assign it to a new name, then load jquery from block.super
+        let jQuery_3_6_0 = $.noConflict(true);
+    </script>
+    {{ block.super }}
     <script src="{% static 'js/search.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/edit_decklist.js' %}" type="text/javascript"></script>
 {% endblock %}
@@ -51,10 +55,8 @@
                                         <input type="text" class="card-quantity-input" value="{{ card.quantity }}">
                                         <a href="#" class="card-quantity-plus"><span>+</span></a>
                                     </div>
-                                    <div class="deck-zone-card-name">
-                                        {{ card.card.name }}
-                                        <img class="hover-card-img" src="{{ card.card.card_image.url }}">
-                                    </div>
+                                    {# Can't have whitespace around card name to match jquery #}
+                                    <div class="deck-zone-card-name">{{ card.card.name }}<img class="hover-card-img" src="{{ card.card.card_image.url }}"></div>
                                     <div class="remove-card">&#10006;</div>
                                 </div>
                             {% endif %}

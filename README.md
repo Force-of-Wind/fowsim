@@ -7,8 +7,8 @@ Setup instructions:
     - Windows: `/path/to/venv/Scripts/activate` 
     - Linux: `. /path/to/venv/Scripts/activate`
 
-3. Install requirements (If you add packages with pip, add them to requirements.txt using "pip freeze > requirements.txt")
-pip install -r requirements.txt
+3. Install requirements (If you add packages with pip, add them to requirements.txt using "pip freeze > requirements.txt"). If running on linux or mac, remove the line for Twisted from the requirements.txt file (dont commit this change)
+> pip install -r requirements.txt
 
 4. Install PostgreSQL and set up a local database.
 

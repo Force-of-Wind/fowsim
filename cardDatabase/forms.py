@@ -1,5 +1,6 @@
-from django.contrib.auth.forms import AuthenticationForm, UsernameField
+from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
 from django import forms
+from django.contrib.auth.models import User
 
 from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card, Race, AbilityText
@@ -120,3 +121,11 @@ class UserLoginForm(AuthenticationForm):
         'id': 'password-form'
 
     }))
+
+
+class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(max_length=254)
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2',)

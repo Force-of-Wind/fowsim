@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import AuthenticationForm, UsernameField
 from django import forms
 
 from fowsim import constants as CONS
@@ -102,3 +103,20 @@ class AddCardForm(forms.ModelForm):
 
         return card_instance
 
+
+class UserLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserLoginForm).__init__(*args, **kwargs)
+
+    username = UsernameField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Username',
+        'id': 'username-field'
+    }))
+
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Password',
+        'id': 'password-form'
+
+    }))

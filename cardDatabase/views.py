@@ -444,3 +444,7 @@ def delete_decklist(request, decklist_id=None):
         except DeckList.DoesNotExist:
             pass
     return HttpResponseRedirect(reverse('cardDatabase-user-decklists'))
+
+
+def register(request):
+    return HttpResponse('')

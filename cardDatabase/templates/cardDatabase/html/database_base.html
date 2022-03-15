@@ -11,11 +11,6 @@
     <script src="{% static 'js/database_base.js' %}" type="text/javascript"></script>
     <script type="text/javascript">
         let FOWDB_SET_JSON = {% dict_to_json sets_json %};
-        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-            let FOWDB_IS_MOBILE = true;
-        {% else %}
-            let FOWDB_IS_MOBILE = false;
-        {% endif %}
         let FOWDB_USE_DEFAULT_DATABASE_SUBMIT = {% block use_default_submit %}true{% endblock %};
     </script>
 {% endblock %}

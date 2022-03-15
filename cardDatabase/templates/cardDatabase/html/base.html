@@ -12,6 +12,13 @@
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
                             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
                             crossorigin="anonymous"></script>
+                    <script type="text/javascript">
+                        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                            let FOWDB_IS_MOBILE = true;
+                        {% else %}
+                            let FOWDB_IS_MOBILE = false;
+                        {% endif %}
+                    </script>
                 {% endblock %}
                 {% block css %}
                     <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.css' %}">

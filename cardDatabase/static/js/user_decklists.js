@@ -24,4 +24,12 @@ $(function() {
            console.log('error:' + err);
        });
    });
+
+   if (FOWDB_IS_MOBILE){
+       // Convert the name hyperlink to the whole row
+       $('#user-decklists tr').click(function(event){
+          let dest = $(this).find('a').attr('href');
+          window.location.assign(dest);
+       });
+   }
 });

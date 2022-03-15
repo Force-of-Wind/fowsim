@@ -22,5 +22,6 @@ urlpatterns = [
     path('preferences/', views.userPreferences, name='cardDatabase-user-preferences'),
     path('login/', DjangoAuthViews.LoginView.as_view(template_name='registration/login.html',
                                                      authentication_form=UserLoginForm), name='cardDatabase-login'),
-    path('register/', views.register, name='cardDatabase-register')
+    path('register/', views.register, name='cardDatabase-register'),
+    path('desktop_only/', views.desktop_only, name='cardDatabase-mobile-only')
 ]

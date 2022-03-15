@@ -17,7 +17,7 @@ from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistration
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
 from fowsim import constants as CONS
-from fowsim.decorators import site_admins
+from fowsim.decorators import site_admins, desktop_only
 
 
 def get_search_form_ctx():
@@ -31,6 +31,7 @@ def get_search_form_ctx():
         'card_types_list': CONS.DATABASE_CARD_TYPE_GROUPS,
         'sets_json': CONS.SET_DATA
     }
+
 
 def get_race_query(data):
     race_query = Q()
@@ -367,6 +368,7 @@ def user_decklists(request):
 
 
 @login_required
+@desktop_only
 def create_decklist(request):
     decklist = DeckList.objects.create(profile=request.user.profile, name='Untitled Deck')
     for default_zone in DeckListZone.objects.filter(show_by_default=True):
@@ -375,6 +377,7 @@ def create_decklist(request):
 
 
 @login_required
+@desktop_only
 def edit_decklist(request, decklist_id=None):
     # Check that the user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
@@ -390,6 +393,7 @@ def edit_decklist(request, decklist_id=None):
 
 @login_required
 @require_POST
+@desktop_only
 def save_decklist(request, decklist_id=None):
     decklist_data = json.loads(request.body.decode('UTF-8'))['decklist_data']
 
@@ -460,3 +464,7 @@ def register(request):
     else:
         form = UserRegistrationForm()
     return render(request, 'cardDatabase/html/register.html', {'form': form})
+
+
+def desktop_only(request):
+    return render(request, 'cardDatabase/html/desktop_only.html', {})

@@ -13,7 +13,9 @@
 
 {% block mobilecss %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/user_decklists_mobile.css' %}">
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/user_decklists_mobile.css' %}">
+    {% endif %}
 {% endblock %}
 
 {% block body %}

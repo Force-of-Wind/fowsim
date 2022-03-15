@@ -91,6 +91,7 @@
 }
 
 .card-preview .view-in-another-tab{
+    border: 1px solid #dc0800;
     width: max-content;
     top: calc(50% + 345px);
     height: 24px;

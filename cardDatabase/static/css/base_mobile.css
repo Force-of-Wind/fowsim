@@ -68,3 +68,12 @@ html.mobile .atk-def-input{
 #social-media, #login, #user-options{
     padding-right: 10px;
 }
+
+#social-media {
+    position: absolute;
+    left: 0;
+}
+
+#social-media .fow-dropdown-content{
+    left: 20px;
+}

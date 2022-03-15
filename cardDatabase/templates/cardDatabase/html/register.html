@@ -5,6 +5,10 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/register_mobile.css' %}">
+    {% endif %}
 {% endblock %}
 
 {% block body %}

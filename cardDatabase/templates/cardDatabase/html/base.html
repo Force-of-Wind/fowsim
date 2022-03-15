@@ -18,6 +18,11 @@
                     <link rel="stylesheet" href="{% static 'css/bootstrap/mdb.css' %}">
                     <link rel="stylesheet" href="{% static 'css/base.css' %}">
                 {% endblock %}
+                {% block mobilecss %} {# Comes after desktop css so it can override on matching selectors #}
+                    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                        <link rel="stylesheet" href="{% static 'css/base_mobile.css' %}">
+                    {% endif %}
+                {% endblock %}
 
             {% endblock %}
         </head>

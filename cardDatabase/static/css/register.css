@@ -25,16 +25,16 @@
 .register-title, .register-form-container{
     padding: 20px 50px;
     background-color: white;
-    border-right: 2px solid black;
-    border-left: 2px solid black;
+    border-right: 2px solid #dc0800;
+    border-left: 2px solid #dc0800;
 }
 
 .register-title{
-    border-top: 2px solid black;
+    border-top: 2px solid #dc0800;
 }
 
 .register-form-container{
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid #dc0800;
 }
 
 .form-field, .form-label{
@@ -43,11 +43,6 @@
 
 .form-label{
     width: 120px;
-}
-
-body{
-    background-color: #dc0800;
-    height: 100vh;
 }
 
 .registration-container{
@@ -61,6 +56,7 @@ body{
     flex-wrap: wrap;
     max-width: 600px;
     text-align: left;
+    padding-bottom: 10px;
 }
 
 .form-label{

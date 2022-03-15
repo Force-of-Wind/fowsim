@@ -3,8 +3,9 @@
     flex: 0 0 auto;
 }
 
-.deck-card img{
+.deck-card-img{
     width: 60px;
+    cursor: pointer;
 }
 
 .deck-view-container{
@@ -48,4 +49,60 @@
 
 #header{
     margin-bottom: 10px;
+}
+
+.card-preview{
+    display: none;
+}
+
+.card-preview.show{
+    display: block;
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+}
+
+.card-preview.show > img{
+    height: 670px;
+    width: 480px;
+    position: absolute;
+    top: calc(50% - 335px);
+    left: calc(50% - 240px);
+}
+
+.card-preview .close-preview{
+    width: max-content;
+    border-radius: 20px;
+    width: 20px;
+    height: 20px;
+    top: calc(50% - 345px);
+    left: calc(50% + 230px);
+    position: absolute;
+}
+
+.card-preview .close-preview > img{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.card-preview .view-in-another-tab{
+    width: max-content;
+    top: calc(50% + 345px);
+    height: 24px;
+    line-height: 24px;
+    width: 100px;
+    left: calc(50% - 50px);
+    position: absolute;
+    background-color: white;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.card-preview .view-in-another-tab a{
+    color: black;
 }

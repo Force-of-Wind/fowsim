@@ -33,6 +33,17 @@
                                     {% for _ in range %}
                                         <div class="deck-card">
                                             <img class="deck-card-img" src="{{ card.card.card_image.url }}">
+                                            <div class="card-preview">
+                                                <img src="{{ card.card.card_image.url }}">
+                                                <div class="close-preview">
+                                                    <img src="{% static 'img/close-icon.jpg' %}">
+                                                </div>
+                                                <div class="view-in-another-tab">
+                                                    <a href="{% url 'cardDatabase-view-card' card.card.card_id %}" target="_blank">
+                                                        Go to card
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     {% endfor %}
                                 {% endwith %}

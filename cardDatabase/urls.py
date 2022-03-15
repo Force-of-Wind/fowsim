@@ -1,8 +1,10 @@
+from django.contrib.auth import views as DjangoAuthViews
 from django.conf import settings
 from django.urls import path
 from django.shortcuts import redirect
 
 from . import views
+from .forms import UserLoginForm
 
 urlpatterns = [
     path('', lambda req: redirect('/search/')),
@@ -18,4 +20,7 @@ urlpatterns = [
     path('test_error/', views.test_error, name='cardDatabase-test-error'),
     path('logout/', views.logout, name='cardDatabase-logout'),
     path('preferences/', views.userPreferences, name='cardDatabase-user-preferences'),
+    path('login/', DjangoAuthViews.LoginView.as_view(template_name='registration/login.html',
+                                                     authentication_form=UserLoginForm), name='cardDatabase-login'),
+    path('register/', views.register, name='cardDatabase-register')
 ]

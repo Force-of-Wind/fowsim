@@ -1,18 +1,19 @@
 import json
 import re
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Count
 from django.forms.fields import MultipleChoiceField
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
-from django.contrib.auth import logout as django_logout
+from django.contrib.auth import login as django_login, authenticate, logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.contrib.auth import login, authenticate
 
-from .forms import SearchForm, AdvancedSearchForm, AddCardForm
+from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
 from fowsim import constants as CONS
@@ -444,3 +445,18 @@ def delete_decklist(request, decklist_id=None):
         except DeckList.DoesNotExist:
             pass
     return HttpResponseRedirect(reverse('cardDatabase-user-decklists'))
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect(reverse('cardDatabase-user-decklists'))
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'cardDatabase/html/register.html', {'form': form})

@@ -1,0 +1,61 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static %}
+{% block subtitle %} - {{ decklist.name }}{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/view_decklist.css' %}">
+{% endblock %}
+
+{% block mobilecss %}
+    {{ block.super }}
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/view_decklist_mobile.css' %}">
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/view_decklist.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="deck-view-container">
+        <div class="deck-title">
+            {{ decklist.name }}
+        </div>
+        <div class="deck-creator-name">
+            by {{ decklist.profile.user.username }}
+        </div>
+        {% for zone in zones %}
+            <div class="deck-zone">
+                <div class="deck-zone-title">
+                    {{ zone }}
+                </div>
+                {% if cards %}
+                    <div class="deck-zone-card-container">
+                        {% for card in cards %}
+                            {% if card.zone.zone.name == zone %}
+                                {% with ''|center:card.quantity as range %}
+                                    {% for _ in range %}
+                                        <div class="deck-card">
+                                            <img class="deck-card-img" src="{{ card.card.card_image.url }}">
+                                            <div class="card-preview">
+                                                <img src="{{ card.card.card_image.url }}">
+                                                <div class="view-in-another-tab">
+                                                    <a href="{% url 'cardDatabase-view-card' card.card.card_id %}" target="_blank">
+                                                        Go to card
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endwith %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

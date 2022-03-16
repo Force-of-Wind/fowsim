@@ -672,3 +672,10 @@ KEYWORDS_CHOICES = [
     ('[Dragon Emblem]', 'Dragon Emblem'),
     ('[Force]', 'Force')
 ]
+
+
+ZONES_SHOWN_BY_DEFAULT = [
+    'Ruler Area',
+    'Main Deck',
+    'Magic Stone Deck'
+]

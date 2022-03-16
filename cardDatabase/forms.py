@@ -1,4 +1,6 @@
+from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
 from django import forms
+from django.contrib.auth.models import User
 
 from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card, Race, AbilityText
@@ -29,8 +31,11 @@ def get_keywords_choices():
 
 
 class AdvancedSearchForm(forms.Form):
-    race_values = Race.objects.values('name')
-    race_map = map(lambda x : (x['name'], x['name']), race_values)
+    try:
+        race_values = Race.objects.values('name')
+        race_map = map(lambda x: (x['name'], x['name']), race_values)
+    except Exception:
+        race_values = []
 
     generic_text = forms.CharField(label='', strip=True,
                                    widget=forms.TextInput(attrs={'placeholder': 'Search...'}), required=False)
@@ -102,3 +107,35 @@ class AddCardForm(forms.ModelForm):
 
         return card_instance
 
+
+class UserLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserLoginForm).__init__(*args, **kwargs)
+
+    username = UsernameField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Username',
+        'id': 'username-field'
+    }))
+
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Password',
+        'id': 'password-form'
+
+    }))
+
+
+class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(max_length=254)
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'placeholder': 'Username'})
+        self.fields['email'].widget.attrs.update({'placeholder': 'Email'})
+        self.fields['password1'].widget.attrs.update({'placeholder': 'Password'})
+        self.fields['password2'].widget.attrs.update({'placeholder': 'Confirm Password'})

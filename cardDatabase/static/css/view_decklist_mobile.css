@@ -1,0 +1,28 @@
+.deck-view-container{
+    padding: 0 10px;
+}
+
+.card-preview.show > img{
+    height: 50%;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: unset;
+}
+
+.card-preview .view-in-another-tab{
+    top: calc(65% + 10px);
+}
+
+.deck-zone-card-container{
+    justify-content: center;
+}
+
+.deck-zone-title{
+    text-align: center;
+}
+
+.deck-title, .deck-creator-name{
+    display: block;
+    text-align: center;
+}

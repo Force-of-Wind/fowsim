@@ -1,0 +1,42 @@
+{% extends 'cardDatabase/html/base.html' %}
+
+{% load static %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/register_mobile.css' %}">
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="registration-container">
+        <div class="register-title">Sign Up</div>
+        <div class="register-form-container">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-field-container">
+                        <div class="form-label">
+                            {{ field.label_tag }}<br>
+                        </div>
+                        <div class="form-field">
+                            {{ field }}
+                        </div>
+                        {% if field.name == 'password1' %}
+                            <div class="field-help-text">
+                                {{ field.help_text }}
+                            </div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                          <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <input type="submit" value="Register">
+            </form>
+        </div>
+    </div>
+{% endblock %}

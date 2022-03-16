@@ -1,0 +1,75 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/user_decklists.css' %}">
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/user_decklists.js' %}"></script>
+{% endblock %}
+
+{% block mobilecss %}
+    {{ block.super }}
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/user_decklists_mobile.css' %}">
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="my-decklists">My Decklists</div>
+    {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
+        <div class="new-decklist">
+            <a href="{% url 'cardDatabase-create-decklist' %}">
+                <button type="button">
+                    <b>&plus;</b> Create New Deck
+                </button>
+            </a>
+        </div>
+    {% endif %}
+    <div class="decklist-container">
+        {% if decklists %}
+            <table id="user-decklists">
+                <tr>
+                    <th>Deck Name</th>
+                    <th>Color(s)</th>
+                    <th>Number of cards</th>
+                    <th>Last Modified</th>
+                    {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
+                        <th>Actions</th>
+                    {% endif %}
+                </tr>
+                {% for decklist in decklists %}
+                    <tr data-decklist-pk="{{ decklist.pk }}" data-decklist-name="{{ decklist.name }}">
+                        <td><a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
+                        <td>{% colours_to_imgs decklist.get_colours %}</td>
+                        <td>{% decklist_card_count decklist %}</td>
+                        <td>{{ decklist.last_modified }}</td>
+                        {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
+                            <td class="deck-actions">
+                                <div class="view-deck-button">
+                                    <a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">
+                                        <img src="{% static 'img/view-icon.png' %}" class="view-icon">
+                                    </a>
+                                </div>
+                                <div class="edit-deck-button">
+                                    <a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">
+                                        <img src="{% static 'img/edit-icon.png' %}" class="edit-icon">
+                                    </a>
+                                </div>
+                                <div class="share-deck-button"><img src="{% static 'img/share-icon.png' %}" class="share-icon"></div>
+                                <div class="delete-deck-button"><img src="{% static 'img/delete-icon.png' %}" class="delete-icon"></div>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <div class="no-decklists-title">
+                No decklists available.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

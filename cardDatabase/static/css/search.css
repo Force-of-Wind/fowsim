@@ -5,18 +5,30 @@
     box-shadow: none;
 }
 
+.card:not(:last-child){
+    padding-right: 5px;
+}
+
 .card-img{
     width: 300px;
 }
 
 #search-results{
     padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .number-of-results{
+    padding-bottom: 20px;
+    flex: 0 0 100%;
+}
+
+.number-of-results-text{
     width: max-content;
     margin: 0 auto;
-    padding-bottom: 20px;
 }
 
 .number-of-results b{

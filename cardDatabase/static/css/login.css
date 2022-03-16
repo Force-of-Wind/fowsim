@@ -1,0 +1,23 @@
+#base-body{
+    width: max-content;
+    margin:  0 auto;
+}
+
+#base-body #login-form{
+    text-align: center;
+}
+
+#login-form input[type=submit]{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.login-form-label, .login-form-field{
+    display: inline-block;
+}
+
+.register-link{
+    display: block;
+    padding-top: 20px;
+}
+

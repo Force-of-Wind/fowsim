@@ -57,7 +57,7 @@
 
 .card-preview.show{
     display: block;
-    position: absolute;
+    position: fixed;
     z-index: 100;
     width: 100%;
     height: 100%;

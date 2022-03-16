@@ -17,7 +17,7 @@ from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistration
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
 from fowsim import constants as CONS
-from fowsim.decorators import site_admins, desktop_only
+from fowsim.decorators import site_admins, desktop_only, logged_out
 
 
 def get_search_form_ctx():
@@ -42,6 +42,7 @@ def get_race_query(data):
     for race in data:
         race_query |= Q(races__name=race)
     return race_query
+
 
 def get_rarity_query(data):
     rarity_query = Q()
@@ -455,6 +456,7 @@ def delete_decklist(request, decklist_id=None):
     return HttpResponseRedirect(reverse('cardDatabase-user-decklists'))
 
 
+@logged_out
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)

@@ -1,4 +1,11 @@
-$(function(){
+function form_to_url_params(form){
+    let formData = new FormData(form);
+    let params = new URLSearchParams(formData);
+    params.append('form_type', form.id);
+    return params;
+}
+
+function initDatabaseBase(){
     function focusOnInit(el){
         if (!FOWDB_IS_MOBILE){
             el.focus()
@@ -6,13 +13,13 @@ $(function(){
     }
 
     $('#advanced-search-toggle').on('click',
-    function (event){
-        $('#basic-search').hide();
-        $('#advanced-search').show();
-        $('#search-toggles').removeClass('basic-showing');
-        $('#search-toggles').addClass('advanced-showing');
-        focusOnInit($('#advanced-form input[name="generic_text"]'));
-    });
+        function (event){
+            $('#basic-search').hide();
+            $('#advanced-search').show();
+            $('#search-toggles').removeClass('basic-showing');
+            $('#search-toggles').addClass('advanced-showing');
+            focusOnInit($('#advanced-form input[name="generic_text"]'));
+        });
     $('#basic-search-toggle').on('click',
         function(event){
             $('#basic-search').show();
@@ -66,14 +73,15 @@ $(function(){
             $(this).find('img').removeClass('show-hover');
         });
     }
-
-    $('form').on('submit', function(event){
-        event.preventDefault();
-        let formData = new FormData(this);
-        let params = new URLSearchParams(formData);
-        params.append('form_type', this.id);
-        window.location.assign('/search/' + '?' + params.toString());
-    });
+    if (FOWDB_USE_DEFAULT_DATABASE_SUBMIT) {
+        $('form').on('submit', function (event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+            let params = new URLSearchParams(formData);
+            params.append('form_type', this.id);
+            window.location.assign('/search/' + '?' + params.toString());
+        });
+    }
 
     function select_format_sets(format_clusters, set_active){
         for (let i = 0; i < format_clusters.length; i++){
@@ -104,4 +112,7 @@ $(function(){
     });
 
     focusOnInit($('#basic-form input[type="text"]'));
+}
+$(function(){
+    initDatabaseBase();
 });

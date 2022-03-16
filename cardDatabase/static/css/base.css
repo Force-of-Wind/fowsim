@@ -1,0 +1,140 @@
+body{
+    margin: 0;
+}
+
+#header{
+    width: 100%;
+    height: max-content;
+    background-color: #dc0800;
+    margin-bottom: 30px;
+}
+
+.header-content{
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 5px 0;
+}
+
+.header-content a{
+    text-decoration: none;
+}
+
+.discord{
+    width: 30px;
+    height: 30px;
+}
+
+#site-title{
+    display: inline-block;
+    line-height: 10px;
+    bottom: 10px;
+    color: white;
+}
+
+#site-icon{
+    display: inline-block;
+    height: 30px;
+}
+
+/* Dropdown Button */
+.fow-dropbtn {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.fow-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.fow-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 20px;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.fow-dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}
+
+.fow-dropdown-content a:not(:first-child){
+    border-top: 1px solid black;
+}
+
+/* Change color of dropdown links on hover */
+.fow-dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.fow-dropdown:hover .fow-dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.fow-dropdown:hover .fow-dropbtn {background-color: #b90700;}
+
+.site-header-logo{
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    top: 5px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    width: max-content;
+}
+
+/* Exceptions for these in base_mobile.css */
+#social-media, #login, #user-options{
+    height: 30px;
+    line-height: 30px;
+    flex: 0;
+    width: max-content;
+    padding: 0 25px 0 0;
+}
+
+#login{
+    color: white;
+}
+
+.arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.arrow.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.arrow.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.arrow.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.arrow.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}

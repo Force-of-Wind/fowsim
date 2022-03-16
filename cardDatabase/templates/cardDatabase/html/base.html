@@ -12,8 +12,23 @@
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
                             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
                             crossorigin="anonymous"></script>
+                    <script type="text/javascript">
+                        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                            let FOWDB_IS_MOBILE = true;
+                        {% else %}
+                            let FOWDB_IS_MOBILE = false;
+                        {% endif %}
+                    </script>
                 {% endblock %}
                 {% block css %}
+                    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.css' %}">
+                    <link rel="stylesheet" href="{% static 'css/bootstrap/mdb.css' %}">
+                    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+                {% endblock %}
+                {% block mobilecss %} {# Comes after desktop css so it can override on matching selectors #}
+                    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                        <link rel="stylesheet" href="{% static 'css/base_mobile.css' %}">
+                    {% endif %}
                 {% endblock %}
 
             {% endblock %}
@@ -22,20 +37,41 @@
         {% block header %}
             <div id="header">
                 <div class="header-content">
-                    <a href="{% url 'cardDatabase-search' %}">
-                        <div id="site-title">{% block header-title %}Force of Wind{% endblock %}</div>
-                        <img id="site-icon" src="{% static 'img/wind.png'%}">
-                    </a>
-                </div>
-                <div id="social-media">
-                    <a href="https://discord.com/invite/8S5XW6pUEF" target="_blank">
-                        <img class="discord" src="{% static 'img/discord.png' %}">
-                    </a>
+                    <div class="site-header-logo">
+                        <a href="{% url 'cardDatabase-search' %}">
+                            <div id="site-title">{% block header-title %}Force of Wind{% endblock %}</div>
+                            <img id="site-icon" src="{% static 'img/wind.png'%}">
+                        </a>
+                    </div>
+                    <div id="social-media" class="fow-dropdown">
+                        <button class="fow-dropbtn"><img class="discord" src="{% static 'img/discord.png' %}"></button>
+                        <div class="fow-dropdown-content">
+                            <a href="#">Force of Wind Tools</a>
+                            <a href="#">Force of Will TCG</a>
+                        </div>
+                    </div>
+                    {% if not request.user.is_authenticated %}
+                        <a href="{% url 'login' %}?next={{ request.path }}">
+                            <div id="login">Login</div>
+                        </a>
+                    {% else %}
+                        <div id="user-options" class="fow-dropdown">
+                            <button class="fow-dropbtn"><i class="arrow down"></i></button>
+                            <div class="fow-dropdown-content">
+                                <a href="{% url 'cardDatabase-search' %}">Card Database</a>
+                                <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>
+                                {% comment %} <a href="{% url 'cardDatabase-user-preferences' %}">Preferences</a> {% endcomment %}
+                                <a href="{% url 'cardDatabase-logout' %}?next={{ request.path }}">Logout</a>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         {% endblock %}
-        {% block body %}
-        {% endblock %}
+        <div id="base-body">
+            {% block body %}
+            {% endblock %}
+        </div>
         </body>
     </html>
 {% endblock %}

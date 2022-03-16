@@ -1,0 +1,21 @@
+.no-search-results img, .no-search-results, #search-toggles, #basic-search #id_generic_text{
+    max-width: 100%;
+}
+
+.form-submit-button{
+    padding-top: 10px;
+}
+
+#search-toggles{
+    display: flex;
+    gap: 20px;
+    text-align: center;
+}
+
+#advanced-search-toggle{
+    padding-right: 10px;
+}
+
+#basic-search-toggle{
+    margin-left: 10px;
+}

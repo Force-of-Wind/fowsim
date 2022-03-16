@@ -1,0 +1,20 @@
+{% extends 'cardDatabase/html/base.html' %}
+
+{% load card_database_tags static %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/desktop_only.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div>
+        <p>
+            Sorry, this page is only available on desktop currently. We're working on it!
+        </p>
+        <p>
+            <button type="button"><a href="/">Home</a></button>
+        </p>
+        <img src="{% get_random_chibi 'sad' %}">
+    </div>
+{% endblock %}

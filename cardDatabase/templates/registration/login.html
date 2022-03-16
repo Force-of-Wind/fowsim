@@ -1,4 +1,13 @@
-{% block content %}
+{% extends 'cardDatabase/html/base.html' %}
+
+{% load static %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block body %}
 
     {% if form.errors %}
         <p>Your username and password didn't match. Please try again.</p>
@@ -8,29 +17,28 @@
         {% if user.is_authenticated %}
             <p>Your account doesn't have access to this page. To proceed,
                 please login with an account that has access.</p>
-        {% else %}
-            <p>Please login to see this page.</p>
         {% endif %}
     {% endif %}
 
-    <form method="post" action="{% url 'login' %}">
+    <form method="post" action="{% url 'login' %}" id="login-form">
         {% csrf_token %}
-        <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table>
+        <div class="login-container">
+            <div class="login-field">
+                <div class="login-form-label">{{ form.username.label_tag }}</div>
+                <div class="login-form-field">{{ form.username }}</div>
+            </div>
+            <div class="login-field">
+                <div class="login-form-label">{{ form.password.label_tag }}</div>
+                <div class="login-form-field">{{ form.password }}</div>
+            </div>
+        </div>
 
-        <input type="submit" value="login">
+        <input type="submit" value="Login">
         <input type="hidden" name="next" value="{{ next }}">
+        <a class="register-link" href="{% url 'cardDatabase-register' %}">Don't have an account? Click here</a>
     </form>
-
+    {% comment %}
     {# Assumes you setup the password_reset view in your URLconf #}
     <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
+    {% endcomment %}
 {% endblock %}

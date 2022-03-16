@@ -1,18 +1,23 @@
+import json
 import re
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Count
 from django.forms.fields import MultipleChoiceField
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
+from django.contrib.auth import login as django_login, authenticate, logout as django_logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.contrib.auth import login, authenticate
 
-from .forms import SearchForm, AdvancedSearchForm, AddCardForm
+from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm
+from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
 from fowsim import constants as CONS
-from fowsim.decorators import site_admins
+from fowsim.decorators import site_admins, desktop_only
 
 
 def get_search_form_ctx():
@@ -30,6 +35,7 @@ def get_search_form_ctx():
         'card_types_list': CONS.DATABASE_CARD_TYPE_GROUPS,
         'sets_json': CONS.SET_DATA
     }
+
 
 def get_race_query(data):
     race_query = Q()
@@ -356,3 +362,113 @@ def add_card(request):
 @site_admins
 def test_error(request):
     return 1 / 0
+
+
+@login_required
+def user_decklists(request):
+    ctx = dict()
+    ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile)
+    return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
+
+
+@login_required
+@desktop_only
+def create_decklist(request):
+    decklist = DeckList.objects.create(profile=request.user.profile, name='Untitled Deck')
+    for default_zone in DeckListZone.objects.filter(show_by_default=True):
+        UserDeckListZone.objects.create(zone=default_zone, position=default_zone.position, decklist=decklist)
+    return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': decklist.id}))
+
+
+@login_required
+@desktop_only
+def edit_decklist(request, decklist_id=None):
+    # Check that the user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    ctx = get_search_form_ctx()
+    ctx['basic_form'] = SearchForm()
+    ctx['advanced_form'] = AdvancedSearchForm()
+    ctx['zones'] = UserDeckListZone.objects.filter(decklist__pk=decklist.pk).\
+        order_by('-zone__show_by_default', 'position')
+    ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
+    ctx['decklist'] = decklist
+    return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)
+
+
+@login_required
+@require_POST
+@desktop_only
+def save_decklist(request, decklist_id=None):
+    decklist_data = json.loads(request.body.decode('UTF-8'))['decklist_data']
+
+    # Check user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    decklist.name = decklist_data['name']
+    decklist.save()
+    #  Remove old cards, then rebuild it
+    DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()
+    UserDeckListZone.objects.filter(decklist__pk=decklist.pk).delete()
+    zone_count = 0
+    for zone_data in decklist_data['zones']:
+        zone, created = DeckListZone.objects.get_or_create(name=zone_data['name'])
+        user_zone, created = UserDeckListZone.objects.get_or_create(zone=zone, position=zone_count, decklist=decklist)
+        for card_data in zone_data['cards']:
+            card = Card.objects.get(card_id=card_data['id'])
+            DeckListCard.objects.get_or_create(
+                decklist=decklist,
+                card=card,
+                position=card_data['position'],
+                zone=user_zone,
+                quantity=card_data['quantity']
+            )
+        zone_count += 1
+
+    return HttpResponse('')
+
+
+def view_decklist(request, decklist_id):
+    decklist = get_object_or_404(DeckList, pk=decklist_id)
+    cards = decklist.cards.all()
+    zones = UserDeckListZone.objects.filter(decklist=decklist).order_by('position').values_list('zone__name', flat=True).distinct()
+    return render(request, 'cardDatabase/html/view_decklist.html', context={'decklist': decklist, 'zones': zones, 'cards': cards})
+
+
+def logout(request):
+    django_logout(request)
+    return HttpResponseRedirect(reverse('cardDatabase-search'))
+
+
+def userPreferences(request):
+    return HttpResponse('')
+
+
+@csrf_exempt
+@login_required
+def delete_decklist(request, decklist_id=None):
+    if decklist_id:
+        try:
+            decklist = DeckList.objects.get(pk=decklist_id)
+            if decklist.profile.user == request.user:  # Check they aren't deleting other people's lists
+                decklist.delete()
+        except DeckList.DoesNotExist:
+            pass
+    return HttpResponseRedirect(reverse('cardDatabase-user-decklists'))
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect(reverse('cardDatabase-user-decklists'))
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'cardDatabase/html/register.html', {'form': form})
+
+
+def desktop_only(request):
+    return render(request, 'cardDatabase/html/desktop_only.html', {})

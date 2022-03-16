@@ -40,10 +40,11 @@
             {% for zone in zones %}
                 <div class="deck-zone">
                     <div class="deck-zone-title-container">
+                        <div class="zone-count"></div>
                         <div class="deck-zone-title" contenteditable="true">
                             {{ zone.zone.name }}
                         </div>
-                        <div class="remove-zone">&#10006;</div>
+                        <div class="remove-zone"><span>&#10006;</span></div>
                     </div>
                     {# .deck-zone-cards is duplicated in the js in edit_decklist.js #}
                     <div class="deck-zone-cards">

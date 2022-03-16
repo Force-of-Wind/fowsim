@@ -18,7 +18,7 @@
     font-weight: bold;
     font-size: 18px;
     margin-right: 10px;
-    flex: 1 0 auto;
+    flex: 0 1 auto;
 }
 
 .deck-zone{
@@ -188,7 +188,12 @@
     font-size: 20px;
 }
 
-.remove-card:hover, .remove-zone:hover{
+.remove-zone{
+    flex: 1 0 auto;
+    text-align: right;
+}
+
+.remove-card:hover, .remove-zone span:hover{
     color: red;
     cursor: pointer;
 }
@@ -199,4 +204,9 @@
 
 .deck-zone-cards{
     cursor: pointer;
+}
+
+.zone-count{
+    font-weight: bold;
+    padding-right: 5px;
 }

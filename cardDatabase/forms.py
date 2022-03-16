@@ -29,8 +29,11 @@ def get_keywords_choices():
 
 
 class AdvancedSearchForm(forms.Form):
-    race_values = Race.objects.values('name')
-    race_map = map(lambda x : (x['name'], x['name']), race_values)
+    try:
+        race_values = Race.objects.values('name')
+        race_map = map(lambda x: (x['name'], x['name']), race_values)
+    except Exception:
+        race_values = []
 
     generic_text = forms.CharField(label='', strip=True,
                                    widget=forms.TextInput(attrs={'placeholder': 'Search...'}), required=False)

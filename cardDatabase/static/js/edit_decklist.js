@@ -9,17 +9,21 @@ $(function() {
             $(this).siblings('input').val(function(i, oldVal){
                 return Math.max(parseInt(oldVal, 10) - 1, 1);
             });
+            setZoneCount($(this).parents('.deck-zone').eq(0));
         });
         $('.card-quantity-plus').click(function(event){
             $(this).siblings('input').val(function(i, oldVal){
                 return parseInt(oldVal, 10) + 1;
             });
+            setZoneCount($(this).parents('.deck-zone').eq(0));
         });
         $('.deck-zone-cards .remove-card').on('click', function(event){
+            let parent_deck_zone = $(this).parents('.deck-zone'); //Determine it before removing the element or jquery fails
             $(this).closest('.deck-zone-card').remove();
+            setZoneCount(parent_deck_zone);
         });
-        $('.remove-zone').unbind('click');
-        $('.remove-zone').click(function(event){
+        $('.remove-zone span').unbind('click');
+        $('.remove-zone span').click(function(event){
             if(confirm(`Are you sure you want to delete the zone: ${$(this).siblings('.deck-zone-title').text().trim()}`)){
                 $(this).parents('.deck-zone').remove();
                 setupCardOverlay();
@@ -31,6 +35,17 @@ $(function() {
         })
     }
     setupCardClickables();
+    function setZoneCount(el){
+        let zone_count = 0;
+        $(el).find('.card-quantity').each(function(count_index){
+            zone_count += parseInt($(this).find('input').val());
+        });
+        $(el).find('.zone-count').html(`[${zone_count}]`);
+    }
+    $('.deck-zone').each(function(index){
+        setZoneCount(this)
+    });
+
     $('#save-deck-button').click(function(event){
         let decklist_data = {
             "zones": [],
@@ -74,7 +89,7 @@ $(function() {
     });
 
     $('#new-zone-button').on('click', function(event){
-        let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="deck-zone-title" contenteditable="true">New Zone</div><div class="remove-zone">&#10006;</div></div><div class="deck-zone-cards"></div></div>`;
+        let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="zone-count">[0]</div><div class="deck-zone-title" contenteditable="true">New Zone</div><div class="remove-zone"><span>&#10006;</span></div></div><div class="deck-zone-cards"></div></div>`;
         $('.deck-zones-container').append(output);
         // If any search results are showing, add the new zone to those cards
         setupCardOverlay();
@@ -191,6 +206,7 @@ $(function() {
                 let input_el = card_matches.find('.card-quantity input');
                 input_el.val(parseInt(input_el.val()) + 1);
             }
+            setZoneCount(deck_zone);
         });
     }
 

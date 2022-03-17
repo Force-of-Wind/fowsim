@@ -67,6 +67,10 @@
                                 <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>
                                 {% comment %} <a href="{% url 'cardDatabase-user-preferences' %}">Preferences</a> {% endcomment %}
                                 <a href="{% url 'cardDatabase-logout' %}?next={{ request.path }}">Logout</a>
+                                {% if user.profile.site_admin %}
+                                    <a href="{% url 'admin:index' %}">Admin Site</a>
+                                    <a href="{% url 'cardDatabase-add-card' %}">Add Card</a>
+                                {% endif %}
                             </div>
                         </div>
                     {% endif %}

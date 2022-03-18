@@ -4,6 +4,11 @@
     <html lang="en" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}class="mobile"{% endif %}>
         <head>
             {% block head %}
+                {% block previewmeta %}
+                    <meta property="og:title" content="Force of Wind" />
+                    <meta property="og:description" content="Force of Will database and deck builder!" />
+                    <meta property="og:image" content="{% static 'img/wind.png' %}" />
+                {% endblock %}
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>{% block title %}Force of Wind{% block subtitle %} - Database{% endblock %}{% endblock %}</title>
@@ -62,6 +67,10 @@
                                 <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>
                                 {% comment %} <a href="{% url 'cardDatabase-user-preferences' %}">Preferences</a> {% endcomment %}
                                 <a href="{% url 'cardDatabase-logout' %}?next={{ request.path }}">Logout</a>
+                                {% if user.profile.site_admin %}
+                                    <a href="{% url 'admin:index' %}">Admin Site</a>
+                                    <a href="{% url 'cardDatabase-add-card' %}">Add Card</a>
+                                {% endif %}
                             </div>
                         </div>
                     {% endif %}

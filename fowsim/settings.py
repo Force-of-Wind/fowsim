@@ -206,3 +206,5 @@ EMAIL_PORT = 587
 
 LOGIN_REDIRECT_URL = 'cardDatabase-user-decklists'
 LOGOUT_REDIRECT_URL = 'cardDatabase-search'
+
+SESSION_COOKIE_AGE = 63072000

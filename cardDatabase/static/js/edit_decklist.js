@@ -94,6 +94,7 @@ $(function() {
         // If any search results are showing, add the new zone to those cards
         setupCardOverlay();
         setupCardClickables();
+        setupEditableContent();
     });
 
     function hoverCardMouseOver(event){
@@ -178,6 +179,16 @@ $(function() {
                     <div class="remove-card">&#10006;</div>
                 </div>`
     }
+
+    function setupEditableContent(){
+        $('div[contenteditable]').unbind('keydown');
+        $('div[contenteditable]').keydown(function(e) {
+            if (e.keyCode === 13) { //Enter key, do nothing
+                return false;
+            }
+        });
+    }
+    setupEditableContent();
 
     function setupCardOverlay(){
         $('.overlay-container').remove();

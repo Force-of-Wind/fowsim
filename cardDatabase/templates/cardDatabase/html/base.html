@@ -7,7 +7,7 @@
                 {% block previewmeta %}
                     <meta property="og:title" content="Force of Wind" />
                     <meta property="og:description" content="Force of Will database and deck builder!" />
-                    <meta property="og:image" content="{% static 'img/wind.png' %}" />
+                    <meta property="og:image" content="{% block image_preview_url %}{% static 'img/wind.png' %}{% endblock %}" />
                 {% endblock %}
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -95,6 +95,7 @@ $(function() {
         setupCardOverlay();
         setupCardClickables();
         setupEditableContent();
+        setupSortable();
     });
 
     function hoverCardMouseOver(event){
@@ -233,8 +234,10 @@ $(function() {
         output += `</div></div>`;
         return output;
     }
-
-    jQuery_3_6_0('.deck-zone-cards').sortable({delay: 85});
+    function setupSortable(){
+        jQuery_3_6_0('.deck-zone-cards').sortable({delay: 85});
+    }
+    setupSortable();
 });
 
 window.onbeforeunload = function(e){

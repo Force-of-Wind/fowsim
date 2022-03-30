@@ -89,7 +89,7 @@ $(function() {
     });
 
     $('#new-zone-button').on('click', function(event){
-        let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="zone-count">[0]</div><div class="deck-zone-title" contenteditable="true">New Zone</div><div class="remove-zone"><span>&#10006;</span></div></div><div class="deck-zone-cards"></div></div>`;
+        let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="zone-count">[0]</div><span class="deck-zone-title" contenteditable="true">New Zone</span><div class="remove-zone"><span>&#10006;</span></div></div><div class="deck-zone-cards"></div></div>`;
         $('.deck-zones-container').append(output);
         // If any search results are showing, add the new zone to those cards
         setupCardOverlay();
@@ -182,8 +182,8 @@ $(function() {
     }
 
     function setupEditableContent(){
-        $('div[contenteditable]').unbind('keydown');
-        $('div[contenteditable]').keydown(function(e) {
+        $('span[contenteditable]').unbind('keydown');
+        $('span[contenteditable]').keydown(function(e) {
             if (e.keyCode === 13) { //Enter key, do nothing
                 return false;
             }

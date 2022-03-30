@@ -33,17 +33,17 @@
     </div>
     <div id="decklist-container">
         {% csrf_token %}
-        <div class="decklist-name" contenteditable="true">
+        <span class="decklist-name" contenteditable="true">
             {{ decklist.name }}
-        </div>
+        </span>
         <div class="deck-zones-container">
             {% for zone in zones %}
                 <div class="deck-zone">
                     <div class="deck-zone-title-container">
                         <div class="zone-count"></div>
-                        <div class="deck-zone-title" contenteditable="true">
+                        <span class="deck-zone-title" contenteditable="true">
                             {{ zone.zone.name }}
-                        </div>
+                        </span>
                         <div class="remove-zone"><span>&#10006;</span></div>
                     </div>
                     {# .deck-zone-cards is duplicated in the js in edit_decklist.js #}

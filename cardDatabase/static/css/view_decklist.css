@@ -107,3 +107,12 @@
 .card-preview .view-in-another-tab a{
     color: black;
 }
+
+#untap-list textarea{
+    width: 100%;
+    min-height: 200px;
+}
+
+#untap-list{
+    padding-bottom: 100px;
+}

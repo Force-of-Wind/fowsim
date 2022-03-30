@@ -196,3 +196,56 @@ def colours_to_imgs(colours):
 @register.simple_tag
 def decklist_card_count(decklist):
     return decklist.cards.aggregate(Sum('quantity'))['quantity__sum']
+
+
+@register.simple_tag
+def untap_list(cards):
+    starting_area = []
+    main = []
+    sideboard = []
+    stone_deck = []
+    face_down = []
+    for card in cards:
+        if card.zone.zone.name == 'Main Deck':
+            main.append(card)
+        elif card.zone.zone.name == 'Side Deck':
+            sideboard.append(card)
+        elif card.zone.zone.name == 'Magic Stone Deck':
+            stone_deck.append(card)
+        elif card.zone.zone.name == 'Ruler':
+            starting_area.append(card)
+        elif (card.zone.zone.name.lower().contains('stranger') or
+              card.zone.zone.name.lower().contains('rune')):
+            face_down.append(card)
+
+    output = ''
+    if len(main) > 0:
+        output += '//deck-1\n'
+        for card in main:
+            output += f'{str(card.quantity)} {card.card.name}\n'
+        output += '\n'
+
+    if len(starting_area) > 0:
+        output += '//play-1\n'
+        for card in starting_area:
+            output += f'{str(card.quantity)} {card.card.name}\n'
+        output += '\n'
+
+    if len(sideboard) > 0:
+        output += '//sideboard-1\n'
+        for card in sideboard:
+            output += f'{str(card.quantity)} {card.card.name}\n'
+        output += '\n'
+
+    if len(stone_deck) > 0:
+        output += '//deck-2\n'
+        for card in stone_deck:
+            output += f'{str(card.quantity)} {card.card.name}\n'
+        output += '\n'
+
+    if len(face_down) > 0:
+        output += '//pile-facedown\n'
+        for card in starting_area:
+            output += f'{str(card.quantity)} {card.card.name}\n'
+        output += '\n'
+    return output

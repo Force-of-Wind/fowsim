@@ -13,6 +13,7 @@ class DeckList(models.Model):
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=False, blank=False)
     last_modified = models.DateTimeField(auto_now_add=True, blank=True)
+    comments = models.TextField(max_length=10000, blank=True, null=True, default='')
 
     def save(self, *args, **kwargs):
         self.last_modified = datetime.datetime.now()

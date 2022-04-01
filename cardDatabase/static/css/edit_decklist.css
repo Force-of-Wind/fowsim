@@ -54,7 +54,7 @@
     background-color: rgba(0, 0, 0, 0.06);
 }
 
-.deck-zone{
+.deck-zone, .comments-container{
     border-bottom: 1px solid rgb(0 0 0 / 16%);
     margin-bottom: 5px;
 }
@@ -209,5 +209,21 @@
 
 .zone-count{
     font-weight: bold;
+    padding-right: 5px;
+}
+
+.comments-title{
+    font-weight: bold;
+    font-size: 18px;
+    padding-bottom: 5px;
+}
+
+#comments{
+    width: 100%;
+    min-height: 100px;
+}
+
+.deck-comments{
+    width: 100%;
     padding-right: 5px;
 }

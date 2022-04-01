@@ -57,6 +57,12 @@
                 {% endif %}
             </div>
         {% endfor %}
+        {% if decklist.comments %}
+            <div class="comments-container">
+                <div class="comments-title">Comments</div>
+                <div class="deck-comments">{% for comment in comments %}{{ comment }}{% endfor %}</div>
+            </div>
+        {% endif %}
         <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
     </div>
 {% endblock %}

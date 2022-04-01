@@ -14,7 +14,7 @@
     padding-right: calc((100% - 650px) / 2);
 }
 
-.deck-zone-title{
+.deck-zone-title, .comments-title{
     font-weight: bold;
     font-size: 18px;
 }
@@ -106,4 +106,27 @@
 
 .card-preview .view-in-another-tab a{
     color: black;
+}
+
+.hover-card-img{
+    display: none;
+}
+
+.referenced-card{
+    position: relative;
+}
+
+.hover-card-img.show-hover{
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    padding: 3px;
+    background-color: black;
+}
+
+.comments-container{
+    padding-bottom: 20px;
 }

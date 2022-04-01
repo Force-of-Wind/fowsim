@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
+from django.utils.safestring import mark_safe
 
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
@@ -405,6 +406,7 @@ def save_decklist(request, decklist_id=None):
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
     decklist.name = decklist_data['name']
+    decklist.comments = decklist_data['comments']
     decklist.save()
     #  Remove old cards, then rebuild it
     DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()
@@ -427,11 +429,41 @@ def save_decklist(request, decklist_id=None):
     return HttpResponse('')
 
 
+def process_decklist_comments(comments):
+    output = []
+    #  Either "\n" or text in "[[ ]]"
+    matches = re.findall('(\[\[.*?\]\])|(\\n)', comments)
+    for match in matches:
+        match = match[0] or match[1]
+        if match == '\n':
+            splits = comments.split(match, 1)
+            output.append(splits[0])
+            output.append(mark_safe('<br />'))
+            comments = splits[1]
+        else:
+            try:
+                match = match[2:-2]  # Cut off "[[ ]]"
+                card = Card.objects.get(Q(name__iexact=match) | Q(name_without_punctuation__iexact=match))
+                view_card_url = reverse('cardDatabase-view-card', kwargs={"card_id": card.card_id})
+                # Consume the string split by split so we can mark safe only the sections with imgs to avoid html injection
+                splits = comments.split(match, 1)
+                output.append(splits[0][:-2])
+                output.append(mark_safe(f'<a class="referenced-card" href="{view_card_url}">{card.name}<img class="hover-card-img" src="{card.card_image.url}"/></a>'))
+                comments = splits[1][2:]
+            except Card.DoesNotExist:
+                pass
+    else:
+        output.append(comments)
+
+    return output
+
+
 def view_decklist(request, decklist_id):
     decklist = get_object_or_404(DeckList, pk=decklist_id)
     cards = decklist.cards.all()
     zones = UserDeckListZone.objects.filter(decklist=decklist).order_by('position').values_list('zone__name', flat=True).distinct()
-    return render(request, 'cardDatabase/html/view_decklist.html', context={'decklist': decklist, 'zones': zones, 'cards': cards})
+    comments = process_decklist_comments(decklist.comments)
+    return render(request, 'cardDatabase/html/view_decklist.html', context={'decklist': decklist, 'zones': zones, 'cards': cards, 'comments': comments})
 
 
 def logout(request):

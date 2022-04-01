@@ -66,6 +66,15 @@
                 </div>
             {% endfor %}
         </div>
+        <div class="comments-container">
+            <div class="comments-title">
+                Comments
+            </div>
+            <div class="deck-comments">
+                {# Add the content without additional whitespace so the placeholder shows if no text is present. #}
+                <textarea id="comments" placeholder="Add your comments here. Card names between [[ ]] will be linked automatically" maxlength="10000">{{ decklist.comments }}</textarea>
+            </div>
+        </div>
         <div class="deck-actions">
             <button id="save-deck-button" type="button">Save</button>
             <a href="{% url 'cardDatabase-user-decklists' %}">

@@ -49,7 +49,8 @@ $(function() {
     $('#save-deck-button').click(function(event){
         let decklist_data = {
             "zones": [],
-            "name": $('.decklist-name').html().trim()
+            "name": $('.decklist-name').html().trim(),
+            "comments": $('#comments').val()
         };
         let zones = $('.deck-zone');
         for (let i = 0; i < zones.length; i++){

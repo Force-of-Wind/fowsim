@@ -24,4 +24,13 @@ $(function(){
             $(this).find('img').removeClass('show-hover');
         });
     }
+
+    $('#untap-export').click(function(e){
+        $(this).hide();
+        $('#untap-list').addClass('show-untap');
+    });
+
+    $('#untap-list textarea').focus(function(e){
+         this.select();
+    });
 });

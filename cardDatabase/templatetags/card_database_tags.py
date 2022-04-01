@@ -214,8 +214,8 @@ def untap_list(cards):
             stone_deck.append(card)
         elif card.zone.zone.name == 'Ruler':
             starting_area.append(card)
-        elif (card.zone.zone.name.lower().contains('stranger') or
-              card.zone.zone.name.lower().contains('rune')):
+        elif ('stranger' in card.zone.zone.name.lower() or
+              'rune' in card.zone.zone.name.lower()):
             face_down.append(card)
 
     output = ''

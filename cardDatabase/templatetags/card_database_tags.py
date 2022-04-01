@@ -215,7 +215,8 @@ def untap_list(cards):
         elif card.zone.zone.name == 'Ruler':
             starting_area.append(card)
         elif ('stranger' in card.zone.zone.name.lower() or
-              'rune' in card.zone.zone.name.lower()):
+              'rune' in card.zone.zone.name.lower() or
+              'extra' in card.zone.zone.name.lower()):
             face_down.append(card)
 
     output = ''
@@ -245,7 +246,7 @@ def untap_list(cards):
 
     if len(face_down) > 0:
         output += '//pile-facedown\n'
-        for card in starting_area:
+        for card in face_down:
             output += f'{str(card.quantity)} {card.card.name}\n'
         output += '\n'
     return output

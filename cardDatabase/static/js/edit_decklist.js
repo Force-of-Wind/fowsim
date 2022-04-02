@@ -303,7 +303,6 @@ $(function() {
                             let previousInputEl = $(dragged).find('.card-quantity input');
                             let input_el = cardMatches.find('.card-quantity input');
                             input_el.val(parseInt(input_el.val()) + parseInt(previousInputEl.val()));
-                            $(dragged).remove();
                         }
                         else if (insertIntoList) {
                             droppedOnCard.before(clonedCard);

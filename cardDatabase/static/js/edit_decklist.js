@@ -242,98 +242,103 @@ $(function() {
             .off('drag')
             .off('dragstart')
             .off('dragend')
-
-            .on('drag', function(event) {
+            .on('drag', function (event) {
 
             })
-            .on('dragstart', function(event) {
+            .on('dragstart', function (event) {
+                // Fade out the dragged card and hide the popup so it doesn't appear
+                // in the drag preview.
                 $(this).find('img').removeClass('show-hover');
                 event.target.style.opacity = .5;
                 event.originalEvent.dataTransfer.setDragImage(event.target, 0, 0);
                 dragged = event.target;
             })
-            .on('dragend', function(event) {
+            .on('dragend', function (event) {
                 event.target.style.opacity = 1;
             });
 
-            $('.deck-zone')
-                .off('dragover')
-                .off('drop')
-                .on('dragover', false)
-                .on('drop', function(event) {
-                    event.preventDefault();
-                    console.log(event.target);
+        $('.deck-zone')
+            .off('dragover')
+            .off('drop')
+            .on('dragover', false)
+            .on('drop', function (event) {
+                event.preventDefault();
 
-                    let droppedOnCard = $(event.target).closest('.deck-zone-card');
-                    let droppedOnZone = $(event.target).closest('.deck-zone');
-                    let deckZoneCards = $(droppedOnZone[0]).children('.deck-zone-cards')[0];
+                // Need to check if it was dropped on a card or just on a zone.
+                // Using closest so we can drop it on anything and have it work - for example
+                // if somebody drops it on the title of a zone we still want it to work.
+                let droppedOnCard = $(event.target).closest('.deck-zone-card');
+                let droppedOnZone = $(event.target).closest('.deck-zone');
+                let deckZoneCards = $(droppedOnZone[0]).children('.deck-zone-cards')[0];
 
-                    let previousParent = $(dragged).parent().parent();                    
-                    dragged.style.opacity = 1;
+                let previousParent = $(dragged).parent().parent();
+                dragged.style.opacity = 1;
 
-                    console.log(droppedOnCard);
-                    console.log(droppedOnZone);
+                let insertIntoList;
 
-                    let insertIntoList;
+                if (droppedOnCard.length > 0) {
+                    insertIntoList = true;
+                }
+                else if (droppedOnZone.length > 0) {
+                    insertIntoList = false;
+                }
+                else {
+                    return;
+                }
 
-                    if (droppedOnCard.length > 0) {
-                        insertIntoList = true;
+                let cardExists = false;
+                // Check if the card already exists in the zone
+                let cardMatches = $(deckZoneCards).find(`.deck-zone-card`).filter(function () {
+                    return $(this).find('.deck-zone-card-name').text() === $(dragged).find('.deck-zone-card-name').text();
+                });
+
+                // The existing card logic only runs if it was not dropped on the same zone
+                cardExists = cardMatches.length > 0 && previousParent[0] != droppedOnZone[0];
+
+                // Holding shift duplicates the card instead of moving it
+                if (event.shiftKey) {
+                    let clonedCard = dragged.cloneNode(true);
+
+                    // If the card exists we need to increment the number of cards instead
+                    // of adding a new element.
+                    if (cardExists) {
+                        let previousInputEl = $(dragged).find('.card-quantity input');
+                        let input_el = cardMatches.find('.card-quantity input');
+                        input_el.val(parseInt(input_el.val()) + parseInt(previousInputEl.val()));
                     }
-                    else if (droppedOnZone.length > 0) {
-                        insertIntoList = false;
+                    // If a card is dropped directly onto a card in a list, we want to put it before
+                    // that specific card to allow for reordering.
+                    else if (insertIntoList) {
+                        droppedOnCard.before(clonedCard);
+                    }
+                    // Otherwise, put it at the end of the list as normal.
+                    else {
+                        deckZoneCards.appendChild(clonedCard);
+                    }
+
+                    $(clonedCard).find('.deck-zone-card-name').mouseout(hoverCardMouseOut);
+                    $(clonedCard).find('.deck-zone-card-name').mouseover(hoverCardMouseOver);
+                }
+                else {
+                    if (cardExists) {
+                        let previousInputEl = $(dragged).find('.card-quantity input');
+                        let input_el = cardMatches.find('.card-quantity input');
+                        input_el.val(parseInt(input_el.val()) + parseInt(previousInputEl.val()));
+                        $(dragged).remove();
+                    }
+                    else if (insertIntoList) {
+                        droppedOnCard.before(dragged);
                     }
                     else {
-                        return;
+                        deckZoneCards.appendChild(dragged);
                     }
-                    
-                    let cardExists = false;
-                    // Check if the card already exists in the zone
-                    let cardMatches = $(deckZoneCards).find(`.deck-zone-card`).filter(function(){
-                        return $(this).find('.deck-zone-card-name').text() === $(dragged).find('.deck-zone-card-name').text();
-                    });
+                }
 
-                    console.log(previousParent);
-                    console.log(droppedOnZone);
-
-                    cardExists = cardMatches.length > 0 && previousParent[0] != droppedOnZone[0];
-
-                    if (event.shiftKey) {
-                        let clonedCard = dragged.cloneNode(true);
-                        if (cardExists) {
-                            let previousInputEl = $(dragged).find('.card-quantity input');
-                            let input_el = cardMatches.find('.card-quantity input');
-                            input_el.val(parseInt(input_el.val()) + parseInt(previousInputEl.val()));
-                        }
-                        else if (insertIntoList) {
-                            droppedOnCard.before(clonedCard);
-                        }
-                        else {
-                            deckZoneCards.appendChild(clonedCard);
-                        }
-                        
-                        $(clonedCard).find('.deck-zone-card-name').mouseout(hoverCardMouseOut);
-                        $(clonedCard).find('.deck-zone-card-name').mouseover(hoverCardMouseOver);
-                    }
-                    else {                    
-                        if (cardExists) {
-                            let previousInputEl = $(dragged).find('.card-quantity input');
-                            let input_el = cardMatches.find('.card-quantity input');
-                            input_el.val(parseInt(input_el.val()) + parseInt(previousInputEl.val()));  
-                            $(dragged).remove();
-                        }
-                        else if (insertIntoList) {
-                            droppedOnCard.before(dragged);
-                        }
-                        else {
-                            deckZoneCards.appendChild(dragged);
-                        }
-                    }
-
-                    setupCardClickables();
-                    setupEditableContent();
-                    setupDraggableCards();
-                    setZoneCount(droppedOnZone[0]);
-                    setZoneCount(previousParent);
+                setupCardClickables();
+                setupEditableContent();
+                setupDraggableCards();
+                setZoneCount(droppedOnZone[0]);
+                setZoneCount(previousParent);
             });
     }
 

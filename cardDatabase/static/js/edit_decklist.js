@@ -300,8 +300,9 @@ $(function() {
                     if (event.shiftKey) {
                         let clonedCard = dragged.cloneNode(true);
                         if (cardExists) {
+                            let previousInputEl = $(dragged).find('.card-quantity input');
                             let input_el = cardMatches.find('.card-quantity input');
-                            input_el.val(parseInt(input_el.val()) + 1);
+                            input_el.val(parseInt(input_el.val()) + parseInt(previousInputEl.val()));
                             $(dragged).remove();
                         }
                         else if (insertIntoList) {
@@ -316,8 +317,9 @@ $(function() {
                     }
                     else {                    
                         if (cardExists) {
+                            let previousInputEl = $(dragged).find('.card-quantity input');
                             let input_el = cardMatches.find('.card-quantity input');
-                            input_el.val(parseInt(input_el.val()) + 1);      
+                            input_el.val(parseInt(input_el.val()) + parseInt(previousInputEl.val()));  
                             $(dragged).remove();
                         }
                         else if (insertIntoList) {

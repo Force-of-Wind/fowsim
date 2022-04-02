@@ -96,6 +96,7 @@ $(function() {
         setupCardOverlay();
         setupCardClickables();
         setupEditableContent();
+        setupDraggableCards();
     });
 
     function hoverCardMouseOver(event){
@@ -238,6 +239,10 @@ $(function() {
 
     function setupDraggableCards() {
         $('.deck-zone-card')
+            .off('drag')
+            .off('dragstart')
+            .off('dragend')
+
             .on('drag', function(event) {
 
             })
@@ -257,23 +262,78 @@ $(function() {
                 .on('dragover', false)
                 .on('drop', function(event) {
                     event.preventDefault();
-                    if (event.target.className == 'deck-zone') {
-                        let deckZoneCards = $(this).children('.deck-zone-cards')[0];
-                        let previousParent = $(dragged).parent().parent();
+                    console.log(event.target);
+
+                    let droppedOnCard = $(event.target).closest('.deck-zone-card');
+                    let droppedOnZone = $(event.target).closest('.deck-zone');
+                    let deckZoneCards = $(droppedOnZone[0]).children('.deck-zone-cards')[0];
+
+                    let previousParent = $(dragged).parent().parent();                    
+                    dragged.style.opacity = 1;
+
+                    console.log(droppedOnCard);
+                    console.log(droppedOnZone);
+
+                    let insertIntoList;
+
+                    if (droppedOnCard.length > 0) {
+                        insertIntoList = true;
+                    }
+                    else if (droppedOnZone.length > 0) {
+                        insertIntoList = false;
+                    }
+                    else {
+                        return;
+                    }
+                    
+                    let cardExists = false;
+                    // Check if the card already exists in the zone
+                    let cardMatches = $(deckZoneCards).find(`.deck-zone-card`).filter(function(){
+                        return $(this).find('.deck-zone-card-name').text() === $(dragged).find('.deck-zone-card-name').text();
+                    });
+
+                    console.log(previousParent);
+                    console.log(droppedOnZone);
+
+                    cardExists = cardMatches.length > 0 && previousParent[0] != droppedOnZone[0];
+
+                    if (event.shiftKey) {
+                        let clonedCard = dragged.cloneNode(true);
+                        if (cardExists) {
+                            let input_el = cardMatches.find('.card-quantity input');
+                            input_el.val(parseInt(input_el.val()) + 1);
+                            $(dragged).remove();
+                        }
+                        else if (insertIntoList) {
+                            droppedOnCard.before(clonedCard);
+                        }
+                        else {
+                            deckZoneCards.appendChild(clonedCard);
+                        }
                         
-                        dragged.style.opacity = 1;
-                        if (event.shiftKey) {
-                            deckZoneCards.appendChild(dragged.cloneNode(true));
+                        $(clonedCard).find('.deck-zone-card-name').mouseout(hoverCardMouseOut);
+                        $(clonedCard).find('.deck-zone-card-name').mouseover(hoverCardMouseOver);
+                    }
+                    else {                    
+                        if (cardExists) {
+                            let input_el = cardMatches.find('.card-quantity input');
+                            input_el.val(parseInt(input_el.val()) + 1);      
+                            $(dragged).remove();
+                        }
+                        else if (insertIntoList) {
+                            droppedOnCard.before(dragged);
                         }
                         else {
                             deckZoneCards.appendChild(dragged);
                         }
+                    }
 
-                        setupCardClickables();
-                        setupEditableContent();
-                        setZoneCount(event.target);
-                        setZoneCount(previousParent);
-            }});
+                    setupCardClickables();
+                    setupEditableContent();
+                    setupDraggableCards();
+                    setZoneCount(droppedOnZone[0]);
+                    setZoneCount(previousParent);
+            });
     }
 
     setupDraggableCards();

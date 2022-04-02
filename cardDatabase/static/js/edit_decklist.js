@@ -293,10 +293,11 @@ $(function() {
                 });
 
                 // The existing card logic only runs if it was not dropped on the same zone
-                cardExists = cardMatches.length > 0 && previousParent[0] != droppedOnZone[0];
+                let droppedOnTheSameZone = previousParent[0] == droppedOnZone[0];
+                cardExists = cardMatches.length > 0 && !droppedOnTheSameZone;
 
                 // Holding shift duplicates the card instead of moving it
-                if (event.shiftKey) {
+                if (event.shiftKey && !droppedOnTheSameZone) {
                     let clonedCard = dragged.cloneNode(true);
 
                     // If the card exists we need to increment the number of cards instead

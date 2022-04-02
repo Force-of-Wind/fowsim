@@ -96,7 +96,6 @@ $(function() {
         setupCardOverlay();
         setupCardClickables();
         setupEditableContent();
-        setupSortable();
     });
 
     function hoverCardMouseOver(event){
@@ -167,7 +166,7 @@ $(function() {
     }
 
     function createCardHtml(name, img_url, card_id){
-        return `<div class="deck-zone-card" data-card-id="${card_id}">
+        return `<div class="deck-zone-card" data-card-id="${card_id}" draggable="true">
                     <div class="card-quantity">
                         <a href="#" class="card-quantity-minus">
                             <span>-</span>
@@ -214,6 +213,7 @@ $(function() {
                 deck_zone.find('.deck-zone-card-name').mouseout(hoverCardMouseOut);
                 deck_zone.find('.deck-zone-card-name').mouseover(hoverCardMouseOver);
                 setupCardClickables();
+                setupDraggableCards();
             } else {
                 // Already exists, just increment the value
                 let input_el = card_matches.find('.card-quantity input');
@@ -235,10 +235,48 @@ $(function() {
         output += `</div></div>`;
         return output;
     }
-    function setupSortable(){
-        jQuery_3_6_0('.deck-zone-cards').sortable({delay: 85});
+
+    function setupDraggableCards() {
+        $('.deck-zone-card')
+            .on('drag', function(event) {
+
+            })
+            .on('dragstart', function(event) {
+                $(this).find('img').removeClass('show-hover');
+                event.target.style.opacity = .5;
+                event.originalEvent.dataTransfer.setDragImage(event.target, 0, 0);
+                dragged = event.target;
+            })
+            .on('dragend', function(event) {
+                event.target.style.opacity = 1;
+            });
+
+            $('.deck-zone')
+                .off('dragover')
+                .off('drop')
+                .on('dragover', false)
+                .on('drop', function(event) {
+                    event.preventDefault();
+                    if (event.target.className == 'deck-zone') {
+                        let deckZoneCards = $(this).children('.deck-zone-cards')[0];
+                        let previousParent = $(dragged).parent().parent();
+                        
+                        dragged.style.opacity = 1;
+                        if (event.shiftKey) {
+                            deckZoneCards.appendChild(dragged.cloneNode(true));
+                        }
+                        else {
+                            deckZoneCards.appendChild(dragged);
+                        }
+
+                        setupCardClickables();
+                        setupEditableContent();
+                        setZoneCount(event.target);
+                        setZoneCount(previousParent);
+            }});
     }
-    setupSortable();
+
+    setupDraggableCards();
 });
 
 window.onbeforeunload = function(e){

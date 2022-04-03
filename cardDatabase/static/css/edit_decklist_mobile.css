@@ -1,0 +1,239 @@
+#database-container {
+    left: 0;
+    padding-left: 10px;
+    width: calc(100% - 50px);
+}
+
+#info-sidebar-container {
+    position: fixed;
+    overflow-y: auto;
+    right: 0;
+    top: 50px;
+    height: calc(100% - 50px);
+    width: 50px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+.bar {
+    width: 35px;
+    height: 5px;
+    background-color: gray;
+    margin: 6px 0;
+}
+
+.decklist-side-bar {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    right: 0;
+    background-color: #111; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+    
+/* Position and style the close button (top right corner) */
+.decklist-side-bar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.add-card-side-bar {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    left: 0;
+    background-color: #111; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+    
+/* Position and style the close button (top right corner) */
+.add-card-side-bar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* Zones and deck */
+.deck-zone-title-container{
+    font-weight: bold;
+    display: flex;
+}
+
+.deck-zone-title{
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 10px;
+    flex: 0 1 auto;
+    color: white;
+}
+
+.zone-count{
+    color: white;
+    font-weight: bold;
+    padding-right: 5px;
+}
+
+.deck-zone{
+    padding-bottom: 30px;
+}
+
+.deck-zone-card-count{
+    color: white;
+    display: inline-block;
+}
+
+.deck-zone-card-name{
+    display: inline-flex;
+    flex: 1;
+    padding-left: 10px;
+    margin: auto 0;
+    color: white;
+}
+
+.remove-card, .remove-zone{
+    padding-right: 10px;
+    padding-left: 5px;
+    height: max-content;
+    width: max-content;
+    margin: auto 0;
+    font-size: 20px;
+}
+
+.remove-zone{
+    flex: 1 0 auto;
+    text-align: right;
+}
+
+.remove-card:hover, .remove-zone span:hover{
+    color: red;
+    cursor: pointer;
+}
+
+.decklist-name{
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+    padding-bottom: 15px;
+    margin-right: 10px;
+    border-bottom: 1px solid rgb(0 0 0 / 16%);
+}
+
+.decklist-name:hover, .deck-zone-title:hover{
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+.deck-zone, .comments-container{
+    border-bottom: 1px solid rgb(0 0 0 / 16%);
+    margin-bottom: 5px;
+}
+
+/* Card within list */
+.card-quantity{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.card-quantity-minus,
+.card-quantity-plus {
+    display: block;
+    width: 22px;
+    height: 23px;
+    margin: 0;
+    background: #dc0800;
+    text-decoration: none;
+    text-align: center;
+    line-height: 23px;
+}
+.card-quantity-minus:hover,
+.card-quantity-plus:hover {
+    background: #575b71;
+    color: #fff;
+}
+.card-quantity-minus {
+    border-radius: 3px 0 0 3px;
+}
+.card-quantity-plus {
+    border-radius: 0 3px 3px 0;
+}
+.card-quantity-input {
+    width: 25px;
+    height: 19px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    border-top: 2px solid #dc0800;
+    border-bottom: 2px solid #dc0800;
+    border-left: 1px solid #dc0800;
+    border-right: 2px solid #dc0800;
+    background: #fff;
+    color: #8184a1;
+    box-sizing: initial;
+}
+.card-quantity-minus:link,
+.card-quantity-plus:link {
+    color: #8184a1;
+}
+.card-quantity-minus:visited,
+.card-quantity-plus:visited {
+    color: #fff;
+}
+
+.deck-zone-card{
+    padding-bottom: 2px;
+    display: flex;
+}
+
+.hover-card-img{
+    display: none;
+}
+
+.hover-card-img.show-hover{
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    padding: 3px;
+    background-color: black;
+}
+
+.add-card-button{
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto;
+    background: black;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.add-card-button:not(:last-child){
+    margin-bottom: 10px;
+}
+
+.add-card-button-title{
+    color: white;
+}
+
+.add-card-title {
+    color: white;
+    text-align: center;
+}

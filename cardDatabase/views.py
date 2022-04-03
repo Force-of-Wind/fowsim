@@ -374,13 +374,14 @@ def user_decklists(request):
 
 
 @login_required
-@desktop_only
 def create_decklist(request):
     decklist = DeckList.objects.create(profile=request.user.profile, name='Untitled Deck')
     for default_zone in DeckListZone.objects.filter(show_by_default=True):
         UserDeckListZone.objects.create(zone=default_zone, position=default_zone.position, decklist=decklist)
-    return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': decklist.id}))
-
+    if request.user_agent.is_mobile or request.user_agent.is_tablet:
+        return HttpResponseRedirect(reverse('cardDatabase-edit-decklist-mobile', kwargs={'decklist_id': decklist.id}))
+    else:
+        return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': decklist.id}))
 
 @login_required
 @desktop_only
@@ -396,6 +397,18 @@ def edit_decklist(request, decklist_id=None):
     ctx['decklist'] = decklist
     return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)
 
+@login_required
+def edit_decklist_mobile(request, decklist_id=None):
+    # Check that the user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    ctx = get_search_form_ctx()
+    ctx['basic_form'] = SearchForm()
+    ctx['advanced_form'] = AdvancedSearchForm()
+    ctx['zones'] = UserDeckListZone.objects.filter(decklist__pk=decklist.pk).\
+        order_by('-zone__show_by_default', 'position')
+    ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
+    ctx['decklist'] = decklist
+    return render(request, 'cardDatabase/html/edit_decklist_mobile.html', context=ctx)
 
 @login_required
 @require_POST

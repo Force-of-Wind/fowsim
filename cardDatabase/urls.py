@@ -14,6 +14,7 @@ urlpatterns = [
     path('decklists/', views.user_decklists, name='cardDatabase-user-decklists'),
     path('create_decklist/', views.create_decklist, name='cardDatabase-create-decklist'),
     path('edit_decklist/<int:decklist_id>/', views.edit_decklist, name='cardDatabase-edit-decklist'),
+    path('edit_decklist_mobile/<int:decklist_id>/', views.edit_decklist_mobile, name='cardDatabase-edit-decklist-mobile'),
     path('save_decklist/<int:decklist_id>/', views.save_decklist, name='cardDatabase-save-decklist'),
     path('view_decklist/<int:decklist_id>/', views.view_decklist, name='cardDatabase-view-decklist'),
     path('delete_decklist/<int:decklist_id>/', views.delete_decklist, name='cardDatabase-delete-decklist'),

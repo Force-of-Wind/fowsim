@@ -24,27 +24,61 @@ $(function() {
         });
         $('.remove-zone span').unbind('click');
         $('.remove-zone span').click(function(event){
-            if(confirm(`Are you sure you want to delete the zone: ${$(this).siblings('.deck-zone-title').text().trim()}`)) {
+            let el_title = $(this).parent().siblings('.deck-zone-title').text().trim();
+            if(confirm(`Are you sure you want to delete the zone: ${el_title}`)) {
+                if (FOWDB_IS_MOBILE) {
+                    $('#zone-counts .zone-count-title').each(function (index) {
+                        if ($(this).html().trim() == el_title) {
+                            $(this).next().remove();
+                            $(this).remove();
+                            return false;
+                        }
+                    });
+                }
                 $(this).parents('.deck-zone').remove();
                 if (!FOWDB_IS_MOBILE) {
                     setupCardOverlay();
                 }
             }
         });
-        if (!FOWDB_IS_MOBILE) {
-            $('.deck-zone-title').unbind('blur keyup paste copy cut delete mouseup');
-            $('.deck-zone-title').on('blur keyup paste copy cut delete mouseup', function (event) {
-                setupCardOverlay();
-            })
+
+        if (FOWDB_IS_MOBILE) {
+            $('.deck-zone-title').on('focusin', function () {
+                $(this).data('prev-val', $(this).html().trim());
+            });
         }
+        $('.deck-zone-title').unbind('blur keyup paste copy cut delete mouseup');
+        $('.deck-zone-title').on('blur keyup paste copy cut delete mouseup', function (event) {
+            if (FOWDB_IS_MOBILE){
+                let prev_val = $(this).data('prev-val');
+                let that = this;
+                $('.zone-count-title').each(function(index){
+                    if ($(this).html().trim() == prev_val){
+                        $(this).html($(that).html().trim());
+                        $(that).data('prev-val', $(that).html().trim());
+                        return false;
+                    }
+                });
+            } else {
+                setupCardOverlay();
+            }
+        });
     }
     setupCardClickables();
     function setZoneCount(el){
         let zone_count = 0;
+        let zone_name = $(el).find('.deck-zone-title').html().trim();
         $(el).find('.card-quantity').each(function(count_index){
             zone_count += parseInt($(this).find('input').val());
         });
         $(el).find('.zone-count').html(`[${zone_count}]`);
+        if (FOWDB_IS_MOBILE){
+            $('#zone-counts .zone-count-title').each(function(index){
+                if ($(this).html().trim() == zone_name ){
+                    $(this).next().html(zone_count);
+                }
+            });
+        }
     }
 
     $('.deck-zone').each(function (index) {
@@ -96,7 +130,10 @@ $(function() {
     $('#new-zone-button').on('click', function (event) {
         let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="zone-count">[0]</div><span class="deck-zone-title" contenteditable="true">New Zone</span><div class="remove-zone"><span>&#10006;</span></div></div><div class="deck-zone-cards"></div></div>`;
         $('.deck-zones-container').append(output);
-        if(!FOWDB_IS_MOBILE) {
+        if(FOWDB_IS_MOBILE) {
+            let counts_output = `<div class="zone-count-title">New Zone</div> <div class="zone-count-preview">0</div>`
+            $('#zone-counts').append(counts_output)
+        } else {
             // If any search results are showing, add the new zone to those cards
             setupCardOverlay();
             setupCardClickables();

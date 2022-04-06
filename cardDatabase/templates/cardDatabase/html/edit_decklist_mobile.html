@@ -32,6 +32,14 @@
             <div class="bar"></div>
             <div class="bar"></div>
         </div>
+        <div id="zone-counts">
+            {% for zone in zones %}
+                <div class="zone-count-title">
+                    {{ zone.zone.name }}
+                </div>
+                <div class="zone-count-preview">{{ zone.card_count }}</div>
+            {% endfor %}
+        </div>
     </div>
     <div class="add-card-side-bar">
         <a href="javascript:void(0)" class="closebtn">&times;</a>

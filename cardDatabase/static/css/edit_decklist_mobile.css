@@ -6,7 +6,7 @@
 
 #info-sidebar-container {
     position: fixed;
-    overflow-y: auto;
+    overflow-y: scroll;
     right: 0;
     top: 50px;
     height: calc(100% - 50px);
@@ -260,4 +260,21 @@ a.closebtn{
 
 .deck-comments{
     padding-right: 10px;
+}
+
+#zone-counts{
+    writing-mode: vertical-rl;
+    padding-top: 20px;
+    border-left: 1px solid rgb(0 0 0 / 16%);
+    white-space: nowrap;
+}
+
+.zone-count-preview, .zone-count-title{
+    display: inline-block;
+    font-weight: bold;
+}
+
+.zone-count-preview{
+    padding-bottom: 20px;
+    color: #dc0800;
 }

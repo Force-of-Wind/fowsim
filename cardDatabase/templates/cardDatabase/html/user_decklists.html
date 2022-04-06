@@ -15,20 +15,19 @@
     {{ block.super }}
     {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
         <link rel="stylesheet" href="{% static 'css/user_decklists_mobile.css' %}">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
     {% endif %}
 {% endblock %}
 
 {% block body %}
     <div class="my-decklists">My Decklists</div>
-    {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
-        <div class="new-decklist">
-            <a href="{% url 'cardDatabase-create-decklist' %}">
-                <button type="button">
-                    <b>&plus;</b> Create New Deck
-                </button>
-            </a>
-        </div>
-    {% endif %}
+    <div class="new-decklist">
+        <a href="{% url 'cardDatabase-create-decklist' %}">
+            <button type="button">
+                <b>&plus;</b> Create New Deck
+            </button>
+        </a>
+    </div>
     <div class="decklist-container">
         {% if decklists %}
             <table id="user-decklists">
@@ -42,7 +41,7 @@
                     {% endif %}
                 </tr>
                 {% for decklist in decklists %}
-                    <tr data-decklist-pk="{{ decklist.pk }}" data-decklist-name="{{ decklist.name }}">
+                    <tr data-decklist-pk="{{ decklist.pk }}" data-decklist-name="{{ decklist.name }}" class="deck-info">
                         <td><a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
                         <td>{% colours_to_imgs decklist.get_colours %}</td>
                         <td>{% decklist_card_count decklist %}</td>
@@ -64,6 +63,26 @@
                             </td>
                         {% endif %}
                     </tr>
+                    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                        <tr class="mobile-actions">
+                            <td>
+                                <a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">
+                                    <img src="{% static 'img/view-icon.png' %}" class="view-icon">
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">
+                                    <img src="{% static 'img/edit-icon.png' %}" class="edit-icon">
+                                </a>
+                            </td>
+                            <td class="share-deck-button">
+                                <img src="{% static 'img/share-icon.png' %}" class="share-icon">
+                            </td>
+                            <td>
+                                <img src="{% static 'img/delete-icon.png' %}" class="delete-icon">
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </table>
         {% else %}

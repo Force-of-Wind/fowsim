@@ -60,6 +60,7 @@
     background-color: #a9a9a924;
 }
 
-#user-decklists tr:not(:first-child):hover{
+/* Exclude from mobile to prevent it from applying when navigating back, add hasHover on load */
+body.hasHover #user-decklists tr:not(:first-child):hover{
     background-color: #a9a9a98c;
 }

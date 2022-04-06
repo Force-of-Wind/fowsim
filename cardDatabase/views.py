@@ -369,7 +369,7 @@ def test_error(request):
 @login_required
 def user_decklists(request):
     ctx = dict()
-    ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile)
+    ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile).order_by('-last_modified')
     return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
 
 

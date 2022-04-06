@@ -19,7 +19,7 @@ def desktop_only(function):
     @wraps(function)
     def wrap(request, *args, **kwargs):
         if request.user_agent.is_mobile or request.user_agent.is_tablet:
-            return redirect(reverse('cardDatabase-mobile-only'))
+            return redirect(reverse('cardDatabase-desktop-only'))
         else:
             return function(request, *args, **kwargs)
     return wrap
@@ -32,4 +32,14 @@ def logged_out(function):
             return redirect(reverse('cardDatabase-user-decklists'))
         else:
             return function(request, *args, **kwargs)
+    return wrap
+
+
+def mobile_only(function):
+    @wraps(function)
+    def wrap(request, *args, **kwargs):
+        if request.user_agent.is_mobile or request.user_agent.is_tablet:
+            return function(request, *args, **kwargs)
+        else:
+            return redirect(reverse('cardDatabase-mobile-only'))
     return wrap

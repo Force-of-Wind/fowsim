@@ -46,66 +46,64 @@ $(function() {
         });
         $(el).find('.zone-count').html(`[${zone_count}]`);
     }
-    if(!FOWDB_IS_MOBILE) {
-        $('.deck-zone').each(function (index) {
-            setZoneCount(this)
-        });
-    }
-    if(!FOWDB_IS_MOBILE) {
-        $('#save-deck-button').click(function (event) {
-            let decklist_data = {
-                "zones": [],
-                "name": $('.decklist-name').html().trim(),
-                "comments": $('#comments').val()
-            };
-            let zones = $('.deck-zone');
-            for (let i = 0; i < zones.length; i++) {
-                let zone = zones.eq(i);
-                let zone_data = {};
-                zone_data.name = zone.find('.deck-zone-title').html().trim();
-                zone_data.cards = [];
-                let zone_cards = zone.find('.deck-zone-card');
-                for (let j = 0; j < zone_cards.length; j++) {
-                    let card = zone_cards.eq(j);
-                    let card_data = {};
-                    card_data.quantity = card.find('.card-quantity-input').val();
-                    card_data.id = card.data('card-id');
-                    card_data.position = j + 1;
-                    zone_data.cards.push(card_data);
-                }
-                decklist_data.zones.push(zone_data);
+
+    $('.deck-zone').each(function (index) {
+        setZoneCount(this)
+    });
+    $('#save-deck-button').click(function (event) {
+        let decklist_data = {
+            "zones": [],
+            "name": $('.decklist-name').html().trim(),
+            "comments": $('#comments').val()
+        };
+        let zones = $('.deck-zone');
+        for (let i = 0; i < zones.length; i++) {
+            let zone = zones.eq(i);
+            let zone_data = {};
+            zone_data.name = zone.find('.deck-zone-title').html().trim();
+            zone_data.cards = [];
+            let zone_cards = zone.find('.deck-zone-card');
+            for (let j = 0; j < zone_cards.length; j++) {
+                let card = zone_cards.eq(j);
+                let card_data = {};
+                card_data.quantity = card.find('.card-quantity-input').val();
+                card_data.id = card.data('card-id');
+                card_data.position = j + 1;
+                zone_data.cards.push(card_data);
             }
-            $.ajaxSetup({
-                headers: {'X-CSRFToken': getCookie('csrftoken')}
-            });
-            $.ajax({
-                type: 'POST',
-                url: `/save_decklist/${window.location.pathname.split('/')[2]}/`,
-                data: JSON.stringify({
-                    decklist_data: decklist_data,
-                }),
-                success: function (data) {
-                    window.onbeforeunload = undefined; // Remove warning of unsaved changes
-                    window.location.assign('/decklists/');
-                },
-                error: function (data) {
-                    console.log('Error');
-                },
-                contentType: 'application/json',
-            })
+            decklist_data.zones.push(zone_data);
+        }
+        $.ajaxSetup({
+            headers: {'X-CSRFToken': getCookie('csrftoken')}
         });
-    }
-    if(!FOWDB_IS_MOBILE) {
-        $('#new-zone-button').on('click', function (event) {
-            let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="zone-count">[0]</div><span class="deck-zone-title" contenteditable="true">New Zone</span><div class="remove-zone"><span>&#10006;</span></div></div><div class="deck-zone-cards"></div></div>`;
-            $('.deck-zones-container').append(output);
+        $.ajax({
+            type: 'POST',
+            url: `/save_decklist/${window.location.pathname.split('/')[2]}/`,
+            data: JSON.stringify({
+                decklist_data: decklist_data,
+            }),
+            success: function (data) {
+                window.onbeforeunload = undefined; // Remove warning of unsaved changes
+                window.location.assign('/decklists/');
+            },
+            error: function (data) {
+                console.log('Error');
+            },
+            contentType: 'application/json',
+        })
+    });
+
+    $('#new-zone-button').on('click', function (event) {
+        let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="zone-count">[0]</div><span class="deck-zone-title" contenteditable="true">New Zone</span><div class="remove-zone"><span>&#10006;</span></div></div><div class="deck-zone-cards"></div></div>`;
+        $('.deck-zones-container').append(output);
+        if(!FOWDB_IS_MOBILE) {
             // If any search results are showing, add the new zone to those cards
             setupCardOverlay();
             setupCardClickables();
-            setupEditableContent();
             setupDraggableCards();
-        });
-    }
+        }
+        setupEditableContent();
+    });
 
     function hoverCardMouseOver(event){
         $(this).find('img').addClass('show-hover');
@@ -364,11 +362,11 @@ $(function() {
 
     // Decklist sidebar logic
     function openDecklist() {
-        $('.decklist-side-bar').css('width', '100%');
+        $('.decklist-side-bar').css({'width': '100%', 'right': '0'});
     }
 
     function closeDecklist() {
-        $('.decklist-side-bar').css('width', '0');
+        $('.decklist-side-bar').css({'width': '0', 'right': '-5px'});
     }
 
     // Do it again for the add card sidebar
@@ -407,19 +405,22 @@ $(function() {
                     event.preventDefault();
                     let card_name = $(this).closest('.card').data('card-name');
                     let card_id = $(this).closest('.card').data('card_id');
-                    displayAddCardSidebar(card_name, card_id);
+                    let card_img_url = $(this).parent().data('card-image-url');
+                    displayAddCardSidebar(card_name, card_id, card_img_url);
                 })
         });
     }
 
-    function displayAddCardSidebar(card_name, card_id) {
+    function displayAddCardSidebar(card_name, card_id, card_img_url) {
         $('#add-card-container')
             .empty()
-            .append(`<div class="add-card-title">${card_name}</div>`)
+            .append(getCardTitleHTML(card_name))
+            .append(getCardImgHTML(card_img_url))
             .append(getAddZoneHTML());
 
         $('.add-card-button').each(function(index){
             $(this).on('click', function (event) {
+                let quantity = 1;
                 let zone_name = $(this).data('zone-name');
                 let deck_zone = $(`.deck-zone .deck-zone-title:contains('${zone_name}')`).parent().parent();
                 let deck_zone_cards = deck_zone.find('.deck-zone-cards');
@@ -434,8 +435,11 @@ $(function() {
                     // Already exists, just increment the value
                     let input_el = card_matches.find('.card-quantity input');
                     input_el.val(parseInt(input_el.val()) + 1);
+                    quantity = input_el.val();
                 }
                 setZoneCount(deck_zone);
+                let quantity_modifier = getQuantityOrdinal(parseInt(quantity)); // 'st', 'nd', 'rd', 'th'
+                alertify.success(`Added ${quantity}${quantity_modifier} ${card_name} to ${zone_name}`);
             });
         });
 
@@ -455,9 +459,35 @@ $(function() {
         return output;
     }
 
+    function getCardImgHTML(url){
+        return  `<div class="card-img-container"><img class="card-img" src="${url}" /></div>`
+    }
+
+    function getCardTitleHTML(name){
+        return `<div class="add-card-title">${name}</div>`
+    }
+
+    function setupAlertify(){
+        alertify.defaults.notifier.delay = 2;
+        alertify.defaults.notifier.position = 'top-left';
+    }
+
+    setupAlertify();
+
+    function getQuantityOrdinal(d){
+        const dString = String(d);
+        const last = +dString.slice(-2);
+        if (last > 3 && last < 21) return 'th';
+        switch (last % 10) {
+            case 1:  return "st";
+            case 2:  return "nd";
+            case 3:  return "rd";
+            default: return "th";
+        }
+    }
+
 });
-if (!FOWDB_IS_MOBILE) {
-    window.onbeforeunload = function (e) {
-        return 'Are you sure? You may have unsaved changes.';
-    };
-}
+
+window.onbeforeunload = function (e) {
+    return 'Are you sure? You may have unsaved changes.';
+};

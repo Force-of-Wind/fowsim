@@ -28,42 +28,36 @@
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
     top: 0;
-    right: 0;
-    background-color: #111; /* Black*/
+    right: -5px;
+    background-color: white;
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
+    padding-top: 40px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    padding-left: 5px;
+    padding-bottom: 20px;
 }
     
 /* Position and style the close button (top right corner) */
-.decklist-side-bar .closebtn {
+.decklist-side-bar .closebtn, .add-card-side-bar .closebtn {
     position: absolute;
     top: 0;
-    right: 25px;
+    right: 10px;
     font-size: 36px;
-    margin-left: 50px;
 }
 
 .add-card-side-bar {
-    height: 100%; /* 100% Full-height */
+    min-height: 100%; /* 100% Full-height */
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
     top: 0;
+    bottom: 0;
     left: 0;
-    background-color: #111; /* Black*/
+    padding-top: 40px;
+    background-color: white;
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
+    overflow-y: scroll;
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-}
-    
-/* Position and style the close button (top right corner) */
-.add-card-side-bar .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
 }
 
 /* Zones and deck */
@@ -77,11 +71,9 @@
     font-size: 18px;
     margin-right: 10px;
     flex: 0 1 auto;
-    color: white;
 }
 
 .zone-count{
-    color: white;
     font-weight: bold;
     padding-right: 5px;
 }
@@ -91,7 +83,6 @@
 }
 
 .deck-zone-card-count{
-    color: white;
     display: inline-block;
 }
 
@@ -100,7 +91,6 @@
     flex: 1;
     padding-left: 10px;
     margin: auto 0;
-    color: white;
 }
 
 .remove-card, .remove-zone{
@@ -234,6 +224,40 @@
 }
 
 .add-card-title {
-    color: white;
     text-align: center;
+    padding: 20px 30px 10px 30px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.alertify-notifier .ajs-message.ajs-success{
+    background: #75bb29;
+}
+
+.card-img-container{
+    width: max-content;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+a.closebtn{
+    color: #dc0800;
+}
+
+#add-card-container{
+    padding-bottom: 20px;
+}
+
+.comments-container .comments-title{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#comments{
+    width: 100%;
+    min-height: 100px;
+}
+
+.deck-comments{
+    padding-right: 10px;
 }

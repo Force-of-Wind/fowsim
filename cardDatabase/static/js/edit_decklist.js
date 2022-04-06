@@ -24,15 +24,19 @@ $(function() {
         });
         $('.remove-zone span').unbind('click');
         $('.remove-zone span').click(function(event){
-            if(confirm(`Are you sure you want to delete the zone: ${$(this).siblings('.deck-zone-title').text().trim()}`)){
+            if(confirm(`Are you sure you want to delete the zone: ${$(this).siblings('.deck-zone-title').text().trim()}`)) {
                 $(this).parents('.deck-zone').remove();
-                setupCardOverlay();
+                if (!FOWDB_IS_MOBILE) {
+                    setupCardOverlay();
+                }
             }
         });
-        $('.deck-zone-title').unbind('blur keyup paste copy cut delete mouseup');
-        $('.deck-zone-title').on('blur keyup paste copy cut delete mouseup', function(event){
-            setupCardOverlay();
-        })
+        if (!FOWDB_IS_MOBILE) {
+            $('.deck-zone-title').unbind('blur keyup paste copy cut delete mouseup');
+            $('.deck-zone-title').on('blur keyup paste copy cut delete mouseup', function (event) {
+                setupCardOverlay();
+            })
+        }
     }
     setupCardClickables();
     function setZoneCount(el){
@@ -42,62 +46,66 @@ $(function() {
         });
         $(el).find('.zone-count').html(`[${zone_count}]`);
     }
-    $('.deck-zone').each(function(index){
-        setZoneCount(this)
-    });
-
-    $('#save-deck-button').click(function(event){
-        let decklist_data = {
-            "zones": [],
-            "name": $('.decklist-name').html().trim(),
-            "comments": $('#comments').val()
-        };
-        let zones = $('.deck-zone');
-        for (let i = 0; i < zones.length; i++){
-            let zone = zones.eq(i);
-            let zone_data = {};
-            zone_data.name = zone.find('.deck-zone-title').html().trim();
-            zone_data.cards = [];
-            let zone_cards = zone.find('.deck-zone-card');
-            for (let j = 0; j < zone_cards.length; j++){
-                let card = zone_cards.eq(j);
-                let card_data = {};
-                card_data.quantity = card.find('.card-quantity-input').val();
-                card_data.id = card.data('card-id');
-                card_data.position = j + 1;
-                zone_data.cards.push(card_data);
-            }
-            decklist_data.zones.push(zone_data);
-        }
-        $.ajaxSetup({
-            headers: {'X-CSRFToken': getCookie('csrftoken')}
+    if(!FOWDB_IS_MOBILE) {
+        $('.deck-zone').each(function (index) {
+            setZoneCount(this)
         });
-        $.ajax({
-            type: 'POST',
-            url: `/save_decklist/${window.location.pathname.split('/')[2]}/`,
-            data: JSON.stringify({
-                decklist_data: decklist_data,
-            }),
-            success: function(data){
-                window.onbeforeunload = undefined; // Remove warning of unsaved changes
-                window.location.assign('/decklists/');
-            },
-            error: function(data){
-                console.log('Error');
-            },
-            contentType: 'application/json',
-        })
-    });
-
-    $('#new-zone-button').on('click', function(event){
-        let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="zone-count">[0]</div><span class="deck-zone-title" contenteditable="true">New Zone</span><div class="remove-zone"><span>&#10006;</span></div></div><div class="deck-zone-cards"></div></div>`;
-        $('.deck-zones-container').append(output);
-        // If any search results are showing, add the new zone to those cards
-        setupCardOverlay();
-        setupCardClickables();
-        setupEditableContent();
-        setupDraggableCards();
-    });
+    }
+    if(!FOWDB_IS_MOBILE) {
+        $('#save-deck-button').click(function (event) {
+            let decklist_data = {
+                "zones": [],
+                "name": $('.decklist-name').html().trim(),
+                "comments": $('#comments').val()
+            };
+            let zones = $('.deck-zone');
+            for (let i = 0; i < zones.length; i++) {
+                let zone = zones.eq(i);
+                let zone_data = {};
+                zone_data.name = zone.find('.deck-zone-title').html().trim();
+                zone_data.cards = [];
+                let zone_cards = zone.find('.deck-zone-card');
+                for (let j = 0; j < zone_cards.length; j++) {
+                    let card = zone_cards.eq(j);
+                    let card_data = {};
+                    card_data.quantity = card.find('.card-quantity-input').val();
+                    card_data.id = card.data('card-id');
+                    card_data.position = j + 1;
+                    zone_data.cards.push(card_data);
+                }
+                decklist_data.zones.push(zone_data);
+            }
+            $.ajaxSetup({
+                headers: {'X-CSRFToken': getCookie('csrftoken')}
+            });
+            $.ajax({
+                type: 'POST',
+                url: `/save_decklist/${window.location.pathname.split('/')[2]}/`,
+                data: JSON.stringify({
+                    decklist_data: decklist_data,
+                }),
+                success: function (data) {
+                    window.onbeforeunload = undefined; // Remove warning of unsaved changes
+                    window.location.assign('/decklists/');
+                },
+                error: function (data) {
+                    console.log('Error');
+                },
+                contentType: 'application/json',
+            })
+        });
+    }
+    if(!FOWDB_IS_MOBILE) {
+        $('#new-zone-button').on('click', function (event) {
+            let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="zone-count">[0]</div><span class="deck-zone-title" contenteditable="true">New Zone</span><div class="remove-zone"><span>&#10006;</span></div></div><div class="deck-zone-cards"></div></div>`;
+            $('.deck-zones-container').append(output);
+            // If any search results are showing, add the new zone to those cards
+            setupCardOverlay();
+            setupCardClickables();
+            setupEditableContent();
+            setupDraggableCards();
+        });
+    }
 
     function hoverCardMouseOver(event){
         $(this).find('img').addClass('show-hover');
@@ -107,9 +115,11 @@ $(function() {
         $(this).find('img').removeClass('show-hover');
     }
 
-    $('.deck-zone-card-name').mouseover(hoverCardMouseOver);
+    if(!FOWDB_IS_MOBILE) {
+        $('.deck-zone-card-name').mouseover(hoverCardMouseOver);
 
-    $('.deck-zone-card-name').mouseout(hoverCardMouseOut);
+        $('.deck-zone-card-name').mouseout(hoverCardMouseOut);
+    }
 
     function getCookie(c_name)
     {
@@ -160,7 +170,11 @@ $(function() {
                 $('#database-container').html(result);
                 initDatabaseBase();
                 setupOtherPages();
-                setupCardOverlay();
+                if(FOWDB_IS_MOBILE){
+                    setupCardClicking();
+                } else {
+                    setupCardOverlay();
+                }
                 $('#advanced-form, #basic-form').on('submit', handleSubmit)
             }
         })
@@ -190,7 +204,9 @@ $(function() {
             }
         });
     }
-    setupEditableContent();
+    if(!FOWDB_IS_MOBILE) {
+        setupEditableContent();
+    }
 
     function setupCardOverlay(){
         $('.overlay-container').remove();
@@ -342,10 +358,106 @@ $(function() {
                 setZoneCount(previousParent);
             });
     }
+    if(!FOWDB_IS_MOBILE) {
+        setupDraggableCards();
+    }
 
-    setupDraggableCards();
+    // Decklist sidebar logic
+    function openDecklist() {
+        $('.decklist-side-bar').css('width', '100%');
+    }
+
+    function closeDecklist() {
+        $('.decklist-side-bar').css('width', '0');
+    }
+
+    // Do it again for the add card sidebar
+    function openAddSideBar() {
+        $('.add-card-side-bar').css('width', '100%');
+    }
+
+    function closeAddSideBar() {
+        $('.add-card-side-bar').css('width', '0');
+    }
+
+    if(FOWDB_IS_MOBILE) {
+        // Set listeners on events
+        $('.add-card-side-bar .closebtn')
+            .on('click', function (event) {
+                closeAddSideBar();
+            });
+        $('.decklist-side-bar .closebtn')
+            .on('click', function (event) {
+                closeDecklist();
+            });
+
+        $('.openDecklistButton')
+            .on('click', function (event) {
+                openDecklist();
+            });
+    }
+
+    // Add card stuff
+    function setupCardClicking() {
+        $('.overlay-container').remove();
+        $('#search-results .card img').each(function(index){
+            $(this).parent()
+                .removeAttr('href')
+                .on('click', function(event){
+                    event.preventDefault();
+                    let card_name = $(this).closest('.card').data('card-name');
+                    let card_id = $(this).closest('.card').data('card_id');
+                    displayAddCardSidebar(card_name, card_id);
+                })
+        });
+    }
+
+    function displayAddCardSidebar(card_name, card_id) {
+        $('#add-card-container')
+            .empty()
+            .append(`<div class="add-card-title">${card_name}</div>`)
+            .append(getAddZoneHTML());
+
+        $('.add-card-button').each(function(index){
+            $(this).on('click', function (event) {
+                let zone_name = $(this).data('zone-name');
+                let deck_zone = $(`.deck-zone .deck-zone-title:contains('${zone_name}')`).parent().parent();
+                let deck_zone_cards = deck_zone.find('.deck-zone-cards');
+                let card_matches = deck_zone_cards.find(`.deck-zone-card`).filter(function(){
+                    return $(this).find('.deck-zone-card-name').text() === card_name;
+                });
+                if (!card_matches.length) {
+                    let deck_card_html = createCardHtml(card_name, card_id);
+                    deck_zone.find('.deck-zone-cards').append(deck_card_html);
+                    setupCardClickables();
+                } else {
+                    // Already exists, just increment the value
+                    let input_el = card_matches.find('.card-quantity input');
+                    input_el.val(parseInt(input_el.val()) + 1);
+                }
+                setZoneCount(deck_zone);
+            });
+        });
+
+        openAddSideBar();
+    }
+
+    // Gets all the zones and makes some buttons out of them
+    function getAddZoneHTML(){
+        let zones_titles = $('.deck-zone-title');
+
+        let output = `<div class="add-to-zone-container"><div class="add-to-zone-container">`;
+        zones_titles.each(function(index){
+            let zone_name = $(this).html().trim();
+            output += `<div class="add-card-button" data-zone-name="${zone_name}"><div class="add-card-button-title">Add to <b>${zone_name}</b></div></div>`;
+        });
+        output += `</div></div>`;
+        return output;
+    }
+
 });
-
-window.onbeforeunload = function(e){
-    return 'Are you sure? You may have unsaved changes.';
+if (!FOWDB_IS_MOBILE) {
+    window.onbeforeunload = function (e) {
+        return 'Are you sure? You may have unsaved changes.';
+    };
 }

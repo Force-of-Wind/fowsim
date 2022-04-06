@@ -18,7 +18,7 @@ from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistration
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
 from fowsim import constants as CONS
-from fowsim.decorators import site_admins, desktop_only, logged_out
+from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only
 
 
 def get_search_form_ctx():
@@ -398,6 +398,7 @@ def edit_decklist(request, decklist_id=None):
     return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)
 
 @login_required
+@mobile_only
 def edit_decklist_mobile(request, decklist_id=None):
     # Check that the user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
@@ -410,9 +411,9 @@ def edit_decklist_mobile(request, decklist_id=None):
     ctx['decklist'] = decklist
     return render(request, 'cardDatabase/html/edit_decklist_mobile.html', context=ctx)
 
+
 @login_required
 @require_POST
-@desktop_only
 def save_decklist(request, decklist_id=None):
     decklist_data = json.loads(request.body.decode('UTF-8'))['decklist_data']
 
@@ -519,3 +520,7 @@ def register(request):
 
 def desktop_only(request):
     return render(request, 'cardDatabase/html/desktop_only.html', {})
+
+
+def mobile_only(request):
+    return render(request, 'cardDatabase/html/mobile_only.html', {})

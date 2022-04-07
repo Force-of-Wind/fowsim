@@ -441,7 +441,7 @@ $(function() {
                 .on('click', function(event){
                     event.preventDefault();
                     let card_name = $(this).closest('.card').data('card-name');
-                    let card_id = $(this).closest('.card').data('card_id');
+                    let card_id = $(this).closest('.card').data('card-id');
                     let card_img_url = $(this).parent().data('card-image-url');
                     displayAddCardSidebar(card_name, card_id, card_img_url);
                 })
@@ -465,7 +465,7 @@ $(function() {
                     return $(this).find('.deck-zone-card-name').text() === card_name;
                 });
                 if (!card_matches.length) {
-                    let deck_card_html = createCardHtml(card_name, card_id);
+                    let deck_card_html = createCardHtml(card_name, card_img_url, card_id);
                     deck_zone.find('.deck-zone-cards').append(deck_card_html);
                     setupCardClickables();
                 } else {

@@ -337,6 +337,7 @@ DATABASE_CARD_TYPE_GROUPS = [
         'name': 'Main Deck',
         'types': [
             'Addition',
+            'Addition:Resonator',
             'Addition: Field',
             'Addition:J/Resonator',
             'Addition:Ruler/J-Ruler',

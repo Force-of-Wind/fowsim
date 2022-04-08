@@ -136,9 +136,9 @@ $(function() {
         } else {
             // If any search results are showing, add the new zone to those cards
             setupCardOverlay();
-            setupCardClickables();
             setupDraggableCards();
         }
+        setupCardClickables();
         setupEditableContent();
     });
 

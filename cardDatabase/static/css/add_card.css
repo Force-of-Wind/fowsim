@@ -1,0 +1,12 @@
+input {
+    opacity: initial !important;
+    position: initial !important;
+}
+
+label {
+    margin-bottom: 0 !important;
+}
+
+#base-body{
+    padding-bottom: 50px;
+}

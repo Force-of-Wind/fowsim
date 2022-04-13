@@ -1,4 +1,7 @@
 {% extends 'cardDatabase/html/base.html' %}
+
+{% load static %}
+
 <html lang="en">
 {% block body %}
     <form id="add_card" method="post" enctype="multipart/form-data">
@@ -6,4 +9,9 @@
         {{ add_card_form.as_p }}
         <input type="submit" value="Add card">
     </form>
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/add_card.css' %}">
 {% endblock %}

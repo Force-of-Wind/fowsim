@@ -18,11 +18,13 @@ $(function() {
 
    $('.share-deck-button').on('click', function(event){
        let deck_url = $(this).parents('tr').find(`.view-deck-button a`).attr('href');
-       navigator.clipboard.writeText(window.location.origin + deck_url).then(function() {
-           alert("Copied link");
-       }, function(err){
-           console.log('error:' + err);
-       });
+       const elem = document.createElement('textarea');
+       elem.value = window.location.origin + deck_url;
+       document.body.appendChild(elem);
+       elem.select();
+       document.execCommand('copy');
+       document.body.removeChild(elem);
+       alert('Link copied');
    });
 
    if (FOWDB_IS_MOBILE){

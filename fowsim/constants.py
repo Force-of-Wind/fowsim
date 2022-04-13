@@ -302,7 +302,8 @@ SET_DATA = {
             'sets': [
                 {'code': 'DSD', 'name': 'Duel Cluster Starter Decks'},
                 {'code': 'GOG', 'name': 'Game of Gods'},
-                {'code': 'GRL', 'name': 'Game of Gods Reloaded'}
+                {'code': 'GRL', 'name': 'Game of Gods Reloaded'},
+                {'code': 'GRV', 'name': 'Game of Gods Revolution'}
             ]
         }
     ]
@@ -534,7 +535,10 @@ SETS_IN_ORDER = [
     'GOG',
     'D2 Buy a Box',
     'D2 Prerelease Party',
-    'GRL'
+    'GRL',
+    'D3 Buy a Box',
+    'D3 Prerelease Party',
+    'GRV',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -606,6 +610,10 @@ SEARCH_SETS_INCLUDE = {
     'GRL': [
         'D2 Buy a Box',
         'D2 Prerelease Party'
+    ],
+    'GRV': [
+        'D3 Prerelease Party',
+        'D3 Buy a Box'
     ]
 }
 

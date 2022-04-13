@@ -68,11 +68,11 @@ class AddCardForm(forms.ModelForm):
         fields = ['name', 'card_id', 'card_image', 'cost', 'divinity', 'flavour',
                   'rarity', 'ATK', 'DEF', 'types', 'colours']
         widgets = {
-            'types': forms.CheckboxSelectMultiple(attrs={'required': True}),
+            'types': forms.CheckboxSelectMultiple(),
             'cost': forms.TextInput(attrs={'placeholder': 'Each value must be inside {}, GRUWB, T for Time, M for Moon e.g. "{1}{M}{T}{W}{W}", "0" if "0" and blank if no cost '}),
             'card_id': forms.TextInput(attrs={'placeholder': 'e.g. LEL-123'}),
             'card_image': forms.ClearableFileInput(attrs={'required': True}),
-            'colours': forms.CheckboxSelectMultiple(attrs={'required': True})
+            'colours': forms.CheckboxSelectMultiple()
         }
 
     @classmethod

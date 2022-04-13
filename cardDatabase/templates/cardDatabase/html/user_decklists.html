@@ -65,7 +65,7 @@
                     </tr>
                     {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
                         <tr class="mobile-actions" data-decklist-name="{{ decklist.name }}" data-decklist-pk="{{ decklist.pk }}">
-                            <td>
+                            <td class="view-deck-button">
                                 <a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">
                                     <img src="{% static 'img/view-icon.png' %}" class="view-icon">
                                 </a>

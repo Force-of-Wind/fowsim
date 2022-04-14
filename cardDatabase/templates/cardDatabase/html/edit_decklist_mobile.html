@@ -1,0 +1,101 @@
+{% extends 'cardDatabase/html/database_base.html' %}
+{% load static %}
+
+{% block use_default_submit %}false{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    <link rel="stylesheet" href="{% static 'css/search_mobile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_decklist_mobile.css' %}">
+{% endblock %}
+
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    {{ block.super }}
+    <script src="{% static 'js/search.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/edit_decklist.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="database-container">
+        {% block database %}
+            {{ block.super }}
+        {% endblock %}
+    </div>
+    <div id="info-sidebar-container">
+        <div class="openDecklistButton">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div id="zone-counts">
+            {% for zone in zones %}
+                <div class="zone-count-title">
+                    {{ zone.zone.name }}
+                </div>
+                <div class="zone-count-preview">{{ zone.card_count }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="add-card-side-bar">
+        <a href="javascript:void(0)" class="closebtn">&times;</a>
+        <div id="add-card-container">
+            {# Populated by js #}
+        </div>
+    </div>
+    <div class="decklist-side-bar">
+        <a href="javascript:void(0)" class="closebtn">&times;</a>
+        {% csrf_token %}
+        <span class="decklist-name" contenteditable="true">
+            {{ decklist.name }}
+        </span>
+        <div class="deck-zones-container">
+            {% for zone in zones %}
+                <div class="deck-zone">
+                    <div class="deck-zone-title-container">
+                        <div class="zone-count"></div>
+                        <span class="deck-zone-title" contenteditable="true">
+                            {{ zone.zone.name }}
+                        </span>
+                        <div class="remove-zone"><span>&#10006;</span></div>
+                    </div>
+                    {# .deck-zone-cards is duplicated in the js in edit_decklist.js #}
+                    <div class="deck-zone-cards">
+                        {% for card in decklist_cards %}
+                            {% if card.zone == zone %}
+                                <div class="deck-zone-card" data-card-id="{{ card.card.card_id }}">
+                                    <div class="card-quantity">
+                                        <a href="#/" class="card-quantity-minus"><span>-</span></a>
+                                        <input type="text" class="card-quantity-input" value="{{ card.quantity }}">
+                                        <a href="#/" class="card-quantity-plus"><span>+</span></a>
+                                    </div>
+                                    {# Can't have whitespace around card name to match jquery #}
+                                    <div class="deck-zone-card-name">{{ card.card.name }}<img class="hover-card-img" src="{{ card.card.card_image.url }}"></div>
+                                    <div class="remove-card">&#10006;</div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="comments-container">
+            <div class="comments-title">
+                Comments
+            </div>
+            <div class="deck-comments">
+                {# Add the content without additional whitespace so the placeholder shows if no text is present. #}
+                <textarea id="comments" placeholder="Add your comments here. Card names between [[ ]] will be linked automatically" maxlength="10000">{{ decklist.comments }}</textarea>
+            </div>
+        </div>
+        <button id="save-deck-button" type="button">Save</button>
+        <a href="{% url 'cardDatabase-user-decklists' %}">
+            <button type="button">Cancel</button>
+        </a>
+        <button id="new-zone-button" type="button">Add New Zone</button>
+    </div>
+{% endblock %}

@@ -34,7 +34,7 @@ class DeckListCard(models.Model):
     decklist = models.ForeignKey(DeckList, null=False, blank=False, related_name='cards', on_delete=models.CASCADE)
     card = models.ForeignKey('Card', null=False, blank=False, on_delete=models.CASCADE)
     position = models.IntegerField(blank=False, null=False)
-    zone = models.ForeignKey('UserDeckListZone', blank=False, null=False, on_delete=models.CASCADE)
+    zone = models.ForeignKey('UserDeckListZone', blank=False, null=False, on_delete=models.CASCADE, related_name='cards')
     quantity = models.IntegerField(blank=False, null=False, default=1)
 
 
@@ -51,3 +51,7 @@ class UserDeckListZone(models.Model):
     decklist = models.ForeignKey('DeckList', on_delete=models.CASCADE)
     position = models.IntegerField(blank=False, null=False)
     zone = models.ForeignKey('DeckListZone', on_delete=models.CASCADE)
+
+    @property
+    def card_count(self):
+        return self.cards.aggregate(models.Sum('quantity'))['quantity__sum'] or 0

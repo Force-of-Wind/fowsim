@@ -18,7 +18,7 @@ from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistration
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
 from fowsim import constants as CONS
-from fowsim.decorators import site_admins, desktop_only, logged_out
+from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only
 
 
 def get_search_form_ctx():
@@ -369,18 +369,19 @@ def test_error(request):
 @login_required
 def user_decklists(request):
     ctx = dict()
-    ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile)
+    ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile).order_by('-last_modified')
     return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
 
 
 @login_required
-@desktop_only
 def create_decklist(request):
     decklist = DeckList.objects.create(profile=request.user.profile, name='Untitled Deck')
     for default_zone in DeckListZone.objects.filter(show_by_default=True):
         UserDeckListZone.objects.create(zone=default_zone, position=default_zone.position, decklist=decklist)
-    return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': decklist.id}))
-
+    if request.user_agent.is_mobile or request.user_agent.is_tablet:
+        return HttpResponseRedirect(reverse('cardDatabase-edit-decklist-mobile', kwargs={'decklist_id': decklist.id}))
+    else:
+        return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': decklist.id}))
 
 @login_required
 @desktop_only
@@ -396,10 +397,23 @@ def edit_decklist(request, decklist_id=None):
     ctx['decklist'] = decklist
     return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)
 
+@login_required
+@mobile_only
+def edit_decklist_mobile(request, decklist_id=None):
+    # Check that the user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    ctx = get_search_form_ctx()
+    ctx['basic_form'] = SearchForm()
+    ctx['advanced_form'] = AdvancedSearchForm()
+    ctx['zones'] = UserDeckListZone.objects.filter(decklist__pk=decklist.pk).\
+        order_by('-zone__show_by_default', 'position')
+    ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
+    ctx['decklist'] = decklist
+    return render(request, 'cardDatabase/html/edit_decklist_mobile.html', context=ctx)
+
 
 @login_required
 @require_POST
-@desktop_only
 def save_decklist(request, decklist_id=None):
     decklist_data = json.loads(request.body.decode('UTF-8'))['decklist_data']
 
@@ -506,3 +520,7 @@ def register(request):
 
 def desktop_only(request):
     return render(request, 'cardDatabase/html/desktop_only.html', {})
+
+
+def mobile_only(request):
+    return render(request, 'cardDatabase/html/mobile_only.html', {})

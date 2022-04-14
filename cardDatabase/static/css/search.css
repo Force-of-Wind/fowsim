@@ -52,6 +52,7 @@
     width: max-content;
     margin: 0 auto;
     line-height: 2.5;
+    max-width: 100%;
 }
 
 #other-pages .pagination-page{

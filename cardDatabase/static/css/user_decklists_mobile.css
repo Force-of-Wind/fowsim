@@ -10,3 +10,15 @@
 .my-decklists{
     padding-bottom: 20px;
 }
+
+#user-decklists tr:nth-child(4n+0), #user-decklists tr:nth-child(4n+1){
+    background-color: #a9a9a924;
+}
+
+#user-decklists tr:nth-child(4n+2), #user-decklists tr:nth-child(4n+3){
+    background-color: unset;
+}
+
+#user-decklists tr:nth-child(odd) td, #user-decklists tr:nth-child(odd) th{
+    padding-bottom: 10px;
+}

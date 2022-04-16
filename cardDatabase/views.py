@@ -457,7 +457,7 @@ def process_decklist_comments(comments):
         else:
             try:
                 match = match[2:-2]  # Cut off "[[ ]]"
-                card = Card.objects.get(Q(name__iexact=match) | Q(name_without_punctuation__iexact=match))
+                card = Card.objects.filter(Q(name__iexact=match) | Q(name_without_punctuation__iexact=match)).first()
                 view_card_url = reverse('cardDatabase-view-card', kwargs={"card_id": card.card_id})
                 # Consume the string split by split so we can mark safe only the sections with imgs to avoid html injection
                 splits = comments.split(match, 1)

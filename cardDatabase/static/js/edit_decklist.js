@@ -509,8 +509,9 @@ $(function() {
         alertify.defaults.notifier.position = 'top-left';
     }
 
-    setupAlertify();
-
+    if (FOWDB_IS_MOBILE) {
+        setupAlertify();
+    }
     function getQuantityOrdinal(d){
         const dString = String(d);
         const last = +dString.slice(-2);

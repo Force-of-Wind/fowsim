@@ -64,8 +64,18 @@ $(function() {
             }
         });
 
-        $('.deck-zone-card-name').off('click').on('click', function(e){
-            window.open(FOWDB_VIEW_CARD_URL + $(this).parents('.deck-zone-card').data('card-id'), '_blank').focus();
+
+        function openCardInNewTab(card_url){
+            window.open(card_url, '_blank').focus();
+        }
+
+        $('.deck-zone-card-name').off('mousedown').on('mousedown', function(event){
+            // Prevent auto scroller from appearing when middle clicking
+            if (event.which == 2) event.preventDefault();
+        });
+
+        $('.deck-zone-card-name').off('click auxclick').on('click auxclick', function(event){
+            openCardInNewTab(FOWDB_VIEW_CARD_URL + $(this).parents('.deck-zone-card').data('card-id'));
         });
 
     }

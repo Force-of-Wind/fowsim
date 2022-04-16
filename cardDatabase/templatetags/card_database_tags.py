@@ -250,3 +250,17 @@ def untap_list(cards):
             output += f'{str(card.quantity)} {card.card.name}\n'
         output += '\n'
     return output
+
+
+@register.simple_tag
+def decklist_preview_img_url(decklist):
+    ruler_cards = decklist.cards.filter(zone__zone__name='Ruler')
+    if ruler_cards.exists():
+        return mark_safe(ruler_cards.first().card.card_image.url)
+    else:
+        return base_site_icon()
+
+
+@register.simple_tag
+def base_site_icon():
+    return mark_safe(CONS.SITE_ICON_URL)

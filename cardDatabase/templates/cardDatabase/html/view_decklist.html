@@ -1,11 +1,14 @@
 {% extends 'cardDatabase/html/base.html' %}
-{% load static card_database_tags%}
+{% load static card_database_tags %}
 {% block subtitle %} - {{ decklist.name }}{% endblock %}
 
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/view_decklist.css' %}">
 {% endblock %}
+
+{% block ogtitle %}{{ decklist.name }} - Force of Wind{% endblock %}
+{% block image_preview_url %}{% decklist_preview_img_url decklist %}{% endblock %}
 
 {% block mobilecss %}
     {{ block.super }}

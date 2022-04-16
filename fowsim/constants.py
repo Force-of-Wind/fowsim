@@ -1,4 +1,5 @@
 from django.utils.safestring import mark_safe
+from django.conf.urls.static import static
 
 from fowsim.utils import listToChoices
 
@@ -688,3 +689,5 @@ ZONES_SHOWN_BY_DEFAULT = [
     'Main Deck',
     'Magic Stone Deck'
 ]
+
+SITE_ICON_URL = '/static/img/wind.png'

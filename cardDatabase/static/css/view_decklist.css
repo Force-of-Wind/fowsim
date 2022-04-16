@@ -15,9 +15,13 @@
     padding-bottom: 50px;
 }
 
-.deck-zone-title, .comments-title{
+.deck-zone-title, .comments-title, .deck-zone-count{
     font-weight: bold;
     font-size: 18px;
+}
+
+.deck-zone-title, .deck-zone-count{
+    display: inline-block;
 }
 
 .deck-title{

@@ -251,9 +251,9 @@ $(function() {
     function setupCardOverlay(){
         $('.overlay-container').remove();
         $('#search-results .card img').each(function(index){
-            $(this).parent().append(getOverlayHTML());
+            $(this).parent().append(getOverlayHTML($(this).parents('a').attr('href')));
         });
-        $('.overlay-zone').on('click', function(event){
+        $('.overlay-zone:not(.view-card-link)').on('click', function(event){
             event.preventDefault();
             let card_name = $(this).closest('.card').data('card-name');
             let zone_name = $(this).data('zone-name');
@@ -280,7 +280,7 @@ $(function() {
         });
     }
 
-    function getOverlayHTML(){
+    function getOverlayHTML(card_href){
 
         let zones_titles = $('.deck-zone-title');
 
@@ -289,6 +289,9 @@ $(function() {
             let zone_name = $(this).html().trim();
             output += `<div class="overlay-zone" data-zone-name="${zone_name}"><div class="overlay-zone-title">Add to <b>${zone_name}</b></div></div>`;
         });
+
+        output += `<div class="overlay-zone view-card-link"><a href="${card_href}" target="_blank"><div class="overlay-zone-title">Go to Card</div></a></div>`;
+
         output += `</div></div>`;
         return output;
     }

@@ -63,6 +63,11 @@ $(function() {
                 setupCardOverlay();
             }
         });
+
+        $('.deck-zone-card-name').off('click').on('click', function(e){
+            window.open(FOWDB_VIEW_CARD_URL + $(this).parents('.deck-zone-card').data('card-id'), '_blank').focus();
+        });
+
     }
     setupCardClickables();
     function setZoneCount(el){

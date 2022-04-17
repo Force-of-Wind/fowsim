@@ -68,6 +68,7 @@
             </div>
         {% endif %}
         <button type="button" id="untap-export">Export to Untap</button>
+        <a href="{% url 'cardDatabase-copy-decklist' decklist.pk %}"><button type="button" id="copy-decklist">Import to My Decklists</button></a>
         <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
     </div>
 {% endblock %}

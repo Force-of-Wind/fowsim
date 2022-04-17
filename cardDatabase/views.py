@@ -19,6 +19,7 @@ from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListC
 from .models.CardType import Card, Race
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only
+from cardDatabase.management.commands.importjson import remove_punctuation
 
 
 def get_search_form_ctx():
@@ -455,17 +456,19 @@ def process_decklist_comments(comments):
             output.append(mark_safe('<br />'))
             comments = splits[1]
         else:
-            try:
-                match = match[2:-2]  # Cut off "[[ ]]"
-                card = Card.objects.filter(Q(name__iexact=match) | Q(name_without_punctuation__iexact=match)).first()
-                view_card_url = reverse('cardDatabase-view-card', kwargs={"card_id": card.card_id})
-                # Consume the string split by split so we can mark safe only the sections with imgs to avoid html injection
-                splits = comments.split(match, 1)
-                output.append(splits[0][:-2])
-                output.append(mark_safe(f'<a class="referenced-card" href="{view_card_url}">{card.name}<img class="hover-card-img" src="{card.card_image.url}"/></a>'))
-                comments = splits[1][2:]
-            except Card.DoesNotExist:
-                pass
+            match = match[2:-2]  # Cut off "[[ ]]"
+            card = Card.objects.filter(Q(name__iexact=match) | Q(name_without_punctuation__iexact=remove_punctuation(match))).first()
+
+            # Card not found
+            if not card:
+                continue
+
+            view_card_url = reverse('cardDatabase-view-card', kwargs={"card_id": card.card_id})
+            # Consume the string split by split so we can mark safe only the sections with imgs to avoid html injection
+            splits = comments.split(match, 1)
+            output.append(splits[0][:-2])
+            output.append(mark_safe(f'<a class="referenced-card" href="{view_card_url}">{card.name}<img class="hover-card-img" src="{card.card_image.url}"/></a>'))
+            comments = splits[1][2:]
     else:
         output.append(comments)
 

@@ -3,6 +3,13 @@
 
 {% block image_preview_url %}{{ card.card_image.url }}{% endblock %}
 
+{% block adminoptions %}
+    {{ block.super }}
+    {% if user.profile.site_admin %}
+        <a href="{% url 'admin:cardDatabase_card_change' card.pk %}">Edit Card</a>
+    {% endif %}
+{% endblock %}
+
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/view_card.css' %}">

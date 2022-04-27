@@ -4,6 +4,8 @@
     <html lang="en" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}class="mobile"{% endif %}>
         <head>
             {% block head %}
+                <meta name="description" content="Force of Will Database and Deck Builder">
+                <meta name="keywords" content="Force of Will, FoW, FOW, Trading Card Game, Database, Deck Builder, fowdb, Card Database, fow db, fow cards, fow decks">
                 {% block previewmeta %}
                     <meta property="og:title" content="{% block ogtitle %}Force of Wind{% endblock %}" />
                     <meta property="og:description" content="Force of Will database and deck builder!" />

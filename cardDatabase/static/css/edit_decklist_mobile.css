@@ -71,6 +71,7 @@
     font-size: 18px;
     margin-right: 10px;
     flex: 0 1 auto;
+    min-width: 20px;
 }
 
 .zone-count{

@@ -340,7 +340,7 @@ DATABASE_CARD_TYPE_GROUPS = [
         'types': [
             'Addition',
             'Addition:Resonator',
-            'Addition: Field',
+            'Addition:Field',
             'Addition:J/Resonator',
             'Addition:Ruler/J-Ruler',
             'Chant',
@@ -545,8 +545,12 @@ SETS_IN_ORDER = [
 SEARCH_CARD_TYPES_INCLUDE = {
     'Addition': [
         'Addition:Field',
+        'Addition: Field',
         'Addition:J/Resonator',
         'Addition:Ruler/J-ruler'
+    ],
+    'Addition:Field': [
+        'Addition: Field'
     ],
     'Resonator': [
         'Resonator (Shift)',

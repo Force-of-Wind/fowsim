@@ -11,6 +11,7 @@ from django.db.models import Sum
 
 from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card
+from cardDatabase.models.Spoilers import SpoilerSeason
 
 register = template.Library()
 
@@ -264,3 +265,15 @@ def decklist_preview_img_url(decklist):
 @register.simple_tag
 def base_site_icon():
     return mark_safe(CONS.SITE_ICON_URL)
+
+
+@register.simple_tag
+def get_spoiler_link():
+    try:
+        spoilers = SpoilerSeason.objects.get(is_active=True)
+    except SpoilerSeason.DoesNotExist:
+        return ''
+
+    url = reverse('cardDatabase-search') + f'?spoiler_season={spoilers.set_code}'
+    return mark_safe(f'<a href="{url}">Spoilers</a>')
+

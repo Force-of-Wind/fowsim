@@ -4,6 +4,7 @@ from cardDatabase.models.CardType import *
 from cardDatabase.models.Effects import OneTimeEffect
 from cardDatabase.models.User import Profile
 from cardDatabase.models.DeckList import DeckList, DeckListCard, DeckListZone, UserDeckListZone
+from cardDatabase.models.Spoilers import SpoilerSeason
 
 
 class AbilityTextInline(admin.TabularInline):
@@ -40,3 +41,4 @@ admin.site.register(DeckList)
 admin.site.register(DeckListCard)
 admin.site.register(DeckListZone)
 admin.site.register(UserDeckListZone)
+admin.site.register(SpoilerSeason)

@@ -288,13 +288,17 @@ def search_for_cards(request):
     ctx = get_search_form_ctx()
     basic_form = None
     advanced_form = None
-    form_type = request.GET.get('form_type', None)
-    if form_type == 'basic-form':
-        basic_form = get_form_from_params(SearchForm, request)
-        ctx = ctx | basic_search(basic_form)
-    elif form_type == 'advanced-form':
-        advanced_form = get_form_from_params(AdvancedSearchForm, request)
-        ctx = ctx | advanced_search(advanced_form)
+    spoilers = request.GET.get('spoiler_season', None)
+    if spoilers:
+        ctx['cards'] = Card.objects.filter(get_set_query([spoilers])).order_by('-pk')
+    else:
+        form_type = request.GET.get('form_type', None)
+        if form_type == 'basic-form':
+            basic_form = get_form_from_params(SearchForm, request)
+            ctx = ctx | basic_search(basic_form)
+        elif form_type == 'advanced-form':
+            advanced_form = get_form_from_params(AdvancedSearchForm, request)
+            ctx = ctx | advanced_search(advanced_form)
 
     ctx['basic_form'] = basic_form or SearchForm()
     ctx['advanced_form'] = advanced_form or AdvancedSearchForm()

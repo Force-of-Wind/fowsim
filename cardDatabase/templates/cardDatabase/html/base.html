@@ -57,17 +57,14 @@
                             <a href="https://discord.com/invite/0xN4Mgo37JyrCEc1">Force of Will TCG</a>
                         </div>
                     </div>
-                    {% if not request.user.is_authenticated %}
-                        <a href="{% url 'login' %}?next={{ request.path }}">
-                            <div id="login">Login</div>
-                        </a>
-                    {% else %}
-                        <div id="user-options" class="fow-dropdown">
-                            <button class="fow-dropbtn"><i class="arrow down"></i></button>
-                            <div class="fow-dropdown-content">
-                                <a href="{% url 'cardDatabase-search' %}">Card Database</a>
-                                <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>
+                    <div id="user-options" class="fow-dropdown">
+                        <button class="fow-dropbtn"><i class="arrow down"></i></button>
+                        <div class="fow-dropdown-content">
+                            <a href="{% url 'cardDatabase-search' %}">Card Database</a>
+                            {% get_spoiler_link %}
+                            {% if request.user.is_authenticated %}
                                 {% comment %} <a href="{% url 'cardDatabase-user-preferences' %}">Preferences</a> {% endcomment %}
+                                <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>
                                 <a href="{% url 'cardDatabase-logout' %}?next={{ request.path }}">Logout</a>
                                 {% block adminoptions %}
                                     {% if user.profile.site_admin %}
@@ -75,9 +72,13 @@
                                         <a href="{% url 'cardDatabase-add-card' %}">Add Card</a>
                                     {% endif %}
                                 {% endblock %}
-                            </div>
+                            {% else %} {# Is logged in #}
+                                <a href="{% url 'login' %}?next={{ request.path }}">
+                                    <div id="login">Login</div>
+                                </a>
+                            {% endif %}
                         </div>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
         {% endblock %}

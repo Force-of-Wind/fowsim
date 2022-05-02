@@ -100,16 +100,12 @@ body{
 }
 
 /* Exceptions for these in base_mobile.css */
-#social-media, #login, #user-options{
+#social-media, #user-options{
     height: 30px;
     line-height: 30px;
     flex: 0;
     width: max-content;
     padding: 0 25px 0 0;
-}
-
-#login{
-    color: white;
 }
 
 .arrow {

@@ -108,46 +108,6 @@ def get_attr_query(data, colour_match, colour_combination):
     return attr_query & annotation_filter, attr_annotation, extra_queries
 
 
-def separate_text_query(field, search_text, exactness_option):
-    """
-    :param field: name of the field to search e.g. 'name' or 'ability_text'
-    :param search_text: actual string to query for
-    :param exactness_option: which option was selected in constants.py:TEXT_EXACTNESS_OPTIONS
-    :return: query object using the chosen setting
-    """
-    q = Q()
-    if search_text and field:
-        if exactness_option == CONS.TEXT_EXACT:
-            # Simply check that the whole phrase exists without edits
-            return Q(**{field + '__icontains': search_text})
-        else:  # Either "Contains all" or 'Contains at least one"
-            '''
-            Check for each individual word, not the whole phrase
-            E.g. Contains "Lumia fated rebirth"
-            becomes Contains "Lumia" and/or contains "fated" and/or contains "rebirth"
-            '''
-            for word in search_text.split(' '):
-                word_query = Q(**{field + '__icontains': word})
-                if exactness_option == CONS.TEXT_CONTAINS_ALL:
-                    q &= word_query
-                elif exactness_option == CONS.TEXT_CONTAINS_AT_LEAST_ONE:
-                    q |= word_query
-    return q
-
-
-def get_text_query(search_text, text_search_fields, exactness_option):
-    text_query = Q()
-    if search_text:
-        for field in text_search_fields:
-            #  Value of the field is the destination to search e.g. 'name' or 'ability_text
-            text_query |= separate_text_query(field, search_text, exactness_option)
-            if field == 'name':
-                # Also check the alternative name
-                text_query |= separate_text_query('name_without_punctuation', search_text, exactness_option)
-
-    return text_query
-
-
 def get_divinity_query(data):
     divinity_query = Q()
     for div in data:
@@ -211,10 +171,40 @@ def basic_search(basic_form):
     cards = []
     if basic_form.is_valid():
         search_text = basic_form.cleaned_data['generic_text']
-        text_query = get_text_query(search_text, ['name', 'name_without_punctuation', 'ability_texts__text', 'races__name'], CONS.TEXT_CONTAINS_ALL)
-        cards = Card.objects.filter(text_query).exclude(get_unsupported_sets_query()).distinct()
+        cards = Card.objects.exclude(get_unsupported_sets_query()).distinct()
+        cards = apply_text_search(cards, search_text, ['name', 'name_without_punctuation', 'ability_texts__text',
+                                                       'races__name'], CONS.TEXT_CONTAINS_ALL)
         cards = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
     return {'cards': cards}
+
+
+def apply_text_search(cards, text, search_fields, exactness_option):
+    q = Q()
+    if exactness_option in [CONS.TEXT_CONTAINS_ALL, CONS.TEXT_CONTAINS_AT_LEAST_ONE]:
+        words = text.split(' ')
+        for word in words:
+            word_query = Q()
+            for search_field in search_fields:
+                word_query |= Q(**{search_field + '__icontains': word})
+
+                if search_field == 'name':
+                    # Also check the alternative name
+                    word_query |= Q(**{'name_without_punctuation__icontains': word})
+
+            if exactness_option == CONS.TEXT_CONTAINS_ALL:
+                '''Django bug (maybe) if you q &= this query. It won't match two abilities that have each word 
+                (see issue #47). It would only find card with all the words in one ability. So do each word filter
+                one word at a time without & joining them
+                
+                '''
+                cards = cards.filter(word_query)
+            else:
+                q |= word_query
+
+    elif exactness_option == CONS.TEXT_EXACT:
+        for search_field in search_fields:
+            q |= Q(**{search_field + '__icontains': text})
+    return cards.filter(q)
 
 
 def advanced_search(advanced_form):
@@ -222,9 +212,6 @@ def advanced_search(advanced_form):
     cards = []
     if advanced_form.is_valid():
         ctx['advanced_form_data'] = advanced_form.cleaned_data
-        text_query = get_text_query(advanced_form.cleaned_data['generic_text'],
-                                    advanced_form.cleaned_data['text_search_fields'],
-                                    advanced_form.cleaned_data['text_exactness'])
 
         attr_query, attr_annotation, attr_extra_queries = get_attr_query(
             advanced_form.cleaned_data['colours'], advanced_form.cleaned_data['colour_match'],
@@ -240,7 +227,7 @@ def advanced_search(advanced_form):
                                       advanced_form.cleaned_data['def_comparator'], 'DEF')
         keywords_query = get_keywords_query(advanced_form.cleaned_data['keywords'])
 
-        cards = (Card.objects.filter(text_query).
+        cards = (Card.objects.
                  annotate(**attr_annotation).filter(attr_query).
                  filter(race_query).
                  filter(set_query).
@@ -252,6 +239,10 @@ def advanced_search(advanced_form):
                  filter(keywords_query).
                  exclude(get_unsupported_sets_query()).
                  distinct())
+
+        cards = apply_text_search(cards, advanced_form.cleaned_data['generic_text'],
+                          advanced_form.cleaned_data['text_search_fields'],
+                          advanced_form.cleaned_data['text_exactness'])
 
         for q in attr_extra_queries:
             cards = cards.filter(q)

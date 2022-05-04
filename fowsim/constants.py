@@ -546,6 +546,7 @@ SEARCH_CARD_TYPES_INCLUDE = {
     'Addition': [
         'Addition:Field',
         'Addition: Field',
+        'Addition:Resonator',
         'Addition:J/Resonator',
         'Addition:Ruler/J-ruler'
     ],

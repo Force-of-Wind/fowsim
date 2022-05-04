@@ -11,7 +11,7 @@ class DeckList(models.Model):
         return f'{self.name} ({self.profile.user.email})'
 
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, null=False, blank=False)
+    name = models.CharField(max_length=100000, null=False, blank=False)
     last_modified = models.DateTimeField(auto_now_add=True, blank=True)
     comments = models.TextField(max_length=10000, blank=True, null=True, default='')
 
@@ -42,7 +42,7 @@ class DeckListZone(models.Model):
     def __str__(self):
         return self.name
 
-    name = models.CharField(max_length=200, blank=False, null=False)
+    name = models.CharField(max_length=10000, blank=False, null=False)
     show_by_default = models.BooleanField(blank=False, null=False, default=False)
     position = models.IntegerField(blank=True, null=True)
 

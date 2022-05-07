@@ -8,6 +8,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.staticfiles import finders
 from django.db.models import Q
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 from cardDatabase.models.Effects import Effect
 from fowsim.utils import listToChoices, AbstractModel
@@ -77,24 +79,6 @@ class Card(AbstractModel):
     def __str__(self):
         return self.name
 
-    def save(self, use_resize=True, *args, **kwargs):
-        if self.card_image and use_resize:
-            size = 480, 670
-            im = Image.open(self.card_image)
-            if im.mode == 'P':
-                im = im.convert('RGBA')
-
-            if im.mode == "RGBA":
-                new_image = Image.new("RGBA", im.size, "WHITE")
-                new_image.paste(im, (0, 0), im)
-                im = new_image
-                im = im.convert("RGB")
-            im = im.resize(size, Image.ANTIALIAS)
-            im_io = BytesIO()
-            im.save(im_io, 'JPEG', quality=70)
-            self.card_image = InMemoryUploadedFile(im_io, 'ImageField', f"{self.card_id}.jpg", 'image/jpeg', sys.getsizeof(im_io), None)
-        super(Card, self).save(*args, **kwargs)
-
     @classmethod
     def get_cls(cls):
         return cls
@@ -102,14 +86,6 @@ class Card(AbstractModel):
     @classmethod
     def get_type_choices(cls):
         super().get_type_choices_from_cls(cls)
-
-    @property
-    def card_image_filename(self):
-        if finders.find(f'cards/{self.card_id}.jpg'):
-            return self.card_id + '.jpg'
-        second_attempt = self.card_id.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, '') + '.jpg'
-        if finders.find(f'cards/{second_attempt}'):  # Try use the "front" side of a card, might be an alternative card
-            return second_attempt
 
     @property
     def set_code(self):
@@ -177,3 +153,27 @@ class CardColour(models.Model):
 
     name = models.CharField(max_length=200, blank=False, null=False)
     db_representation = models.CharField(max_length=200, blank=False, null=False)
+
+
+@receiver(pre_save, sender=Card)
+def resize_image_if_new(sender, instance, **kwargs):
+    try:
+        obj = sender.objects.get(pk=instance.pk)
+    except sender.DoesNotExist:
+        pass
+    finally:
+        if not obj or obj.card_image != instance.card_image and instance.card_image:
+            size = 480, 670
+            im = Image.open(instance.card_image)
+            if im.mode == 'P':
+                im = im.convert('RGBA')
+
+            if im.mode == "RGBA":
+                new_image = Image.new("RGBA", im.size, "WHITE")
+                new_image.paste(im, (0, 0), im)
+                im = new_image
+                im = im.convert("RGB")
+            im = im.resize(size, Image.ANTIALIAS)
+            im_io = BytesIO()
+            im.save(im_io, 'JPEG', quality=70)
+            instance.card_image = InMemoryUploadedFile(im_io, 'ImageField', f"{instance.card_id}.jpg", 'image/jpeg', sys.getsizeof(im_io), None)

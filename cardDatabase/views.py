@@ -78,7 +78,7 @@ def get_set_query(data):
 def get_attr_query(data, colour_match, colour_combination):
     extra_queries = []
     attr_query = Q()
-    attr_annotation = {'colour_combination_count': Count('colours__db_representation')}
+    attr_annotation = {'colour_combination_count': Count('colours__db_representation', distinct=True)}
     annotation_filter = Q()
     if colour_match == CONS.DATABASE_COLOUR_MATCH_ANY or not colour_match:
         for card_attr in data:

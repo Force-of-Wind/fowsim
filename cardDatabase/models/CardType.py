@@ -157,9 +157,11 @@ class CardColour(models.Model):
 
 @receiver(pre_save, sender=Card)
 def resize_image_if_new(sender, instance, **kwargs):
+    obj = None
     try:
         obj = sender.objects.get(pk=instance.pk)
     except sender.DoesNotExist:
+        obj = None
         pass
     finally:
         if not obj or obj.card_image != instance.card_image and instance.card_image:

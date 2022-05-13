@@ -1,4 +1,4 @@
-Setup instructions:
+# Running the Server Locally
 
 1. Create a python3 virtual environment (3.9.6):
 `python -m venv /path/to/make/venv`
@@ -29,19 +29,15 @@ python -c 'from django.core.management.utils import get_random_secret_key; print
 6. Apply the schema to the database:
 `python manage.py migrate`
 
-7. Import card data to the database:
-`python manage.py importjson`
-
-8. Setup a redis queue (This might not be necessary if you aren't working on the game sim parts yet, so can try skip this). If you do, add the port and address for the redis queue to your .env file:
-```
-REDIS_HOST=
-REDIS_PORT=
-```
-
-9. create your own user:
+7. Create a superuser account to use on your local development server:
 `python manage.py createsuperuser`
 
-10. run the server:
+8. Run the server:
 `python manage.py runserver`
 
 You can now access all the pages at localhost e.g. http://127.0.0.1:8000/search/
+
+# How to Contribute
+Join us on [Discord](https://discord.com/invite/8S5XW6pUEF) and let us know about your interest in helping develop Force of Wind!
+
+For approved contributors, see [here](/CONTRIBUTORS.md) for info on specific info on how to contribute.

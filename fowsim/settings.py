@@ -52,6 +52,8 @@ STATICFILES_LOCATION = 'static'
 if os.environ.get('PRODUCTION'):
     DEFAULT_FILE_STORAGE = 'fowsim.custom_storages.MediaStorage'
     STATICFILES_STORAGE = 'fowsim.custom_storages.StaticStorage'
+else:
+    DEFAULT_FILE_STORAGE = 'fowsim.custom_storages.LocalMediaStorage'
 
 # Application definition
 

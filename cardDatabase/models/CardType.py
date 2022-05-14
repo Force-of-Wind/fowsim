@@ -79,8 +79,7 @@ class Card(AbstractModel):
     ATK = models.IntegerField(null=True, blank=True)
     DEF = models.IntegerField(null=True, blank=True)
     types = models.ManyToManyField('Type', related_name='types')
-    ability_texts = models.ManyToManyField('AbilityText', related_name='cards', blank=True)
-    ability_text = models.ManyToManyField('AbilityText', related_name='crds', blank=True, through=CardAbility)
+    ability_texts = models.ManyToManyField('AbilityText', related_name='cards', blank=True, through=CardAbility)
     colours = models.ManyToManyField('CardColour', related_name='cards', blank=False)
 
     def __str__(self):

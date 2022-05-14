@@ -55,6 +55,12 @@ class Type(models.Model):
     name = models.CharField(max_length=200, null=False, blank=False, choices=listToChoices(CONS.CARD_TYPE_VALUES))
 
 
+class CardAbility(models.Model):
+    card = models.ForeignKey('Card', on_delete=models.CASCADE, related_name='abilities')
+    ability_text = models.ForeignKey('AbilityText', on_delete=models.CASCADE, related_name='card')
+    position = models.IntegerField(blank=False, null=False, default=1)
+
+
 class Card(AbstractModel):
     class Meta:
         abstract = False
@@ -71,7 +77,7 @@ class Card(AbstractModel):
     ATK = models.IntegerField(null=True, blank=True)
     DEF = models.IntegerField(null=True, blank=True)
     types = models.ManyToManyField('Type', related_name='types')
-    ability_texts = models.ManyToManyField('AbilityText', related_name='cards', blank=True)
+    ability_texts = models.ManyToManyField('AbilityText', related_name='cards', blank=True, through=CardAbility)
     colours = models.ManyToManyField('CardColour', related_name='cards', blank=False)
 
     def __str__(self):

@@ -95,9 +95,10 @@
                 <div class="card-text-info-title">
                     Text:
                 </div>
-                {% for ability in card.ability_texts.all %}
+                {% order_card_abilities card as abilities %}
+                {% for ability in abilities %}
                     <div class="card-text-info-text">
-                        {% format_ability_text ability.text %}
+                        {% format_ability_text ability %}
                     </div>
                 {% endfor %}
             </div>

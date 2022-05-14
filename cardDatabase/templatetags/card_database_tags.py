@@ -277,3 +277,7 @@ def get_spoiler_link():
     url = reverse('cardDatabase-search') + f'?spoiler_season={spoilers.set_code}'
     return mark_safe(f'<a href="{url}">Spoilers</a>')
 
+
+@register.simple_tag
+def order_card_abilities(card):
+    return card.abilities.all().order_by('position').values_list('ability_text__text', flat=True)

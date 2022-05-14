@@ -8,11 +8,12 @@ from cardDatabase.models.Spoilers import SpoilerSeason
 
 
 class AbilityTextInline(admin.TabularInline):
-    model = AbilityText.cards.through
+    model = CardAbility
+    extra = 1
 
 
 class CardsWithAbilityTextInline(admin.TabularInline):
-    model = Card.ability_texts.through
+    model = CardAbility
 
 
 class CardAdmin(admin.ModelAdmin):

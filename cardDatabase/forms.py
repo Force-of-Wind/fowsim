@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 from fowsim import constants as CONS
-from cardDatabase.models.CardType import Card, Race, AbilityText
+from cardDatabase.models.CardType import Card, Race, AbilityText, CardAbility
 from cardDatabase.models.Ability import Keyword
 from cardDatabase.management.commands.importjson import remove_punctuation
 
@@ -95,8 +95,11 @@ class AddCardForm(forms.ModelForm):
         card_instance.save()
 
         abilities_to_add = AddCardForm.split_abilities(self.cleaned_data['ability_texts'])
+        position = 1
         for ability_to_add in abilities_to_add:
-            card_instance.ability_texts.add(AbilityText.objects.get_or_create(text=ability_to_add)[0])
+            ability_text, created = AbilityText.objects.get_or_create(text=ability_to_add)
+            CardAbility.objects.get_or_create(ability_text=ability_text, card=card_instance, position=position)
+            position += 1
 
         races_to_add = self.cleaned_data['races'].splitlines()
         for race_to_add in races_to_add:

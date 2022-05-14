@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from django.core.management import call_command
 
 from fowsim import constants as CONS
-from cardDatabase.models.CardType import Card, AbilityText, Race, Type, CardColour
+from cardDatabase.models.CardType import Card, AbilityText, Race, Type, CardColour, CardAbility
 from cardDatabase.models.DeckList import DeckListZone
 
 
@@ -101,9 +101,11 @@ class Command(BaseCommand):
                                 ATK=card['ATK'] or None,
                                 DEF=card['DEF'] or None,
                             )
+                            position = 1
                             for card_ability in card_abilities:
                                 ability_text, created = AbilityText.objects.get_or_create(text=card_ability.strip())
-                                card.ability_texts.add(ability_text)
+                                CardAbility.objects.get_or_create(ability_text=ability_text, card=card, position=position)
+                                position += 1
                             for card_race in card_races:
                                 race, created = Race.objects.get_or_create(name=card_race.strip())
                                 card.races.add(race)

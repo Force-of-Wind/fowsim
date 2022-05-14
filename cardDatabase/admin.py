@@ -21,6 +21,11 @@ class CardAdmin(admin.ModelAdmin):
     search_fields = ['name', 'ability_texts__text', 'card_id']
     inlines = [AbilityTextInline]
 
+    class Media:
+        css = {
+            'all': ('css/admin/card_admin_fixes.css',)
+        }
+
     def get_form(self, request, obj=None, **kwargs):
         if obj:
             self.exclude = ('ability_texts',)

@@ -13,7 +13,8 @@ This document will just cover a few basics of what we would like from contributo
 3. Import card data to the database:
 `python manage.py importjson`
 
-4. Contact Kossetsu for an API key to obtain the card images on your local machine for development.
+4. Contact Kossetsu for an API key to obtain the card images on your local machine for development. To attach these images to the imported cards run
+`python manage.py assign_existing_card_images`
 
 5. Once you've verified it works locally, you're ready to start contributing!
 

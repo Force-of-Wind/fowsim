@@ -23,7 +23,7 @@ class Command(BaseCommand):
                         card.card_image = second_attempt
                     else:
                         raise Exception(f'image for {card.set_code}: {card.name} does not exist')
-                card.save(use_resize=False)
+                card.save()
             except Exception as e:
                 print(e)
                 print('Failed, image doesn\'t exist?')

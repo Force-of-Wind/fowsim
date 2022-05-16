@@ -170,7 +170,7 @@ def resize_image_if_new(sender, instance, **kwargs):
         obj = None
         pass
     finally:
-        if (not obj and instance.card_image) or obj.card_image != instance.card_image and instance.card_image:
+        if (not obj and instance.card_image) or (obj and obj.card_image != instance.card_image and instance.card_image):
             size = 480, 670
             im = Image.open(instance.card_image)
             if im.mode == 'P':

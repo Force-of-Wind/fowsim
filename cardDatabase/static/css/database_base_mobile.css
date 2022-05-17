@@ -4,6 +4,10 @@
 
 .form-submit-button{
     padding-top: 10px;
+    width: 100px;
+    bottom: 20px;
+    margin-bottom: 20px;
+    position: sticky;
 }
 
 #search-toggles{

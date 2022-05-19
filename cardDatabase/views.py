@@ -249,8 +249,10 @@ def advanced_search(advanced_form):
         cards = sort_cards(cards, advanced_form.cleaned_data['sort_by'],
                            advanced_form.cleaned_data['reverse_sort'] or False)
         cost_filters = advanced_form.cleaned_data['cost']
-        if len(cost_filters) > 0:
+        if cost_filters:
             # Don't need DB query to do total cost, remove all that don't match if any were chosen
+            if '6+' in cost_filters:
+                cost_filters += [str(i) for i in range(6,13)]
             if 'X' in cost_filters:
                 cards = [x for x in cards
                          if str(x.total_cost) in cost_filters

@@ -323,7 +323,7 @@ TEXT_SEARCH_FIELD_CHOICES = [
     ('card_id', 'Set Code'),
     ('flavour', 'Flavour')
 ]
-TOTAL_COST_CHOICES = listToChoices(list(range(0, 13)) + ['X'])
+TOTAL_COST_CHOICES = listToChoices(list(range(0, 6)) + ['6+'] + ['X'])
 
 # Valhalla and Promos. Data exists in the database so we want to exclude it from.
 # Checks 'startswith' so codes that will clash need trailing - if possible. Good luck otherwise :)

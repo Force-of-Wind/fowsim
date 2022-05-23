@@ -59,10 +59,14 @@ html.mobile .atk-def-input{
 }
 
 #advanced-form .form-submit-button{
-    width: max-content;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
     display: block;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    background-color: white;
+    border-top: 1px solid gray;
+    z-index: 50;
 }
 
 #social-media, #user-options{

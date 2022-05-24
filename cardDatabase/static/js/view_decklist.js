@@ -64,6 +64,8 @@ $(function(){
 
         html2canvas(toConvert, {
             scale: 3,
+            allowTaint: false,
+            useCORS: true,
             windowWidth: '1080px',
             onclone: function(clonedDocument){
                 clonedDocument.getElementById('image-container').style.padding = '20px';

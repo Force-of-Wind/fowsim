@@ -56,17 +56,19 @@ $(function(){
             .cloned-title{
                 border-bottom: 1px solid rgb(0 0 0 / 16%);
             }
+            
+            #image-container{
+                width: 700px;
+            }
         `
     }
 
     $('#copy-image').click(function(e){
         let toConvert = document.getElementById('image-container');
-
-        html2canvas(toConvert, {
+        let settings = {
             scale: 3,
             allowTaint: false,
             useCORS: true,
-            windowWidth: '1080px',
             onclone: function(clonedDocument){
                 clonedDocument.getElementById('image-container').style.padding = '20px';
                 let site_title = clonedDocument.createElement('div');
@@ -75,7 +77,14 @@ $(function(){
                 let ssheet = clonedDocument.createElement('style');
                 ssheet.innerText = getCloneCSSFixes();
                 clonedDocument.head.appendChild(ssheet);
-            }}).then(function(canvas) {
+            }
+        };
+
+        if (FOWDB_IS_MOBILE){
+            settings.windowWidth = '1080px';
+        }
+
+        html2canvas(toConvert, settings).then(function(canvas) {
             let link = document.createElement("a");
             let decklist_name = $('.deck-title').html().trim();
             link.download = `${decklist_name ? decklist_name : 'Decklist'}.png`;

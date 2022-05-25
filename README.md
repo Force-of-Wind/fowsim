@@ -37,6 +37,30 @@ python -c 'from django.core.management.utils import get_random_secret_key; print
 
 You can now access all the pages at localhost e.g. http://127.0.0.1:8000/search/
 
+# Docker Setup
+
+1. Edit `docker-compose.yml` to setup the database
+
+2. Ensure `.env` is setup.
+```
+DJANGO_SECRET_KEY=(Run the command above to get this)
+DB_USER=fowsim
+DB_NAME=fowsim
+DB_PASS=CHANGEME
+DB_HOST=db
+DB_PORT=5432
+```
+
+3. Run `docker-compose up -d --build`
+
+4. Setup database running this command:
+`docker-compose exec web python manage.py migrate --noinput`
+
+5. Create the superuser:
+`docker-compose exec web python manage.py createsuperuser`
+
+6. Head to `http://localhost:1337` to enjoy the docker setup :D
+
 # How to Contribute
 Join us on [Discord](https://discord.com/invite/8S5XW6pUEF) and let us know about your interest in helping develop Force of Wind!
 

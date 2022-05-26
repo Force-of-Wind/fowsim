@@ -23,3 +23,7 @@
 #basic-search-toggle{
     margin-left: 10px;
 }
+
+.atk-def-stats{
+    border-bottom: none;
+}

@@ -3,10 +3,10 @@
 }
 
 .form-submit-button{
-    padding-top: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     width: 100px;
-    bottom: 20px;
-    margin-bottom: 20px;
+    bottom: 0px;
     position: sticky;
 }
 
@@ -22,4 +22,8 @@
 
 #basic-search-toggle{
     margin-left: 10px;
+}
+
+.atk-def-stats{
+    border-bottom: none;
 }

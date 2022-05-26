@@ -49,10 +49,11 @@ def get_colour_name(code):
             return choice_name
 
 
-
 def setup_db():
+    position = 0
     for zone in CONS.ZONES_SHOWN_BY_DEFAULT:
-        DeckListZone.objects.get_or_create(name=zone, show_by_default=True)
+        DeckListZone.objects.get_or_create(name=zone, show_by_default=True, position=position)
+        position += 1
 
 
 class Command(BaseCommand):

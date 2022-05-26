@@ -694,7 +694,8 @@ KEYWORDS_CHOICES = [
 ZONES_SHOWN_BY_DEFAULT = [
     'Ruler Area',
     'Main Deck',
-    'Magic Stone Deck'
+    'Magic Stone Deck',
+    'Side Deck'
 ]
 
 SITE_ICON_URL = static('img/wind.png')

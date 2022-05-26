@@ -9,11 +9,6 @@ from cardDatabase.models.CardType import Card, AbilityText, Race, Type, CardColo
 from cardDatabase.models.DeckList import DeckListZone
 
 
-#  Types separated by / that don't have spaces e.g. "Chant / Rune".
-#  Need to distinguish between Addition:J/Resonator for ex
-MIXED_TYPES = ['Chant/Rune/Master Rune', 'Chant/Rune', 'Special Magic Stone/True Magic Stone']
-
-
 def strip_attributes(text):
     # Magic stone have types 'Fire Magic Stone', etc. Remove that, then strip whitespace
     for attribute in CONS.ATTRIBUTE_NAMES:
@@ -77,16 +72,7 @@ class Command(BaseCommand):
                                 break
                         else:
                             # In a used set
-                            card_types = []
-
-                            for card_type in card['type'].split(' / '):
-                                if any(x in card_type for x in MIXED_TYPES):
-                                    for mixed_type in MIXED_TYPES:
-                                        if mixed_type in card_type:
-                                            card_types = card_types + mixed_type.split('/')
-                                else:
-                                    card_types.append(card_type)
-
+                            card_types = card['type']
                             card_races = card['race']
                             card_abilities = card['abilities']
                             card_colours = card['colour']
@@ -95,7 +81,7 @@ class Command(BaseCommand):
                                 name_without_punctuation=remove_punctuation(card['name']),
                                 card_id=card['id'].replace('*', CONS.DOUBLE_SIDED_CARD_CHARACTER),
                                 cost=card['cost'] or None,
-                                divinity=card['divinity'].replace("∞", CONS.INFINITY_STRING) or None,
+                                divinity=str(card['divinity']).replace("∞", CONS.INFINITY_STRING) or None,
                                 flavour=card['flavour'] or None,
                                 rarity=card['rarity'],
                                 ATK=card['ATK'] or None,

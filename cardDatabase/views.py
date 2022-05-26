@@ -78,13 +78,14 @@ def get_set_query(data):
 def get_attr_query(data, colour_match, colour_combination):
     extra_queries = []
     attr_query = Q()
+    attr_exclusions = Q()
     attr_annotation = {'colour_combination_count': Count('colours__db_representation', distinct=True)}
     annotation_filter = Q()
     if colour_match == CONS.DATABASE_COLOUR_MATCH_ANY or not colour_match:
         for card_attr in data:
             attr_query |= Q(colours__db_representation=card_attr)
 
-    if colour_match == CONS.DATABASE_COLOUR_MATCH_EXACT:
+    elif colour_match == CONS.DATABASE_COLOUR_MATCH_EXACT:
         for fow_attr, attr_name in CONS.COLOUR_CHOICES:
             if fow_attr not in data:
                 attr_query &= ~Q(colours__db_representation=fow_attr)
@@ -99,13 +100,18 @@ def get_attr_query(data, colour_match, colour_combination):
             extra_queries.append(Q(colours__db_representation=data_attr))
         annotation_filter &= Q(colour_combination_count__gte=len(data))
 
+    elif colour_match == CONS.DATABASE_COLOUR_MATCH_ONLY:
+        for colour_code, colour_name in CONS.COLOUR_CHOICES:
+            if colour_code not in data:
+                attr_exclusions |= Q(colours__db_representation=colour_code)
+
     if colour_combination == CONS.DATABASE_COLOUR_COMBINATION_MONO:
         annotation_filter &= Q(colour_combination_count=1)
 
     elif colour_combination == CONS.DATABASE_COLOUR_COMBINATION_MULTI:
         annotation_filter &= Q(colour_combination_count__gte=2)
 
-    return attr_query & annotation_filter, attr_annotation, extra_queries
+    return attr_query & annotation_filter, attr_annotation, extra_queries, attr_exclusions
 
 
 def get_divinity_query(data):
@@ -213,7 +219,7 @@ def advanced_search(advanced_form):
     if advanced_form.is_valid():
         ctx['advanced_form_data'] = advanced_form.cleaned_data
 
-        attr_query, attr_annotation, attr_extra_queries = get_attr_query(
+        attr_query, attr_annotation, attr_extra_queries, attr_exclusions = get_attr_query(
             advanced_form.cleaned_data['colours'], advanced_form.cleaned_data['colour_match'],
             advanced_form.cleaned_data['colour_combination'])
         race_query = get_race_query(advanced_form.cleaned_data['race'])
@@ -228,7 +234,7 @@ def advanced_search(advanced_form):
         keywords_query = get_keywords_query(advanced_form.cleaned_data['keywords'])
 
         cards = (Card.objects.
-                 annotate(**attr_annotation).filter(attr_query).
+                 annotate(**attr_annotation).filter(attr_query).exclude(attr_exclusions).
                  filter(race_query).
                  filter(set_query).
                  filter(card_type_query).
@@ -296,7 +302,7 @@ def search_for_cards(request):
     if 'cards' in ctx:
         paginator = Paginator(ctx['cards'], request.GET.get('num_per_page', 30))
         page_number = request.GET.get('page', 1)
-        ctx['page_range'] = paginator.get_elided_page_range(number=page_number)
+        ctx['page_range'] = paginator.get_elided_page_range(number=page_number, on_each_side=1, on_ends=1)
         ctx['total_count'] = len(ctx['cards'])
         ctx['cards'] = paginator.get_page(page_number)
     return render(request, 'cardDatabase/html/search.html', context=ctx)

@@ -116343,7 +116343,8 @@
 								"DEF": "0",
 								"abilities": [
 									"[Quickcast]",
-									"Produce two wills in any combination of attributes.@@@[Force Resonance] <Olympians> (This card gains the following text in all zones and outside the game as long as you control [Force Command] <Olympians>.)",
+									"Produce two wills in any combination of attributes.",
+									"[Force Resonance] <Olympians> (This card gains the following text in all zones and outside the game as long as you control [Force Command] <Olympians>.)",
 									"You pay {1} less to play this card.",
 									"As you play this card, you may order it as if it were a resonator spell.",
 									"Put a [600/600] light Angel resonator token with [Flying] into the field. If you ordered this card, put that token into the field ordered instead. At the next end of turn >>> Put the order card ordering that token into your ruler area as a ruler."
@@ -117132,7 +117133,8 @@
 								"abilities": [
 									"[Quickcast]",
 									"[Enter] >>> Draw a card.",
-									"When this card is destroyed >>> Put target resonator your opponent controls on the bottom of its owner's deck.@@@When this card becomes revealed from outside the game >>> Target J/resonator cannot attack or block, and its controller cannot play its activate abilities until end of turn."
+									"When this card is destroyed >>> Put target resonator your opponent controls on the bottom of its owner's deck.",
+									"When this card becomes revealed from outside the game >>> Target J/resonator cannot attack or block, and its controller cannot play its activate abilities until end of turn."
 								],
 								"divinity": "",
 								"flavour": "",

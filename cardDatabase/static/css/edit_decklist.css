@@ -89,7 +89,7 @@
 .card-quantity-plus {
     border-radius: 0 3px 3px 0;
 }
-.card-quantity-input {
+.card-quantity-input{
     width: 25px;
     height: 19px;
     margin: 0;
@@ -102,6 +102,11 @@
     background: #fff;
     color: #8184a1;
     box-sizing: initial;
+    -moz-appearance: textfield;
+}
+.card-quantity-input::-webkit-outer-spin-button, .card-quantity-input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
 }
 .card-quantity-minus:link,
 .card-quantity-plus:link {

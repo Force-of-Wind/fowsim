@@ -9,7 +9,7 @@ from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
 from django.utils.safestring import mark_safe
@@ -433,16 +433,19 @@ def save_decklist(request, decklist_id=None):
         user_zone, created = UserDeckListZone.objects.get_or_create(zone=zone, position=zone_count, decklist=decklist)
         for card_data in zone_data['cards']:
             card = Card.objects.get(card_id=card_data['id'])
-            DeckListCard.objects.get_or_create(
-                decklist=decklist,
-                card=card,
-                position=card_data['position'],
-                zone=user_zone,
-                quantity=card_data['quantity']
-            )
+            try:
+                DeckListCard.objects.get_or_create(
+                    decklist=decklist,
+                    card=card,
+                    position=card_data['position'],
+                    zone=user_zone,
+                    quantity=card_data['quantity']
+                )
+            except ValueError:  # Probably user input error somehow, like putting 'e' in the quantity
+                pass
         zone_count += 1
 
-    return HttpResponse('')
+    return JsonResponse({'decklist_pk': decklist.pk})
 
 
 def process_decklist_comments(comments):

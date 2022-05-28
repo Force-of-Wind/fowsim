@@ -132,8 +132,9 @@ $(function() {
                 decklist_data: decklist_data,
             }),
             success: function (data) {
+                console.log(data);
                 window.onbeforeunload = undefined; // Remove warning of unsaved changes
-                window.location.assign('/decklists/');
+                window.location.assign(`/view_decklist/${data.decklist_pk}`);
             },
             error: function (data) {
                 console.log('Error');
@@ -236,7 +237,7 @@ $(function() {
                         <a href="#" class="card-quantity-minus">
                             <span>-</span>
                         </a>
-                        <input type="text" class="card-quantity-input" value="1">
+                        <input type="number" class="card-quantity-input" value="1">
                         <a href="#" class="card-quantity-plus">
                             <span>+</span>
                         </a>

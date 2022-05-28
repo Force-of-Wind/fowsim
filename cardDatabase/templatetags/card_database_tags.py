@@ -281,3 +281,11 @@ def get_spoiler_link():
 @register.simple_tag
 def order_card_abilities(card):
     return card.abilities.all().order_by('position').values_list('ability_text__text', flat=True)
+
+
+@register.simple_tag
+def get_edit_decklist_url(decklist_pk, user_agent):
+    if user_agent.is_mobile or user_agent.is_tablet:
+        return reverse('cardDatabase-edit-decklist-mobile', kwargs={'decklist_id': decklist_pk})
+    else:
+        return reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': decklist_pk})

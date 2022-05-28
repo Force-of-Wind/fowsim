@@ -148,3 +148,7 @@
 #untap-list.show-untap{
     display: block;
 }
+
+#deck-options button{
+    margin-top: 10px;
+}

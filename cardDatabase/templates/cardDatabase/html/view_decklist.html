@@ -70,10 +70,17 @@
                 <div class="deck-comments">{% for comment in comments %}{{ comment }}{% endfor %}</div>
             </div>
         {% endif %}
-        <button type="button" id="untap-export">Export to Untap</button>
-        <a href="{% url 'cardDatabase-copy-decklist' decklist.pk %}"><button type="button" id="copy-decklist">Import to My Decklists</button></a>
-        <button type="button" id="copy-image">Copy as Image</button>
-        <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
+        <div id="deck-options">
+            {% if request.user == decklist.profile.user %}
+                <a href="{% get_edit_decklist_url decklist.pk request.user_agent %}">
+                    <button type="button" id="edit-decklist">Edit Decklist</button>
+                </a>
+            {% endif %}
+            <button type="button" id="untap-export">Export to Untap</button>
+            <a href="{% url 'cardDatabase-copy-decklist' decklist.pk %}"><button type="button" id="copy-decklist">Import to My Decklists</button></a>
+            <button type="button" id="copy-image">Copy as Image</button>
+            <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
+        </div>
 
     </div>
 {% endblock %}

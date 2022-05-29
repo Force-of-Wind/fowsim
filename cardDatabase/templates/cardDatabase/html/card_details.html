@@ -155,7 +155,7 @@
                             <div class="referenced-card">
                                 {{ card_referred_by.name }}                                
                                 {% if card_referred_by.card_image %}
-                                    <img class="hover-card-img" src="{{ card_referred_by.card_image.url }}">
+                                    {% referenced_card_img_html card_referred_by %}
                                 {% else %}
                                     Image Missing
                                 {% endif %}                                

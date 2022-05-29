@@ -109,6 +109,21 @@ def card_id_to_url(card_id):
     return reverse('cardDatabase-view-card', kwargs={'card_id': card_id})
 
 
+@register.simple_tag
+def referenced_card_img_html(card):
+    other_sides = card.other_sides
+    if other_sides:
+        output = ''
+        output += '<div class="multi-hovered-img">'
+        output += f'<img class="hover-card-img" src="{card.card_image.url}"/>'
+        for other_card in other_sides:
+            output += f'<img class="hover-card-img" src="{other_card.card_image.url}"/>'
+        output += '</div>'
+    else:
+        output = f'<img class="hover-card-img" src="{card.card_image.url}"/>'
+    return mark_safe(output)
+
+
 def add_card_reference_links(ability_text):
     # Check for names in apostrophes
     matches = re.findall(r'"[^\"\"]+"', ability_text)
@@ -119,7 +134,7 @@ def add_card_reference_links(ability_text):
             except Card.MultipleObjectsReturned:
                 card = Card.objects.filter(name=match[1:-1]).first()
             card_url = card_id_to_url(card.card_id)
-            ability_text = ability_text.replace(match, f'"<a class="referenced-card" href="{card_url}">{card.name}<img class="hover-card-img" src="{card.card_image.url}"/></a>"')
+            ability_text = ability_text.replace(match, f'"<a class="referenced-card" href="{card_url}">{card.name}{referenced_card_img_html(card)}</a>"')
         except Card.DoesNotExist:
             pass
     return ability_text
@@ -289,3 +304,13 @@ def get_edit_decklist_url(decklist_pk, user_agent):
         return reverse('cardDatabase-edit-decklist-mobile', kwargs={'decklist_id': decklist_pk})
     else:
         return reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': decklist_pk})
+
+
+@register.simple_tag
+def get_card_img_urls(card):
+    output = [card.card_image.url]
+    other_sides = card.other_sides
+    if other_sides:
+        for other_side in other_sides:
+            output.append(other_side.card_image.url)
+    return str(output).replace('\'', '"')

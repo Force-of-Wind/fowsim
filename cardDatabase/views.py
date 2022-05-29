@@ -20,6 +20,7 @@ from .models.CardType import Card, Race
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only
 from cardDatabase.management.commands.importjson import remove_punctuation
+from .templatetags.card_database_tags import referenced_card_img_html
 
 
 def get_search_form_ctx():
@@ -471,7 +472,7 @@ def process_decklist_comments(comments):
             # Consume the string split by split so we can mark safe only the sections with imgs to avoid html injection
             splits = comments.split(match, 1)
             output.append(splits[0][:-2])
-            output.append(mark_safe(f'<a class="referenced-card" href="{view_card_url}">{card.name}<img class="hover-card-img" src="{card.card_image.url}"/></a>'))
+            output.append(mark_safe(f'<a class="referenced-card" href="{view_card_url}">{card.name}{referenced_card_img_html(card)}</a>'))
             comments = splits[1][2:]
     else:
         output.append(comments)

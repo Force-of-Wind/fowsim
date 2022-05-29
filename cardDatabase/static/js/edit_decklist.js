@@ -160,10 +160,12 @@ $(function() {
 
     function hoverCardMouseOver(event){
         $(this).find('img').addClass('show-hover');
+        $(this).find('.multi-hovered-img').addClass('show-hover');
     }
 
     function hoverCardMouseOut(event){
         $(this).find('img').removeClass('show-hover');
+        $(this).find('.multi-hovered-img').removeClass('show-hover');
     }
 
     if(!FOWDB_IS_MOBILE) {
@@ -231,7 +233,15 @@ $(function() {
         })
     }
 
-    function createCardHtml(name, img_url, card_id){
+    function getHoverCardHtml(urls){
+        let output = '';
+        output += '<div class="multi-hovered-img">';
+        urls.forEach(el => output += `<img class="hover-card-img" src="${el}"/>`);
+        output += '</div>';
+        return output;
+    }
+
+    function createCardHtml(name, img_urls, card_id){
         return `<div class="deck-zone-card" data-card-id="${card_id}" draggable="true">
                     <div class="card-quantity">
                         <a href="#" class="card-quantity-minus">
@@ -242,7 +252,7 @@ $(function() {
                             <span>+</span>
                         </a>
                     </div>
-                    <div class="deck-zone-card-name">${name}<img class="hover-card-img" src="${img_url}"></div>
+                    <div class="deck-zone-card-name">${name}${getHoverCardHtml(img_urls)}</div>
                     <div class="remove-card">&#10006;</div>
                 </div>`
     }
@@ -270,13 +280,13 @@ $(function() {
             let zone_name = $(this).data('zone-name');
             let deck_zone = $(`.deck-zone .deck-zone-title:contains('${zone_name}')`).parent().parent();
             let card_id = $(this).closest('.card').data('card-id');
-            let card_img_url = $(this).closest('.card').data('card-image-url');
+            let card_img_urls = $(this).closest('.card').data('card-image-urls');
             let deck_zone_cards = deck_zone.find('.deck-zone-cards');
             let card_matches = deck_zone_cards.find(`.deck-zone-card`).filter(function(){
                 return $(this).find('.deck-zone-card-name').text() === card_name;
             });
             if (!card_matches.length) {
-                let deck_card_html = createCardHtml(card_name, card_img_url, card_id);
+                let deck_card_html = createCardHtml(card_name, card_img_urls, card_id);
                 deck_zone.find('.deck-zone-cards').append(deck_card_html);
                 deck_zone.find('.deck-zone-card-name').mouseout(hoverCardMouseOut);
                 deck_zone.find('.deck-zone-card-name').mouseover(hoverCardMouseOver);
@@ -461,17 +471,17 @@ $(function() {
                     event.preventDefault();
                     let card_name = $(this).closest('.card').data('card-name');
                     let card_id = $(this).closest('.card').data('card-id');
-                    let card_img_url = $(this).parent().data('card-image-url');
-                    displayAddCardSidebar(card_name, card_id, card_img_url);
+                    let card_img_urls = $(this).parent().data('card-image-urls');
+                    displayAddCardSidebar(card_name, card_id, card_img_urls);
                 })
         });
     }
 
-    function displayAddCardSidebar(card_name, card_id, card_img_url) {
+    function displayAddCardSidebar(card_name, card_id, card_img_urls) {
         $('#add-card-container')
             .empty()
             .append(getCardTitleHTML(card_name))
-            .append(getCardImgHTML(card_img_url))
+            .append(getCardImgHTML(card_img_urls))
             .append(getAddZoneHTML());
 
         $('.add-card-button').each(function(index){
@@ -484,7 +494,7 @@ $(function() {
                     return $(this).find('.deck-zone-card-name').text() === card_name;
                 });
                 if (!card_matches.length) {
-                    let deck_card_html = createCardHtml(card_name, card_img_url, card_id);
+                    let deck_card_html = createCardHtml(card_name, card_img_urls, card_id);
                     deck_zone.find('.deck-zone-cards').append(deck_card_html);
                     setupCardClickables();
                 } else {

@@ -1,5 +1,5 @@
 {% extends 'cardDatabase/html/database_base.html' %}
-{% load static %}
+{% load static card_database_tags %}
 {% block subtitle %} - {{ decklist.name }}{% endblock %}
 
 {% block use_default_submit %}false{% endblock %}
@@ -53,7 +53,7 @@
                                         <a href="#/" class="card-quantity-plus"><span>+</span></a>
                                     </div>
                                     {# Can't have whitespace around card name to match jquery #}
-                                    <div class="deck-zone-card-name">{{ card.card.name }}<img class="hover-card-img" src="{{ card.card.card_image.url }}"></div>
+                                    <div class="deck-zone-card-name">{{ card.card.name }}{% referenced_card_img_html card.card %}</div>
                                     <div class="remove-card">&#10006;</div>
                                 </div>
                             {% endif %}

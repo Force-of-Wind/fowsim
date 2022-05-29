@@ -237,3 +237,29 @@
     width: 100%;
     padding-right: 5px;
 }
+
+.hover-card-img.show-hover:not(:last-child){
+    padding-right: 0;
+}
+
+.multi-hovered-img{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    padding: 3px;
+    max-width: 70%;
+}
+
+.multi-hovered-img .hover-card-img.show-hover{
+    position: initial;
+    transform: initial;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.multi-hovered-img.show-hover{
+    display: flex;
+}

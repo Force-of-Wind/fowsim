@@ -1,3 +1,13 @@
+html {
+    overflow: hidden;
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    overflow: auto;
+}
+
 #basic-form, #advanced-form{
     width: max-content;
     margin: 0 auto;

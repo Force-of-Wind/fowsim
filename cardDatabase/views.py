@@ -179,39 +179,73 @@ def basic_search(basic_form):
     if basic_form.is_valid():
         search_text = basic_form.cleaned_data['generic_text']
         cards = Card.objects.exclude(get_unsupported_sets_query()).distinct()
-        cards = apply_text_search(cards, search_text, ['name', 'name_without_punctuation', 'ability_texts__text',
+        cards = apply_text_search(cards, search_text, ['name', 'ability_texts__text',
                                                        'races__name'], CONS.TEXT_CONTAINS_ALL)
         cards = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
     return {'cards': cards}
 
 
+def field_has_text(text, search_field, card):
+    if '__' in search_field:
+        splits = search_field.split('__')
+        vals = getattr(card, splits[0]).all().values_list(splits[1], flat=True)
+        for val in vals:
+            if text.casefold() in val.casefold():
+                return True
+
+    else:
+        val = getattr(card, search_field)
+        if text.casefold() in val.casefold():
+            return True
+    return False
+
+
 def apply_text_search(cards, text, search_fields, exactness_option):
-    q = Q()
-    if exactness_option in [CONS.TEXT_CONTAINS_ALL, CONS.TEXT_CONTAINS_AT_LEAST_ONE]:
-        words = text.split(' ')
+    output = []
+    words = text.split(' ')
+    if 'name' in search_fields:
+        search_fields.append('name_without_punctuation')
+
+    if exactness_option == CONS.TEXT_CONTAINS_AT_LEAST_ONE:
+        q = Q()
+        for word in words:
+            word_query = Q()
+            for search_field in search_fields:
+                word_query |= Q(**{search_field + '__icontains': word})
+            q |= word_query
+        output = cards.filter(q)
+
+    elif exactness_option == CONS.TEXT_CONTAINS_ALL and 'races' in search_fields and len(words) > 5:
+        #  For some reason including races makes this filter WAY slower when there's a few words, dont use db queries
+        for card in cards:
+            for word in words:
+                has_word = False
+                for search_field in search_fields:
+                    if field_has_text(word, search_field, card):
+                        has_word = True
+                        break
+                if not has_word:
+                    break
+            else:  # Not missing any words
+                output.append(card)
+
+    elif exactness_option == CONS.TEXT_CONTAINS_ALL:
+        # Use db becuase there's not many terms and this is more efficient
         for word in words:
             word_query = Q()
             for search_field in search_fields:
                 word_query |= Q(**{search_field + '__icontains': word})
 
-                if search_field == 'name':
-                    # Also check the alternative name
-                    word_query |= Q(**{'name_without_punctuation__icontains': word})
-
-            if exactness_option == CONS.TEXT_CONTAINS_ALL:
-                '''Django bug (maybe) if you q &= this query. It won't match two abilities that have each word 
-                (see issue #47). It would only find card with all the words in one ability. So do each word filter
-                one word at a time without & joining them
-                
-                '''
-                cards = cards.filter(word_query)
-            else:
-                q |= word_query
+            output = cards.filter(word_query)
 
     elif exactness_option == CONS.TEXT_EXACT:
+        q = Q()
         for search_field in search_fields:
             q |= Q(**{search_field + '__icontains': text})
-    return cards.filter(q)
+
+        output = cards.filter(q)
+
+    return output
 
 
 def advanced_search(advanced_form):
@@ -247,14 +281,13 @@ def advanced_search(advanced_form):
                  exclude(get_unsupported_sets_query()).
                  distinct())
 
-        cards = apply_text_search(cards, advanced_form.cleaned_data['generic_text'],
-                          advanced_form.cleaned_data['text_search_fields'],
-                          advanced_form.cleaned_data['text_exactness'])
-
         for q in attr_extra_queries:
             cards = cards.filter(q)
-        cards = sort_cards(cards, advanced_form.cleaned_data['sort_by'],
-                           advanced_form.cleaned_data['reverse_sort'] or False)
+
+        cards = apply_text_search(cards, advanced_form.cleaned_data['generic_text'],
+                                  advanced_form.cleaned_data['text_search_fields'],
+                                  advanced_form.cleaned_data['text_exactness'])
+
         cost_filters = advanced_form.cleaned_data['cost']
         if len(cost_filters) > 0:
             # Don't need DB query to do total cost, remove all that don't match if any were chosen
@@ -264,6 +297,9 @@ def advanced_search(advanced_form):
                          or x.cost and '{X}' in x.cost]
             else:
                 cards = [x for x in cards if str(x.total_cost) in cost_filters]
+
+        cards = sort_cards(cards, advanced_form.cleaned_data['sort_by'],
+                           advanced_form.cleaned_data['reverse_sort'] or False)
     return ctx | {'cards': cards}
 
 

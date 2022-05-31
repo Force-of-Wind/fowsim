@@ -231,12 +231,13 @@ def apply_text_search(cards, text, search_fields, exactness_option):
 
     elif exactness_option == CONS.TEXT_CONTAINS_ALL:
         # Use db becuase there's not many terms and this is more efficient
+        output = cards
         for word in words:
             word_query = Q()
             for search_field in search_fields:
                 word_query |= Q(**{search_field + '__icontains': word})
 
-            output = cards.filter(word_query)
+            output = output.filter(word_query)
 
     elif exactness_option == CONS.TEXT_EXACT:
         q = Q()

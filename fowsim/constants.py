@@ -687,7 +687,9 @@ KEYWORDS_CHOICES = [
     ('[Force Command]', 'Force Command'),
     ('[Force Resonance]', 'Force Resonance'),
     ('[Dragon Emblem]', 'Dragon Emblem'),
-    ('[Force]', 'Force')
+    ('[Force]', 'Force'),
+    ('[Union Seven <Machine>]', 'Union Seven <Machine>'),
+    ('[Union Seven <New Twelve Olympian Gods>]', 'Union Seven <New Twelve Olympian Gods>')
 ]
 
 

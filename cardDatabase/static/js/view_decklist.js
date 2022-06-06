@@ -36,10 +36,20 @@ $(function(){
          this.select();
     });
 
-    $('.deck-zone-count').each(function(index){
+    $('#image-container .deck-zone-count').each(function(index){
         let cards = $(this).siblings('.deck-zone-card-container').find('.deck-card');
         $(this).html( `[${cards.length.toString()}]`);
     });
+
+    $('#table-container .deck-zone-count').each(function(index){
+        let quantities = $(this).siblings('.deck-zone-card-container').find('.card-quantity');
+        let total = 0;
+        quantities.each(function(i){
+           total += parseInt($(this).html().trim());
+        });
+        $(this).html(`[${total}]`);
+    });
+
 
     function getReferralUrl(){
         return document.location.host + '/deck/' + document.location.pathname.split('/')[2]
@@ -95,4 +105,22 @@ $(function(){
             link.click();
         });
     });
+
+    $('#user-deck-table').click(function(e){
+        $('#image-container').hide();
+        $('#user-deck-images').removeClass('active');
+
+        $('#table-container').show();
+        $('#user-deck-table').addClass('active');
+
+    });
+
+    $('#user-deck-images').click(function(e){
+        $('#image-container').show();
+        $('#user-deck-images').addClass('active');
+
+        $('#table-container').hide();
+        $('#user-deck-table').removeClass('active');
+    });
+
 });

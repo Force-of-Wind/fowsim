@@ -25,122 +25,125 @@
 
 {% block body %}
     <div class="deck-view-container">
-            <div class="deck-title">
-                {{ decklist.name }}
-            </div>
-            <div class="deck-creator-name">
-                by {{ decklist.profile.user.username }}
-            </div>
-            <!-- Tabs navs -->
-            <ul class="nav nav-tabs mb-2" id="ex1" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a
+        <div class="deck-title">
+            {{ decklist.name }}
+        </div>
+        <div class="deck-creator-name">
+            by {{ decklist.profile.user.username }}
+        </div>
+        <!-- Tabs navs -->
+        <ul class="nav nav-tabs mb-2" id="view-options" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a
                         class="nav-link active"
-                        id="user-deck-table"
-                        data-mdb-toggle="tab"
-                        href="#user-deck-table"
-                        role="tab"
-                        aria-controls="user-deck-table"
-                        aria-selected="true"
-                    >Table View</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a
-                        class="nav-link"
                         id="user-deck-images"
                         data-mdb-toggle="tab"
-                        href="#user-deck-images"
+                        href="#"
                         role="tab"
                         aria-controls="user-deck-images"
                         aria-selected="false"
-                    >Image</a>
-                </li>
-            </ul>
-            <!-- Tabs navs -->
-            <div id="table-container" class="tab-content">
-                <div class="tab-pane fade show active" id="user-deck-table" role="tabpanel">
-                {% for zone in zones %}
-                    <div class="deck-zone">
-                        <div class="deck-zone-title">
-                            {{ zone }}
-                        </div>
-                        <div class="deck-zone-count"></div>
-                        {% if cards %}
-                            <div class="deck-zone-card-container">
-                                <div class="card-container">
-                                    <table id="user-deck" class="table">
-                                        <thead>
-                                            <th>QTY</th>
-                                            <th>CARD ID</th>
-                                            <th>NAME</th>
+                >Image</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a
+                    class="nav-link"
+                    id="user-deck-table"
+                    data-mdb-toggle="tab"
+                    href="#"
+                    role="tab"
+                    aria-controls="user-deck-table"
+                    aria-selected="true"
+                >Table</a>
+            </li>
+        </ul>
+        <!-- Tabs navs -->
+        <div id="table-container" class="tab-content">
+            <div class="tab-pane fade show active" id="user-deck-table" role="tabpanel">
+            {% for zone in zones %}
+                <div class="deck-zone">
+                    <div class="deck-zone-title">
+                        {{ zone }}
+                    </div>
+                    <div class="deck-zone-count"></div>
+                    {% if cards %}
+                        <div class="deck-zone-card-container">
+                            <div class="card-container">
+                                <table class="user-deck table">
+                                    <thead>
+                                        <th>QTY</th>
+                                        {% if not is_mobile %}<th>CARD ID</th>{% endif %}
+                                        <th>NAME</th>
+                                        {% if not is_mobile %}
                                             <th>TYPE</th>
                                             <th>COST</th>
-                                            <th>PRICE</th>
-                                        </thead>
-                                        <tbody>
-                                            {% for card in cards %}
-                                                {% if card.zone.zone.name == zone %}
+                                        {% endif %}
+                                        <th>PRICE</th>
+                                    </thead>
+                                    <tbody>
+                                        {% for card in cards %}
+                                            {% if card.zone.zone.name == zone %}
                                                 <tr>
-                                                        <td id="card-quantity">{{ card.quantity }}</td>
-                                                        <td scope="row">{{ card.card.card_id }}</td>
-                                                        <td class="deck-card-name">
-                                                            <a href="{% url 'cardDatabase-view-card' card.card.card_id %}" target="_blank">
-                                                                {{ card.card.name }}
-                                                            </a>
-                                                        </td>
+                                                    <td class="card-quantity">{{ card.quantity }}</td>
+                                                    {% if not is_mobile %}<td scope="row">{{ card.card.public_card_id }}</td>{% endif %}
+                                                    <td class="deck-card-name">
+                                                        <a href="{% url 'cardDatabase-view-card' card.card.card_id %}" target="_blank">
+                                                            {{ card.card.name }}
+                                                        </a>
+                                                    </td>
+                                                    {% if not is_mobile %}
                                                         <td>
                                                             {% for card_type in card.card.types.all %}
                                                                 {{ card_type.name }}{% if not forloop.last %},{% endif %}
                                                             {% endfor %}
                                                         </td>
                                                         <td>{% if not card.card.cost == None %}{%  format_cost_text card.card.cost %}{% endif %}</td>
-                                                        <td id="tcgplayer-price">{% get_tcgplayer_price card.card %}</td>
-                                                    </tr>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                    {% endif %}
+                                                    <td class="tcgplayer-price">{% get_tcgplayer_price card.card %}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-                </div>
-            </div>
-            <div id="image-container" class="tab-content">
-                <div class="tab-content tab-pane fade show active" id="user-deck-images" role="tabpanel">
-                    {% for zone in zones %}
-                    <div class="deck-zone">
-                        <div class="deck-zone-title">
-                            {{ zone }}
                         </div>
-                        <div class="deck-zone-count"></div>
-                        {% if cards %}
-                            <div class="deck-zone-card-container">
-                                {% for card in cards %}
-                                    {% if card.zone.zone.name == zone %}
-                                        {% with ''|center:card.quantity as range %}
-                                            {% for _ in range %}
-                                                <div class="deck-card">
-                                                    <img class="deck-card-img" src="{{ card.card.card_image.url }}">
-                                                    <div class="card-preview">
-                                                        <img src="{{ card.card.card_image.url }}">
-                                                        <div class="view-in-another-tab">
-                                                            <a href="{% url 'cardDatabase-view-card' card.card.card_id %}" target="_blank">
-                                                                Go to card
-                                                            </a>
-                                                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        <div id="image-container" class="tab-content active-view">
+            <div class="tab-content tab-pane fade show active" id="user-deck-images" role="tabpanel">
+                {% for zone in zones %}
+                <div class="deck-zone">
+                    <div class="deck-zone-title">
+                        {{ zone }}
+                    </div>
+                    <div class="deck-zone-count"></div>
+                    {% if cards %}
+                        <div class="deck-zone-card-container">
+                            {% for card in cards %}
+                                {% if card.zone.zone.name == zone %}
+                                    {% with ''|center:card.quantity as range %}
+                                        {% for _ in range %}
+                                            <div class="deck-card">
+                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}">
+                                                <div class="card-preview">
+                                                    <img src="{{ card.card.card_image.url }}">
+                                                    <div class="view-in-another-tab">
+                                                        <a href="{% url 'cardDatabase-view-card' card.card.card_id %}" target="_blank">
+                                                            Go to card
+                                                        </a>
                                                     </div>
                                                 </div>
-                                            {% endfor %}
-                                        {% endwith %}
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    {% endwith %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
+                {% endfor %}
             </div>
         </div>
         {% if decklist.comments %}
@@ -160,6 +163,5 @@
             <button type="button" id="copy-image">Copy as Image</button>
             <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
         </div>
-
     </div>
 {% endblock %}

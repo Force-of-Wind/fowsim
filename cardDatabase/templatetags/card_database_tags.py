@@ -317,6 +317,7 @@ def get_card_img_urls(card):
             output.append(other_side.card_image.url)
     return str(output).replace('\'', '"')
 
+
 @register.simple_tag
 def get_tcgplayer_price(card):
     token = "NzJkZjZiMTNlNzlkODA1MzAxODI1YzNmMzlhMDg0NzQ6c2hwcGFfZTJiZDZjOTVkZjVhZDhlY2E5Yjk3MDQyODYxZTFkOTA="

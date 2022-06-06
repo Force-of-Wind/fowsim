@@ -179,8 +179,7 @@
     display: flex;
 }
 
-#user-deck{
-
+.user-deck{
     table-layout: fixed
 }
 
@@ -211,4 +210,20 @@
 /* Exclude from mobile to prevent it from applying when navigating back, add hasHover on load */
 body.hasHover #user-deck tr:not(:first-child):hover{
     background-color: #a9a9a98c;
+}
+
+.tab-content{
+    padding: 0;
+}
+
+#view-options a{
+    color: black;
+}
+
+#image-container, #table-container{
+    display: none;
+}
+
+#image-container.active-view, #table-container.active-view{
+    display: block;
 }

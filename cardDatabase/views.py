@@ -179,8 +179,7 @@ def basic_search(basic_form):
     if basic_form.is_valid():
         search_text = basic_form.cleaned_data['generic_text']
         cards = Card.objects.exclude(get_unsupported_sets_query()).distinct()
-        cards = apply_text_search(cards, search_text, ['name', 'ability_texts__text',
-                                                       'races__name'], CONS.TEXT_CONTAINS_ALL)
+        cards = apply_text_search(cards, search_text, ['name', 'ability_texts__text'], CONS.TEXT_CONTAINS_ALL)
         cards = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
     return {'cards': cards}
 
@@ -214,20 +213,6 @@ def apply_text_search(cards, text, search_fields, exactness_option):
                 word_query |= Q(**{search_field + '__icontains': word})
             q |= word_query
         output = cards.filter(q)
-
-    elif exactness_option == CONS.TEXT_CONTAINS_ALL and 'races' in search_fields and len(words) > 5:
-        #  For some reason including races makes this filter WAY slower when there's a few words, dont use db queries
-        for card in cards:
-            for word in words:
-                has_word = False
-                for search_field in search_fields:
-                    if field_has_text(word, search_field, card):
-                        has_word = True
-                        break
-                if not has_word:
-                    break
-            else:  # Not missing any words
-                output.append(card)
 
     elif exactness_option == CONS.TEXT_CONTAINS_ALL:
         # Use db becuase there's not many terms and this is more efficient

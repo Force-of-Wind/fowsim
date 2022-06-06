@@ -11,6 +11,7 @@ function initDatabaseBase(){
             el.focus()
         }
     }
+    focusOnInit($('#basic-form input[type="text"]'));
 
     $('#advanced-search-toggle').on('click',
         function (event){
@@ -112,8 +113,6 @@ function initDatabaseBase(){
         event.preventDefault();
         select_format_sets(FOWDB_SET_JSON.clusters, false);
     });
-
-    focusOnInit($('#basic-form input[type="text"]'));
 }
 $(function(){
     initDatabaseBase();

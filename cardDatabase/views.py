@@ -200,6 +200,9 @@ def field_has_text(text, search_field, card):
 
 
 def apply_text_search(cards, text, search_fields, exactness_option):
+    if not text:
+        return cards
+
     output = []
     words = text.split(' ')
     if 'name' in search_fields:

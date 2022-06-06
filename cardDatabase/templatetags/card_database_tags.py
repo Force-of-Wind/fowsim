@@ -2,6 +2,8 @@ import ast
 import json
 import random
 import re
+import requests
+import json
 
 from django import template
 from django.utils.safestring import mark_safe
@@ -314,3 +316,69 @@ def get_card_img_urls(card):
         for other_side in other_sides:
             output.append(other_side.card_image.url)
     return str(output).replace('\'', '"')
+
+@register.simple_tag
+def get_tcgplayer_price(card):
+    token = "NzJkZjZiMTNlNzlkODA1MzAxODI1YzNmMzlhMDg0NzQ6c2hwcGFfZTJiZDZjOTVkZjVhZDhlY2E5Yjk3MDQyODYxZTFkOTA="
+    url = "https://mpapi.tcgplayer.com/v2/search/request?q="+card.name+"&isList=false"
+
+    payload = {
+        "algorithm":"",
+        "from":0,
+        "size":24,
+        "filters":{
+        "term":{
+            "productLineName": ["force-of-will"]
+        },
+        "range":{},
+        "match":{}
+        },
+        "listingSearch":{
+        "filters":{
+            "term":{},
+            "range":{
+            "quantity":{
+                "gte":1
+            }
+            },
+            "exclude":{
+            "channelExclusion":0
+            }
+        },
+        "context":{
+            "cart":{}
+        }
+        },
+        "context":{
+        "cart":{},
+        "shippingCountry":"US"
+        },
+        "sort":{}
+    }
+
+    params = {
+        "method": "POST",
+            "headers": {
+                "Authorization": "Basic "+token,
+                "Content-Type": "application/json"
+            },
+        "payload": payload
+    }
+
+    response = requests.post(
+        url,
+        data=json.dumps(payload),
+        headers=params['headers']
+    )
+    carddata = response.json()['results'][0]['results']
+
+    lowestprice = 9000.00
+
+    for _card in carddata:
+        if _card['productName'].lower() == card.name.lower(): # same cards
+            if _card['lowestPrice'] < lowestprice:
+                lowestprice = _card['lowestPrice']
+    if lowestprice < 9000.00:
+        return "${:,.2f}".format(lowestprice)
+    else:
+        return "Not Listed"

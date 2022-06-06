@@ -1,0 +1,68 @@
+{% extends 'cardDatabase/html/database_base.html' %}
+{% load static card_database_tags %}
+{% block subtitle %} - {{ decklist.name }}{% endblock %}
+
+{% block use_default_submit %}false{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/search_mobile.css' %}">
+    {% endif %}
+    <link rel="stylesheet" href="{% static 'css/edit_decklist.css' %}">
+{% endblock %}
+
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    {{ block.super }}
+    <script src="{% static 'js/search.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/edit_decklist.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="database-container">
+        {% block database %}
+            {{ block.super }}
+        {% endblock %}
+    </div>
+    <div id="collection-container">
+        {% csrf_token %}
+        <div class="collection-set-container">
+            {% for set in sets %}
+                <div class="collection-set">
+                    <div class="deck-set-title-container">
+                        <div class="set-count"></div>
+                        <span class="deck-set-title" contenteditable="true">
+                            {{ set.set.name }}
+                        </span>
+                    </div>
+                    {# .deck-set-cards is duplicated in the js in edit_decklist.js #}
+                    <div class="deck-set-cards">
+                        {% for card in decklist_cards %}
+                            {% if card.set == set %}
+                                <div class="deck-set-card" data-card-id="{{ card.card.card_id }}" draggable="true">
+                                    <div class="card-quantity">
+                                        <a href="#/" class="card-quantity-minus"><span>-</span></a>
+                                        <input type="number" class="card-quantity-input" value="{{ card.quantity }}">
+                                        <a href="#/" class="card-quantity-plus"><span>+</span></a>
+                                    </div>
+                                    {# Can't have whitespace around card name to match jquery #}
+                                    <div class="deck-set-card-name">{{ card.card.name }}{% referenced_card_img_html card.card %}</div>
+                                    <div class="remove-card">&#10006;</div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="deck-actions">
+            <button id="save-collection-button" type="button">Save</button>
+            <a href="{% url 'cardDatabase-user-decklists' %}">
+                <button type="button">Cancel</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}

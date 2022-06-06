@@ -17,6 +17,7 @@ from django.utils.safestring import mark_safe
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
+from .models.Collection import CollectionCard, Collection
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only
 from cardDatabase.management.commands.importjson import remove_punctuation
@@ -582,3 +583,16 @@ def copy_decklist(request, decklist_id=None):
         return HttpResponseRedirect(reverse('cardDatabase-edit-decklist-mobile', kwargs={'decklist_id': new_decklist.pk}))
     else:
         return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': new_decklist.pk}))
+
+@login_required
+def user_collection(request):
+    # Check that the user matches the decklist
+    try:
+        collection = get_object_or_404(Collection, pk=request.user, profile__user=request.user)
+    except:
+        collection = Collection.objects.create(profile=request.user.profile)
+    ctx = get_search_form_ctx()
+    ctx['basic_form'] = SearchForm()
+    ctx['advanced_form'] = AdvancedSearchForm()
+    ctx['cards'] = CollectionCard.objects.filter(collection__pk=collection.pk)
+    return render(request, 'cardDatabase/html/view_collection.html', context=ctx)

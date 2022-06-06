@@ -178,3 +178,37 @@
 .multi-hovered-img.show-hover{
     display: flex;
 }
+
+#user-deck{
+
+    table-layout: fixed
+}
+
+.card-quantity{
+    width: 20%
+}
+
+#tab-content{
+    width: 80%
+}
+
+.cost-img{
+    height: 19px;
+}
+
+.cost-img:not(:last-child){
+    padding-right: 5px;
+}
+
+#user-deck th{
+    font-weight: bold;
+}
+
+#user-deck tr:nth-child(even){
+    background-color: #a9a9a924;
+}
+
+/* Exclude from mobile to prevent it from applying when navigating back, add hasHover on load */
+body.hasHover #user-deck tr:not(:first-child):hover{
+    background-color: #a9a9a98c;
+}

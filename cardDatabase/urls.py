@@ -27,5 +27,6 @@ urlpatterns = [
     path('register/', views.register, name='cardDatabase-register'),
     path('desktop_only/', views.desktop_only, name='cardDatabase-desktop-only'),
     path('mobile_only/', views.mobile_only, name='cardDatabase-mobile-only'),
-    path('copy_decklist/<int:decklist_id>/', views.copy_decklist, name='cardDatabase-copy-decklist')
+    path('copy_decklist/<int:decklist_id>/', views.copy_decklist, name='cardDatabase-copy-decklist'),
+    path('collection/', views.user_collection, name='cardDatabase-user-collection'),
 ]

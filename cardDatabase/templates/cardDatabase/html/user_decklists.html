@@ -35,8 +35,9 @@
                     <th>Deck Name</th>
                     <th>Color(s)</th>
                     <th>Number of cards</th>
-                    <th>Last Modified</th>
+                    <th>Public</th>
                     {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
+                        <th>Last Modified</th>
                         <th>Actions</th>
                     {% endif %}
                 </tr>
@@ -45,7 +46,16 @@
                         <td><a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
                         <td>{% colours_to_imgs decklist.get_colours %}</td>
                         <td>{% decklist_card_count decklist %}</td>
-                        <td>{{ decklist.last_modified }}</td>
+                        <td>
+                            {% if decklist.public %}
+                                <img src="{% static 'img/public-icon.png'%}" class="public-icon">
+                            {% else %}
+                                <img src="{% static 'img/private-icon.png'%}" class="private-icon">
+                            {% endif %}
+                        </td>
+                        {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet  %}
+                            <td>{{ decklist.last_modified }}</td>
+                        {% endif %}
                         {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
                             <td class="deck-actions">
                                 <div class="view-deck-button">

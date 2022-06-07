@@ -55,7 +55,7 @@
     background-color: rgba(0, 0, 0, 0.06);
 }
 
-.deck-zone, .comments-container{
+.deck-zone, .comments-container, #deck-settings{
     border-bottom: 1px solid rgb(0 0 0 / 16%);
     margin-bottom: 5px;
 }
@@ -222,7 +222,7 @@
     padding-right: 5px;
 }
 
-.comments-title{
+.comments-title, .settings-title{
     font-weight: bold;
     font-size: 18px;
     padding-bottom: 5px;
@@ -262,4 +262,14 @@
 
 .multi-hovered-img.show-hover{
     display: flex;
+}
+
+.settings-container label, .settings-container input{
+    display: inline-block;
+}
+
+.settings-container input[type="checkbox"]{
+    position: static;
+    opacity: 1;
+    pointer-events: all;
 }

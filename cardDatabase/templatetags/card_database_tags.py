@@ -211,7 +211,7 @@ def colours_to_imgs(colours):
 
 @register.simple_tag
 def decklist_card_count(decklist):
-    return decklist.cards.aggregate(Sum('quantity'))['quantity__sum']
+    return decklist.cards.aggregate(Sum('quantity'))['quantity__sum'] or 0
 
 
 @register.simple_tag

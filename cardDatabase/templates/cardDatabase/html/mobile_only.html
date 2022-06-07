@@ -10,7 +10,7 @@
 {% block body %}
     <div>
         <p>
-            This page is only available on mobile!
+            {% block error_message %}This page is only available on mobile!{% endblock %}
         </p>
         <p>
             <button type="button"><a href="/">Home</a></button>

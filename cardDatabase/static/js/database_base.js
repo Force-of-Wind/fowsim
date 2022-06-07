@@ -80,6 +80,12 @@ function initDatabaseBase(){
         $('form').on('submit', function (event) {
             event.preventDefault();
             let formData = new FormData(this);
+            for (let fieldName of ['atk_value', 'def_value']){
+                if (!formData.get(fieldName)){
+                    formData.delete(fieldName);
+                    formData.delete(fieldName.substring(0, 4) + 'comparator');
+                }
+            }
             let params = new URLSearchParams(formData);
             params.append('form_type', this.id);
             window.location.assign('/search/' + '?' + params.toString());

@@ -445,7 +445,10 @@ def edit_decklist_mobile(request, decklist_id=None):
 def save_decklist(request, decklist_id=None):
     data = json.loads(request.body.decode('UTF-8'))
     decklist_data = data['decklist_data']
-    is_public = data['is_public']
+    if 'is_public' in data:
+        is_public = data['is_public']
+    else:
+        is_public = True
 
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)

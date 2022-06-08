@@ -10,7 +10,7 @@ from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, Http404
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
 from django.utils.safestring import mark_safe
@@ -445,12 +445,18 @@ def edit_decklist_mobile(request, decklist_id=None):
 @login_required
 @require_POST
 def save_decklist(request, decklist_id=None):
-    decklist_data = json.loads(request.body.decode('UTF-8'))['decklist_data']
+    data = json.loads(request.body.decode('UTF-8'))
+    decklist_data = data['decklist_data']
+    if 'is_public' in data:
+        is_public = data['is_public']
+    else:
+        is_public = True
 
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
     decklist.name = decklist_data['name']
     decklist.comments = decklist_data['comments']
+    decklist.public = is_public
     decklist.save()
     #  Remove old cards, then rebuild it
     DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()
@@ -507,8 +513,15 @@ def process_decklist_comments(comments):
     return output
 
 
+def private_decklist(request):
+    return render(request, 'cardDatabase/html/private_decklist.html')
+
+
 def view_decklist(request, decklist_id):
     decklist = get_object_or_404(DeckList, pk=decklist_id)
+    if not decklist.public and not request.user == decklist.profile.user and not request.user.is_superuser:
+        return HttpResponseRedirect(reverse('cardDatabase-private-decklist'))
+
     cards = decklist.cards.all()
     zones = UserDeckListZone.objects.filter(decklist=decklist).order_by('position').values_list('zone__name', flat=True).distinct()
     comments = process_decklist_comments(decklist.comments)

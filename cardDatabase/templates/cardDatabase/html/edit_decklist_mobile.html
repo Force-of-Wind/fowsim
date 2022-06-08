@@ -92,6 +92,13 @@
                 <textarea id="comments" placeholder="Add your comments here. Card names between [[ ]] will be linked automatically" maxlength="10000">{{ decklist.comments }}</textarea>
             </div>
         </div>
+        <div id="deck-settings">
+            <div class="settings-title">Settings</div>
+            <div class="settings-container">
+                <input id="public-input" type="checkbox" {% if decklist.public %}checked{% endif %}>
+                <label for="public-input">Public</label>
+            </div>
+        </div>
         <button id="save-deck-button" type="button">Save</button>
         <a href="{% url 'cardDatabase-user-decklists' %}">
             <button type="button">Cancel</button>

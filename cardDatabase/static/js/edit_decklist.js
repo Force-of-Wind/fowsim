@@ -130,9 +130,9 @@ $(function() {
             url: `/save_decklist/${window.location.pathname.split('/')[2]}/`,
             data: JSON.stringify({
                 decklist_data: decklist_data,
+                is_public: $('#public-input').is(":checked")
             }),
             success: function (data) {
-                console.log(data);
                 window.onbeforeunload = undefined; // Remove warning of unsaved changes
                 window.location.assign(`/view_decklist/${data.decklist_pk}`);
             },

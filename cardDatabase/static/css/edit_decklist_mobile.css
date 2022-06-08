@@ -127,7 +127,7 @@
     background-color: rgba(0, 0, 0, 0.06);
 }
 
-.deck-zone, .comments-container{
+.deck-zone, .comments-container, #deck-settings{
     border-bottom: 1px solid rgb(0 0 0 / 16%);
     margin-bottom: 5px;
 }
@@ -250,7 +250,7 @@ a.closebtn{
     padding-bottom: 20px;
 }
 
-.comments-container .comments-title{
+.comments-container .comments-title, .settings-title{
     font-weight: bold;
     font-size: 18px;
 }
@@ -279,4 +279,14 @@ a.closebtn{
 .zone-count-preview{
     padding-bottom: 20px;
     color: #dc0800;
+}
+
+.settings-container label, .settings-container input{
+    display: inline-block;
+}
+
+.settings-container input[type="checkbox"]{
+    position: static;
+    opacity: 1;
+    pointer-events: all;
 }

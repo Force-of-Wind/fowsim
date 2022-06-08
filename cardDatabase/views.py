@@ -1,5 +1,6 @@
 import json
 import re
+import requests
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Count
@@ -596,3 +597,73 @@ def user_collection(request):
     ctx['advanced_form'] = AdvancedSearchForm()
     ctx['cards'] = CollectionCard.objects.filter(collection__pk=collection.pk)
     return render(request, 'cardDatabase/html/view_collection.html', context=ctx)
+
+@login_required
+@require_POST
+@csrf_exempt
+def price_check(request):
+    card_name = json.loads(request.body.decode('UTF-8'))['card_name']
+
+    token = "NzJkZjZiMTNlNzlkODA1MzAxODI1YzNmMzlhMDg0NzQ6c2hwcGFfZTJiZDZjOTVkZjVhZDhlY2E5Yjk3MDQyODYxZTFkOTA="
+    url = "https://mpapi.tcgplayer.com/v2/search/request?q="+card_name+"&isList=false"
+
+    payload = {
+        "algorithm":"",
+        "from":0,
+        "size":24,
+        "filters":{
+        "term":{
+            "productLineName": ["force-of-will"]
+        },
+        "range":{},
+        "match":{}
+        },
+        "listingSearch":{
+        "filters":{
+            "term":{},
+            "range":{
+            "quantity":{
+                "gte":1
+            }
+            },
+            "exclude":{
+            "channelExclusion":0
+            }
+        },
+        "context":{
+            "cart":{}
+        }
+        },
+        "context":{
+        "cart":{},
+        "shippingCountry":"US"
+        },
+        "sort":{}
+    }
+
+    params = {
+        "method": "POST",
+            "headers": {
+                "Authorization": "Basic "+token,
+                "Content-Type": "application/json"
+            },
+        "payload": payload
+    }
+
+    response = requests.post(
+        url,
+        data=json.dumps(payload),
+        headers=params['headers']
+    )
+    carddata = response.json()['results'][0]['results']
+
+    lowestprice = 9000.00
+
+    for _card in carddata:
+        if _card['productName'].lower() == card_name.lower(): # same cards
+            if _card['lowestPrice'] < lowestprice:
+                lowestprice = _card['lowestPrice']
+    if lowestprice < 9000.00:
+        return JsonResponse({'price': "${:,.2f}".format(lowestprice)}) 
+    else:
+        return JsonResponse({'price': "Not Listed"})

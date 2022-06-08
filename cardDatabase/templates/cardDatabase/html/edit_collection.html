@@ -27,42 +27,4 @@
             {{ block.super }}
         {% endblock %}
     </div>
-    <div id="collection-container">
-        {% csrf_token %}
-        <div class="collection-set-container">
-            {% for set in sets %}
-                <div class="collection-set">
-                    <div class="deck-set-title-container">
-                        <div class="set-count"></div>
-                        <span class="deck-set-title" contenteditable="true">
-                            {{ set.set.name }}
-                        </span>
-                    </div>
-                    {# .deck-set-cards is duplicated in the js in edit_decklist.js #}
-                    <div class="deck-set-cards">
-                        {% for card in decklist_cards %}
-                            {% if card.set == set %}
-                                <div class="deck-set-card" data-card-id="{{ card.card.card_id }}" draggable="true">
-                                    <div class="card-quantity">
-                                        <a href="#/" class="card-quantity-minus"><span>-</span></a>
-                                        <input type="number" class="card-quantity-input" value="{{ card.quantity }}">
-                                        <a href="#/" class="card-quantity-plus"><span>+</span></a>
-                                    </div>
-                                    {# Can't have whitespace around card name to match jquery #}
-                                    <div class="deck-set-card-name">{{ card.card.name }}{% referenced_card_img_html card.card %}</div>
-                                    <div class="remove-card">&#10006;</div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="deck-actions">
-            <button id="save-collection-button" type="button">Save</button>
-            <a href="{% url 'cardDatabase-user-decklists' %}">
-                <button type="button">Cancel</button>
-            </a>
-        </div>
-    </div>
 {% endblock %}

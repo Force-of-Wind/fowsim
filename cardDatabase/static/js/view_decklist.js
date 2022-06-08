@@ -123,4 +123,24 @@ $(function(){
         $('#user-deck-table').removeClass('active');
     });
 
+    console.log("Test");
+    $('.tcgplayer-price').each(function(){
+        $(this).toggle();
+        $.ajax({
+            type: 'POST',
+            url: `/price_check/`,
+            data: JSON.stringify({
+                card_name: $(this).text()
+            }),
+            success: function (data) {
+                console.log(data);
+                $(this).html(data['price']);
+            },
+            error: function (data) {
+                $(this).innerHTML = "Not Listed"
+            },
+            contentType: 'application/json',
+        });
+        $(this).toggle();
+    });
 });

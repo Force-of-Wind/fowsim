@@ -680,3 +680,16 @@ def price_check(request):
         return JsonResponse({'price': "${:,.2f}".format(lowestprice)}) 
     else:
         return JsonResponse({'price': "Not Listed"})
+
+@login_required
+@csrf_exempt
+def get_all_cards(request):
+    cards = Card.objects.all()
+    data = []
+    for card in cards:
+        _data = {}
+        _data['name'] = card.name
+        _data['id'] = card.public_card_id
+        _data['set'] = card.set_code
+        data.append(_data)
+    return JsonResponse({'data': data})

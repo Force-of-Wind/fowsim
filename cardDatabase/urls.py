@@ -31,4 +31,5 @@ urlpatterns = [
     path('private_decklist/', views.private_decklist, name='cardDatabase-private-decklist'),
     path('collection/', views.user_collection, name='cardDatabase-user-collection'),
     path('price_check/', views.price_check, name='cardDatabase-price-check'),
+    path('api/all_cards/', views.get_all_cards, name='cardDatabase-get-all-cards'),
 ]

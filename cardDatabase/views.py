@@ -399,13 +399,17 @@ def test_error(request):
 def user_decklists(request):
     ctx = dict()
     ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile).order_by('-last_modified')
+    ctx['is_owner'] = True
     return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
 
-@login_required
 def view_users_public(request, username=None):
     if username is not None:
         ctx = dict()
         ctx['decklists'] = DeckList.objects.filter(profile=User.objects.get(username=username).profile, public=True).order_by('-last_modified')
+        ctx['is_owner'] = False
+        if request.user.username == username:
+            ctx['is_owner'] = True
+            
         return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
     else:
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

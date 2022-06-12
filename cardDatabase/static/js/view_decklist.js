@@ -123,24 +123,25 @@ $(function(){
         $('#user-deck-table').removeClass('active');
     });
 
-    console.log("Test");
     $('.tcgplayer-price').each(function(){
-        $(this).toggle();
+        var cardName = $(this).data('cardName')
+        console.log(cardName)
+        console.log(getPrice(cardName))
         $.ajax({
             type: 'POST',
             url: `/price_check/`,
             data: JSON.stringify({
-                card_name: $(this).text()
+                data: cardName
             }),
             success: function (data) {
                 console.log(data);
-                $(this).html(data['price']);
+                document.getElementById(cardName).innerHTML = "<a href='https://www.tcgplayer.com/product/"+data.productID+"/?Language=English'>"+data.price+"</a>";
             },
             error: function (data) {
-                $(this).innerHTML = "Not Listed"
+                console.log(data)
+                document.getElementById(cardName).textContent = "Not Listed"
             },
             contentType: 'application/json',
         });
-        $(this).toggle();
     });
 });

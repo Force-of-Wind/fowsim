@@ -602,54 +602,109 @@ def copy_decklist(request, decklist_id=None):
 def user_collection(request):
     # Check that the user matches the decklist
     try:
-        collection = get_object_or_404(Collection, pk=request.user, profile__user=request.user)
+        collection = get_object_or_404(Collection, pk=request.user.id, profile__user=request.user)
     except:
-        collection = Collection.objects.create(profile=request.user.profile)
+        collection = Collection.objects.create(profile=request.user.profile, pk=request.user.id)
     ctx = get_search_form_ctx()
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
     ctx['cards'] = CollectionCard.objects.filter(collection__pk=collection.pk)
+    ctx['sets'] = CONS.SET_DATA['clusters']
     return render(request, 'cardDatabase/html/view_collection.html', context=ctx)
+
+@login_required
+def user_collection_set(request, set_code='all'):
+    # Check that the user matches the decklist
+    try:
+        collection = get_object_or_404(Collection, pk=request.user.id, profile__user=request.user)
+    except:
+        collection = Collection.objects.create(profile=request.user.profile, pk=request.user.id)
+    cardCollection = CollectionCard.objects.filter(collection=collection)
+    ctx = dict()
+    ctx['collection'] = cardCollection
+    ctx['set_code'] = set_code
+
+    if set_code == None or set_code == 'all':
+        cards = Card.objects.all()
+    else:
+        cards = Card.objects.filter(card_id__istartswith=set_code)
+    data = []
+    for card in cards:
+        _data = {}
+        if cardCollection.filter(card=Card.objects.get(card_id=card.public_card_id)).exists():
+            _data['quantity'] = cardCollection.get(card=Card.objects.get(card_id=card.public_card_id)).quantity
+        else:
+            _data['quantity'] = 0
+        _data['name'] = card.name
+        _data['id'] = card.public_card_id
+        _data['set'] = card.set_code
+        data.append(_data)
+    ctx['cards'] = {'data': data}
+    print(ctx)
+    return render(request, 'cardDatabase/html/view_collection_set.html', context=ctx)
+
+@login_required
+@require_POST
+@csrf_exempt
+def save_collection(request):
+    data = json.loads(request.body.decode('UTF-8'))
+    print(data)
+    collection_data = data['collection_data']
+
+    # Check user matches the decklist
+    collection = get_object_or_404(Collection, pk=request.user.id, profile__user=request.user)
+    collection.save()
+    #  Remove old cards, then rebuild it
+    print(collection_data)
+    for card_data in collection_data['cards']:
+        print(card_data['id'])
+        card = Card.objects.get(card_id=card_data['id'])
+        cardCollection, was_created = CollectionCard.objects.get_or_create(collection=collection, card=card)
+        cardCollection.quantity = card_data['quantity']
+        cardCollection.save()
+
+    return JsonResponse({'response': "success"})
+
 
 @login_required
 @require_POST
 @csrf_exempt
 def price_check(request):
-    card_name = json.loads(request.body.decode('UTF-8'))['card_name']
+    data = json.loads(request.body.decode('UTF-8'))['data']
 
     token = "NzJkZjZiMTNlNzlkODA1MzAxODI1YzNmMzlhMDg0NzQ6c2hwcGFfZTJiZDZjOTVkZjVhZDhlY2E5Yjk3MDQyODYxZTFkOTA="
-    url = "https://mpapi.tcgplayer.com/v2/search/request?q="+card_name+"&isList=false"
+    url = "https://mpapi.tcgplayer.com/v2/search/request?q="+data+"&isList=false"
 
     payload = {
         "algorithm":"",
         "from":0,
         "size":24,
         "filters":{
-        "term":{
-            "productLineName": ["force-of-will"]
-        },
-        "range":{},
-        "match":{}
+            "term":{
+                "productLineName": ["force-of-will"]
+            },
+            "range":{},
+            "match":{}
         },
         "listingSearch":{
-        "filters":{
-            "term":{},
-            "range":{
-            "quantity":{
-                "gte":1
-            }
+            "filters":{
+                "term":{},
+                "range":{
+                    "quantity":{
+                        "gte":1
+                    }
+                },
+                "exclude":{
+                    "channelExclusion":0
+                }
             },
-            "exclude":{
-            "channelExclusion":0
+            "context":{
+                "cart":{}
             }
         },
         "context":{
-            "cart":{}
-        }
-        },
-        "context":{
-        "cart":{},
-        "shippingCountry":"US"
+            "cart":{},
+            "shippingCountry":"US"
         },
         "sort":{}
     }
@@ -670,26 +725,17 @@ def price_check(request):
     )
     carddata = response.json()['results'][0]['results']
 
+
     lowestprice = 9000.00
+    productid = 0
 
     for _card in carddata:
-        if _card['productName'].lower() == card_name.lower(): # same cards
+        print(_card)
+        if _card['productName'].lower() == data.lower(): # same cards
             if _card['lowestPrice'] < lowestprice:
                 lowestprice = _card['lowestPrice']
+                productid = _card['productId']
     if lowestprice < 9000.00:
-        return JsonResponse({'price': "${:,.2f}".format(lowestprice)}) 
+        return JsonResponse({'price': "${:,.2f}".format(lowestprice), "productID": productid}) 
     else:
         return JsonResponse({'price': "Not Listed"})
-
-@login_required
-@csrf_exempt
-def get_all_cards(request):
-    cards = Card.objects.all()
-    data = []
-    for card in cards:
-        _data = {}
-        _data['name'] = card.name
-        _data['id'] = card.public_card_id
-        _data['set'] = card.set_code
-        data.append(_data)
-    return JsonResponse({'data': data})

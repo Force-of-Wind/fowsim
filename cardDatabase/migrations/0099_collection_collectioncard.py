@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cardDatabase', '0036_alter_card_ability_texts'),
+        ('cardDatabase', '0037_decklist_public'),
     ]
 
     operations = [

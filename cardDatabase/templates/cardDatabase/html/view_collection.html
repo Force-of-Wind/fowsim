@@ -24,12 +24,12 @@
 {% endblock %}
 
 {% block body %}
-    <table id="tableID" class="display" style="width:100%">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Set</th>
-            <th>Set ID</th>
-        </thead>
-    </table>
+{% for clusters in sets_json.clusters %}
+    <h2>{{ clusters.name }}</h2>
+    <ul>
+    {% for sets in clusters.sets %}
+      <li><a href="{% url 'cardDatabase-user-collection-set' sets.code %}">{{ sets.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endfor %}
 {% endblock %}

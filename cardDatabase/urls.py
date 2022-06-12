@@ -30,6 +30,7 @@ urlpatterns = [
     path('copy_decklist/<int:decklist_id>/', views.copy_decklist, name='cardDatabase-copy-decklist'),
     path('private_decklist/', views.private_decklist, name='cardDatabase-private-decklist'),
     path('collection/', views.user_collection, name='cardDatabase-user-collection'),
+    path('collection/<str:set_code>/', views.user_collection_set, name='cardDatabase-user-collection-set'),
+    path('save_collection/', views.save_collection, name='cardDatabase-save-collection'),
     path('price_check/', views.price_check, name='cardDatabase-price-check'),
-    path('api/all_cards/', views.get_all_cards, name='cardDatabase-get-all-cards'),
 ]

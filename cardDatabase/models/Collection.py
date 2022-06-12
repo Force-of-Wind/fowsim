@@ -17,7 +17,7 @@ class Collection(models.Model):
 
 class CollectionCard(models.Model):
     def __str__(self):
-        return f'{self.card.name} ({self.decklist.profile.user.email})'
+        return f'{self.card.name}'
     collection = models.ForeignKey(Collection, null=False, blank=False, related_name='cards', on_delete=models.CASCADE)
     card = models.ForeignKey('Card', null=False, blank=False, on_delete=models.CASCADE)
     quantity = models.IntegerField(blank=False, null=False, default=1)

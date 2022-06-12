@@ -98,7 +98,7 @@
                                                         </td>
                                                         <td>{% if not card.card.cost == None %}{%  format_cost_text card.card.cost %}{% endif %}</td>
                                                     {% endif %}
-                                                    <td><p class="tcgplayer-price">{{ card.card.name }}</p></td>
+                                                    <td class="tcgplayer-price" id="{{ card.card.name }}" data-card-name="{{ card.card.name }}">Loading...</td>
                                                 </tr>
                                             {% endif %}
                                         {% endfor %}

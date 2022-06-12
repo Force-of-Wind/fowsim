@@ -18,6 +18,7 @@ urlpatterns = [
     path('save_decklist/<int:decklist_id>/', views.save_decklist, name='cardDatabase-save-decklist'),
     path('deck/<int:decklist_id>', lambda req, decklist_id=None: redirect('cardDatabase-view-decklist', decklist_id=decklist_id)),
     path('view_decklist/<int:decklist_id>/', views.view_decklist, name='cardDatabase-view-decklist'),
+    path('decklist/view/<str:username>', views.view_users_public, name='cardDatabase-view-users-decklist'),
     path('delete_decklist/<int:decklist_id>/', views.delete_decklist, name='cardDatabase-delete-decklist'),
     path('test_error/', views.test_error, name='cardDatabase-test-error'),
     path('logout/', views.logout, name='cardDatabase-logout'),

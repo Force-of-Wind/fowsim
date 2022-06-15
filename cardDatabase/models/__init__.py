@@ -6,6 +6,7 @@ from .CardType import Card, CardColour
 from .User import Profile
 from .DeckList import DeckListCard, DeckListZone, DeckList
 from .Spoilers import SpoilerSeason
+from .Banlist import CombinationBannedCards, BannedCard, Format
 '''
 # iterate through the modules in the current package
 package_dir = Path(__file__).resolve().parent

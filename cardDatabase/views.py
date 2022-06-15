@@ -17,6 +17,7 @@ from django.utils.safestring import mark_safe
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
+from .models.Banlist import BannedCard, CombinationBannedCards
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only
 from cardDatabase.management.commands.importjson import remove_punctuation
@@ -523,7 +524,52 @@ def view_decklist(request, decklist_id):
     cards = decklist.cards.all()
     zones = UserDeckListZone.objects.filter(decklist=decklist).order_by('position').values_list('zone__name', flat=True).distinct()
     comments = process_decklist_comments(decklist.comments)
-    return render(request, 'cardDatabase/html/view_decklist.html', context={'decklist': decklist, 'zones': zones, 'cards': cards, 'comments': comments})
+
+    '''
+    DeckListCard is not the same as Card so compare the pk's by using values_list to get Card objects from DeckListCard
+    Also avoids duplicate named/reprinted cards needing multiple banlist entries
+    '''
+    deck_card_names = list(cards.values_list('card__name', flat=True))
+    banned_cards = BannedCard.objects.all()
+    ban_warnings = []
+    for banned_card in banned_cards:
+        if banned_card.card.name in deck_card_names:
+            ban_warnings.append({
+                'format': banned_card.format.name,
+                'card': banned_card.card.name,
+                'card_img_url': banned_card.card.card_image.url,
+                'view_card_url': reverse('cardDatabase-view-card', kwargs={'card_id': banned_card.card.card_id})
+            })
+
+    combination_bans = CombinationBannedCards.objects.all()
+    combination_ban_warnings = []
+    for combination_ban in combination_bans:
+        combination_banned_cards = combination_ban.cards.all()
+        combination_banned_card_names = combination_banned_cards.values_list('name', flat=True)
+        overlap = set(combination_banned_card_names) & set(deck_card_names)
+        if len(overlap) > 1:
+            combination_ban_warning = {
+                'format': combination_ban.format.name,
+                'cards': [],
+            }
+            for card in combination_banned_cards:
+                if card.name in overlap:
+                    combination_ban_warning['cards'].append({
+                        'name': card.name,
+                        'image_url': card.card_image.url,
+                        'view_card_url': reverse('cardDatabase-view-card',
+                                                 kwargs={'card_id': card.card_id})
+                    })
+            combination_ban_warnings.append(combination_ban_warning)
+
+    return render(request, 'cardDatabase/html/view_decklist.html', context={
+        'decklist': decklist,
+        'zones': zones,
+        'cards': cards,
+        'comments': comments,
+        'ban_warnings': ban_warnings,
+        'combination_ban_warnings': combination_ban_warnings,
+    })
 
 
 def logout(request):

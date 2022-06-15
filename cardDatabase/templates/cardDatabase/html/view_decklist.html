@@ -70,6 +70,35 @@
                 <div class="deck-comments">{% for comment in comments %}{{ comment }}{% endfor %}</div>
             </div>
         {% endif %}
+        {% if ban_warnings|length > 0 or combination_ban_warnings|length > 0 %}
+            <div id="ban-warnings">
+                <div class="ban-title">Banlist</div>
+                <div class="ban-content">
+                    {% for banned_card_data in ban_warnings %}
+                        <div class="banned-card">
+                            <img class="banned-icon" src="{% static 'img/banned-icon.svg' %}">
+                            <div class="ban-text">
+                                {% include 'cardDatabase/html/referenced_card.html' with card_name=banned_card_data.card card_img_url=banned_card_data.card_img_url view_card_url=banned_card_data.view_card_url %}
+                                in {{ banned_card_data.format }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% for banned_combination_card_data in combination_ban_warnings %}
+                        <div class="banned-card">
+                            <img class="banned-icon" src="{% static 'img/banned-icon.svg' %}">
+                            <div class="ban-text">
+                                Combination ban -
+                                {% for card_data in banned_combination_card_data.cards %}
+                                    {% if not forloop.counter0 == 0 %}& {% endif %}
+                                    {% include 'cardDatabase/html/referenced_card.html' with card_name=card_data.name card_img_url=card_data.image_url view_card_url=card_data.view_card_url %}
+                                {% endfor %} banned in {{ banned_combination_card_data.format }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
         <div id="deck-options">
             {% if request.user == decklist.profile.user %}
                 <a href="{% get_edit_decklist_url decklist.pk request.user_agent %}">

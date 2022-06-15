@@ -701,3 +701,72 @@ ZONES_SHOWN_BY_DEFAULT = [
 ]
 
 SITE_ICON_URL = static('img/wind.png')
+
+FORMATS = [
+    'Wanderer'
+]
+
+BANNED_CARDS = [
+    {
+        'format_name': 'Wanderer',
+        'cards': [
+            'EDL-064',
+            'TST-063',
+            'GOG-031',
+            'TTW-006',
+            'TMS-094',
+            'TTW-099',
+            'TST-024',
+            'CFC-037',  # Hook is also BAB promo but not in the DB
+            'ENW-049',
+            'ENW-051',
+            'MSW-053',
+            'SDV4-005',
+            'DBV-062',  # Reprint of SDV4-005
+            'CMF-069',
+            'CMF-071',
+            'VIN001-054',  # Reprint of CMF-071
+            'EDL-062',
+            'ADK-106',
+            'ENW-063',
+            'TSW-109',
+            'TSW-109J',
+            'ADK-113',
+            'TMS-064',  # Also WL005 promo (wall of wind)
+            'ENW-074',
+            'DBV-079',
+            'AOA-100',
+            'DBV-092',
+            'TST-075',
+            'DBV-095',
+            'AO3-082',
+            'MSW-102'
+        ],
+        'combination_bans':[
+            ['TAT-090', 'GRV-085'],
+            ['TTW-064', 'ROL-017'],
+            ['TTW-097', 'GRL-006'],
+            ['TSW-094', 'GRV-082'],
+            ['TSW-149', 'GRV-026'],
+            ['ACN-096', 'GRL-034'],
+            ['AO3-046', 'PofA-111'],
+            ['EDL-076', 'EDL-096'],
+            ['EDL-074', 'ROL-018'],
+            ['MSW-002', 'MSW-042'],
+            ['MSW-026', 'MSW-073'],
+            ['MSW-042', 'MSW-026'],
+            ['ROL-013', 'ADW-030'],
+            ['ADW-003', 'ADW-026'],
+            ['ADW-016', 'ADW-020'],
+            ['TST-067', 'TST-073'],
+            ['TST-078', 'GRV-060'],
+            ['DSD-006', 'DSD-008'],
+            ['GOG-023', 'GOG-024'],
+            ['GOG-050', 'GOG-078'],
+            ['GRL-067', 'GRL-083'],
+            ['GRL-030', 'GRL-038'],
+            ['GRV-051', 'GRV-070'],
+            ['GRV-064', 'GRV-085']
+        ]
+    }
+]

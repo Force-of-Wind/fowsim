@@ -396,23 +396,29 @@ def test_error(request):
 
 
 @login_required
-def user_decklists(request):
-    ctx = dict()
-    ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile).order_by('-last_modified')
-    ctx['is_owner'] = True
-    return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
+def deprecated_decklist_url(request):
+    redirect(reverse('cardDatabase-view-users-decklist', kwargs={'username': request.user.username}))
+
 
 def view_users_public(request, username=None):
     if username is not None:
         ctx = dict()
-        ctx['decklists'] = DeckList.objects.filter(profile=User.objects.get(username=username).profile, public=True).order_by('-last_modified')
-        ctx['is_owner'] = False
-        if request.user.username == username:
-            ctx['is_owner'] = True
+        try:
+            if request.user.username == username:
+                #  Dont filter by is_public
+                ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile).order_by('-last_modified')
+                ctx['is_owner'] = True
+            else:
+                ctx['decklists'] = DeckList.objects.filter(
+                    profile=User.objects.get(username=username).profile, public=True).order_by('-last_modified')
+                ctx['is_owner'] = False
+        except User.DoesNotExist:
+            raise Http404
             
         return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
     else:
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        raise Http404
+
 
 @login_required
 def create_decklist(request):

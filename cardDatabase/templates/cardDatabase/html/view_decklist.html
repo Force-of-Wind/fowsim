@@ -77,13 +77,14 @@
                                             <th>TYPE</th>
                                             <th>COST</th>
                                         {% endif %}
-                                        <th>PRICE</th>
+                                        {% if pricing %}<th>PRICE</th>{% endif %}
                                     </thead>
                                     <tbody>
-                                        {% for card in cards %}
+                                        {% for deck_card in cards %}
+                                            {% with deck_card.card as card %}
                                             {% if card.zone.zone.name == zone %}
                                                 <tr>
-                                                    <td class="card-quantity">{{ card.quantity }}</td>
+                                                    <td class="card-quantity{% get_collected_color_class deck_card.owned card.quantity request.user.is_authenticated%}">{{ card.quantity }}</td>
                                                     {% if not is_mobile %}<td scope="row">{{ card.card.public_card_id }}</td>{% endif %}
                                                     <td class="deck-card-name">
                                                         <a href="{% url 'cardDatabase-view-card' card.card.card_id %}" target="_blank">
@@ -98,9 +99,10 @@
                                                         </td>
                                                         <td>{% if not card.card.cost == None %}{%  format_cost_text card.card.cost %}{% endif %}</td>
                                                     {% endif %}
-                                                    <td class="tcgplayer-price" id="{{ card.card.name }}" data-card-name="{{ card.card.name }}">Loading...</td>
+                                                    {% if pricing %}<td class="tcgplayer-price" id="{{ card.card.name }}" data-card-name="{{ card.card.name }}">Loading...</td>{% endif %}
                                                 </tr>
                                             {% endif %}
+                                            {% endwith %}
                                         {% endfor %}
                                     </tbody>
                                 </table>
@@ -121,7 +123,8 @@
                     <div class="deck-zone-count"></div>
                     {% if cards %}
                         <div class="deck-zone-card-container">
-                            {% for card in cards %}
+                            {% for deck_card in cards %}
+                                {% with deck_card.card as card %}
                                 {% if card.zone.zone.name == zone %}
                                     {% with ''|center:card.quantity as range %}
                                         {% for _ in range %}
@@ -139,6 +142,7 @@
                                         {% endfor %}
                                     {% endwith %}
                                 {% endif %}
+                                {% endwith %}
                             {% endfor %}
                         </div>
                     {% endif %}

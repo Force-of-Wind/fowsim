@@ -227,3 +227,15 @@ body.hasHover #user-deck tr:not(:first-child):hover{
 #image-container.active-view, #table-container.active-view{
     display: block;
 }
+
+.owned-all {
+    color: green;
+}
+
+.owned-none {
+    color: red;
+}
+
+.owned-some {
+    color: orange;
+}

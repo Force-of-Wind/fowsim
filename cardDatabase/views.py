@@ -522,7 +522,28 @@ def view_decklist(request, decklist_id):
     if not decklist.public and not request.user == decklist.profile.user and not request.user.is_superuser:
         return HttpResponseRedirect(reverse('cardDatabase-private-decklist'))
 
-    cards = decklist.cards.all()
+    deck_cards = decklist.cards.all()
+    cards = []
+    if request.user.is_authenticated:
+        card_ids = list(deck_cards.values_list('card__pk', flat=True))
+        collected_cards = CollectionCard.objects.filter(card__pk__in=card_ids)
+        collected = {}
+        if collected_cards:
+            for c_card in collected_cards:
+                collected[c_card.card.card_id] = c_card.quantity
+        for d_card in deck_cards:
+            cards.append({
+                'owned': collected[d_card.card.card_id] if d_card.card.card_id in collected.keys() else 0,
+                'card': d_card
+            })
+    else:
+        deck_cards = decklist.cards.all()
+        for c_card in deck_cards:
+            cards.append({
+                'owned': None,
+                'card': c_card
+            }) 
+
     zones = UserDeckListZone.objects.filter(decklist=decklist).order_by('position').values_list('zone__name', flat=True).distinct()
     comments = process_decklist_comments(decklist.comments)
     return render(request, 'cardDatabase/html/view_decklist.html', context={'decklist': decklist, 'zones': zones, 'cards': cards, 'comments': comments})

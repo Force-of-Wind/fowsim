@@ -15,7 +15,7 @@
     padding-bottom: 50px;
 }
 
-.deck-zone-title, .comments-title, .deck-zone-count{
+.deck-zone-title, .comments-title, .deck-zone-count, .ban-title{
     font-weight: bold;
     font-size: 18px;
 }
@@ -133,7 +133,8 @@
 }
 
 .comments-container{
-    padding-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgb(0 0 0 / 16%);
 }
 
 #untap-list textarea{
@@ -238,4 +239,25 @@ body.hasHover #user-deck tr:not(:first-child):hover{
 
 .owned-some {
     color: orange;
+}
+
+.banned-icon{
+    width: 28px;
+    padding-right: 10px;
+    flex: 0 0 auto;
+}
+
+#ban-warnings{
+    padding: 10px 0;
+}
+.banned-card{
+    display: flex;
+    align-items: flex-start;
+}
+.ban-text{
+    flex: 0 1 auto;
+}
+
+.ban-text, .banned-icon{
+    min-width: 0;
 }

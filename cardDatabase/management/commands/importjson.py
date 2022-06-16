@@ -55,6 +55,8 @@ def setup_db():
         DeckListZone.objects.get_or_create(name=zone, show_by_default=True, position=position)
         position += 1
 
+    call_command('importBanlist')
+
 
 class Command(BaseCommand):
     help = 'imports cardDatabase/static/cards.json to the database'

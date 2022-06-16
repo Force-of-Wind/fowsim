@@ -181,3 +181,7 @@ input:checked + .selected-backgrounds{
 .form-submit-button{
     display: inline-block;
 }
+
+#id_reverse_sort{
+    pointer-events: auto;
+}

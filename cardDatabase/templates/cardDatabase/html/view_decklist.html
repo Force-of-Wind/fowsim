@@ -25,13 +25,40 @@
 
 {% block body %}
     <div class="deck-view-container">
-        <div id="image-container">
-            <div class="deck-title">
-                {{ decklist.name }}
-            </div>
-            <div class="deck-creator-name">
-                by {{ decklist.profile.user.username }}
-            </div>
+        <div class="deck-title">
+            {{ decklist.name }}
+        </div>
+        <div class="deck-creator-name">
+            by {{ decklist.profile.user.username }}
+        </div>
+        <!-- Tabs navs -->
+        <ul class="nav nav-tabs mb-2" id="view-options" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a
+                        class="nav-link active"
+                        id="user-deck-images"
+                        data-mdb-toggle="tab"
+                        href="#"
+                        role="tab"
+                        aria-controls="user-deck-images"
+                        aria-selected="false"
+                >Image</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a
+                    class="nav-link"
+                    id="user-deck-table"
+                    data-mdb-toggle="tab"
+                    href="#"
+                    role="tab"
+                    aria-controls="user-deck-table"
+                    aria-selected="true"
+                >Table</a>
+            </li>
+        </ul>
+        <!-- Tabs navs -->
+        <div id="table-container" class="tab-content">
+            <div class="tab-pane fade show active" id="user-deck-table" role="tabpanel">
             {% for zone in zones %}
                 <div class="deck-zone">
                     <div class="deck-zone-title">
@@ -40,7 +67,64 @@
                     <div class="deck-zone-count"></div>
                     {% if cards %}
                         <div class="deck-zone-card-container">
-                            {% for card in cards %}
+                            <div class="card-container">
+                                <table class="user-deck table">
+                                    <thead>
+                                        <th>QTY</th>
+                                        {% if not is_mobile %}<th>CARD ID</th>{% endif %}
+                                        <th>NAME</th>
+                                        {% if not is_mobile %}
+                                            <th>TYPE</th>
+                                            <th>COST</th>
+                                        {% endif %}
+                                        {% if pricing %}<th>PRICE</th>{% endif %}
+                                    </thead>
+                                    <tbody>
+                                        {% for deck_card in cards %}
+                                            {% with deck_card.card as card %}
+                                            {% if card.zone.zone.name == zone %}
+                                                <tr>
+                                                    <td class="card-quantity{% get_collected_color_class deck_card.owned card.quantity request.user.is_authenticated%}">{{ card.quantity }}</td>
+                                                    {% if not is_mobile %}<td scope="row">{{ card.card.public_card_id }}</td>{% endif %}
+                                                    <td class="deck-card-name">
+                                                        <a href="{% url 'cardDatabase-view-card' card.card.card_id %}" target="_blank">
+                                                            {{ card.card.name }}
+                                                        </a>
+                                                    </td>
+                                                    {% if not is_mobile %}
+                                                        <td>
+                                                            {% for card_type in card.card.types.all %}
+                                                                {{ card_type.name }}{% if not forloop.last %},{% endif %}
+                                                            {% endfor %}
+                                                        </td>
+                                                        <td>{% if not card.card.cost == None %}{%  format_cost_text card.card.cost %}{% endif %}</td>
+                                                    {% endif %}
+                                                    {% if pricing %}<td class="tcgplayer-price" id="{{ card.card.name }}" data-card-name="{{ card.card.name }}">Loading...</td>{% endif %}
+                                                </tr>
+                                            {% endif %}
+                                            {% endwith %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        <div id="image-container" class="tab-content active-view">
+            <div class="tab-content tab-pane fade show active" id="user-deck-images" role="tabpanel">
+                {% for zone in zones %}
+                <div class="deck-zone">
+                    <div class="deck-zone-title">
+                        {{ zone }}
+                    </div>
+                    <div class="deck-zone-count"></div>
+                    {% if cards %}
+                        <div class="deck-zone-card-container">
+                            {% for deck_card in cards %}
+                                {% with deck_card.card as card %}
                                 {% if card.zone.zone.name == zone %}
                                     {% with ''|center:card.quantity as range %}
                                         {% for _ in range %}
@@ -58,11 +142,13 @@
                                         {% endfor %}
                                     {% endwith %}
                                 {% endif %}
+                                {% endwith %}
                             {% endfor %}
                         </div>
                     {% endif %}
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
         {% if decklist.comments %}
             <div class="comments-container">
@@ -110,6 +196,5 @@
             <button type="button" id="copy-image">Copy as Image</button>
             <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
         </div>
-
     </div>
 {% endblock %}

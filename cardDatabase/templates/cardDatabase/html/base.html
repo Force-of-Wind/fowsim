@@ -65,6 +65,7 @@
                             {% if request.user.is_authenticated %}
                                 {% comment %} <a href="{% url 'cardDatabase-user-preferences' %}">Preferences</a> {% endcomment %}
                                 <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>
+                                <a href="{% url 'cardDatabase-user-collection' %}">My Collection</a>
                                 <a href="{% url 'cardDatabase-logout' %}?next={{ request.path }}">Logout</a>
                                 {% block adminoptions %}
                                     {% if user.profile.site_admin %}

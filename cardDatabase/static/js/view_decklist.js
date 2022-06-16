@@ -36,10 +36,20 @@ $(function(){
          this.select();
     });
 
-    $('.deck-zone-count').each(function(index){
+    $('#image-container .deck-zone-count').each(function(index){
         let cards = $(this).siblings('.deck-zone-card-container').find('.deck-card');
         $(this).html( `[${cards.length.toString()}]`);
     });
+
+    $('#table-container .deck-zone-count').each(function(index){
+        let quantities = $(this).siblings('.deck-zone-card-container').find('.card-quantity');
+        let total = 0;
+        quantities.each(function(i){
+           total += parseInt($(this).html().trim());
+        });
+        $(this).html(`[${total}]`);
+    });
+
 
     function getReferralUrl(){
         return document.location.host + '/deck/' + document.location.pathname.split('/')[2]
@@ -93,6 +103,45 @@ $(function(){
             link.href = canvas.toDataURL("image/png");
             link.target = '_blank';
             link.click();
+        });
+    });
+
+    $('#user-deck-table').click(function(e){
+        $('#image-container').hide();
+        $('#user-deck-images').removeClass('active');
+
+        $('#table-container').show();
+        $('#user-deck-table').addClass('active');
+
+    });
+
+    $('#user-deck-images').click(function(e){
+        $('#image-container').show();
+        $('#user-deck-images').addClass('active');
+
+        $('#table-container').hide();
+        $('#user-deck-table').removeClass('active');
+    });
+
+    $('.tcgplayer-price').each(function(){
+        var cardName = $(this).data('cardName')
+        console.log(cardName)
+        console.log(getPrice(cardName))
+        $.ajax({
+            type: 'POST',
+            url: `/price_check/`,
+            data: JSON.stringify({
+                data: cardName
+            }),
+            success: function (data) {
+                console.log(data);
+                document.getElementById(cardName).innerHTML = "<a href='https://www.tcgplayer.com/product/"+data.productID+"/?Language=English'>"+data.price+"</a>";
+            },
+            error: function (data) {
+                console.log(data)
+                document.getElementById(cardName).textContent = "Not Listed"
+            },
+            contentType: 'application/json',
         });
     });
 });

@@ -142,6 +142,9 @@ class Card(AbstractModel):
 
         return Card.objects.filter(other_side_query)
 
+    @property
+    def public_card_id(self):
+        return self.card_id.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, CONS.PUBLIC_OTHER_SIDE_CHARACTER)
 
 class Chant(models.Model):
     class Meta:

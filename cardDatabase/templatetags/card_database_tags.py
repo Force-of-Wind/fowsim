@@ -2,6 +2,8 @@ import ast
 import json
 import random
 import re
+import requests
+import json
 
 from django import template
 from django.utils.safestring import mark_safe
@@ -216,6 +218,7 @@ def decklist_card_count(decklist):
 
 @register.simple_tag
 def untap_list(cards):
+    cards = [c.get('card', None) for c in cards]
     starting_area = []
     main = []
     sideboard = []
@@ -314,3 +317,14 @@ def get_card_img_urls(card):
         for other_side in other_sides:
             output.append(other_side.card_image.url)
     return str(output).replace('\'', '"')
+
+@register.simple_tag
+def get_collected_color_class(num_in_col, num_in_deck, authed):
+    if not authed:
+        return ""
+    elif num_in_col >= num_in_deck:
+        return ' owned-all'
+    elif num_in_col > 0:
+        return ' owned-some'
+    else:
+        return ' owned-none'

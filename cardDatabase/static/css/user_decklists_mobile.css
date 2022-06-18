@@ -11,14 +11,26 @@
     padding-bottom: 20px;
 }
 
-#user-decklists tr:nth-child(4n+0), #user-decklists tr:nth-child(4n+1){
+.is-owner #user-decklists tr:nth-child(4n+0), .is-owner #user-decklists tr:nth-child(4n+1){
     background-color: #a9a9a924;
 }
 
-#user-decklists tr:nth-child(4n+2), #user-decklists tr:nth-child(4n+3){
+.is-owner #user-decklists tr:nth-child(4n+2), .is-owner #user-decklists tr:nth-child(4n+3){
     background-color: unset;
 }
 
-#user-decklists tr:nth-child(odd) td, #user-decklists tr:nth-child(odd) th{
+.is-owner #user-decklists tr:nth-child(odd) td, .is-owner #user-decklists tr:nth-child(odd) th{
+    padding-bottom: 10px;
+}
+
+.not-owner #user-decklists tr:nth-child(4n+1){
+    background-color: unset;
+}
+
+.not-owner #user-decklists tr:nth-child(4n+0){
+    background-color: #a9a9a924;
+}
+
+.not-owner #user-decklists td, .not-owner #user-decklists th{
     padding-bottom: 10px;
 }

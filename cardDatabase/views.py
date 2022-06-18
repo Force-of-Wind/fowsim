@@ -397,7 +397,7 @@ def test_error(request):
 
 @login_required
 def deprecated_decklist_url(request):
-    redirect(reverse('cardDatabase-view-users-decklist', kwargs={'username': request.user.username}))
+    return HttpResponseRedirect(reverse('cardDatabase-view-users-decklist', kwargs={'username': request.user.username}))
 
 
 def view_users_public(request, username=None):

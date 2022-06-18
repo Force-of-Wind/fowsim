@@ -30,7 +30,7 @@
                 {{ decklist.name }}
             </div>
             <div class="deck-creator-name">
-                by {{ decklist.profile.user.username }}
+                by <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{{ decklist.profile.user.username }}</a>
             </div>
             {% for zone in zones %}
                 <div class="deck-zone">

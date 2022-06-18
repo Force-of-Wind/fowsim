@@ -28,17 +28,19 @@
             </button>
         </a>
     </div>
-    <div class="decklist-container">
+    <div class="decklist-container {% if is_owner %}is-owner{% else %}not-owner{% endif %}">
         {% if decklists %}
             <table id="user-decklists">
                 <tr>
                     <th>Deck Name</th>
                     <th>Color(s)</th>
                     <th>Number of cards</th>
-                    <th>Public</th>
-                    {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
-                        <th>Last Modified</th>
-                        <th>Actions</th>
+                    {% if is_owner %}
+                        <th>Public</th>
+                        {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
+                            <th>Last Modified</th>
+                            <th>Actions</th>
+                        {% endif %}
                     {% endif %}
                 </tr>
                 {% for decklist in decklists %}
@@ -46,52 +48,58 @@
                         <td><a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">{{ decklist.name }}</a></td>
                         <td>{% colours_to_imgs decklist.get_colours %}</td>
                         <td>{% decklist_card_count decklist %}</td>
-                        <td>
-                            {% if decklist.public %}
-                                <img src="{% static 'img/public-icon.png'%}" class="public-icon">
-                            {% else %}
-                                <img src="{% static 'img/private-icon.png'%}" class="private-icon">
-                            {% endif %}
-                        </td>
-                        {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet  %}
+                        {% if is_owner %}
+                            <td>
+                                {% if decklist.public %}
+                                    <img src="{% static 'img/public-icon.png'%}" class="public-icon">
+                                {% else %}
+                                    <img src="{% static 'img/private-icon.png'%}" class="private-icon">
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                        {% if is_owner and not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
                             <td>{{ decklist.last_modified }}</td>
                         {% endif %}
-                        {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
-                            <td class="deck-actions">
-                                <div class="view-deck-button">
+                        {% if is_owner %}
+                            {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
+                                <td class="deck-actions">
+                                    <div class="view-deck-button">
+                                        <a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">
+                                            <img src="{% static 'img/view-icon.png' %}" class="view-icon">
+                                        </a>
+                                    </div>
+                                    <div class="edit-deck-button">
+                                        <a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">
+                                            <img src="{% static 'img/edit-icon.png' %}" class="edit-icon">
+                                        </a>
+                                    </div>
+                                    <div class="share-deck-button"><img src="{% static 'img/share-icon.png' %}" class="share-icon"></div>
+                                    <div class="delete-deck-button"><img src="{% static 'img/delete-icon.png' %}" class="delete-icon"></div>
+                                </td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% if is_owner %}
+                        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                            <tr class="mobile-actions" data-decklist-name="{{ decklist.name }}" data-decklist-pk="{{ decklist.pk }}">
+                                <td class="view-deck-button">
                                     <a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">
                                         <img src="{% static 'img/view-icon.png' %}" class="view-icon">
                                     </a>
-                                </div>
-                                <div class="edit-deck-button">
-                                    <a href="{% url 'cardDatabase-edit-decklist' decklist.pk %}">
+                                </td>
+                                <td>
+                                    <a href="{% url 'cardDatabase-edit-decklist-mobile' decklist.pk %}">
                                         <img src="{% static 'img/edit-icon.png' %}" class="edit-icon">
                                     </a>
-                                </div>
-                                <div class="share-deck-button"><img src="{% static 'img/share-icon.png' %}" class="share-icon"></div>
-                                <div class="delete-deck-button"><img src="{% static 'img/delete-icon.png' %}" class="delete-icon"></div>
-                            </td>
+                                </td>
+                                <td class="share-deck-button">
+                                    <img src="{% static 'img/share-icon.png' %}" class="share-icon">
+                                </td>
+                                <td class="delete-deck-button">
+                                    <img src="{% static 'img/delete-icon.png' %}" class="delete-icon">
+                                </td>
+                            </tr>
                         {% endif %}
-                    </tr>
-                    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-                        <tr class="mobile-actions" data-decklist-name="{{ decklist.name }}" data-decklist-pk="{{ decklist.pk }}">
-                            <td class="view-deck-button">
-                                <a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">
-                                    <img src="{% static 'img/view-icon.png' %}" class="view-icon">
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{% url 'cardDatabase-edit-decklist-mobile' decklist.pk %}">
-                                    <img src="{% static 'img/edit-icon.png' %}" class="edit-icon">
-                                </a>
-                            </td>
-                            <td class="share-deck-button">
-                                <img src="{% static 'img/share-icon.png' %}" class="share-icon">
-                            </td>
-                            <td class="delete-deck-button">
-                                <img src="{% static 'img/delete-icon.png' %}" class="delete-icon">
-                            </td>
-                        </tr>
                     {% endif %}
                 {% endfor %}
             </table>

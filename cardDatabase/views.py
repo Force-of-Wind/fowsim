@@ -9,6 +9,7 @@ from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, Http404
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
@@ -396,10 +397,28 @@ def test_error(request):
 
 
 @login_required
-def user_decklists(request):
-    ctx = dict()
-    ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile).order_by('-last_modified')
-    return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
+def deprecated_decklist_url(request):
+    return HttpResponseRedirect(reverse('cardDatabase-view-users-decklist', kwargs={'username': request.user.username}))
+
+
+def view_users_public(request, username=None):
+    if username is not None:
+        ctx = dict()
+        try:
+            if request.user.username == username:
+                #  Dont filter by is_public
+                ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile).order_by('-last_modified')
+                ctx['is_owner'] = True
+            else:
+                ctx['decklists'] = DeckList.objects.filter(
+                    profile=User.objects.get(username=username).profile, public=True).order_by('-last_modified')
+                ctx['is_owner'] = False
+        except User.DoesNotExist:
+            raise Http404
+            
+        return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
+    else:
+        raise Http404
 
 
 @login_required

@@ -413,6 +413,7 @@ def view_users_public(request, username=None):
                 ctx['decklists'] = DeckList.objects.filter(
                     profile=User.objects.get(username=username).profile, public=True).order_by('-last_modified')
                 ctx['is_owner'] = False
+                ctx['owner'] = username
         except User.DoesNotExist:
             raise Http404
             

@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="my-decklists">My Decklists</div>
+    <div class="my-decklists">{% if is_owner %}My{% else %}{{ owner }}'s{% endif %} Decklists</div>
     <div class="new-decklist">
         <a href="{% url 'cardDatabase-create-decklist' %}">
             <button type="button">

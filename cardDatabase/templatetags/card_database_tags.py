@@ -285,9 +285,9 @@ def base_site_icon():
 
 @register.simple_tag
 def get_spoiler_link():
-    try:
-        spoiler_sets = list(SpoilerSeason.objects.filter(is_active=True).values_list('set_code', flat=True))
-    except SpoilerSeason.DoesNotExist:
+    spoiler_sets = list(SpoilerSeason.objects.filter(is_active=True).values_list('set_code', flat=True))
+
+    if len(spoiler_sets) == 0:
         return ''
 
     url = reverse('cardDatabase-search') + f'?spoiler_season={(",".join(spoiler_sets))}'

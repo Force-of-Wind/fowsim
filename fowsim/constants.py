@@ -306,6 +306,13 @@ SET_DATA = {
                 {'code': 'GRL', 'name': 'Game of Gods Reloaded'},
                 {'code': 'GRV', 'name': 'Game of Gods Revolution'}
             ]
+        },
+        {
+            'name': 'Hero',
+            'sets': [
+                {'code': 'HSD', 'name': 'Hero Cluster Starter Decks'},
+                {'code': 'NWE', 'name': 'A New World Emerges'}
+            ]
         }
     ]
 }
@@ -542,6 +549,8 @@ SETS_IN_ORDER = [
     'D3 Buy a Box',
     'D3 Prerelease Party',
     'GRV',
+    'HSD',
+    'NWE',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {

@@ -2,6 +2,7 @@ import ast
 import json
 import random
 import re
+import urllib
 
 from django import template
 from django.utils.safestring import mark_safe
@@ -285,11 +286,11 @@ def base_site_icon():
 @register.simple_tag
 def get_spoiler_link():
     try:
-        spoilers = SpoilerSeason.objects.get(is_active=True)
+        spoiler_sets = list(SpoilerSeason.objects.filter(is_active=True).values_list('set_code', flat=True))
     except SpoilerSeason.DoesNotExist:
         return ''
 
-    url = reverse('cardDatabase-search') + f'?spoiler_season={spoilers.set_code}'
+    url = reverse('cardDatabase-search') + f'?spoiler_season={(",".join(spoiler_sets))}'
     return mark_safe(f'<a href="{url}">Spoilers</a>')
 
 

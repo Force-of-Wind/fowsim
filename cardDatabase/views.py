@@ -315,7 +315,8 @@ def search_for_cards(request):
     advanced_form = None
     spoilers = request.GET.get('spoiler_season', None)
     if spoilers:
-        ctx['cards'] = Card.objects.filter(get_set_query([spoilers])).order_by('-pk')
+        set_codes = spoilers.split(',')
+        ctx['cards'] = Card.objects.filter(get_set_query(set_codes)).order_by('-pk')
     else:
         form_type = request.GET.get('form_type', None)
         if form_type == 'basic-form':

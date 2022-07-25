@@ -552,7 +552,7 @@ def view_decklist(request, decklist_id):
     DeckListCard is not the same as Card so compare the pk's by using values_list to get Card objects from DeckListCard
     Also avoids duplicate named/reprinted cards needing multiple banlist entries
     '''
-    deck_card_names = list(cards.values_list('card__name', flat=True))
+    deck_card_names = list(deck_cards.values_list('card__name', flat=True))
     banned_cards = BannedCard.objects.all()
     ban_warnings = []
     for banned_card in banned_cards:
@@ -665,13 +665,11 @@ def copy_decklist(request, decklist_id=None):
     else:
         return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': new_decklist.pk}))
 
+
 @login_required
 def user_collection(request):
     # Check that the user matches the decklist
-    try:
-        collection = get_object_or_404(Collection, pk=request.user.id, profile__user=request.user)
-    except:
-        collection = Collection.objects.create(profile=request.user.profile, pk=request.user.id)
+    collection, created = Collection.objects.get_or_create(profile=request.user.profile)
     ctx = get_search_form_ctx()
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
@@ -679,56 +677,52 @@ def user_collection(request):
     ctx['sets'] = CONS.SET_DATA['clusters']
     return render(request, 'cardDatabase/html/view_collection.html', context=ctx)
 
+
 @login_required
 def user_collection_set(request, set_code='all'):
-    # Check that the user matches the decklist
-    try:
-        collection = get_object_or_404(Collection, pk=request.user.id, profile__user=request.user)
-    except:
-        collection = Collection.objects.create(profile=request.user.profile, pk=request.user.id)
-    cardCollection = CollectionCard.objects.filter(collection=collection)
+    collection, created = Collection.objects.get_or_create(profile=request.user.profile)
+    card_collection = CollectionCard.objects.filter(collection=collection)
     ctx = dict()
-    ctx['collection'] = cardCollection
+    ctx['collection'] = card_collection
     ctx['set_code'] = set_code
+    ctx['set_name'] = full_set_code_to_name(set_code)
 
-    if set_code == None or set_code == 'all':
+    if set_code is None or set_code == 'all':
         cards = Card.objects.all()
     else:
         cards = Card.objects.filter(card_id__istartswith=set_code)
     data = []
+    cards = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
     for card in cards:
         _data = {}
-        if cardCollection.filter(card=Card.objects.get(card_id=card.public_card_id)).exists():
-            _data['quantity'] = cardCollection.get(card=Card.objects.get(card_id=card.public_card_id)).quantity
+        if card_collection.filter(card=Card.objects.get(card_id=card.public_card_id)).exists():
+            _data['quantity'] = card_collection.get(card=Card.objects.get(card_id=card.public_card_id)).quantity
         else:
             _data['quantity'] = 0
         _data['name'] = card.name
-        _data['id'] = card.public_card_id
-        _data['set'] = card.set_code
+        _data['id'] = card.card_id
+        _data['public_card_id'] = card.public_card_id
         data.append(_data)
     ctx['cards'] = {'data': data}
-    print(ctx)
     return render(request, 'cardDatabase/html/view_collection_set.html', context=ctx)
+
 
 @login_required
 @require_POST
 @csrf_exempt
 def save_collection(request):
     data = json.loads(request.body.decode('UTF-8'))
-    print(data)
     collection_data = data['collection_data']
 
     # Check user matches the decklist
-    collection = get_object_or_404(Collection, pk=request.user.id, profile__user=request.user)
+    collection = get_object_or_404(Collection, profile__user=request.user)
     collection.save()
     #  Remove old cards, then rebuild it
-    print(collection_data)
     for card_data in collection_data['cards']:
-        print(card_data['id'])
         card = Card.objects.get(card_id=card_data['id'])
-        cardCollection, was_created = CollectionCard.objects.get_or_create(collection=collection, card=card)
-        cardCollection.quantity = card_data['quantity']
-        cardCollection.save()
+        card_collection, was_created = CollectionCard.objects.get_or_create(collection=collection, card=card)
+        card_collection.quantity = card_data['quantity']
+        card_collection.save()
 
     return JsonResponse({'response': "success"})
 
@@ -737,6 +731,7 @@ def save_collection(request):
 @require_POST
 @csrf_exempt
 def price_check(request):
+    raise NotImplementedError()
     data = json.loads(request.body.decode('UTF-8'))['data']
 
     token = "NzJkZjZiMTNlNzlkODA1MzAxODI1YzNmMzlhMDg0NzQ6c2hwcGFfZTJiZDZjOTVkZjVhZDhlY2E5Yjk3MDQyODYxZTFkOTA="
@@ -778,13 +773,12 @@ def price_check(request):
 
     params = {
         "method": "POST",
-            "headers": {
-                "Authorization": "Basic "+token,
-                "Content-Type": "application/json"
-            },
+        "headers": {
+            "Authorization": "Basic "+token,
+            "Content-Type": "application/json"
+        },
         "payload": payload
     }
-
     response = requests.post(
         url,
         data=json.dumps(payload),
@@ -797,7 +791,6 @@ def price_check(request):
     productid = 0
 
     for _card in carddata:
-        print(_card)
         if _card['productName'].lower() == data.lower(): # same cards
             if _card['lowestPrice'] < lowestprice:
                 lowestprice = _card['lowestPrice']

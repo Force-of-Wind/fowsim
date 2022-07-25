@@ -1,5 +1,5 @@
 $(function(){
-    $('#save-collection-button').click(function (event) {
+    $('.save-collection-button').click(function (event) {
         let collection_data = {
             "cards": [],
         };

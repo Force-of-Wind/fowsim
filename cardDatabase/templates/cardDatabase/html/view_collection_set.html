@@ -4,13 +4,11 @@
 
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/view_decklist.css' %}">
 {% endblock %}
 
 {% block mobilecss %}
     {{ block.super }}
     {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-        <link rel="stylesheet" href="{% static 'css/view_decklist_mobile.css' %}">
     {% endif %}
 {% endblock %}
 
@@ -20,31 +18,29 @@
         let COLLECTION_SET_CODE = "{{ set_code }}";
     </script>
     <script src="{% static 'js/view_collection.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/html2canvas/html2canvas.js' %}" type="text/javascript"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 {% endblock %}
 
 {% block body %}
     {% csrf_token %}
-    <button id="save-collection-button" type="button">Save</button>
+
+    <button class="save-collection-button" type="button">Save</button>
     <table id="tableID" class="display" style="width:80%">
         <thead>
         <tr>
-            <th>Quantity</th>
+            <th>ID</th>
             <th>Name</th>
-            <th>Set</th>
-            <th>Set ID</th>
+            <th>Quantity</th>
         </tr>
         </thead>
         <tbody>
             {% for card in cards.data %}
-            <tr class="set-collection">
-            <td><input class="card-quantity" type="number" id="points" name="points" step="1" value="{{ card.quantity }}"></td>
-            <td>{{ card.name }}</td>
-            <td>{{ card.set }}</td>
-            <td class="card-id" data-card-id="{{card.id}}">{{ card.id }}</td>
-            </tr>
+                <tr class="set-collection">
+                    <td class="card-id" data-card-id="{{card.id}}">{{ card.public_card_id }}</td>
+                    <td>{{ card.name }}</td>
+                    <td><input class="card-quantity" type="number" class="points" name="points" step="1" value="{{ card.quantity }}"></td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
+    <button class="save-collection-button" type="button">Save</button>
 {% endblock %}

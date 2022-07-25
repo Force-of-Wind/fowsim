@@ -1,4 +1,6 @@
 $(function(){
+    let FOWDB_TCGPLAYER_TOKEN = "NzJkZjZiMTNlNzlkODA1MzAxODI1YzNmMzlhMDg0NzQ6c2hwcGFfZTJiZDZjOTVkZjVhZDhlY2E5Yjk3MDQyODYxZTFkOTA=";
+
    $('.deck-card-img').click(function(event){
        $(this).siblings('.card-preview').addClass('show');
    });
@@ -123,25 +125,4 @@ $(function(){
         $('#user-deck-table').removeClass('active');
     });
 
-    $('.tcgplayer-price').each(function(){
-        var cardName = $(this).data('cardName')
-        console.log(cardName)
-        console.log(getPrice(cardName))
-        $.ajax({
-            type: 'POST',
-            url: `/price_check/`,
-            data: JSON.stringify({
-                data: cardName
-            }),
-            success: function (data) {
-                console.log(data);
-                document.getElementById(cardName).innerHTML = "<a href='https://www.tcgplayer.com/product/"+data.productID+"/?Language=English'>"+data.price+"</a>";
-            },
-            error: function (data) {
-                console.log(data)
-                document.getElementById(cardName).textContent = "Not Listed"
-            },
-            contentType: 'application/json',
-        });
-    });
 });

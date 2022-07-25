@@ -32,5 +32,4 @@ urlpatterns = [
     path('collection/', views.user_collection, name='cardDatabase-user-collection'),
     path('collection/<str:set_code>/', views.user_collection_set, name='cardDatabase-user-collection-set'),
     path('save_collection/', views.save_collection, name='cardDatabase-save-collection'),
-    path('price_check/', views.price_check, name='cardDatabase-price-check'),
 ]

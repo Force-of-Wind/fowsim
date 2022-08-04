@@ -99,7 +99,8 @@ $(function() {
     $('.deck-zone').each(function (index) {
         setZoneCount(this)
     });
-    $('#save-deck-button').click(function (event) {
+    function saveDeck(event){
+        $('#save-deck-button').off('click');  // Stop double clicks from sending multiple save requests and messing up data
         let decklist_data = {
             "zones": [],
             "name": $('.decklist-name').html().trim(),
@@ -137,11 +138,13 @@ $(function() {
                 window.location.assign(`/view_decklist/${data.decklist_pk}`);
             },
             error: function (data) {
-                console.log('Error');
+                $('#save-deck-button').click(saveDeck);  // Reenable save button, something unexpected happened
+                alertify.error('Error saving deck');
             },
             contentType: 'application/json',
         })
-    });
+    }
+    $('#save-deck-button').click(saveDeck);
 
     $('#new-zone-button').on('click', function (event) {
         let output = `<div class="deck-zone"><div class="deck-zone-title-container"><div class="zone-count">[0]</div><span class="deck-zone-title" contenteditable="true">New Zone</span><div class="remove-zone"><span>&#10006;</span></div></div><div class="deck-zone-cards"></div></div>`;
@@ -535,12 +538,15 @@ $(function() {
 
     function setupAlertify(){
         alertify.defaults.notifier.delay = 2;
-        alertify.defaults.notifier.position = 'top-left';
+        if (FOWDB_IS_MOBILE) {
+            alertify.defaults.notifier.position = 'top-left';
+        } else {
+            alertify.defaults.notifier.position = 'bottom-left';
+        }
     }
 
-    if (FOWDB_IS_MOBILE) {
-        setupAlertify();
-    }
+    setupAlertify();
+
     function getQuantityOrdinal(d){
         const dString = String(d);
         const last = +dString.slice(-2);

@@ -96,6 +96,12 @@ $(function() {
         }
     }
 
+   $(".decklist-name, .deck-zones-container").on("paste", (event) => {
+    event.preventDefault();
+    let paste = window.event.clipboardData.getData('text');
+    document.execCommand("insertHTML", false, paste);
+   });
+
     $('.deck-zone').each(function (index) {
         setZoneCount(this)
     });

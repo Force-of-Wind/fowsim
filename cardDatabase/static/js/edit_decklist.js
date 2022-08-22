@@ -47,8 +47,12 @@ $(function() {
                 $(this).data('prev-val', $(this).html().trim());
             });
         }
+        $('.decklist-name').off('paste').on('paste', handlePaste);
         $('.deck-zone-title').unbind('blur keyup paste copy cut delete mouseup');
         $('.deck-zone-title').on('blur keyup paste copy cut delete mouseup', function (event) {
+            if (event.type == 'paste'){
+                handlePaste(event);
+            }
             if (FOWDB_IS_MOBILE){
                 let prev_val = $(this).data('prev-val');
                 let that = this;
@@ -95,6 +99,12 @@ $(function() {
             });
         }
     }
+
+   function handlePaste(event){
+       event.preventDefault();
+       let paste = window.event.clipboardData.getData('text');
+       document.execCommand("insertHTML", false, paste);
+   }
 
     $('.deck-zone').each(function (index) {
         setZoneCount(this)

@@ -311,7 +311,8 @@ SET_DATA = {
             'name': 'Hero',
             'sets': [
                 {'code': 'HSD', 'name': 'Hero Cluster Starter Decks'},
-                {'code': 'NWE', 'name': 'A New World Emerges'}
+                {'code': 'NWE', 'name': 'A New World Emerges'},
+                {'code': 'TUS', 'name': 'The Underworld of Secrets'}
             ]
         }
     ]
@@ -551,6 +552,9 @@ SETS_IN_ORDER = [
     'GRV',
     'HSD',
     'NWE',
+    'TUS',
+    'H2 Buy a Box',
+    'H2 Prerelease Party'
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -631,6 +635,10 @@ SEARCH_SETS_INCLUDE = {
     'GRV': [
         'D3 Prerelease Party',
         'D3 Buy a Box'
+    ],
+    'TUS': [
+        'H2 Buy a Box',
+        'H2 Prerelease Party'
     ]
 }
 

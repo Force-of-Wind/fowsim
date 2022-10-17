@@ -23,7 +23,6 @@
     {{ block.super }}
     <div id="view-card-container">
         {% if card.other_sides %}
-            {{ card.other_sides }}
             {% include 'cardDatabase/html/card_details.html' with referred_by=card|card_referenced_by card=card %}
         {% else %}
             {# Show recent decks here since no other sides #}

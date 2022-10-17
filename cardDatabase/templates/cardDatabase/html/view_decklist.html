@@ -47,7 +47,12 @@
                                             <div class="deck-card">
                                                 <img class="deck-card-img" src="{{ card.card.card_image.url }}">
                                                 <div class="card-preview">
-                                                    <img src="{{ card.card.card_image.url }}">
+                                                    <div class="multi-hovered-img">
+                                                        <img class="hover-card-img" src="{{ card.card.card_image.url }}">
+                                                        {% for other_side in card.card.other_sides %}
+                                                            <img class="hover-card-img" src="{{ other_side.card_image.url }}">
+                                                        {% endfor %}
+                                                    </div>
                                                     <div class="view-in-another-tab">
                                                         <a href="{% url 'cardDatabase-view-card' card.card.card_id %}" target="_blank">
                                                             Go to card

@@ -1,17 +1,23 @@
 $(function(){
    $('.deck-card-img').click(function(event){
        $(this).siblings('.card-preview').addClass('show');
+       $(this).parent().find('img').addClass('show-hover');
+       $(this).parent().find('.multi-hovered-img').addClass('show-hover');
    });
 
     $(document).keyup(function(e){
         if (e.key === "Escape"){
             $('.card-preview').removeClass('show');
+            $('.hover-card-img.show-hover').removeClass('show-hover');
+            $('.multi-hovered-img.show-hover').removeClass('show-hover');
         }
     });
 
     $('.card-preview').click(function(e){
         if (e.target.classList.contains('card-preview')){
             $(this).removeClass('show');
+            $('.hover-card-img.show-hover').removeClass('show-hover');
+            $('.multi-hovered-img.show-hover').removeClass('show-hover');
         }
     });
 

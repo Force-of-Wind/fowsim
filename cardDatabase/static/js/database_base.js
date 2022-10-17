@@ -86,6 +86,9 @@ function initDatabaseBase(){
                     formData.delete(fieldName.substring(0, 4) + 'comparator');
                 }
             }
+            if (!formData.get('colours')){
+                formData.delete('colour_match')
+            }
             let params = new URLSearchParams(formData);
             params.append('form_type', this.id);
             window.location.assign('/search/' + '?' + params.toString());

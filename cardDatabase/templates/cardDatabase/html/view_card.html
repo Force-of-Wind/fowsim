@@ -21,8 +21,21 @@
 {% endblock %}
 {% block body %}
     {{ block.super }}
-    {% include 'cardDatabase/html/card_details.html' with referred_by=card|card_referenced_by card=card %}
-    {% for other_side in card.other_sides %}
-        {% include 'cardDatabase/html/card_details.html' with referred_by=other_side|card_referenced_by card=other_side %}
-    {% endfor %}
+    <div id="view-card-container">
+        {% if card.other_sides %}
+            {{ card.other_sides }}
+            {% include 'cardDatabase/html/card_details.html' with referred_by=card|card_referenced_by card=card %}
+        {% else %}
+            {# Show recent decks here since no other sides #}
+            {% include 'cardDatabase/html/card_details.html' with referred_by=card|card_referenced_by card=card referred_decklists=recent_decklists%}
+        {% endif %}
+        {% for other_side in card.other_sides %}
+            {% if forloop.last %}
+                {# Add recent decks here since it's the last section #}
+                {% include 'cardDatabase/html/card_details.html' with referred_by=other_side|card_referenced_by card=other_side referred_decklists=recent_decklists%}
+            {% else %}
+                {% include 'cardDatabase/html/card_details.html' with referred_by=other_side|card_referenced_by card=other_side %}
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}

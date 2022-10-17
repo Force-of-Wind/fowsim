@@ -1,5 +1,6 @@
 import json
 import re
+import datetime
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Count
@@ -370,6 +371,9 @@ def view_card(request, card_id=None):
     set_code, set_name = searchable_set_and_name(card.set_code)
     ctx['set_name'] = set_name
     ctx['set_code'] = set_code
+    one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
+    ctx['recent_decklists'] = DeckList.objects.filter(public=True, cards__card__in=([card] + list(card.other_sides)),
+                                                      last_modified__gt=one_month_ago).distinct().order_by('-last_modified')
 
     return render(request, 'cardDatabase/html/view_card.html', context=ctx)
 

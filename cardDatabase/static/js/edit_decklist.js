@@ -236,6 +236,7 @@ $(function() {
                 $('#database-container').html(result);
                 initDatabaseBase();
                 setupOtherPages();
+                window.scrollTo(0,0); // Go back to the top now that the new page has been loaded
                 if(FOWDB_IS_MOBILE){
                     setupCardClicking();
                 } else {

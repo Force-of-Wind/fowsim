@@ -374,6 +374,11 @@ def view_card(request, card_id=None):
     one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
     ctx['recent_decklists'] = DeckList.objects.filter(public=True, cards__card__in=([card] + list(card.other_sides)),
                                                       last_modified__gt=one_month_ago).distinct().order_by('-last_modified')
+    rulings = []
+    for ruling in card.rulings:
+        ruling.text = process_decklist_comments(ruling.text)
+        rulings.append(ruling)
+    ctx['rulings'] = rulings
 
     return render(request, 'cardDatabase/html/view_card.html', context=ctx)
 

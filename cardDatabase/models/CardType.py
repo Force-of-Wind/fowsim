@@ -5,13 +5,13 @@ import sys
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.staticfiles import finders
 from django.db.models import Q
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 
 from cardDatabase.models.Effects import Effect
+from cardDatabase.models.Rulings import Ruling
 from fowsim.utils import listToChoices, AbstractModel
 from fowsim import constants as CONS
 
@@ -141,6 +141,10 @@ class Card(AbstractModel):
                 other_side_query |= Q(card_id=shared_id + to_query)
 
         return Card.objects.filter(other_side_query)
+
+    @property
+    def rulings(self):
+        return Ruling.objects.filter(card=self)
 
 
 class Chant(models.Model):

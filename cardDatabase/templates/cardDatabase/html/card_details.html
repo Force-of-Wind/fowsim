@@ -165,6 +165,31 @@
                 {% endfor %}
             </div>
         {% endif %}
+        {% with card.rulings as rulings %}
+            {% if rulings %}
+                <div class="card-text-info">
+                    <div class="judge-rulings-title card-text-info-title">
+                        Rulings:
+                    </div>
+                    {% for ruling in rulings %}
+                        <div class="ruling-container">
+                            {% if ruling.company_confirmed %}
+                                <div class="confirmation-icon-container">
+                                    <img class="company-confirmation-icon" src="{% static 'img/public-icon.png' %}">
+                                    <div class="tooltip-container">
+                                        <span class="tooltip-hover">Confirmed by company officials</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="card-info-text judge-ruling">{{ ruling.text }}</div>
+                            <div class="ruling-info">
+                                - <a href="{% url 'cardDatabase-view-users-decklist' ruling.added_by.user.username %}">{{ ruling.added_by.user.username }}</a>, <div class="bold-ruling-text">{{ ruling.last_modified|date:"d M Y" }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
         {% if referred_decklists %}
             <div id="card-decklists" class="card-text-info">
                 {% for decklist in referred_decklists %}

@@ -127,3 +127,49 @@
 .less-important-text{
     font-style: italic;
 }
+
+.bold-ruling-text{
+    display: inline-block;
+    font-weight: 700;
+}
+
+.judge-ruling, .ruling-info{
+    display: inline;
+}
+
+.ruling-container:not(:nth-child(2)){
+    padding-top: 15px;
+}
+
+.company-confirmation-icon{
+    height: 16px;
+    position: relative;
+    bottom: 2px;
+}
+
+.confirmation-icon-container{
+    line-height: 24px;
+    display: inline;
+}
+
+.tooltip-container{
+    width: 0;
+    height: 0;
+    display: inline-block;
+}
+
+.confirmation-icon-container .tooltip-hover{
+    display: none;
+    position: relative;
+    padding: 0 3px;
+    width: max-content;
+    bottom: 30px;
+    right: 100px;
+    background: #333;
+    color: #fff;
+    z-index: 10;
+}
+
+.confirmation-icon-container:hover .tooltip-hover{
+    display: block;
+}

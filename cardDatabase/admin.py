@@ -6,6 +6,7 @@ from cardDatabase.models.User import Profile
 from cardDatabase.models.DeckList import DeckList, DeckListCard, DeckListZone, UserDeckListZone
 from cardDatabase.models.Spoilers import SpoilerSeason
 from cardDatabase.models.Banlist import CombinationBannedCards, BannedCard, Format
+from cardDatabase.models.Rulings import Ruling
 
 
 class AbilityTextInline(admin.TabularInline):
@@ -50,6 +51,16 @@ class CombinationBannedCardsAdmin(admin.ModelAdmin):
     ]
 
 
+class RulingAdmin(admin.ModelAdmin):
+    search_fields = ['card__name', 'card__name_without_punctuation', 'text']
+    fields = ['card', 'text', 'company_confirmed']
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.added_by = request.user.profile
+        super().save_model(request, obj, form, change)
+
+
 admin.site.register(OneTimeEffect)
 admin.site.register(Card, CardAdmin)
 admin.site.register(AbilityText, AbilityTextAdmin)
@@ -63,3 +74,5 @@ admin.site.register(SpoilerSeason)
 admin.site.register(BannedCard)
 admin.site.register(Format)
 admin.site.register(CombinationBannedCards, CombinationBannedCardsAdmin)
+admin.site.register(Ruling, RulingAdmin)
+admin.site.register(Race)

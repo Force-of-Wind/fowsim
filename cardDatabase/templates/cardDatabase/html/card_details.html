@@ -180,7 +180,7 @@
                                 </div>
                             </div>
                         {% endif %}
-                        <div class="card-info-text judge-ruling">{% autoescape off %}{% for text in ruling.text %}{{ text }}{% endfor %}{% endautoescape %}</div>
+                        <div class="card-info-text judge-ruling">{% for text in ruling.text %}{{ text }}{% endfor %}</div>
                         <div class="ruling-info">
                             - <a href="{% url 'cardDatabase-view-users-decklist' ruling.added_by.user.username %}">{{ ruling.added_by.user.username }}</a>, <div class="bold-ruling-text">{{ ruling.last_modified|date:"d M Y" }}</div>
                         </div>

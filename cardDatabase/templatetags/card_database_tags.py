@@ -319,7 +319,6 @@ def get_card_img_urls(card):
 
 @register.simple_tag
 def embed_text_with_card_urls(text):
-    print(text)
     """
     Returns a list of strings that make up the text but replaces [[Card Name]] with html that represents a URL to that
     card. The sections with HTML use mark_safe, the rest do not

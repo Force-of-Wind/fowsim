@@ -5,6 +5,11 @@
 
 {% block image_preview_url %}{{ card.card_image.url }}{% endblock %}
 
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/view_card.js' %}"></script>
+{% endblock %}
+
 {% block adminoptions %}
     {{ block.super }}
     {% if user.profile.site_admin %}

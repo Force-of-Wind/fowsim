@@ -173,3 +173,12 @@
 .confirmation-icon-container:hover .tooltip-hover{
     display: block;
 }
+
+.hidden-decklist{
+    display: none;
+}
+
+#expand-decklists{
+    cursor: pointer;
+
+}

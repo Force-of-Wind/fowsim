@@ -195,10 +195,17 @@
             <div id="card-decklists" class="card-text-info">
                 <div class="decklist-title card-text-info-title">Recent Decks: </div>
                 {% for decklist in referred_decklists %}
-                    <div class="decklist-link">
-                        <a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">{{ decklist.name }}</a> by <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{{ decklist.profile.user.username }}</a>
+                    <div class="decklist-link {% if forloop.counter > 4 %}hidden-decklist{% endif %}">
+                        <a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">
+                            {{ decklist.name }}
+                        </a> by <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">
+                            {{ decklist.profile.user.username }}
+                        </a>
                     </div>
                 {% endfor %}
+                {% if referred_decklists.count > 4 %}
+                    <div id="expand-decklists"><button type="button">Show All</button></div>
+                {% endif %}
             </div>
         {% endif %}
     </div>

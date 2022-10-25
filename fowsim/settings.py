@@ -212,3 +212,8 @@ LOGOUT_REDIRECT_URL = 'cardDatabase-search'
 SESSION_COOKIE_AGE = 63072000
 
 DEFAULT_EXCEPTION_REPORTER = 'fowsim.log.AddRequestBodyExceptionReporter'
+
+if DEBUG:
+    REDDIT_BOT_API_KEY = 'botkey'
+else:
+    REDDIT_BOT_API_KEY = os.environ.get('REDDIT_BOT_API_KEY')

@@ -1,6 +1,8 @@
+import json
+
 from functools import wraps
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import redirect, reverse
 from django.conf import settings
 
@@ -42,4 +44,15 @@ def mobile_only(function):
             return function(request, *args, **kwargs)
         else:
             return redirect(reverse('cardDatabase-mobile-only'))
+    return wrap
+
+
+def reddit_bot(function):
+    @wraps(function)
+    def wrap(request, *args, **kwargs):
+        if request.method == 'POST':
+            data = json.loads(request.body.decode('UTF-8'))
+            if data.get('api_key', None) == settings.REDDIT_BOT_API_KEY:
+                return function(request, *args, **kwargs)
+        return HttpResponse('Invalid api key', status=401)
     return wrap

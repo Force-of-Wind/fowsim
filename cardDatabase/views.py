@@ -20,7 +20,7 @@ from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListC
 from .models.CardType import Card, Race
 from .models.Banlist import BannedCard, CombinationBannedCards
 from fowsim import constants as CONS
-from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only
+from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only, reddit_bot
 
 
 def get_search_form_ctx():
@@ -218,7 +218,7 @@ def apply_text_search(cards, text, search_fields, exactness_option):
         output = cards.filter(q)
 
     elif exactness_option == CONS.TEXT_CONTAINS_ALL:
-        # Use db becuase there's not many terms and this is more efficient
+        # Use db because there's not many terms and this is more efficient
         output = cards
         for word in words:
             word_query = Q()
@@ -629,3 +629,54 @@ def copy_decklist(request, decklist_id=None):
         return HttpResponseRedirect(reverse('cardDatabase-edit-decklist-mobile', kwargs={'decklist_id': new_decklist.pk}))
     else:
         return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': new_decklist.pk}))
+
+@csrf_exempt
+@require_POST
+@reddit_bot
+def reddit_bot_query(request):
+    data = json.loads(request.body.decode('UTF-8'))
+    words = data.get('keywords', None)
+    if not words:
+        return HttpResponse('No keywords provided', status=400)
+    flags = data.get('flags', [])
+
+    exact_query = False
+    if 'e' in flags:
+        exact_query = True
+
+    all_sides = False
+    if 'b' in flags:
+        all_sides = True
+
+    reverse_sort = False
+    if 'a' in flags:
+        reverse_sort = True
+
+    adv_form = AdvancedSearchForm(request.POST)
+    if not adv_form.is_valid():  # Have to run is_valid to access cleaned_data
+        return HttpResponse('Unknown error occured', status=500)
+    adv_form.cleaned_data['generic_text'] = ' '.join(words)
+    adv_form.cleaned_data['text_exactness'] = CONS.TEXT_EXACT if exact_query else CONS.TEXT_CONTAINS_ALL
+    adv_form.cleaned_data['sort_by'] = CONS.DATABASE_SORT_BY_MOST_RECENT
+    adv_form.cleaned_data['reverse_sort'] = reverse_sort
+    adv_form.cleaned_data['text_search_fields'] = ['name']
+    cards = advanced_search(adv_form)
+    ctx = {'cards': []}
+    card = None
+    if len(cards['cards']):
+        card = cards['cards'][0]
+    if card:
+        ctx['cards'].append({
+            'name': card.name,
+            'image_url': request.build_absolute_uri(card.card_image.url),
+            'view_card_url': request.build_absolute_uri(reverse('cardDatabase-view-card', kwargs={'card_id': card.card_id}))
+        })
+        if all_sides:
+            for other_side in card.other_sides:
+                ctx['cards'].append({
+                    'name': other_side.name,
+                    'image_url': request.build_absolute_uri(other_side.card_image.url),
+                    'view_card_url': request.build_absolute_uri(reverse('cardDatabase-view-card', kwargs={'card_id': other_side.card_id}))
+                })
+
+    return JsonResponse(ctx)

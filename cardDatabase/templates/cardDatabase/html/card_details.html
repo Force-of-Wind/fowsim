@@ -193,8 +193,8 @@
         {% endif %}
         {% if referred_decklists %}
             <div id="card-decklists" class="card-text-info">
+                <div class="decklist-title card-text-info-title">Recent Decks: </div>
                 {% for decklist in referred_decklists %}
-                    <div class="decklist-title card-text-info-title">Recent Decks: </div>
                     <div class="decklist-link">
                         <a href="{% url 'cardDatabase-view-decklist' decklist.pk %}">{{ decklist.name }}</a> by <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{{ decklist.profile.user.username }}</a>
                     </div>

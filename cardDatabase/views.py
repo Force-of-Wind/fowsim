@@ -8,13 +8,12 @@ from django.forms.fields import MultipleChoiceField
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
-from django.contrib.auth import login as django_login, authenticate, logout as django_logout
+from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, Http404
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
-from django.utils.safestring import mark_safe
 
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
@@ -22,8 +21,6 @@ from .models.CardType import Card, Race
 from .models.Banlist import BannedCard, CombinationBannedCards
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only
-from cardDatabase.management.commands.importjson import remove_punctuation
-from .templatetags.card_database_tags import referenced_card_img_html
 
 
 def get_search_form_ctx():
@@ -374,11 +371,6 @@ def view_card(request, card_id=None):
     one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
     ctx['recent_decklists'] = DeckList.objects.filter(public=True, cards__card__in=([card] + list(card.other_sides)),
                                                       last_modified__gt=one_month_ago).distinct().order_by('-last_modified')
-    rulings = []
-    for ruling in card.rulings:
-        ruling.text = process_decklist_comments(ruling.text)
-        rulings.append(ruling)
-    ctx['rulings'] = rulings
 
     return render(request, 'cardDatabase/html/view_card.html', context=ctx)
 
@@ -510,37 +502,6 @@ def save_decklist(request, decklist_id=None):
     return JsonResponse({'decklist_pk': decklist.pk})
 
 
-def process_decklist_comments(comments):
-    output = []
-    #  Either "\n" or text in "[[ ]]"
-    matches = re.findall('(\[\[.*?\]\])|(\\n)', comments)
-    for match in matches:
-        match = match[0] or match[1]
-        if match == '\n':
-            splits = comments.split(match, 1)
-            output.append(splits[0])
-            output.append(mark_safe('<br />'))
-            comments = splits[1]
-        else:
-            match = match[2:-2]  # Cut off "[[ ]]"
-            card = Card.objects.filter(Q(name__iexact=match) | Q(name_without_punctuation__iexact=remove_punctuation(match))).first()
-
-            # Card not found
-            if not card:
-                continue
-
-            view_card_url = reverse('cardDatabase-view-card', kwargs={"card_id": card.card_id})
-            # Consume the string split by split so we can mark safe only the sections with imgs to avoid html injection
-            splits = comments.split(match, 1)
-            output.append(splits[0][:-2])
-            output.append(mark_safe(f'<a class="referenced-card" href="{view_card_url}">{card.name}{referenced_card_img_html(card)}</a>'))
-            comments = splits[1][2:]
-    else:
-        output.append(comments)
-
-    return output
-
-
 def private_decklist(request):
     return render(request, 'cardDatabase/html/private_decklist.html')
 
@@ -552,7 +513,6 @@ def view_decklist(request, decklist_id):
 
     cards = decklist.cards.all()
     zones = UserDeckListZone.objects.filter(decklist=decklist).order_by('position').values_list('zone__name', flat=True).distinct()
-    comments = process_decklist_comments(decklist.comments)
 
     '''
     DeckListCard is not the same as Card so compare the pk's by using values_list to get Card objects from DeckListCard
@@ -595,7 +555,6 @@ def view_decklist(request, decklist_id):
         'decklist': decklist,
         'zones': zones,
         'cards': cards,
-        'comments': comments,
         'ban_warnings': ban_warnings,
         'combination_ban_warnings': combination_ban_warnings,
     })

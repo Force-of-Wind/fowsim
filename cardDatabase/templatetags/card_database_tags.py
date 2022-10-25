@@ -2,14 +2,14 @@ import ast
 import json
 import random
 import re
-import urllib
 
 from django import template
 from django.utils.safestring import mark_safe
 from django.templatetags.static import static
 from django.urls import reverse
-from django.db.models import Sum
+from django.db.models import Sum, Q
 
+from cardDatabase.management.commands.importjson import remove_punctuation
 from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card
 from cardDatabase.models.Spoilers import SpoilerSeason
@@ -315,3 +315,41 @@ def get_card_img_urls(card):
         for other_side in other_sides:
             output.append(other_side.card_image.url)
     return str(output).replace('\'', '"')
+
+
+@register.simple_tag
+def embed_text_with_card_urls(text):
+    print(text)
+    """
+    Returns a list of strings that make up the text but replaces [[Card Name]] with html that represents a URL to that
+    card. The sections with HTML use mark_safe, the rest do not
+    """
+    output = []
+    #  Either "\n" or text in "[[ ]]"
+    matches = re.findall('(\[\[.*?\]\])|(\\n)', text)
+    for match in matches:
+        match = match[0] or match[1]
+        if match == '\n':
+            splits = text.split(match, 1)
+            output.append(splits[0])
+            output.append(mark_safe('<br />'))
+            text = splits[1]
+        else:
+            match = match[2:-2]  # Cut off "[[ ]]"
+            card = Card.objects.filter(Q(name__iexact=match) | Q(name_without_punctuation__iexact=remove_punctuation(match))).first()
+
+            # Card not found
+            if not card:
+                continue
+
+            view_card_url = reverse('cardDatabase-view-card', kwargs={"card_id": card.card_id})
+            # Consume the string split by split so we can mark safe only the sections with imgs to avoid html injection
+            splits = text.split(match, 1)
+            output.append(splits[0][:-2])
+            output.append(mark_safe(f'<a class="referenced-card" href="{view_card_url}">{card.name}{referenced_card_img_html(card)}</a>'))
+            text = splits[1][2:]
+    else:
+        output.append(text)
+
+    return output
+

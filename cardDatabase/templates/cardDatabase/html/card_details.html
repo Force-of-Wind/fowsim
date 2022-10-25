@@ -165,12 +165,12 @@
                 {% endfor %}
             </div>
         {% endif %}
-        {% if rulings %}
+        {% if card.rulings %}
             <div class="card-text-info">
                 <div class="judge-rulings-title card-text-info-title">
                     Rulings:
                 </div>
-                {% for ruling in rulings %}
+                {% for ruling in card.rulings %}
                     <div class="ruling-container">
                         {% if ruling.company_confirmed %}
                             <div class="confirmation-icon-container">
@@ -180,9 +180,12 @@
                                 </div>
                             </div>
                         {% endif %}
-                        <div class="card-info-text judge-ruling">{% for text in ruling.text %}{{ text }}{% endfor %}</div>
+                        {% embed_text_with_card_urls ruling.text as processed_ruling %}
+                        <div class="card-info-text judge-ruling">{% for text in processed_ruling %}{{ text }}{% endfor %}</div>
                         <div class="ruling-info">
-                            - <a href="{% url 'cardDatabase-view-users-decklist' ruling.added_by.user.username %}">{{ ruling.added_by.user.username }}</a>, <div class="bold-ruling-text">{{ ruling.last_modified|date:"d M Y" }}</div>
+                            - <a href="{% url 'cardDatabase-view-users-decklist' ruling.added_by.user.username %}">
+                                {{ ruling.added_by.user.username }}
+                            </a>, <div class="bold-ruling-text">{{ ruling.last_modified|date:"d M Y" }}</div>
                         </div>
                     </div>
                 {% endfor %}

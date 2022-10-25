@@ -144,7 +144,7 @@ class Card(AbstractModel):
 
     @property
     def rulings(self):
-        return Ruling.objects.filter(card=self)
+        return Ruling.objects.filter(card__name=self.name)
 
 
 class Chant(models.Model):

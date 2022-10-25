@@ -72,7 +72,10 @@
         {% if decklist.comments %}
             <div class="comments-container">
                 <div class="comments-title">Comments</div>
-                <div class="deck-comments">{% for comment in comments %}{{ comment }}{% endfor %}</div>
+                <div class="deck-comments">
+                    {% embed_text_with_card_urls decklist.comments as processed_comment %}
+                    {% for text in processed_comment %}{{ text }}{% endfor %}
+                </div>
             </div>
         {% endif %}
         {% if ban_warnings|length > 0 or combination_ban_warnings|length > 0 %}

@@ -636,8 +636,8 @@ def copy_decklist(request, decklist_id=None):
 def reddit_bot_query(request):
     try:
         data = json.loads(request.body.decode('UTF-8'))
-    except json.JSONDecodeError:
-        return HttpResponse('Error loading json', status=400)
+    except (json.JSONDecodeError, json.decoder.JSONDecodeError):
+        return HttpResponse('Error loading json', status=401)
     words = data.get('keywords', None)
     if not words:
         return HttpResponse('No keywords provided', status=400)

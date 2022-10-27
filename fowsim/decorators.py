@@ -51,7 +51,10 @@ def reddit_bot(function):
     @wraps(function)
     def wrap(request, *args, **kwargs):
         if request.method == 'POST':
-            data = json.loads(request.body.decode('UTF-8'))
+            try:
+                data = json.loads(request.body.decode('UTF-8'))
+            except (json.JSONDecodeError, json.decoder.JSONDecodeError):
+                return HttpResponse('Invalid json', status=401)
             if data.get('api_key', None) == settings.REDDIT_BOT_API_KEY:
                 return function(request, *args, **kwargs)
         return HttpResponse('Invalid api key', status=401)

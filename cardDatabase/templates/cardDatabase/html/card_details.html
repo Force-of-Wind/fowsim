@@ -168,12 +168,12 @@
         {% with bans=card.bans combination_bans=card.combination_bans%}
             {% if bans or combination_bans %}
                 <div class="card-text-info">
-                    <div class="card-text-info-title">Banlists:</div>
+                    <div class="card-text-info-title banlist-title">Banlists:</div>
                     <div class="card-text-info-text">
                         {% for ban in bans %}
                             <div class="ban-container">
                                 <img class="banned-icon" src="{% static 'img/banned-icon.svg' %}">
-                                <div class="ban-text">{{ ban.card.card_name }} banned in {{ ban.format.name }}</div>
+                                <div class="ban-text">{{ ban.card.name }} banned in {{ ban.format.name }}</div>
                             </div>
                         {% endfor %}
                         {% for combination_ban in combination_bans %}

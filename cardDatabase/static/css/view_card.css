@@ -187,3 +187,7 @@
 .banned-icon, .ban-text{
     display: inline;
 }
+
+.banlist-title{
+    display: block;
+}

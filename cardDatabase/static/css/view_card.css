@@ -191,3 +191,7 @@
 .banlist-title{
     display: block;
 }
+
+.reprints .card-text-info-text{
+    display: block;
+}

@@ -155,6 +155,10 @@ class Card(AbstractModel):
     def rulings(self):
         return Ruling.objects.filter(card__name=self.name)
 
+    @property
+    def reprints(self):
+        return Card.objects.filter(name=self.name).filter(~Q(id=self.id))
+
 
 class Chant(models.Model):
     class Meta:

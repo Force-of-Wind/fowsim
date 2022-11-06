@@ -165,6 +165,18 @@
                 {% endfor %}
             </div>
         {% endif %}
+        {% if card.reprints %}
+            <div class="card-text-info reprints">
+                <div class="card-text-info-title">
+                    Reprints:
+                </div>
+                {% for reprint in card.reprints %}
+                    <div class="card-text-info-text">
+                        <a href="{% url 'cardDatabase-view-card' card_id=reprint.card_id %}">{% set_code_to_name reprint.set_code %} ({{ reprint.set_code }})</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% with bans=card.bans combination_bans=card.combination_bans%}
             {% if bans or combination_bans %}
                 <div class="card-text-info">

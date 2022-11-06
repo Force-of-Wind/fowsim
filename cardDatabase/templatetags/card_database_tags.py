@@ -13,6 +13,7 @@ from cardDatabase.management.commands.importjson import remove_punctuation
 from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card
 from cardDatabase.models.Spoilers import SpoilerSeason
+from cardDatabase.views import searchable_set_and_name
 
 register = template.Library()
 
@@ -352,3 +353,7 @@ def embed_text_with_card_urls(text):
 
     return output
 
+
+@register.simple_tag
+def set_code_to_name(set_code):
+    return searchable_set_and_name(set_code)[1]

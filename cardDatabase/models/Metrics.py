@@ -32,8 +32,14 @@ class CardTypePickRate(models.Model):
     period = models.ForeignKey(PickPeriod, on_delete=models.CASCADE)
     percentage = models.IntegerField(null=False, blank=False)
 
+    def __str__(self):
+        return f'{self.card_type.name} {self.percentage}% ({str(self.period.days) + " Days" if self.period.days else "All Time"})'
+
 
 class CardTotalCostPickRate(models.Model):
     period = models.ForeignKey(PickPeriod, on_delete=models.CASCADE)
     percentage = models.IntegerField(null=False, blank=False)
     total_cost = models.IntegerField(null=False, blank=False)
+
+    def __str__(self):
+        return f'{self.total_cost} {self.percentage}% ({str(self.period.days) + " Days" if self.period.days else "All Time"})'

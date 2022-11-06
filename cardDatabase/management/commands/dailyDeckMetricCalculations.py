@@ -24,7 +24,7 @@ class Command(BaseCommand):
         delete_existing_metrics()
         for period in pick_periods:
             if period.all_time:
-                cards = Card.objects.filter(decklistcard__isnull=False).annotate(number_of_decks=Count('decklistcard'))
+                cards = Card.objects.filter(decklistcard__isnull=False).annotate(number_of_decks=Count('decklistcard')).order_by('-number_of_decks')
                 decklists = DeckList.objects.all()
             else:
                 period_dt = timezone.now() - datetime.timedelta(days=period.days)

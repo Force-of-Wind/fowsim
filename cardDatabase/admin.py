@@ -7,7 +7,7 @@ from cardDatabase.models.DeckList import DeckList, DeckListCard, DeckListZone, U
 from cardDatabase.models.Spoilers import SpoilerSeason
 from cardDatabase.models.Banlist import CombinationBannedCards, BannedCard, Format
 from cardDatabase.models.Rulings import Ruling
-
+from cardDatabase.models.Metrics import *
 
 class AbilityTextInline(admin.TabularInline):
     model = CardAbility
@@ -82,3 +82,8 @@ admin.site.register(CombinationBannedCards, CombinationBannedCardsAdmin)
 admin.site.register(Ruling, RulingAdmin)
 admin.site.register(Race)
 admin.site.register(CardColour)
+admin.site.register(MostPickedCardPickRate)
+admin.site.register(CardTotalCostPickRate)
+admin.site.register(CardTypePickRate)
+admin.site.register(AttributePickRate)
+admin.site.register(PickPeriod)

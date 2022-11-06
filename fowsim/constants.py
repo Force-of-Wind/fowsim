@@ -787,3 +787,9 @@ BANNED_CARDS = [
         ]
     }
 ]
+
+PICK_PERIOD_DAYS = [  # Also includes "all time" when created in importMetricPeriods
+    7,
+    30,
+    90
+]

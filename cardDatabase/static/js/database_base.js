@@ -89,6 +89,8 @@ function initDatabaseBase(){
             if (!formData.get('colours')){
                 formData.delete('colour_match')
             }
+            formData.append('generic_text', formData.get('generic_text').replace(/[\u2018\u2019]/g, "'")
+                .replace(/[\u201C\u201D]/g, '"')); // Fix weird apostrophes
             let params = new URLSearchParams(formData);
             params.append('form_type', this.id);
             window.location.assign('/search/' + '?' + params.toString());

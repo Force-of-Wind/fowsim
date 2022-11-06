@@ -36,6 +36,7 @@
         <input type="submit" value="Login">
         <input type="hidden" name="next" value="{{ next }}">
         <a class="register-link" href="{% url 'cardDatabase-register' %}">Don't have an account? Click here</a>
+        <a href="{% url 'password_reset' %}">Forgot your password? Click here</a>
     </form>
     {% comment %}
     {# Assumes you setup the password_reset view in your URLconf #}

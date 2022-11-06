@@ -12,6 +12,7 @@ from django.db.models.signals import pre_save
 
 from cardDatabase.models.Effects import Effect
 from cardDatabase.models.Rulings import Ruling
+from cardDatabase.models.Banlist import BannedCard, CombinationBannedCards
 from fowsim.utils import listToChoices, AbstractModel
 from fowsim import constants as CONS
 
@@ -119,6 +120,14 @@ class Card(AbstractModel):
                     total += 1
 
         return total
+
+    @property
+    def bans(self):
+        return BannedCard.objects.filter(card__name=self.name)
+
+    @property
+    def combination_bans(self):
+        return CombinationBannedCards.objects.filter(cards__name=self.name)
 
     @property
     def other_sides(self):

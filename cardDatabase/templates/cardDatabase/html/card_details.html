@@ -165,6 +165,34 @@
                 {% endfor %}
             </div>
         {% endif %}
+        {% with bans=card.bans combination_bans=card.combination_bans%}
+            {% if bans or combination_bans %}
+                <div class="card-text-info">
+                    <div class="card-text-info-title">Banlists:</div>
+                    <div class="card-text-info-text">
+                        {% for ban in bans %}
+                            <div class="ban-container">
+                                <img class="banned-icon" src="{% static 'img/banned-icon.svg' %}">
+                                <div class="ban-text">{{ ban.card.card_name }} banned in {{ ban.format.name }}</div>
+                            </div>
+                        {% endfor %}
+                        {% for combination_ban in combination_bans %}
+                            <div class="ban-container">
+                                <img class="banned-icon" src="{% static 'img/banned-icon.svg' %}">
+                                <div class="ban-text">
+                                    Combination ban -
+                                    {% for card_data in combination_ban.cards.all %}
+                                        {% if not forloop.counter0 == 0 %}& {% endif %}
+                                        {% url 'cardDatabase-view-card' card_id=card_data.card_id as view_card_url %}
+                                        {% include 'cardDatabase/html/referenced_card.html' with card_name=card_data.name card_img_url=card_data.card_image.url view_card_url=view_card_url %}
+                                    {% endfor %} banned in {{ combination_ban.format.name }}.
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
         {% if card.rulings %}
             <div class="card-text-info">
                 <div class="judge-rulings-title card-text-info-title">

@@ -182,3 +182,12 @@
     cursor: pointer;
 
 }
+
+.banned-icon{
+    width: 21px;
+    padding-right: 3px;
+}
+
+.banned-icon, .ban-text{
+    display: inline;
+}

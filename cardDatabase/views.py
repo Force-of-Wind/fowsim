@@ -630,6 +630,7 @@ def copy_decklist(request, decklist_id=None):
     else:
         return HttpResponseRedirect(reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': new_decklist.pk}))
 
+
 @csrf_exempt
 @require_POST
 @reddit_bot

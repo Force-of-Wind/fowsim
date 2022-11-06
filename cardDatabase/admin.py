@@ -60,6 +60,11 @@ class RulingAdmin(admin.ModelAdmin):
             obj.added_by = request.user.profile
         super().save_model(request, obj, form, change)
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'card':
+            kwargs['queryset'] = Card.objects.all().order_by('name')
+        return super(RulingAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 admin.site.register(OneTimeEffect)
 admin.site.register(Card, CardAdmin)

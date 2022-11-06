@@ -22,7 +22,7 @@
 }
 
 .number-of-results{
-    padding-bottom: 20px;
+    padding-bottom: 5px;
     flex: 0 0 100%;
 }
 
@@ -47,31 +47,39 @@
     padding-top: 30px;
 }
 
-#other-pages{
-    padding: 25px 0 40px 0;
-    width: max-content;
-    margin: 0 auto;
+.pagination{
+    padding-bottom: 20px;
     line-height: 2.5;
-    max-width: 100%;
+    flex: 0 0 100%;
 }
 
-#other-pages .pagination-page{
+#other-pages-bottom{
+    padding-top: 10px;
+}
+
+.pagination .pagination-content{
+    width: max-content;
+    display: flex;
+    margin: 0 auto;
+}
+
+.pagination .pagination-page{
     padding: 0 7px;
 }
 
-#other-pages .current-page{
+.pagination .current-page{
     background: #dc0800;
     color: white;
     border-radius: 5px;
 }
 
-#other-pages a, #other-pages > div{
+.pagination a, .pagination-content > div{
     width: 40px;
     text-align: center;
     background-color: #ededed;
 }
 
-#other-pages a:hover:not(.active){
+.pagination a:hover:not(.active){
     background-color: #ddd;
     border-radius: 5px;
 }

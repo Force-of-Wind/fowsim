@@ -205,7 +205,7 @@ $(function() {
     }
 
     function setupOtherPages(){
-        $('#other-pages a').each(function(index){
+        $('.pagination a').each(function(index){
             $(this).on('click', function(event) {
                 let page_num = $(this).data('page-index');
                 if (page_num) {

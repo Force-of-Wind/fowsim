@@ -124,6 +124,23 @@ function initDatabaseBase(){
         event.preventDefault();
         select_format_sets(FOWDB_SET_JSON.clusters, false);
     });
+    $('.help-tooltip').on('click', function(event){
+        if (event.target === this || event.target.matches('.tooltip-icon')) {
+            $(this).addClass('show');
+            $('.tooltip-popup').on('click', checkIfCloseTooltip);
+            $(document).on('keyup', checkIfCloseTooltip);
+        }
+    });
+
+    function checkIfCloseTooltip(event){
+        if (event.target === event.currentTarget || event.key == 'Escape') {
+            closeTooltip();
+        }
+    }
+    function closeTooltip(){
+        $('.help-tooltip.show').removeClass('show');
+        $('.tooltip-popup').off('click', checkIfCloseTooltip);
+    }
 }
 $(function(){
     initDatabaseBase();

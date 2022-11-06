@@ -27,3 +27,8 @@
 .atk-def-stats{
     border-bottom: none;
 }
+
+.tooltip-content{
+    width: calc(100% - 40px);
+    max-width: calc(100% - 40px);
+}

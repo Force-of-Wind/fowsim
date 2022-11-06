@@ -44,6 +44,10 @@
     display: block;
     width: 100%;
 }
+#advanced-search .generic-text-wrapper{
+    width: calc(100% - 50px);
+    display: inline-block;
+}
 
 #advanced-form #id_text_search_fields li{
     display: block;
@@ -184,4 +188,65 @@ input:checked + .selected-backgrounds{
 
 #id_reverse_sort{
     pointer-events: auto;
+}
+
+.help-tooltip{
+    display: inline-block;
+    padding-left: 10px;
+}
+
+.help-tooltip .tooltip-icon{
+    cursor: pointer;
+}
+
+.tooltip-icon{
+    width: 20.75px;
+    opacity: 0.3;
+}
+
+.tooltip-popup{
+    display: none;
+    text-align: left;
+}
+
+.help-tooltip.show .tooltip-popup{
+    display: revert;
+}
+
+.help-tooltip.show .tooltip-popup{
+    display: block;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+}
+
+.tooltip-content{
+    max-width: 60%;
+    width: 600px;
+    margin: 220px auto 0 auto;
+    background-color: white;
+    border-radius: 15px;
+    padding: 10px 20px;
+}
+
+.tooltip-text{
+    display: block;
+}
+
+.tooltip-text > img{
+    height: 16px;
+    display: inline;
+}
+
+.tooltip-values{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tooltip-values > div{
+    flex: 0 0 50%;
 }

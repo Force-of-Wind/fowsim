@@ -34,13 +34,15 @@
                     <div class="form-submit-button">
                         <input type="submit" value="Search" name="basic-form">
                     </div>
+                    {% include 'cardDatabase/html/search_tooltip.html' %}
                 </form>
             </div>
             <div id="advanced-search">
                 <form id="advanced-form" method="post" action="{% url 'cardDatabase-search' %}">
-                    <div class="fieldWrapper">
+                    <div class="fieldWrapper generic-text-wrapper">
                         {{ advanced_form.generic_text }}
                     </div>
+                    {% include 'cardDatabase/html/search_tooltip.html' %}
                     <div class="fieldWrapper select-text-exactness">
                         <div class="text-exactness-title field-title">
                             Search terms match:

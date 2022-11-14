@@ -64,7 +64,7 @@ def attribute_to_img_html(attr):
 
 @register.simple_tag
 def attribute_to_img_src(attr):
-    return mark_safe(static('img/costs/' + WILL_TYPE_TO_FILENAMES[attr]))
+    return mark_safe(static('img/costs/' + WILL_TYPE_TO_FILENAMES[str(attr)]))
 
 
 def make_bubble_html(text):

@@ -8,6 +8,10 @@ class PickPeriod(models.Model):
     def __str__(self):
         return str(self.days) + ' Days' if self.days else 'All Time'
 
+    @property
+    def cssId(self):
+        return self.days or 'All-Time'
+
 
 class MostPickedCardPickRate(models.Model):
     card = models.ForeignKey('Card', on_delete=models.CASCADE)

@@ -26,6 +26,7 @@
                             let FOWDB_IS_MOBILE = false;
                         {% endif %}
                     </script>
+                    <script src="{% static 'js/base.js' %}" type="text/javascript"></script>
                 {% endblock %}
                 {% block css %}
                     <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.css' %}">
@@ -61,6 +62,7 @@
                         <button class="fow-dropbtn"><i class="arrow down"></i></button>
                         <div class="fow-dropdown-content">
                             <a href="{% url 'cardDatabase-search' %}">Card Database</a>
+                            <a href="{% url 'cardDatabase-metrics' %}">Metrics</a>
                             {% get_spoiler_link %}
                             <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>
                             {% if request.user.is_authenticated %}

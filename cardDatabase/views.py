@@ -19,6 +19,7 @@ from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistration
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
 from .models.Banlist import BannedCard, CombinationBannedCards
+from .models.Metrics import PickPeriod, MostPickedCardPickRate, AttributePickRate, CardTotalCostPickRate, CardTypePickRate
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only, reddit_bot
 
@@ -684,3 +685,14 @@ def reddit_bot_query(request):
                 })
 
     return JsonResponse(ctx)
+
+
+def metrics(request):
+    ctx = {
+        'most_picked_cards': MostPickedCardPickRate.objects.all().order_by('-percentage'),
+        'attribute_picks': AttributePickRate.objects.all().order_by('-percentage'),
+        'total_cost_picks': CardTotalCostPickRate.objects.all().order_by('-total_cost'),
+        'card_type_picks': CardTypePickRate.objects.all().order_by('-percentage'),
+        'pick_periods': PickPeriod.objects.all()
+    }
+    return render(request, 'cardDatabase/html/metrics.html', ctx)

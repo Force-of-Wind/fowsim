@@ -1,0 +1,96 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+{% block subtitle %} - Metrics{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/metrics.css' %}">
+{% endblock %}
+
+{% block ogtitle %}Metrics - Force of Wind{% endblock %}
+
+{% block mobilecss %}
+    {{ block.super }}
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/metrics_mobile.css' %}">
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/metrics.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="metrics-title">Metrics</div>
+    <div class="pick-titles">
+        {% for period in pick_periods %}
+            <div class="pick-title {% if forloop.counter0 == 0 %}active-pick{% endif %}" data-css-id="{{ period.cssId }}">{{ period }}</div>
+        {% endfor %}
+    </div>
+    {% for period in pick_periods %}
+        <div id="pick-period-{{ period.cssId }}" class="pick-period-content {% if forloop.counter0 == 0 %}active-pick{% endif %}">
+            <div class="period-content">
+                <div class="pick-type-container">
+                    <div class="metric-title">Most Picked Cards</div>
+                    {% for card in most_picked_cards %}
+                        {% if card.period == period %}
+                            <div class="pick-data">
+                                <a href="{% card_id_to_url card.card.card_id %}">
+                                    <div class="pick-name card-name referenced-card">
+                                        {{ card.card.name }}{% referenced_card_img_html card.card %} -
+                                    </div>
+                                </a>
+                                <div class="pick-percentage">{{ card.percentage }}%</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="pick-type-container">
+                    <div class="metric-title">Attribute Pickrate</div>
+                    {% for attribute in attribute_picks %}
+                        {% if attribute.period == period %}
+                            <div class="pick-data">
+                                <div class="pick-name attribute-name">{% attribute_to_img_html attribute.card_attr.db_representation %} - </div>
+                                <div class="pick-percentage">{{ attribute.percentage }}%</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="pick-type-container">
+                    <div class="metric-title">Total Cost</div>
+                    {% for cost in total_cost_picks %}
+                        {% if cost.period == period %}
+                            <div class="pick-data">
+                                <div class="pick-name cost-name">
+                                    <img src="{% attribute_to_img_src cost.total_cost %}" class="cost-icon"> -
+                                </div>
+                                <div class="pick-percentage">{{ cost.percentage }}%</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="pick-type-container">
+                    <div class="metric-title">Card Type</div>
+                    {% for card_type in card_type_picks %}
+                        {% if card_type.period == period and card_type.percentage != 0%}
+                            <div class="pick-data">
+                                <div class="pick-name type-name">{{ card_type.card_type.name }} - </div>
+                                <div class="pick-percentage">{{ card_type.percentage }}%</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="metrics-notes">
+        Metrics are calculated daily at 12:00AM UTC.
+        Cards which count as multiple types/attributes will count be treated as both.
+        Quantities of cards picked are not considered for the "Most Picked Cards", but are considered for all the others.
+    </div>
+
+{% endblock %}

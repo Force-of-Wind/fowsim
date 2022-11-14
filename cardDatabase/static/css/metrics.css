@@ -1,0 +1,129 @@
+.metrics-title{
+    width: max-content;
+    margin: 0 auto;
+    font-size: 24px;
+    padding-bottom: 20px;
+}
+
+.pick-titles{
+    font-size: 0; /* Removes space between children */
+    width: max-content;
+    margin: 0 auto;
+    padding-top: 10px;
+    max-width: 100%;
+}
+.pick-titles .pick-title{
+    border-bottom: 2px solid black;
+    border-top: 2px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    display: inline-block;
+    width: max-content;
+    min-width: 70px;
+    text-align: center;
+    font-size: initial;
+    padding: 0 3px;
+    cursor: pointer;
+}
+
+.pick-titles .pick-title:first-child{
+    border-left: 2px solid black;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.pick-titles .pick-title:last-child{
+    border-right: 2px solid black;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.pick-titles .pick-title.active-pick{
+    background-color: #ddd;
+    font-weight: 700;
+}
+
+.pick-data{
+    display: block;
+}
+
+.pick-name, .pick-percentage{
+    display: inline-block;
+}
+
+.pick-percentage{
+    font-weight: bold;
+}
+
+.metric-title{
+    font-size: 21px;
+}
+
+.cost-icon, .cost-img{
+    height: 24px;
+}
+
+.pick-period-content{
+    display: none;
+}
+
+.pick-period-content.active-pick{
+    display: initial;
+}
+
+.multi-hovered-img{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    padding: 3px;
+    max-width: 70%;
+}
+
+.multi-hovered-img .hover-card-img.show-hover{
+    position: initial;
+    transform: initial;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.multi-hovered-img.show-hover{
+    display: flex;
+}
+
+.hover-card-img{
+    display: none;
+}
+
+.hover-card-img.show-hover{
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    padding: 3px;
+    background-color: black;
+}
+
+.hover-card-img.show-hover:not(:last-child){
+    padding-right: 0;
+}
+
+.period-content{
+    display: flex;
+    margin: 20px 10%;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.pick-type-container{
+    width: max-content;
+}
+
+.metrics-notes{
+    padding: 0 10% 20px 10%;
+    font-style: italic;
+}

@@ -1,7 +1,7 @@
 import datetime
 
 from django.core.management.base import BaseCommand
-from django.db.models import Count, Case, When, IntegerField, Sum
+from django.db.models import Count, Sum, Q
 from django.utils import timezone
 
 from cardDatabase.models.Metrics import PickPeriod, MostPickedCardPickRate, AttributePickRate, CardTotalCostPickRate, CardTypePickRate
@@ -31,8 +31,9 @@ class Command(BaseCommand):
                 cards = Card.objects.filter(decklistcard__decklist__last_modified__gte=period_dt)
                 decklists = DeckList.objects.filter(last_modified__gte=period_dt)
                 #  Sets number_of_decks to be an integer of the number of decks that there exists at least 1 of the card
-                cards = cards.annotate(number_of_decks=Count(Case(When(decklistcard__decklist__last_modified__gte=period_dt, then=1), output_field=IntegerField()), distinct=True)).\
-                    filter(number_of_decks__gt=0).order_by('-number_of_decks')
+                cards = cards.annotate(
+                    number_of_decks=Count('decklistcard__decklist__id',filter=Q(decklistcard__decklist__last_modified__gte=period_dt), distinct=True)
+                ).filter(number_of_decks__gte=1).order_by('-number_of_decks')
 
             deck_counts = decklists.count()
             for card in cards[:30]:

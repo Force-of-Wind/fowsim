@@ -207,6 +207,7 @@ $(function() {
     function setupOtherPages(){
         $('.pagination a').each(function(index){
             $(this).on('click', function(event) {
+                event.preventDefault();
                 let page_num = $(this).data('page-index');
                 if (page_num) {
                     let search_url = new URL(LAST_DATABASE_URL);
@@ -234,6 +235,7 @@ $(function() {
                 LAST_DATABASE_URL = search_url;
                 let result = $('<div />').append(data).find('#base-body').html();
                 $('#database-container').html(result);
+                initSearch();
                 initDatabaseBase();
                 setupOtherPages();
                 window.scrollTo(0,0); // Go back to the top now that the new page has been loaded

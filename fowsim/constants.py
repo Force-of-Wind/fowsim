@@ -645,8 +645,8 @@ SEARCH_SETS_INCLUDE = {
         'H2 Prerelease Party'
     ],
     'TWS': [
-        'H2 Buy a Box',
-        'H2 Prerelease Party'
+        'H3 Buy a Box',
+        'H3 Prerelease Party'
     ]
 }
 

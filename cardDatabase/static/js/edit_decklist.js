@@ -556,11 +556,6 @@ $(function() {
         } else {
             alertify.defaults.notifier.position = 'bottom-left';
         }
-
-        //TODO Remove once the performance issue is resolved
-        alertify.defaults.notifier.delay = 10;
-        alertify.warning("Currently experiencing errors when saving decklists that may delete or partially save a list. Save at your own risk. Fixed soon hopefully. Sorry!")
-        alertify.defaults.notifier.delay = 2;
     }
 
     setupAlertify();

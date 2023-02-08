@@ -134,3 +134,7 @@ body{
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
 }
+
+b{
+    font-weight: bold;
+}

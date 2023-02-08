@@ -96,9 +96,9 @@ def replace_newlines(text):
 
 
 def replace_angled_brackets(text):
-    matches = re.findall('&lt;&lt;?(.+)&gt;&gt;', text)
+    matches = re.findall('&lt;&lt;[\w]+&gt;&gt;', text)
     for match in matches:
-        text = text.replace(f'&lt;&lt;{match}&gt;&gt;', f'<b>‹‹{match}››</b>')
+        text = text.replace(match, f'<b>‹‹{match[len("&lt;&lt;"):-len("&gt;&gt;")]}››</b>')
 
     return text
 

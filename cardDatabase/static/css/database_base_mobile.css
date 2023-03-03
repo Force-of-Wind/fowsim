@@ -32,3 +32,10 @@
     width: calc(100% - 40px);
     max-width: calc(100% - 40px);
 }
+
+.overflow-costs {
+    width: 80vw;
+    overflow: auto;
+    white-space: nowrap;
+    display: inline-block;
+}

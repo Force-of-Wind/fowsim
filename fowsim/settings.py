@@ -108,8 +108,6 @@ if os.environ.get('DATABASE_URL'):
     re_result:list = re.findall(db_url_re, os.environ.get('DATABASE_URL'))
     match:tuple = re_result[0]
 
-    print(match)
-
     db_user = match[0]
     db_pass = match[1]
     db_host = match[2]
@@ -132,9 +130,6 @@ DATABASES = {
         'PORT': db_port
     }
 }
-
-print(DATABASES)
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-import os
+import os, re
 from pathlib import Path
 
 
@@ -103,17 +103,33 @@ WSGI_APPLICATION = 'fowsim.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+if os.environ.get('DATABASE_URL'):
+    db_url_re = re.compile(r'postgres:\/\/(\S+):(\S+)@(\S+):(\d+)\/(\S+)')
+    re_result:list = re.findall(db_url_re, os.environ.get('DATABASE_URL'))
+    match:tuple = re_result[0]
+
+    db_user = match[0]
+    db_pass = match[1]
+    db_host = match[2]
+    db_port = match[3]
+    db_name = match[4]
+else:
+    db_user = os.environ.get('DB_USER')
+    db_pass = os.environ.get('DB_PASS')
+    db_host = os.environ.get('DB_HOST')
+    db_port = os.environ.get('DB_PORT')
+    db_name = os.environ.get('DB_NAME')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'USER': os.environ.get('DB_USER'),
-        'NAME': os.environ.get('DB_NAME'),
-        'PASSWORD': os.environ.get('DB_PASS'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT')
+        'USER': db_user,
+        'NAME': db_name,
+        'PASSWORD': db_pass,
+        'HOST': db_host,
+        'PORT': db_port
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

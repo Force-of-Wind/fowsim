@@ -250,3 +250,8 @@ input:checked + .selected-backgrounds{
 .tooltip-values > div{
     flex: 0 0 50%;
 }
+
+/* ensure select-dropdowns appear behind card image popout when edit deck list and on adv search page  */
+input.select-dropdown.form-control{
+    z-index: auto;
+}

@@ -124,6 +124,7 @@
                         <div class="search-field-title field-title">
                             Total cost:
                         </div>
+                        <div class="overflow-costs">
                         {% for value, display in advanced_form.cost.field.choices %}
                             <input type="checkbox" class="hidden-checkbox fow-checkbox" name="cost" id="id_cost_{{ forloop.counter0 }}"
                                    value="{{ value }}" {% if value|slugify in advanced_form_data.cost %}checked{% endif %}>
@@ -133,6 +134,7 @@
                                 </div>
                             </label>
                         {% endfor %}
+                        </div>
                     </div>
                     <div class="fieldWrapper race-select">
                         <select class="mdb-select md-form" multiple form="advanced-form" name="race" searchable="Search here...">

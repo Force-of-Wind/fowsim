@@ -372,6 +372,9 @@ def view_card(request, card_id=None):
     one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
     ctx['recent_decklists'] = DeckList.objects.filter(public=True, cards__card__in=([card] + list(card.other_sides)),
                                                       last_modified__gt=one_month_ago).distinct().order_by('-last_modified')
+    if not ctx['recent_decklists'].count():
+        # There are no recent ones, just grab the up to the 4 most recent ones instead
+        ctx['recent_decklists'] = DeckList.objects.filter(public=True, cards__card__in=([card] + list(card.other_sides))).distinct().order_by('-last_modified')[:4]
 
     return render(request, 'cardDatabase/html/view_card.html', context=ctx)
 

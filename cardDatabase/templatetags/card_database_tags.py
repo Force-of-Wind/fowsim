@@ -136,8 +136,8 @@ def referenced_card_img_html(card):
 
 
 def add_card_reference_links(ability_text):
-    # Check for names in apostrophes
-    matches = re.findall(r'"[^\"\"]+"', ability_text)
+    # Check for names in apostrophes that aren't preceded by "God's Art"
+    matches = re.findall(r'(?<!God\'s Art )"[^\"\"]+"', ability_text)
     for match in matches:
         try:
             try:

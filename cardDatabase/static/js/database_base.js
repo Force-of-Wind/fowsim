@@ -130,6 +130,11 @@ function initDatabaseBase(){
         $('.help-tooltip.show').removeClass('show');
         $('.tooltip-popup').off('click', checkIfCloseTooltip);
     }
+
+    // clear all text/radio/select inputs from the advance search form
+    $('#clear-advanced-search').on('click', function(event){
+        document.getElementById("advanced-form").reset();
+    });
 }
 $(function(){
     initDatabaseBase();

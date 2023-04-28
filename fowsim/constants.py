@@ -84,7 +84,8 @@ CARD_TYPE_VALUES = [
     'Basic J-Ruler',
     'J-Ruler'
     'Spell:Chant-Standby',
-    'Resonator'
+    'Resonator',
+    'Sub-ruler'
 ]
 CARD_SUBTYPE_VALUES = [
     'J',
@@ -370,6 +371,7 @@ DATABASE_CARD_TYPE_GROUPS = [
             'Ruler',
             'J-Ruler',
             'Order',
+            'Sub-ruler',
             'Basic Ruler',
             'Basic J-Ruler',
         ]

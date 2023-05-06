@@ -369,6 +369,12 @@ def view_card(request, card_id=None):
     set_code, set_name = searchable_set_and_name(card.set_code)
     ctx['set_name'] = set_name
     ctx['set_code'] = set_code
+
+    # function to get prev and next cards, then set to ctx to be passed to view_card
+    prev_card, next_card = get_next_prev_cards(card_id, set_code)
+    ctx['prev_card'] = prev_card
+    ctx['next_card'] = next_card
+
     one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
     ctx['recent_decklists'] = DeckList.objects.filter(public=True, cards__card__in=([card] + list(card.other_sides)),
                                                       last_modified__gt=one_month_ago).distinct().order_by('-last_modified')
@@ -377,6 +383,72 @@ def view_card(request, card_id=None):
         ctx['recent_decklists'] = DeckList.objects.filter(public=True, cards__card__in=([card] + list(card.other_sides))).distinct().order_by('-last_modified')[:4]
 
     return render(request, 'cardDatabase/html/view_card.html', context=ctx)
+
+
+def get_next_prev_cards(card_id, set_code):
+    # get card number from card_i
+    card_id_int = card_id.split("-")[1]
+
+    # if card_id is a j ruler card, remove 'J' from end
+    if len(card_id_int) > 3:
+        card_id_int = card_id_int[:-1]
+
+    # get prev and next cards from set_next_card_id method
+    prev_card = set_next_card_id(int(card_id_int), int(-1), set_code, 3)
+    next_card = set_next_card_id(int(card_id_int), int(1), set_code, 3)
+
+    return prev_card, next_card
+
+
+# method accepts card id as an int, vary by int to increment/decrement card id value, current set code and how many
+# zeroes the final card should fill up to (this is always 3 for the main set card ids, but different for promos)
+
+
+def set_next_card_id(card_int, vary_by_int, set_code, fill_zeroes=None):
+    # create either the next/prev card id
+    current_card_id = card_int
+    current_card_id += vary_by_int
+    current_card_id = set_code + "-" + str(current_card_id).zfill(fill_zeroes)
+
+    # if the next/prev card id doesn't exist, means we are trying to find a card id that isn't in any set,
+    # so need to set the set code to the next/prev set if they exist
+    if not Card.objects.filter(card_id=current_card_id).exists():
+        index = 0
+        for current_set in CONS.SET_CHOICES:
+            # if current_set[0] equal to our set_code
+            if current_set[0] == set_code:
+                # decrement/increment index to get next set code
+                next_index = index - vary_by_int
+                # as long as next_index not length of list, or 0, we can set it
+                if not next_index >= len(CONS.SET_CHOICES) and not next_index == 0:
+                    new_set_code = CONS.SET_CHOICES[next_index][0]
+                    break
+            # else increment/decrement index to check the next set
+            index += 1
+
+        # check that new_set_code has been set, otherwise immediately return '', if new_set_code not set, it means we
+        # have reached the beginning or end of all cards in our card database
+        try:
+            new_set_code
+        except NameError:
+            print('new set code not set, indicating at beginning or end of entire card database')
+            return ''
+        else:
+            # new_card_id set to next set, currently we always set this to the first card in that set (but need to
+            # calculate this to be the first / last card in new set code
+            new_card_id = new_set_code + "-001"
+            if Card.objects.filter(card_id=new_card_id).exists():
+                return get_object_or_404(Card, card_id=new_card_id)
+            else:
+                # reaching here means we have reached a card id/card that doesn't exist at all, so return ''
+                return ''
+
+    else:
+        # reaching here means our current_card_id exists, so return it
+        # if Card.objects.filter(card_id=current_card_id).exists():
+        return get_object_or_404(Card, card_id=current_card_id)
+        # else:
+        #     return ''
 
 
 @login_required

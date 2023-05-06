@@ -327,6 +327,7 @@ def search_for_cards(request):
 
     ctx['basic_form'] = basic_form or SearchForm()
     ctx['advanced_form'] = advanced_form or AdvancedSearchForm()
+
     if 'cards' in ctx:
         paginator = Paginator(ctx['cards'], request.GET.get('num_per_page', 30))
         page_number = request.GET.get('page', 1)
@@ -434,9 +435,20 @@ def set_next_card_id(card_int, vary_by_int, set_code, fill_zeroes=None):
             print('new set code not set, indicating at beginning or end of entire card database')
             return ''
         else:
-            # new_card_id set to next set, currently we always set this to the first card in that set (but need to
-            # calculate this to be the first / last card in new set code
-            new_card_id = new_set_code + "-001"
+            # if we are setting the previous card (i.e. previous set), vary_by_int will be -1
+            if vary_by_int < 0:
+                # put new_set_code (string) into an array
+                set_code_arr = new_set_code.split()
+
+                # get all cards in the new set, the [0]th element card will be the LAST card in this set
+                all_cards_in_new_set = Card.objects.filter(get_set_query(set_code_arr)).order_by('-pk')
+
+                # set new card id to the last card's card id, in the PREVIOUS set
+                new_card_id = all_cards_in_new_set[0].card_id
+            else:
+                # set new card id to the NEXT set (where we start from the 1st card, XXX-001
+                new_card_id = new_set_code + "-001"
+
             if Card.objects.filter(card_id=new_card_id).exists():
                 return get_object_or_404(Card, card_id=new_card_id)
             else:

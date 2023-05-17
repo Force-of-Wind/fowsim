@@ -315,7 +315,8 @@ SET_DATA = {
                 {'code': 'NWE', 'name': 'A New World Emerges'},
                 {'code': 'TUS', 'name': 'The Underworld of Secrets'},
                 {'code': 'TWS', 'name': 'The War of the Suns'},
-                {'code': 'CMB', 'name': 'Crimson Moon\'s Battleground'}
+                {'code': 'CMB', 'name': 'Crimson Moon\'s Battleground'},
+                {'code': 'ABC', 'name': 'Arcana Battle Colosseum'}
             ]
         }
     ]
@@ -565,6 +566,7 @@ SETS_IN_ORDER = [
     'CMB',
     'H4 Buy a Box',
     'H4 Prerelease Party',
+    'ABC',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -724,7 +726,8 @@ KEYWORDS_CHOICES = [
     ('[Dragon Emblem]', 'Dragon Emblem'),
     ('[Force]', 'Force'),
     ('[Union Seven <Machine>]', 'Union Seven <Machine>'),
-    ('[Union Seven <New Twelve Olympian Gods>]', 'Union Seven <New Twelve Olympian Gods>')
+    ('[Union Seven <New Twelve Olympian Gods>]', 'Union Seven <New Twelve Olympian Gods>'),
+    ('[Convoke]', 'Convoke')
 ]
 
 

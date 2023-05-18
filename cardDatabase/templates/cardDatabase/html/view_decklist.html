@@ -45,7 +45,7 @@
                                     {% with ''|center:card.quantity as range %}
                                         {% for _ in range %}
                                             <div class="deck-card">
-                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}">
+                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}">
                                                 <div class="card-preview">
                                                     <div class="multi-hovered-img">
                                                         <img class="hover-card-img" src="{{ card.card.card_image.url }}">

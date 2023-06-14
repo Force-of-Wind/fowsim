@@ -1,0 +1,96 @@
+.site-header-logo a {
+    text-decoration:none;
+}
+
+.divinity-value-wrapper {
+    color:#0f5171
+}
+
+.cost-value-wrapper{
+    color:#0f5171
+}
+
+.basic-showing #basic-search-toggle {
+    border-bottom: 1px solid rgb(156, 155, 155) !important;
+}
+
+.advanced-showing #advanced-search-toggle {
+    border-bottom: 1px solid rgb(156, 155, 155) !important;
+}
+
+.tooltip-icon{
+    background-color: rgb(156, 155, 155);
+    border-radius: 10px;
+    opacity: 1;
+}
+
+.tooltip-content{
+    color: black;
+    opacity: 0.95;
+}
+
+.comments-container{
+    border-bottom: 1px solid rgb(156, 155, 155);
+}
+
+.decklist-name{
+    border-bottom: 1px solid rgb(156, 155, 155);
+}
+
+.deck-zone{
+    border-bottom: 1px solid rgb(156, 155, 155);
+}
+
+.deck-info a{
+    color: lightblue;
+}
+
+.deck-info a:hover{
+    color: mediumpurple;
+}
+
+.decklist-side-bar{
+    background-color: #191d21;
+}
+
+#advanced-form .form-submit-button{
+    background-color: #191d21;
+}
+
+body.hasHover #user-decklists tr:not(:first-child):hover{
+    opacity: 0.6;
+    background-color: unset;
+}
+
+.fow-dropdown-content {
+    background-color: #303134;
+}
+
+.fow-dropdown-content a{
+    color: white;
+}
+
+.fow-dropdown-content a:hover{
+    color: mediumpurple;
+    background-color: #303134;
+}
+
+input:checked + .selected-backgrounds {
+    outline: 3px solid mediumpurple;
+}
+.cost-img{
+    border: 1px solid black;
+    border-radius: 17px;
+}
+
+#decklist-container{
+    border-left: 1px solid rgb(156, 155, 155);
+}
+
+#user-decklists {
+    background-color: rgb(66,66,80, 0.6);
+}
+
+#header {
+    background-color: #351543;
+}

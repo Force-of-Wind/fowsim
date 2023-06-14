@@ -48,8 +48,8 @@ function setDarkModeCookie(set){
     else
     {
         document.cookie = 'darkmode=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        bootstrap.disabled = false;
         darkmodeBootstrap.disabled = true;
         darkmodeCss.disabled = true;
+        bootstrap.disabled = false;
     }
 }

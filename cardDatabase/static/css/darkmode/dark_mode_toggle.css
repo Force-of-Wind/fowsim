@@ -3,7 +3,7 @@
     height: 26px;
     border-radius: 18px;
     background-color: white;
-    position: absolute;
+    position: fixed;
     bottom: 5px;
     right: 5px;
     display: flex;
@@ -12,6 +12,7 @@
     padding-right: 5px;
     cursor: pointer;
     border: 1px solid black;
+    z-index: 51;
 
     .btn-circle {
         background-color: black;

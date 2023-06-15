@@ -31,6 +31,12 @@ input[type=number]{
     border: 1px solid white;
 }
 
+input[type=password]{
+    background-color: #303134;
+    color: white;
+    border: 1px solid white;
+}
+
 textarea {
     background-color: #303134;
     color: white;

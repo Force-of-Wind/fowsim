@@ -262,3 +262,7 @@ select{
 .dropdown-content li:hover, .dropdown-content li.active {
     background-color: #351543;
 }
+
+.select-dropdown li.optgroup span{
+    color:white;
+}

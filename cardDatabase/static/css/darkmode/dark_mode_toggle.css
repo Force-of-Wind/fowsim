@@ -5,33 +5,33 @@
     background-color: white;
     position: fixed;
     bottom: 5px;
-    right: 5px;
+    left: 5px;
     display: flex;
     align-items: center;
     padding-left: 5px;
     padding-right: 5px;
     cursor: pointer;
     border: 1px solid black;
-    z-index: 51;
+    z-index: 51;    
+}
 
-    .btn-circle {
-        background-color: black;
-        transform: translateX(0px);
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        transition: 300ms;
-    }
+.btn-holder .btn-circle {
+    background-color: black;
+    transform: translateX(0px);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    transition: 300ms;
+}
 
-    .active {
-        background-color: white;
-        transform: translateX(20px);
-        transition: 300ms;
-    }
+.btn-holder .active {
+    background-color: white;
+    transform: translateX(20px);
+    transition: 300ms;
+}
 
-    .checkbox {
-        display: none;
-    }
+.btn-holder .checkbox {
+    display: none;
 }
 
 .btn-holder-active {

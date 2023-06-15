@@ -91,7 +91,7 @@ textarea {
     opacity: 0.93;
 }
 
-.multi-hovered-img .hover-card-img.show-hover{
+.show-hover {
     border-radius: 27px;
     opacity: 0.93;
 }

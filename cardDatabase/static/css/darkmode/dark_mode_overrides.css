@@ -25,6 +25,12 @@ input[type=text]{
     border: 1px solid white;
 }
 
+input[type=number]{
+    background-color: #303134;
+    color: white;
+    border: 1px solid white;
+}
+
 textarea {
     background-color: #303134;
     color: white;

@@ -1,3 +1,36 @@
+button {
+    background-color: #303134;
+    color: white;
+    border: 1px solid;
+    border-radius: 7px;
+}
+
+input[type=submit]{
+    background-color: #303134;
+    color: white;
+    border: 1px solid;
+    border-radius: 7px;
+}
+
+input[type=button]{
+    background-color: #303134;
+    color: white;
+    border: 1px solid;
+    border-radius: 7px;
+}
+
+input[type=text]{
+    background-color: #303134;
+    color: white;
+    border: 1px solid white;
+}
+
+textarea {
+    background-color: #303134;
+    color: white;
+    border: 1px solid white;
+}
+
 .site-header-logo a {
     text-decoration:none;
 }
@@ -53,6 +86,43 @@
     background-color: #191d21;
 }
 
+.card-img {
+    border-radius: 17px;
+    opacity: 0.93;
+}
+
+.multi-hovered-img .hover-card-img.show-hover{
+    border-radius: 27px;
+    opacity: 0.93;
+}
+
+.card-left-half > .card-img {
+    border-radius: 23px;
+    opacity: 0.93;
+    padding-bottom: 0;
+}
+
+.pagination .disabled-choice {
+    color: white;
+    border-radius: 5px;
+    opacity: 0.7;
+}
+
+.pagination .pagination-page{
+    border-radius: 5px;
+    border:1px solid black;
+    background-color: #303134;
+}
+
+.pagination a{
+    border-radius: 5px;
+    background-color: #303134;
+}
+
+.pagination-ellipsis{
+    color: white;
+}
+
 #advanced-form .form-submit-button{
     background-color: #191d21;
 }
@@ -97,4 +167,49 @@ input:checked + .selected-backgrounds {
 
 #header {
     background-color: #351543;
+}
+
+.card-quantity-minus{
+    background-color: #351543;
+    color: white;
+}
+
+.card-quantity-plus{
+    background-color: #351543;
+    color: white;
+}
+
+.card-quantity-input {
+    border-top: 2px solid #351543;
+    border-bottom: 2px solid #351543;
+    border-left: 1px solid #351543;
+    border-right: 2px solid #351543;
+    background: #303134;
+    color: white;
+}
+
+.card-preview .view-in-another-tab {
+    border: 1px solid mediumpurple;
+    background-color: #303134;
+}
+
+.card-preview .view-in-another-tab a {
+    color: white;
+}
+
+.add-card-side-bar {
+    background-color: #303134;
+}
+
+.alertify-notifier .ajs-message.ajs-success {
+    background: mediumpurple;
+    color: white;
+}
+
+a.closebtn{
+    color: mediumpurple;
+}
+
+.darkmode-toggle-label{
+    color: white;
 }

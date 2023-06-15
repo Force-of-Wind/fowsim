@@ -97,6 +97,24 @@
                                     <div id="login">Login</div>
                                 </a>
                             {% endif %}
+                            {% block darkmode_toggle %}
+                                <div class="darkmode-toggle-wrapper">
+                                    <span class="darkmode-toggle-label">Light/Dark</span>    
+                                    {% if request.COOKIES.darkmode is not None %}
+                                        <div id="darkModeToggle" class="btn-holder btn-holder-active">                                        
+                                            <div class="btn-circle active"></div>
+                                            <input type="checkbox" class="checkbox">
+                                        </div>
+                                    {% else %}
+                                        <div id="darkModeToggle" class="btn-holder">
+                                            <div class="btn-circle"></div>
+                                            <input type="checkbox" class="checkbox">
+                                        </div>
+                                    {% endif %}
+                                    {# Needs to be loaded last for element to exist in dom #}
+                                </div>
+                                    <script src="{% static 'js/darkmode/dark_mode_toggle.js' %}" type="text/javascript"></script>
+                                {% endblock %}
                         </div>
                     </div>
                 </div>
@@ -104,21 +122,6 @@
         {% endblock %}
         <div id="base-body">
             {% block body %}
-            {% endblock %}
-            {% block darkmode_toggle %}
-                {% if request.COOKIES.darkmode is not None %}
-                <div id="darkModeToggle" class="btn-holder btn-holder-active">
-                    <div class="btn-circle active"></div>
-                    <input type="checkbox" class="checkbox">
-                </div>
-                {% else %}
-                <div id="darkModeToggle" class="btn-holder">
-                    <div class="btn-circle"></div>
-                    <input type="checkbox" class="checkbox">
-                </div>
-                {% endif %}
-                {# Needs to be loaded last for element to exist in dom #}
-                <script src="{% static 'js/darkmode/dark_mode_toggle.js' %}" type="text/javascript"></script>
             {% endblock %}
         </div>
         </body>

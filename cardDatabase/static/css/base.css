@@ -138,3 +138,7 @@ body{
 b{
     font-weight: bold;
 }
+
+.darkmode-toggle-label{
+    color: black;
+}

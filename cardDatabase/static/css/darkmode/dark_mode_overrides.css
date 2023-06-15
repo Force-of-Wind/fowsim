@@ -219,3 +219,7 @@ a.closebtn{
 .darkmode-toggle-label{
     color: white;
 }
+
+.select-wrapper .search-wrap .md-form input{
+    color:black;
+}

@@ -232,10 +232,6 @@ a.closebtn{
     color: white;
 }
 
-.select-wrapper .search-wrap .md-form input{
-    color:black;
-}
-
 .register-title, .register-form-container {
     background-color: #303134;
     color: white;
@@ -251,4 +247,18 @@ a.closebtn{
     border-top: 2px solid #351543;
     border-left: 2px solid #351543;
     border-right: 2px solid #351543;
+}
+
+select{
+    color: white;
+    background-color: #303134;
+}
+
+.select-wrapper .select-dropdown {
+    color: white;
+    background-color: #303134;
+}
+
+.dropdown-content li:hover, .dropdown-content li.active {
+    background-color: #351543;
 }

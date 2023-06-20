@@ -127,7 +127,7 @@ textarea {
 }
 
 .pagination .current-page{
-    background: #351543;
+    background: #351543 !important;
 }
 
 .pagination .pagination-page{

@@ -126,6 +126,10 @@ textarea {
     opacity: 0.7;
 }
 
+.pagination .current-page{
+    background: #351543;
+}
+
 .pagination .pagination-page{
     border-radius: 5px;
     border:1px solid black;

@@ -109,15 +109,19 @@ textarea {
     opacity: 0.93;
 }
 
-.show-hover {
+img.hover-card-img.show-hover  {
     border-radius: 27px;
-    opacity: 0.93;
 }
+
 
 .card-left-half > .card-img {
     border-radius: 23px;
     opacity: 0.93;
     padding-bottom: 0;
+}
+
+img.deck-card-img{
+    border-radius: 4px;
 }
 
 .pagination .disabled-choice {

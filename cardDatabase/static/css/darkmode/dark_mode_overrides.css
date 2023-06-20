@@ -126,14 +126,14 @@ textarea {
     opacity: 0.7;
 }
 
-.pagination .current-page{
-    background: #351543 !important;
-}
-
 .pagination .pagination-page{
     border-radius: 5px;
     border:1px solid black;
     background-color: #303134;
+}
+
+.pagination-page.current-page{
+    background: #351543;
 }
 
 .pagination a{

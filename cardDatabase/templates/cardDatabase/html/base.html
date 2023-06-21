@@ -16,7 +16,7 @@
                 <title>{% block title %}Force of Wind{% block subtitle %} - Database{% endblock %}{% endblock %}</title>
                 {% block favicon %}<link rel="shortcut icon" type="image/png" href="{% static 'img/wind.png' %}"/>{% endblock %}
                 {% block js %}
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
                             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
                             crossorigin="anonymous"></script>
                     <script type="text/javascript">
@@ -28,17 +28,35 @@
                     </script>
                     <script src="{% static 'js/base.js' %}" type="text/javascript"></script>
                 {% endblock %}
+                {% if request.COOKIES.darkmode is not None %}
+                    {% block bootstrap_darkmode %}
+                        <link rel="stylesheet" id="bootstrapDarkMode" href="{% static 'css/bootstrap/bootstrap_dark.css' %}">
+                        <link rel="stylesheet" disabled id="bootstrap" href="{% static 'css/bootstrap/bootstrap.css' %}">
+                    {% endblock %}
+                {% else %}
+                    {% block bootstrap %}
+                        <link rel="stylesheet" disabled id="bootstrapDarkMode" href="{% static 'css/bootstrap/bootstrap_dark.css' %}">
+                        <link rel="stylesheet" id="bootstrap" href="{% static 'css/bootstrap/bootstrap.css' %}">
+                    {% endblock %}
+                {% endif %}
                 {% block css %}
-                    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.css' %}">
                     <link rel="stylesheet" href="{% static 'css/bootstrap/mdb.css' %}">
                     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+                    <link rel="stylesheet" href="{% static 'css/darkmode/dark_mode_toggle.css' %}">
                 {% endblock %}
                 {% block mobilecss %} {# Comes after desktop css so it can override on matching selectors #}
                     {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
                         <link rel="stylesheet" href="{% static 'css/base_mobile.css' %}">
                     {% endif %}
                 {% endblock %}
-
+                {% block darkmode_css %} {# Comes after all other css so it can override for dark mode #}
+                    {% if request.COOKIES.darkmode is not None %}
+                        <link rel="stylesheet" id="darkModeOverride" href="{% static 'css/darkmode/dark_mode_overrides.css' %}">
+                    {% else %}
+                        <link rel="stylesheet" disabled id="darkModeOverride" href="{% static 'css/darkmode/dark_mode_overrides.css' %}">
+                    {% endif %}        
+                {% endblock %}
+                
             {% endblock %}
         </head>
         <body>
@@ -79,6 +97,24 @@
                                     <div id="login">Login</div>
                                 </a>
                             {% endif %}
+                            {% block darkmode_toggle %}
+                                <div class="darkmode-toggle-wrapper">
+                                    <span class="darkmode-toggle-label">Light/Dark</span>    
+                                    {% if request.COOKIES.darkmode is not None %}
+                                        <div id="darkModeToggle" class="btn-holder btn-holder-active">                                        
+                                            <div class="btn-circle active"></div>
+                                            <input type="checkbox" class="checkbox">
+                                        </div>
+                                    {% else %}
+                                        <div id="darkModeToggle" class="btn-holder">
+                                            <div class="btn-circle"></div>
+                                            <input type="checkbox" class="checkbox">
+                                        </div>
+                                    {% endif %}
+                                    {# Needs to be loaded last for element to exist in dom #}
+                                </div>
+                                    <script src="{% static 'js/darkmode/dark_mode_toggle.js' %}" type="text/javascript"></script>
+                                {% endblock %}
                         </div>
                     </div>
                 </div>

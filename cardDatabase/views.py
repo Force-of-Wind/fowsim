@@ -398,9 +398,11 @@ def get_next_prev_cards(card_id, set_code):
         card_id_int = card_id_int[:3]
 
     # get prev and next cards from set_next_card_id method
-    prev_card = set_next_card_id(int(card_id_int), int(-1), set_code, fill_zeroes=3)
-    next_card = set_next_card_id(int(card_id_int), int(1), set_code, fill_zeroes=3)
-
+    try:
+        prev_card = set_next_card_id(int(card_id_int), -1, set_code, fill_zeroes=3)
+        next_card = set_next_card_id(int(card_id_int), 1, set_code, fill_zeroes=3)
+    except ValueError: # Other unusual set codes like NWE-SEC4
+        return None, None
     return prev_card, next_card
 
 

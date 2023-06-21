@@ -278,3 +278,21 @@ select{
 .cost-img:not(:last-child) {
     padding-right: 0px;
 }
+
+.pick-title{
+    background-color: #303134;
+}
+
+.pick-titles .pick-title.active-pick{
+    background-color: #351543;
+    color: white;
+}
+
+.bubble-text{
+    background-color: #303134;
+    border-color: white;
+}
+
+.fow-dropdown:hover .fow-dropbtn {
+    background-color: #2f073f;
+}

@@ -30,19 +30,19 @@
                 {% endblock %}
                 {% if request.COOKIES.darkmode is not None %}
                     {% block bootstrap_darkmode %}
-                        <link rel="stylesheet" id="bootstrapDarkMode" href="{% static 'css\bootstrap\bootstrap_dark.css' %}">
+                        <link rel="stylesheet" id="bootstrapDarkMode" href="{% static 'css/bootstrap/bootstrap_dark.css' %}">
                         <link rel="stylesheet" disabled id="bootstrap" href="{% static 'css/bootstrap/bootstrap.css' %}">
                     {% endblock %}
                 {% else %}
                     {% block bootstrap %}
-                        <link rel="stylesheet" disabled id="bootstrapDarkMode" href="{% static 'css\bootstrap\bootstrap_dark.css' %}">
+                        <link rel="stylesheet" disabled id="bootstrapDarkMode" href="{% static 'css/bootstrap/bootstrap_dark.css' %}">
                         <link rel="stylesheet" id="bootstrap" href="{% static 'css/bootstrap/bootstrap.css' %}">
                     {% endblock %}
                 {% endif %}
                 {% block css %}
                     <link rel="stylesheet" href="{% static 'css/bootstrap/mdb.css' %}">
                     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-                    <link rel="stylesheet" href="{% static 'css\darkmode\dark_mode_toggle.css' %}">
+                    <link rel="stylesheet" href="{% static 'css/darkmode/dark_mode_toggle.css' %}">
                 {% endblock %}
                 {% block mobilecss %} {# Comes after desktop css so it can override on matching selectors #}
                     {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
@@ -51,9 +51,9 @@
                 {% endblock %}
                 {% block darkmode_css %} {# Comes after all other css so it can override for dark mode #}
                     {% if request.COOKIES.darkmode is not None %}
-                        <link rel="stylesheet" id="darkModeOverride" href="{% static 'css\darkmode\dark_mode_overrides.css' %}">
+                        <link rel="stylesheet" id="darkModeOverride" href="{% static 'css/darkmode/dark_mode_overrides.css' %}">
                     {% else %}
-                        <link rel="stylesheet" disabled id="darkModeOverride" href="{% static 'css\darkmode\dark_mode_overrides.css' %}">
+                        <link rel="stylesheet" disabled id="darkModeOverride" href="{% static 'css/darkmode/dark_mode_overrides.css' %}">
                     {% endif %}        
                 {% endblock %}
                 

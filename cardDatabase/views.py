@@ -371,7 +371,6 @@ def view_card(request, card_id=None):
     ctx['set_name'] = set_name
     ctx['set_code'] = set_code
 
-    # function to get prev and next cards, then set to ctx to be passed to view_card
     prev_card, next_card = get_next_prev_cards(card_id, set_code)
     ctx['prev_card'] = prev_card
     ctx['next_card'] = next_card
@@ -387,28 +386,31 @@ def view_card(request, card_id=None):
 
 
 def get_next_prev_cards(card_id, set_code):
-    # get card number from card_i
-    card_id_int = card_id.split("-")[1]
+    # get card number from card_id
+    try:
+        card_id_int = card_id.split("-")[1]
+    except IndexError:
+        # Unusual set code like 'H2 Buy a Box'
+        return None, None
 
-    # if card_id is a j ruler card, remove 'J' from end
+    # if card_id is a dual-sided card, just take the integer part (3 digits)
     if len(card_id_int) > 3:
-        card_id_int = card_id_int[:-1]
+        card_id_int = card_id_int[:3]
 
     # get prev and next cards from set_next_card_id method
-    prev_card = set_next_card_id(int(card_id_int), int(-1), set_code, 3)
-    next_card = set_next_card_id(int(card_id_int), int(1), set_code, 3)
+    prev_card = set_next_card_id(int(card_id_int), int(-1), set_code, fill_zeroes=3)
+    next_card = set_next_card_id(int(card_id_int), int(1), set_code, fill_zeroes=3)
 
     return prev_card, next_card
 
 
-# method accepts card id as an int, vary by int to increment/decrement card id value, current set code and how many
+# method accepts card id as an int, offset to increment/decrement card id value, current set code and how many
 # zeroes the final card should fill up to (this is always 3 for the main set card ids, but different for promos)
 
 
-def set_next_card_id(card_int, vary_by_int, set_code, fill_zeroes=None):
+def set_next_card_id(card_int, offset, set_code, fill_zeroes=None):
     # create either the next/prev card id
-    current_card_id = card_int
-    current_card_id += vary_by_int
+    current_card_id = card_int + offset
     current_card_id = set_code + "-" + str(current_card_id).zfill(fill_zeroes)
 
     # if the next/prev card id doesn't exist, means we are trying to find a card id that isn't in any set,
@@ -419,7 +421,7 @@ def set_next_card_id(card_int, vary_by_int, set_code, fill_zeroes=None):
             # if current_set[0] equal to our set_code
             if current_set[0] == set_code:
                 # decrement/increment index to get next set code
-                next_index = index - vary_by_int
+                next_index = index - offset
                 # as long as next_index not length of list, or 0, we can set it
                 if not next_index >= len(CONS.SET_CHOICES) and not next_index == 0:
                     new_set_code = CONS.SET_CHOICES[next_index][0]
@@ -429,14 +431,9 @@ def set_next_card_id(card_int, vary_by_int, set_code, fill_zeroes=None):
 
         # check that new_set_code has been set, otherwise immediately return '', if new_set_code not set, it means we
         # have reached the beginning or end of all cards in our card database
-        try:
-            new_set_code
-        except NameError:
-            print('new set code not set, indicating at beginning or end of entire card database')
-            return ''
-        else:
-            # if we are setting the previous card (i.e. previous set), vary_by_int will be -1
-            if vary_by_int < 0:
+        if new_set_code:
+            # if we are setting the previous card (i.e. previous set), offset will be -1
+            if offset < 0:
                 # put new_set_code (string) into an array
                 set_code_arr = new_set_code.split()
 
@@ -452,8 +449,10 @@ def set_next_card_id(card_int, vary_by_int, set_code, fill_zeroes=None):
             if Card.objects.filter(card_id=new_card_id).exists():
                 return get_object_or_404(Card, card_id=new_card_id)
             else:
-                # reaching here means we have reached a card id/card that doesn't exist at all, so return ''
-                return ''
+                # card id/card that doesn't exist
+                return None
+        else:  # no new_set_code
+            return None
 
     else:
         # reaching here means our current_card_id exists, so return it

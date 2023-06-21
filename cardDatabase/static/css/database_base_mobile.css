@@ -38,4 +38,5 @@
     overflow: auto;
     white-space: nowrap;
     display: inline-block;
+    max-width: -webkit-fill-available;
 }

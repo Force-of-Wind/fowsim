@@ -231,3 +231,6 @@ if DEBUG:
     REDDIT_BOT_API_KEY = 'botkey'
 else:
     REDDIT_BOT_API_KEY = os.environ.get('REDDIT_BOT_API_KEY')
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True

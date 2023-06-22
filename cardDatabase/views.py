@@ -438,11 +438,11 @@ def set_next_card_id(card_int, offset, set_code, fill_zeroes=None):
                 set_code_arr = new_set_code.split()
 
                 # get all cards in the new set, the [0]th element card will be the LAST card in this set
-                all_cards_in_new_set = Card.objects.filter(get_set_query(set_code_arr)).order_by('-pk')
+                all_cards_in_new_set = sort_cards(Card.objects.filter(get_set_query(set_code_arr)), False, True)
 
                 # set new card id to the last card's card id, in the PREVIOUS set
                 new_card_id = None
-                if all_cards_in_new_set.exists():
+                if all_cards_in_new_set:
                     new_card_id = all_cards_in_new_set[0].card_id
             else:
                 # set new card id to the NEXT set (where we start from the 1st card, XXX-001

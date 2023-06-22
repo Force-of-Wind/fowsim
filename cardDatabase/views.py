@@ -418,6 +418,10 @@ def set_next_card_id(card_int, offset, set_code, fill_zeroes=None):
     # if the next/prev card id doesn't exist, means we are trying to find a card id that isn't in any set,
     # so need to set the set code to the next/prev set if they exist
     if not Card.objects.filter(card_id=current_card_id).exists():
+        if CONS.SET_CHOICES[0][0] == set_code and offset > 0:  # This is the last set, don't show a next
+            return None
+
+        new_set_code = False
         index = 0
         for current_set in CONS.SET_CHOICES:
             # if current_set[0] equal to our set_code
@@ -426,7 +430,10 @@ def set_next_card_id(card_int, offset, set_code, fill_zeroes=None):
                 next_index = index - offset
                 # as long as next_index not length of list, or 0, we can set it
                 if not next_index >= len(CONS.SET_CHOICES) and not next_index == 0:
-                    new_set_code = CONS.SET_CHOICES[next_index][0]
+                    try:
+                        new_set_code = CONS.SET_CHOICES[next_index][0]
+                    except IndexError:  # Last set, there is no next
+                        pass
                     break
             # else increment/decrement index to check the next set
             index += 1
@@ -443,12 +450,14 @@ def set_next_card_id(card_int, offset, set_code, fill_zeroes=None):
                 all_cards_in_new_set = Card.objects.filter(get_set_query(set_code_arr)).order_by('-pk')
 
                 # set new card id to the last card's card id, in the PREVIOUS set
-                new_card_id = all_cards_in_new_set[0].card_id
+                new_card_id = None
+                if all_cards_in_new_set.exists():
+                    new_card_id = all_cards_in_new_set[0].card_id
             else:
                 # set new card id to the NEXT set (where we start from the 1st card, XXX-001
                 new_card_id = new_set_code + "-001"
 
-            if Card.objects.filter(card_id=new_card_id).exists():
+            if new_card_id and Card.objects.filter(card_id=new_card_id).exists():
                 return get_object_or_404(Card, card_id=new_card_id)
             else:
                 # card id/card that doesn't exist

@@ -1,3 +1,34 @@
+ /* header */
+
+#header {
+    background-color: #351543;
+}
+
+.site-header-logo a {
+    text-decoration:none;
+}
+
+.fow-dropdown-content {
+    background-color: #303134;
+}
+
+.fow-dropdown-content a{
+    color: white;
+}
+
+.fow-dropdown-content a:hover{
+    color: mediumpurple;
+    background-color: #303134;
+}
+
+.fow-dropdown:hover .fow-dropbtn {
+    background-color: #2f073f;
+}
+
+/* /header */
+
+/* forms */
+
 button {
     background-color: #303134;
     color: white;
@@ -49,9 +80,9 @@ textarea {
     border: 1px solid white;
 }
 
-.site-header-logo a {
-    text-decoration:none;
-}
+/* /forms */
+
+/* search */
 
 .divinity-value-wrapper {
     color:#0f5171
@@ -78,50 +109,6 @@ textarea {
 .tooltip-content{
     color: black;
     opacity: 0.95;
-}
-
-.comments-container{
-    border-bottom: 1px solid rgb(156, 155, 155);
-}
-
-.decklist-name{
-    border-bottom: 1px solid rgb(156, 155, 155);
-}
-
-.deck-zone{
-    border-bottom: 1px solid rgb(156, 155, 155);
-}
-
-.deck-info a{
-    color: lightblue;
-}
-
-.deck-info a:hover{
-    color: mediumpurple;
-}
-
-.decklist-side-bar{
-    background-color: #191d21;
-}
-
-.card-img {
-    border-radius: 17px;
-    opacity: 0.93;
-}
-
-img.hover-card-img.show-hover  {
-    border-radius: 27px;
-}
-
-
-.card-left-half > .card-img {
-    border-radius: 23px;
-    opacity: 0.93;
-    padding-bottom: 0;
-}
-
-img.deck-card-img{
-    border-radius: 4px;
 }
 
 .pagination .disabled-choice {
@@ -158,41 +145,88 @@ body.hasHover #user-decklists tr:not(:first-child):hover{
     background-color: unset;
 }
 
-.fow-dropdown-content {
-    background-color: #303134;
-}
-
-.fow-dropdown-content a{
-    color: white;
-}
-
-.fow-dropdown-content a:hover{
-    color: mediumpurple;
-    background-color: #303134;
-}
-
 input:checked + .selected-backgrounds {
     outline: 3px solid mediumpurple;
 }
+
+select{
+    color: white;
+    background-color: #303134;
+}
+
+.select-wrapper .select-dropdown {
+    color: white;
+    background-color: #303134;
+}
+
+.dropdown-content li:hover, .dropdown-content li.active {
+    background-color: #351543;
+}
+
+.select-dropdown li.optgroup span{
+    color:white;
+}
+
+.bubble-text{
+    background-color: #303134;
+    border-color: white;
+}
+
+/* /search */
+
+/* deck builder */
+
+.comments-container{
+    border-bottom: 1px solid rgb(156, 155, 155);
+}
+
+.decklist-name{
+    border-bottom: 1px solid rgb(156, 155, 155);
+}
+
+.deck-zone{
+    border-bottom: 1px solid rgb(156, 155, 155);
+}
+
+.deck-info a{
+    color: lightblue;
+}
+
+.deck-info a:hover{
+    color: white;
+}
+
+.decklist-side-bar{
+    background-color: #191d21;
+}
+
+.card-img {
+    border-radius: 17px;
+    opacity: 0.93;
+}
+
+img.hover-card-img.show-hover  {
+    border-radius: 27px;
+}
+
+
+.card-left-half > .card-img {
+    border-radius: 23px;
+    opacity: 0.93;
+    padding-bottom: 0;
+}
+
+img.deck-card-img{
+    border-radius: 4px;
+}
+
 .cost-img{
     border: 1px solid black;
     border-radius: 17px;
 }
 
-.registration-container{
-    color:black
-}
-
-#decklist-container{
-    border-left: 1px solid rgb(156, 155, 155);
-}
-
-#user-decklists {
-    background-color: rgb(66,66,80, 0.6);
-}
-
-#header {
-    background-color: #351543;
+.cost-img:not(:last-child) {
+    padding-right: 0px;
 }
 
 .card-quantity-minus{
@@ -236,8 +270,47 @@ a.closebtn{
     color: mediumpurple;
 }
 
-.darkmode-toggle-label{
-    color: white;
+/* /deck builder */
+
+/* deck overview */
+
+#decklist-container{
+    border-left: 1px solid rgb(156, 155, 155);
+}
+
+#user-decklists {
+    background-color: rgb(66,66,80, 0.6);
+}
+
+.deck-actions > div:hover {
+    -webkit-filter: opacity(.2) drop-shadow(0 0 0 white);
+    filter: opacity(.2) drop-shadow(0 0 0 white);
+}
+
+body.hasHover #user-decklists tr:not(:first-child):hover{
+    opacity: 1;
+    background-color: #351543;
+}
+
+.edit-icon {
+    filter: invert(1);
+}
+.view-icon{
+    filter: invert(1);
+}
+.share-icon{
+    filter: invert(1);
+}
+.delete-icon{
+    filter: invert(1);
+}
+
+/* /deck overview */
+
+/* registration */
+
+.registration-container{
+    color:black
 }
 
 .register-title, .register-form-container {
@@ -257,24 +330,25 @@ a.closebtn{
     border-right: 2px solid #351543;
 }
 
-select{
+/* /registration */
+
+/* darkmode toggle */
+
+.darkmode-toggle-label{
     color: white;
+}
+
+/* /darkmode toggle */
+
+/* metrics */
+
+.pick-title{
     background-color: #303134;
 }
 
-.select-wrapper .select-dropdown {
-    color: white;
-    background-color: #303134;
-}
-
-.dropdown-content li:hover, .dropdown-content li.active {
+.pick-titles .pick-title.active-pick{
     background-color: #351543;
+    color: white;
 }
 
-.select-dropdown li.optgroup span{
-    color:white;
-}
-
-.cost-img:not(:last-child) {
-    padding-right: 0px;
-}
+/* /metrics */

@@ -1,73 +1,81 @@
-const darkmodeCookie = 'darkmode=true';
-const cookiePath = 'path=/';
+var darkModeButton = $('#darkModeToggle');
+darkModeButton.on('click', toggleButton);
 
-let btn = document.querySelectorAll('#darkModeToggle')[0];
+function readThemeCookie() {
+    let value = $.cookie('theme');
 
-if(btn){
-    btn.addEventListener('click', function(){
-        toggleButton(this)
-    });
+    // If the cookie is undefined, then default it to the browser's preferred theme.
+    // If the browser has no preference, the default is light.
+    if (!value) {    
+        let preferredTheme = getBrowserPreferredTheme();
+        if (preferredTheme == 'dark') {
+            value = 'dark';
+        }
+        else {
+            value = 'light';
+        }
+        setThemeCookie(value);
+    }
 
-    function toggleButton (btn) {
-        let allNodes = btn.children;
-    
-        for (j = 0; j < allNodes.length; j++) {
-            let node = allNodes[j];
-            let isActive;
-    
-            if (node.classList.contains('btn-circle')) {
-                if (!node.classList.contains('active')) {
-                    node.classList.add('active');
-                    isActive = true;
-                } else {
-                    node.classList.remove('active');
-                    isActive = false;
-                }
-    
-                if (isActive && !btn.classList.contains('btn-holder-active')) {
-                    btn.classList.add('btn-holder-active');
-                    setDarkModeCookie(true);
-                } else if(btn.classList.contains('btn-holder-active')) {
-                    btn.classList.remove('btn-holder-active');
-                    setDarkModeCookie(false);
-                }
-            }
-    
-            if (node.classList.contains('checkbox')) {
-                if (isActive) {
-                    node.checked = true;
-                } else {
-                    node.checked = false;
-                }
-            }
-        }
-    }
-    function setDarkModeCookie(set){
-        let bootstrap = document.getElementById('bootstrap')
-        let darkmodeBootstrap = document.getElementById('bootstrapDarkMode')
-        let darkmodeCss = document.getElementById('darkModeOverride')
-        if(set){
-            document.cookie = `${darkmodeCookie};${cookiePath}`;
-            bootstrap.disabled = true;
-            darkmodeBootstrap.disabled = false;
-            darkmodeCss.disabled = false;
-        }
-        else
-        {
-            document.cookie = `${darkmodeCookie};${cookiePath}; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
-            darkmodeBootstrap.disabled = true;
-            darkmodeCss.disabled = true;
-            bootstrap.disabled = false;
-        }
-    }
-    
-    function checkBrowserDarkMode(){
-        if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && document.cookie.search(darkmodeCookie) === -1)
-            toggleButton(btn);
-    
-        if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches && document.cookie.search(darkmodeCookie) === 0)
-            toggleButton(btn);
-    }
-    
-    checkBrowserDarkMode();
+    return value;
 }
+
+function setThemeCookie(theme) {
+    $.cookie('theme', theme, { path: '/' });
+}
+
+function getBrowserPreferredTheme() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        return 'dark';
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)
+        return 'light';
+
+    return 'none';
+}
+
+function toggleButton() {
+    let currentTheme = readThemeCookie();
+    if (currentTheme == 'dark') {
+        setThemeCookie('light');
+    }
+    else {
+        setThemeCookie('dark');
+    }
+    checkAndApplyTheme();
+}
+
+function setButtonState(selected) {
+    if (selected) {
+        darkModeButton.addClass('btn-holder-active');
+        darkModeButton.children('.btn-circle').eq(0).addClass('active');
+        darkModeButton.children('.checkbox').eq(0).checked = true;
+    }
+    else {
+        darkModeButton.removeClass('btn-holder-active');
+        darkModeButton.children('.btn-circle').eq(0).removeClass('active');
+        darkModeButton.children('.checkbox').eq(0).checked = false;
+    }
+}
+
+function setSiteTheme(theme) {
+    if (theme == 'dark') {
+        $('#bootstrap').prop('disabled', true);
+        $('#bootstrapDarkMode').prop('disabled', false);
+        $('#darkModeOverride').prop('disabled', false);
+        setButtonState(true);
+    }
+    else {
+        $('#bootstrapDarkMode').prop('disabled', true);
+        $('#darkModeOverride').prop('disabled', true);
+        $('#bootstrap').prop('disabled', false);
+        setButtonState(false);
+    }
+}
+
+function checkAndApplyTheme() {
+    let theme = readThemeCookie();
+    setSiteTheme(theme)
+}
+
+checkAndApplyTheme();

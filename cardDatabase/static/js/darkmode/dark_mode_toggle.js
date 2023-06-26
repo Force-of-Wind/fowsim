@@ -75,7 +75,7 @@ function setSiteTheme(theme) {
 
 function checkAndApplyTheme() {
     let theme = readThemeCookie();
-    setSiteTheme(theme)
+    setSiteTheme(theme);
 }
 
 checkAndApplyTheme();

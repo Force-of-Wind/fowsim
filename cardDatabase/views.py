@@ -418,7 +418,7 @@ def set_next_card_id(card_int, offset, set_code, fill_zeroes=None):
     # if the next/prev card id doesn't exist, means we are trying to find a card id that isn't in any set,
     # so need to set the set code to the next/prev set if they exist
     if not Card.objects.filter(card_id=current_card_id).exists():
-        current_set_index = next(index for index, elem in enumerate(CONS.SET_CHOICES) if elem[0] == set_code)
+        current_set_index = next((index for index, elem in enumerate(CONS.SET_CHOICES) if elem[0] == set_code), 0)
 
         if current_set_index == 0 and offset > 0:  # This is the last set, don't show a next
             return None

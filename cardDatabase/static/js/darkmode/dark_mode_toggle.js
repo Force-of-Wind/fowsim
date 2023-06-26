@@ -3,11 +3,12 @@ darkModeButton.on('click', toggleButton);
 
 function readThemeCookie() {
     let value = $.cookie('theme');
+    let previousSystemPreference = $.cookie('browserPreferredTheme');
+    let preferredTheme = getBrowserPreferredTheme();
 
     // If the cookie is undefined, then default it to the browser's preferred theme.
     // If the browser has no preference, the default is light.
-    if (!value) {    
-        let preferredTheme = getBrowserPreferredTheme();
+    if (!value || previousSystemPreference != preferredTheme) {
         if (preferredTheme == 'dark') {
             value = 'dark';
         }
@@ -22,6 +23,7 @@ function readThemeCookie() {
 
 function setThemeCookie(theme) {
     $.cookie('theme', theme, { path: '/' });
+    $.cookie('browserPreferredTheme', getBrowserPreferredTheme(), { path: '/' });
 }
 
 function getBrowserPreferredTheme() {

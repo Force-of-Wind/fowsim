@@ -58,7 +58,7 @@
                             </td>
                         {% endif %}
                         {% if is_owner and not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
-                            <td>{{ decklist.last_modified }}</td>
+                            <td data-epoch="{% datetime_to_timestamp decklist.last_modified %}" class="local-date-time"></td>
                         {% endif %}
                         {% if is_owner %}
                             {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}

@@ -38,4 +38,12 @@ $(function() {
    if (!FOWDB_IS_MOBILE){
        $('body').addClass('hasHover');
    }
+
+   //localize date times
+   $('.local-date-time').each(function() {
+        //use epoch to increase time
+        var dateTime = new Date(0); 
+        dateTime.setUTCSeconds($(this).data('epoch'));
+        $(this).text(dateTime.toLocaleString());
+    })
 });

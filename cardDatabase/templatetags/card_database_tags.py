@@ -67,6 +67,11 @@ def attribute_to_img_src(attr):
     return mark_safe(static('img/costs/' + WILL_TYPE_TO_FILENAMES[str(attr)]))
 
 
+@register.simple_tag
+def datetime_to_timestamp(datetime):
+    return datetime.timestamp()
+
+
 def make_bubble_html(text):
     content = text[1:-1]  # Strip '[]' from the ends
     return '<div class="bubble-text">%s</div>' % content

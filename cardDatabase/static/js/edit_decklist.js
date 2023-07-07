@@ -258,7 +258,7 @@ $(function() {
     }
 
     function createCardHtml(name, img_urls, card_id){
-        return `<div class="deck-zone-card" data-card-id="${card_id}" draggable="true">
+        return `<div class="deck-zone-card" data-card-id="${card_id}" data-card-img-urls="${img_urls}" data-card-name="${name}" draggable="true">
                     <div class="card-quantity">
                         <a href="#" class="card-quantity-minus">
                             <span>-</span>

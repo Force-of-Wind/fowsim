@@ -8,6 +8,7 @@
     {{ block.super }}
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
     <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    <link rel="stylesheet" href="{% static 'css/preview_decklist.css' %}">
     {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
         <link rel="stylesheet" href="{% static 'css/search_mobile.css' %}">
     {% endif %}
@@ -21,13 +22,23 @@
     {{ block.super }}
     <script src="{% static 'js/search.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/edit_decklist.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/preview_decklist.js' %}" type="text/javascript"></script>    
 {% endblock %}
 
 {% block body %}
-    <div id="database-container">
+    <div id="database-container" class="active-display">
         {% block database %}
             {{ block.super }}
         {% endblock %}
+    </div>
+    <div id="preview-decklist-container" class="hidden-display">        
+        <div class="preview-deck-view-container">
+            <div id="image-container">
+                
+            </div>
+            <button id="refresh-preview" class="refresh-preview-btn">Refresh</button>
+        </div>
+        
     </div>
     <div id="decklist-container">
         {% csrf_token %}
@@ -48,7 +59,7 @@
                     <div class="deck-zone-cards">
                         {% for card in decklist_cards %}
                             {% if card.zone == zone %}
-                                <div class="deck-zone-card" data-card-id="{{ card.card.card_id }}" draggable="true">
+                                <div class="deck-zone-card" data-card-id="{{ card.card.card_id }}" data-card-img-urls="{{ card.card.card_image.url }}" data-card-name="{{card.card.name}}" draggable="true">
                                     <div class="card-quantity">
                                         <a href="#/" class="card-quantity-minus"><span>-</span></a>
                                         <input type="number" class="card-quantity-input" value="{{ card.quantity }}">
@@ -76,9 +87,10 @@
         <div id="deck-settings">
             <div class="settings-title">Settings</div>
             <div class="settings-container">
-                <input id="public-input" type="checkbox" {% if decklist.public %}checked{% endif %}>
-                <label for="public-input">Public</label>
+                <input id="public-input" type="checkbox" {% if decklist.public %}checked{% endif %}>                
+                <label for="public-input">Public</label>                
             </div>
+            <button id="preview-decklist">Toggle Decklist Preview</button>
         </div>
         <div class="deck-actions">
             <button id="save-deck-button" type="button">Save</button>

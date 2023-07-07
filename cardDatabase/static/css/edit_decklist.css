@@ -273,3 +273,7 @@
     opacity: 1;
     pointer-events: all;
 }
+
+.hidden-display {
+    display: none !important;
+}

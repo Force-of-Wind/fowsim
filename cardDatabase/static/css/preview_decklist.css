@@ -41,3 +41,8 @@
 .refresh-preview-btn{
     margin-top: 5px;
 }
+
+.hidden-display {
+    /* this has to hide the element no matter what */
+    display: none !important;
+}

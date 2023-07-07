@@ -1,44 +1,26 @@
 function togglePreviewDecklist(){
-    if($('#preview-decklist-container').hasClass('active-display')){
-        $('#preview-decklist-container').removeClass('active-display');
+    if($('#database-container').hasClass('hidden-display')){
         $('#preview-decklist-container').addClass('hidden-display');
-
-        $('#decklist-css').prop('disabled', true);
-
         $('#database-container').removeClass('hidden-display');
-        $('#database-container').addClass('active-display');
     }
-    else if ($('#database-container').hasClass('active-display')){
-        $('#image-container').empty(); //reset earlier data
-
-        let html = generateZoneAndCardHtml();
-
-        $('#image-container').append(html);
-
+    else if ($('#preview-decklist-container').hasClass('hidden-display')){
+        refreshPreview();
+        
         $('#preview-decklist-container').removeClass('hidden-display');
-        $('#preview-decklist-container').addClass('active-display');
-
-        $('#database-container').removeClass('active-display');
         $('#database-container').addClass('hidden-display');
     }    
 }
 
 function refreshPreview() 
 {  
-    $('#image-container').empty(); //reset earlier data
-
-    let html = generateZoneAndCardHtml();
-
-    $('#image-container').append(html);
+    //reset earlier data
+    $('#image-container').empty();
+    $('#image-container').append(generateZoneAndCardHtml());
 }
 
 function generateZoneAndCardHtml(){
-    let decklist_data = getCardsAndZones();
-
-    let html = '';
-
-    decklist_data.zones.map(zone => {
-        html +=  `
+    return getCardsAndZones().zones.reduce((generatedZoneHtml, zone) => {
+        return generatedZoneHtml + `
         <div class="preview-deck-zone">
             <div class="preview-deck-zone-title">
                 ${zone.name}
@@ -49,38 +31,26 @@ function generateZoneAndCardHtml(){
             </div>
         </div>
     `
-    });
-
-    return html;
+    }, '');
 }
 
 function getDeckCount(cards) 
-{  
-    let count = 0;
-
-    cards.forEach(card => {
-        count += 1 * card.quantity
-    });
-
-    return count
+{
+    return cards.reduce((count, card) => {
+        return count + Number(card.quantity)
+    }, 0);
 }
 
 function generateCardsHtml(cards) 
 {
-    let html = '';
-
-    cards.forEach(card => {
-        for (let index = 0; index < card.quantity; index++) {
-            html += `
+    return cards.reduce((generatedCardsHtml, currentCard)  =>{
+        return generatedCardsHtml + `
             <div class="preview-deck-card">
-                    <img class="preview-deck-card-img" src="${card.imgUrl}" title="${card.name}">
-                    ${getHoverCardHtml(card.imgUrls)}
+                    <img class="preview-deck-card-img" src="${currentCard.imgUrl}" title="${currentCard.name}">
+                    ${getHoverCardHtml(currentCard.imgUrls)}
                 </div>
-            `;
-        }
-    })
-
-    return html;
+            `.repeat(currentCard.quantity);
+    }, '');
 }
 
 function getCardsAndZones(){
@@ -100,7 +70,6 @@ function getCardsAndZones(){
             let card_urls = card.data('card-img-urls').split(',');
             card_data.quantity = card.find('.card-quantity-input').val();
             card_data.id = card.data('card-id');
-            //this is for double faced cards that are added via JS to only show the front side            
             card_data.imgUrls = card_urls;
             card_data.imgUrl = card_urls[0];
             card_data.name = card.data('card-name');
@@ -123,6 +92,10 @@ function getHoverCardHtml(urls){
 
 $(document).ready(function () {
     $('#preview-decklist').click(togglePreviewDecklist);
-    $('#refresh-preview').click(refreshPreview);
+
+    const refreshBc = new BroadcastChannel("refresh_channel");
+    refreshBc.onmessage = () => {
+        refreshPreview();
+    };
 });
 

@@ -220,6 +220,10 @@ img.deck-card-img{
     border-radius: 4px;
 }
 
+img.preview-deck-card-img {
+    border-radius: 4px;
+}
+
 .cost-img{
     border: 1px solid black;
     border-radius: 17px;

@@ -26,17 +26,14 @@
 {% endblock %}
 
 {% block body %}
-    <div id="database-container" class="active-display">
+    <div id="database-container">
         {% block database %}
             {{ block.super }}
         {% endblock %}
     </div>
     <div id="preview-decklist-container" class="hidden-display">        
         <div class="preview-deck-view-container">
-            <div id="image-container">
-                
-            </div>
-            <button id="refresh-preview" class="refresh-preview-btn">Refresh</button>
+            <div id="image-container"></div>
         </div>
         
     </div>

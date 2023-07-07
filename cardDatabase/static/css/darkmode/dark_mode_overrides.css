@@ -80,6 +80,13 @@ textarea {
     border: 1px solid white;
 }
 
+dialog {
+    background-color: #303134;
+    color: white;
+    z-index: 100;
+    border: 1px solid black;
+}
+
 /* /forms */
 
 /* search */

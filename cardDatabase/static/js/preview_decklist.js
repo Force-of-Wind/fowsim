@@ -5,7 +5,7 @@ function togglePreviewDecklist(){
     }
     else if ($('#preview-decklist-container').hasClass('hidden-display')){
         refreshPreview();
-        
+
         $('#preview-decklist-container').removeClass('hidden-display');
         $('#database-container').addClass('hidden-display');
     }    
@@ -91,7 +91,11 @@ function getHoverCardHtml(urls){
 }
 
 $(document).ready(function () {
-    $('#preview-decklist').click(togglePreviewDecklist);
+    if($('#preview-decklist').length)
+        $('#preview-decklist').click(togglePreviewDecklist);
+
+    if($('#dialog-close').length)
+        $('#dialog-close').click(togglePreviewDecklist);
 
     const refreshBc = new BroadcastChannel("refresh_channel");
     refreshBc.onmessage = () => {

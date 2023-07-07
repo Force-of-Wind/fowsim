@@ -29,12 +29,15 @@
             {{ block.super }}
         {% endblock %}
     </div>
-    <div id="preview-decklist-container" class="hidden-display">        
-        <div class="preview-deck-view-container">
-            <div id="image-container"></div>
+    <dialog id="preview-decklist-container" class="hidden-display preview-dialog" open>
+        <a id="dialog-close" href="javascript:void(0)" class="closebtn">&times;</a>
+        <div>        
+            <div class="preview-deck-view-container">
+                <div id="image-container"></div>
+            </div>
         </div>
-        
-    </div>
+      </dialog>
+    
     <div id="info-sidebar-container">
         <div class="openDecklistButton">
             <div class="bar"></div>

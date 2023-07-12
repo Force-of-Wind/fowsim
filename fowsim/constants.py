@@ -85,7 +85,8 @@ CARD_TYPE_VALUES = [
     'J-Ruler'
     'Spell:Chant-Standby',
     'Resonator',
-    'Sub-ruler'
+    'Sub-ruler',
+    'Extension Rule',
 ]
 CARD_SUBTYPE_VALUES = [
     'J',
@@ -394,6 +395,7 @@ DATABASE_CARD_TYPE_GROUPS = [
     {
         'name': 'Other Decks',
         'types': [
+            'Extension Rule',
             'Master Rune',
             'Rune',
         ]

@@ -320,7 +320,8 @@ SET_DATA = {
                 {'code': 'TUS', 'name': 'The Underworld of Secrets'},
                 {'code': 'TWS', 'name': 'The War of the Suns'},
                 {'code': 'CMB', 'name': 'Crimson Moon\'s Battleground'},
-                {'code': 'ABC', 'name': 'Arcana Battle Colosseum'}
+                {'code': 'ABC', 'name': 'Arcana Battle Colosseum'},
+                {'code': 'CST', 'name': 'Clash of the Star Trees'}
             ]
         }
     ]
@@ -572,6 +573,9 @@ SETS_IN_ORDER = [
     'H4 Buy a Box',
     'H4 Prerelease Party',
     'ABC',
+    'H5 Buy a Box',
+    'H5 Prerelease Party',
+    'CST',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -664,6 +668,10 @@ SEARCH_SETS_INCLUDE = {
     'CMB': [
         'H4 Prerelease Party',
         'H4 Buy a Box'
+    ],
+    'CST': [
+        'H5 Buy a Box',
+        'H5 Prerelease Party'
     ]
 }
 

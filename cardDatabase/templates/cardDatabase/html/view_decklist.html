@@ -4,7 +4,7 @@
 
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/view_decklist.css' %}">
+    <link rel="stylesheet" href="{% static 'css/view_decklist.css' %}">    
 {% endblock %}
 
 {% block ogtitle %}{{ decklist.name }} - Force of Wind{% endblock %}
@@ -21,6 +21,7 @@
     {{ block.super }}
     <script src="{% static 'js/view_decklist.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/html2canvas/html2canvas.js' %}" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.1/chart.umd.js" type="text/javascript"></script>
 {% endblock %}
 
 {% block body %}
@@ -118,6 +119,96 @@
             <button type="button" id="copy-image">Copy as Image</button>
             <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
         </div>
+        <br>
+        <h2 class="deck-stats">Deck Statistics</h2>
+        <h4>Attribute distribution</h4>
+        <div class="row">
+            <div class="col-sm-4 col-md-2 text-center mb-5 mb-md-0 attribute-wrapper">
+                <div class="mb-3">
+                    <img class="statistics-attribute-img" src="{% static 'img/costs/fire.png' %}">
+                </div>
+                <div class="h1 mb-0" id="coloranalysis_color_r">60%</div>
+            </div>
+            <div class="col-sm-4 col-md-2 text-center mb-5 mb-md-0 attribute-wrapper-disabled" >
+                <div class="mb-3">
+                    <img class="statistics-attribute-img" src="{% static 'img/costs/wind.png' %}">
+                </div>
+                <div class="h1 mb-0" id="coloranalysis_color_g">0%</div>
+            </div>
+            <div class="col-sm-4 col-md-2 text-center mb-5 mb-md-0 attribute-wrapper" >
+                <div class="mb-3">
+                    <img class="statistics-attribute-img" src="{% static 'img/costs/light.png' %}">
+                </div>
+                <div class="h1 mb-0" id="coloranalysis_color_w">40%</div>
+            </div>
+            <div class="col-sm-4 col-md-2 text-center mb-5 mb-md-0 attribute-wrapper-disabled" >
+                <div class="mb-3">
+                    <img class="statistics-attribute-img" src="{% static 'img/costs/water.png' %}">
+                </div>
+                <div class="h1 mb-0" id="coloranalysis_color_u">0%</div>        
+            </div>
+            <div class="col-sm-4 col-md-2 text-center mb-5 mb-md-0 attribute-wrapper-disabled" >
+                <div class="mb-3">
+                    <img class="statistics-attribute-img" src="{% static 'img/costs/darkness.png' %}">
+                </div>
+                <div class="h1 mb-0" id="coloranalysis_color_b">0%</div>
+            </div>
+            <div class="col-sm-4 col-md-2 text-center mb-5 mb-md-0 attribute-wrapper-disabled" >
+                <div class="mb-3">
+                    <img class="statistics-attribute-img" src="{% static 'img/costs/x.png' %}">
+                </div>
+                <div class="h1 mb-0" id="coloranalysis_color_v">0%</div>
+            </div>
+        </div>
+        <br>
+        <h4>Mana Value</h4>
+        <div class="mana-curve-wrapper">
+            <canvas id="mana-curve" class="mana-curve-canvas"></canvas>
+        </div>
+        <script>
+            const data = [
+                { attribute: '0', count: 8 },
+                { attribute: '1', count: 22 },
+                { attribute: '2', count: 10 },
+                { attribute: '3', count: 0 },
+                { attribute: '4', count: 0 },
+                { attribute: '5', count: 0 },
+                { attribute: '6+', count: 0 },
+            ];
 
+            Chart.defaults.borderColor = 'gray';
+
+            const myChart = new Chart(document.getElementById('mana-curve'),
+                    {
+                        type: 'bar',
+                        options: {
+                            indexAxis: 'y',
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    enabled: true
+                                },
+                                colors: {
+                                    enabled: false,
+                                    forceOverride: true
+                                }
+                            },
+                        },
+                        data: {
+                            labels: data.map(row => row.attribute),
+                            datasets: [
+                                {
+                                    label: 'Card total',
+                                    borderColor: 'white',
+                                    backgroundColor: '#351543',
+                                    data: data.map(row => row.count)
+                                }
+                            ]
+                        }
+                    });
+            myChart.borderColor = '#FFFFF';
+        </script>
     </div>
 {% endblock %}

@@ -65,6 +65,11 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                     colors: {
                         enabled: false,
                         forceOverride: true
+                    },
+                    title: {
+                        display: true,
+                        position: 'bottom',
+                        text: 'Counted card attributes'
                     }
                 },
             },
@@ -83,31 +88,41 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
     new Chart(manaCurveCanvas,
         {
             type: 'bar',
+            data: {
+                labels: manaCurveStatData.map(row => row.cost),
+                datasets: [
+                    { 
+                        borderColor: 'white',
+                        backgroundColor: '#a451c8',
+                        label: 'Cards with cost',
+                        data: manaCurveStatData.map(row => row.count)
+                    }
+                ]
+            },
             options: {
                 indexAxis: 'x',
                 plugins: {
-                    legend: {
-                        display: false
-                    },
                     tooltip: {
                         enabled: true
+                    },
+                    legend: {
+                        display: false
                     },
                     colors: {
                         enabled: false,
                         forceOverride: true
+                    },
+                    subtitle: {
+                        display: true,
+                        position: 'left',
+                        text: 'Number of Cards'
+                    },
+                    title: {
+                        display: true,
+                        position: 'bottom',
+                        text: 'Mana Value'
                     }
                 },
-            },
-            data: {
-                labels: manaCurveStatData.map(row => row.cost),
-                datasets: [
-                    {
-                        label: 'Card total',
-                        borderColor: 'white',
-                        backgroundColor: '#a451c8',
-                        data: manaCurveStatData.map(row => row.count)
-                    }
-                ]
             }
         });
 }

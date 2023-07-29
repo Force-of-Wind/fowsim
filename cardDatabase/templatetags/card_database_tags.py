@@ -221,7 +221,7 @@ def cards_to_json(cards):
     output_cards = []
     for card in cards:
         simple_card = {
-            "name": card.card.name,
+            "name": card.card.name_without_punctuation,
             "zone" : card.zone.zone.name,
             "cost": card.card.cost,
             "quantity" : card.quantity

@@ -82,6 +82,11 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                         position: 'bottom',
                         text: 'Card attributes in %'
                     },
+                    datalabels:{
+                        formatter: function(value, context) {
+                            return value + ' %';
+                          }
+                    }
                 },
             },
             data: {
@@ -93,8 +98,7 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                         backgroundColor: attributeStatData.map(row => row.color),
                         data: attributeStatData.map(row => row.count),
                         datalabels: {
-                            color: '#000000',
-                            title:'%'
+                            color: '#000000'
                           }
                     }
                 ]

@@ -22,6 +22,7 @@
     <script src="{% static 'js/view_decklist.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/html2canvas/html2canvas.js' %}" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.1/chart.umd.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2 " type="text/javascript"></script>
     <script src="{% static 'js/view_decklist_statistics.js' %}" type="text/javascript"></script>
 {% endblock %}
 
@@ -124,7 +125,7 @@
             <br>
             <h2 class="deck-stats">Deck Statistics</h2>
             <div class="attribute-dist-wrapper">
-                <h4>Attribute distribution</h4>
+                <h4>Attribute distribution in %</h4>
                 <canvas id="attribute-dist" class="attribute-dist-canvas"></canvas>
             </div>
             <br>
@@ -135,7 +136,7 @@
             <script>
                 let cards = JSON.parse('{% cards_to_json cards %}');
                 const untoggledZones = ['Side Deck', 'Magic Stone Deck', 'Ruler Area'];
-                Chart.defaults.borderColor = 'gray';
+                Chart.defaults.borderColor = 'gray';                
 
                 cards = cards.filter((card) => !untoggledZones.find((zone) => zone == card.zone));                
                 

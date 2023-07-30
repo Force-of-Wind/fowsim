@@ -19,8 +19,9 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas) {
         { shortTerm: 'G', attribute: 'Wind', count: 0, color: "#19ef49" },
         { shortTerm: 0, attribute: 'Void', count: 0, color: "#b1b5b2" }
     ];
+    
 
-    cardsToCalc.forEach(card => {
+    cardsToCalc.forEach(card => {        
         if (card.cost !== null) {
             card.cost = [...card.cost.matchAll(attributeRegex)].map((el) => el[1]);
             let cardCost = 0;
@@ -44,7 +45,16 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas) {
         }
     });
 
+    let fullAttributeCount = attributeStatData.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.count
+      },0);
+
     attributeStatData.sort((a, b) => b.count - a.count);
+    attributeStatData.forEach((attribute) => {
+        console.log('calc');        
+        console.log(`${attribute.count} = ${attribute.count} * 100 / ${fullAttributeCount}`);
+        attribute.count = Math.round(attribute.count * 100 / (fullAttributeCount));
+    });
 
     drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCurveStatData);
 }
@@ -53,6 +63,7 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
     new Chart(attributeCanvas,
         {
             type: 'bar',
+            plugins: [ChartDataLabels],
             options: {
                 indexAxis: 'y',
                 plugins: {
@@ -69,18 +80,22 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                     title: {
                         display: true,
                         position: 'bottom',
-                        text: 'Counted card attributes'
-                    }
+                        text: 'Card attributes in %'
+                    },
                 },
             },
             data: {
                 labels: attributeStatData.map(row => row.attribute),
                 datasets: [
                     {
-                        label: '',
+                        label: '%',
                         borderColor: 'white',
                         backgroundColor: attributeStatData.map(row => row.color),
-                        data: attributeStatData.map(row => row.count)
+                        data: attributeStatData.map(row => row.count),
+                        datalabels: {
+                            color: '#000000',
+                            title:'%'
+                          }
                     }
                 ]
             }

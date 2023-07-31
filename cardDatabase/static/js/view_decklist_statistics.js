@@ -82,7 +82,7 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                     },
                     datalabels:{
                         formatter: function(value, _) {
-                            if(value <= 0)
+                            if(value <= 0 || isNaN(value))
                                 return '';
                             else if(value < 5 && mobile)
                                 return value;

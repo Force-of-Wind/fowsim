@@ -2,6 +2,8 @@ const attributeRegex = /\{(\w)\}+/g;
 
 function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mobile) {
     let manaCurveThreshhold = 6;
+    const voidX = 'X';
+
     manaCurveStatData = [
         { cost: '0', count: 0 },
         { cost: '1', count: 0 },
@@ -26,11 +28,11 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mob
             card.cost = [...card.cost.matchAll(attributeRegex)].map((el) => el[1]);
             let cardCost = 0;
             card.cost.forEach(attribute => {
-                if (isNaN(attribute)) {
+                if (isNaN(attribute) && attribute != voidX) {
                     cardCost++;
                     attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == attribute)].count += card.quantity;
                 }
-                else{
+                else if (attribute !== voidX){
                     cardCost += parseInt(attribute);
                     attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == 0)].count += card.quantity;
                 }

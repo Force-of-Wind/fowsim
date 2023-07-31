@@ -1,0 +1,18 @@
+.preview-deck-view-container {    
+    padding: 0 10px;
+}
+.preview-deck-zone-card-container {
+    justify-content: center;
+}
+
+.preview-dialog {
+    position: absolute;
+    top: 0;
+}
+
+.preview-dialog .closebtn {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 36px;
+}

@@ -51,8 +51,6 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas) {
 
     attributeStatData.sort((a, b) => b.count - a.count);
     attributeStatData.forEach((attribute) => {
-        console.log('calc');        
-        console.log(`${attribute.count} = ${attribute.count} * 100 / ${fullAttributeCount}`);
         attribute.count = Math.round(attribute.count * 100 / (fullAttributeCount));
     });
 

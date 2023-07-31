@@ -1,6 +1,6 @@
 const attributeRegex = /\{(\w)\}+/g;
 
-function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas) {
+function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mobile) {
     let manaCurveThreshhold = 6;
     manaCurveStatData = [
         { cost: '0', count: 0 },
@@ -54,10 +54,10 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas) {
         attribute.count = Math.round(attribute.count * 100 / (fullAttributeCount));
     });
 
-    drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCurveStatData);
+    drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCurveStatData, mobile);
 }
 
-function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCurveStatData) {
+function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCurveStatData, mobile) {
     new Chart(attributeCanvas,
         {
             type: 'bar',
@@ -81,8 +81,15 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                         text: 'Card attributes in %'
                     },
                     datalabels:{
-                        formatter: function(value, context) {
-                            return value + ' %';
+                        formatter: function(value, _) {
+                            if(value <= 0)
+                                return '';
+                            else if(value < 5 && mobile)
+                                return value;
+                            else if(value <= 1)
+                                return value;
+                            else
+                                return value + ' %';
                           }
                     }
                 },
@@ -150,6 +157,6 @@ function isNumeric(str) {
         !isNaN(parseFloat(str))
 }
 
-function initStatistics(cards, attributeCanvas, manaCurveCanvas) {
-    calculateDiagramData(cards, attributeCanvas, manaCurveCanvas);
+function initStatistics(cards, attributeCanvas, manaCurveCanvas, mobile = false) {
+    calculateDiagramData(cards, attributeCanvas, manaCurveCanvas, mobile);
 }

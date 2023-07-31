@@ -134,6 +134,11 @@
                 <canvas id="mana-curve-canvas" class="mana-curve-canvas"></canvas>
             </div>
             <script>
+                {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                    const mobile = true;
+                {% else %}
+                    const mobile = false;
+                {% endif %}
                 let cards = JSON.parse('{% cards_to_json cards %}');
                 const untoggledZones = ['Side Deck', 'Magic Stone Deck', 'Ruler Area'];
                 Chart.defaults.borderColor = 'gray';                
@@ -143,7 +148,8 @@
                 initStatistics(
                     cards, 
                     document.getElementById('attribute-dist-canvas'), 
-                    document.getElementById('mana-curve-canvas')
+                    document.getElementById('mana-curve-canvas'),
+                    mobile
                 );
                 
             </script>

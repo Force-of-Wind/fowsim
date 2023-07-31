@@ -154,7 +154,7 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
 function isNumeric(str) {
     if (typeof str != "string") return false;
     return !isNaN(str) &&
-        !isNaN(parseFloat(str))
+        !isNaN(parseFloat(str));
 }
 
 function initStatistics(cards, attributeCanvas, manaCurveCanvas, mobile = false) {

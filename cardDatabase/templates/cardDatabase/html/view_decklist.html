@@ -126,24 +126,24 @@
             <h2 class="deck-stats">Deck Statistics</h2>
             <div class="attribute-dist-wrapper">
                 <h4>Attribute distribution in %</h4>
-                <canvas id="attribute-dist" class="attribute-dist-canvas"></canvas>
+                <canvas id="attribute-dist-canvas" class="attribute-dist-canvas"></canvas>
             </div>
             <br>
             <h4>Card cost distribution</h4>
             <div class="mana-curve-wrapper">
-                <canvas id="mana-curve" class="mana-curve-canvas"></canvas>
+                <canvas id="mana-curve-canvas" class="mana-curve-canvas"></canvas>
             </div>
             <script>
                 let cards = JSON.parse('{% cards_to_json cards %}');
                 const untoggledZones = ['Side Deck', 'Magic Stone Deck', 'Ruler Area'];
                 Chart.defaults.borderColor = 'gray';                
 
-                cards = cards.filter((card) => !untoggledZones.find((zone) => zone == card.zone));                
+                cards = cards.filter((card) => !untoggledZones.find((zone) => zone == card.zone));
                 
                 initStatistics(
                     cards, 
-                    document.getElementById('attribute-dist'), 
-                    document.getElementById('mana-curve')
+                    document.getElementById('attribute-dist-canvas'), 
+                    document.getElementById('mana-curve-canvas')
                 );
                 
             </script>

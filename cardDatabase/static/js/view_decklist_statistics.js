@@ -92,8 +92,11 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                         callbacks: {
                             label: function(context) {
                                 let label = context.dataset.label || '';
-                                
-                                return `${label}: ${context.raw.x} (${context.raw.cardCount})`;
+
+                                if(context.raw.cardCount > 1)
+                                    return `${label}: ${context.raw.x} (${context.raw.cardCount} cards)`;
+                                else 
+                                    return `${label}: ${context.raw.x} (${context.raw.cardCount} card)`;
                             }
                         }
                     },
@@ -108,14 +111,15 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                     },
                     datalabels:{
                         formatter: function(value, _) {
-                            if(value <= 0 || isNaN(value))
+                            let percent = value.x;
+                            if(percent <= 0 || isNaN(percent))
                                 return '';
-                            else if(value < 5 && mobile)
-                                return value;
-                            else if(value <= 1)
-                                return value;
+                            else if(percent < 5 && mobile)
+                                return percent;
+                            else if(percent <= 1)
+                                return percent;
                             else
-                                return value + ' %';
+                                return percent + ' %';
                           }
                     }
                 },

@@ -4,7 +4,7 @@
 
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/view_decklist.css' %}">
+    <link rel="stylesheet" href="{% static 'css/view_decklist.css' %}">    
 {% endblock %}
 
 {% block ogtitle %}{{ decklist.name }} - Force of Wind{% endblock %}
@@ -21,6 +21,9 @@
     {{ block.super }}
     <script src="{% static 'js/view_decklist.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/html2canvas/html2canvas.js' %}" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.1/chart.umd.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2 " type="text/javascript"></script>
+    <script src="{% static 'js/view_decklist_statistics.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block body %}
@@ -118,6 +121,39 @@
             <button type="button" id="copy-image">Copy as Image</button>
             <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
         </div>
+        {% if cards %}
+            <br>
+            <h2 class="deck-stats">Deck Statistics</h2>
+            <div class="attribute-dist-wrapper">
+                <h4>Attribute distribution in %</h4>
+                <canvas id="attribute-dist-canvas" class="attribute-dist-canvas"></canvas>
+            </div>
+            <br>
+            <h4>Card cost distribution</h4>
+            <div class="mana-curve-wrapper">
+                <canvas id="mana-curve-canvas" class="mana-curve-canvas"></canvas>
+            </div>
+            <script>
+                {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                    const mobile = true;
+                {% else %}
+                    const mobile = false;
+                {% endif %}
+                let cards = JSON.parse('{% cards_to_json cards %}');
+                const untoggledZones = ['Side Deck', 'Magic Stone Deck', 'Ruler Area'];
+                Chart.defaults.borderColor = 'gray';                
 
+                cards = cards.filter((card) => !untoggledZones.find((zone) => zone == card.zone));
+                
+                initStatistics(
+                    cards, 
+                    document.getElementById('attribute-dist-canvas'), 
+                    document.getElementById('mana-curve-canvas'),
+                    mobile
+                );
+                
+            </script>
+        {% endif %}
+        
     </div>
 {% endblock %}

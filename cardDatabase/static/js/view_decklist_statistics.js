@@ -17,7 +17,7 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mob
         { shortTerm: 'R', attribute: 'Fire', count: 0, color: "#ef1919", x: 0, cardCount: 0 },
         { shortTerm: 'U', attribute: 'Water', count: 0, color: "#199eef", x: 0, cardCount: 0 },
         { shortTerm: 'W', attribute: 'Light', count: 0, color: "#efea19", x: 0, cardCount: 0 },
-        { shortTerm: 'B', attribute: 'Darkness', count: 0, color: "#a451c8", x: 0, cardCount: 0 },
+        { shortTerm: 'B', attribute: 'Dark', count: 0, color: "#a451c8", x: 0, cardCount: 0 },
         { shortTerm: 'G', attribute: 'Wind', count: 0, color: "#19ef49", x: 0, cardCount: 0 },
         { shortTerm: 0, attribute: 'Void', count: 0, color: "#b1b5b2", x: 0, cardCount: 0 }
     ];

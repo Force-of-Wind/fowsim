@@ -6,7 +6,7 @@ from cardDatabase.models.User import Profile
 from cardDatabase.models.DeckList import DeckList, DeckListCard, DeckListZone, UserDeckListZone
 from cardDatabase.models.Spoilers import SpoilerSeason
 from cardDatabase.models.Banlist import CombinationBannedCards, BannedCard, Format
-from cardDatabase.models.Rulings import Ruling
+from cardDatabase.models.Rulings import Ruling, Restriction, RestrictionAction
 from cardDatabase.models.Metrics import *
 
 class AbilityTextInline(admin.TabularInline):
@@ -68,6 +68,7 @@ class RulingAdmin(admin.ModelAdmin):
 
 admin.site.register(OneTimeEffect)
 admin.site.register(Card, CardAdmin)
+admin.site.register(Tag)
 admin.site.register(AbilityText, AbilityTextAdmin)
 admin.site.register(Profile)
 admin.site.register(Keyword)
@@ -80,6 +81,8 @@ admin.site.register(BannedCard)
 admin.site.register(Format)
 admin.site.register(CombinationBannedCards, CombinationBannedCardsAdmin)
 admin.site.register(Ruling, RulingAdmin)
+admin.site.register(Restriction)
+admin.site.register(RestrictionAction)
 admin.site.register(Race)
 admin.site.register(CardColour)
 admin.site.register(MostPickedCardPickRate)

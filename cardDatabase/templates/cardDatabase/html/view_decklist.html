@@ -24,6 +24,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.1/chart.umd.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2 " type="text/javascript"></script>
     <script src="{% static 'js/view_decklist_statistics.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/view_decklist_restricted.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block body %}
@@ -48,7 +49,8 @@
                                     {% with ''|center:card.quantity as range %}
                                         {% for _ in range %}
                                             <div class="deck-card">
-                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}">
+                                                {% has_tags card as has_tags_flag %}
+                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}" {% if has_tags_flag %} data-card-id={{card.card.id}} data-tags='{% map_tags card %}' {% endif %}>
                                                 <div class="card-preview">
                                                     <div class="multi-hovered-img">
                                                         <img class="hover-card-img" src="{{ card.card.card_image.url }}">
@@ -109,7 +111,9 @@
                 </div>
             </div>
         {% endif %}
-
+        <div id="restriction-warnings" class="hide-restrictions">
+            <div class="ban-title">Deck Restrictions</div>
+        </div>
         <div id="deck-options">
             {% if request.user == decklist.profile.user %}
                 <a href="{% get_edit_decklist_url decklist.pk request.user_agent %}">
@@ -134,13 +138,14 @@
                 <canvas id="mana-curve-canvas" class="mana-curve-canvas"></canvas>
             </div>
             <script>
+                const restrictions = {% dict_to_json deckRestrictions %};
                 {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
-                    const mobile = true;
+                const mobile = true;
                 {% else %}
-                    const mobile = false;
+                const mobile = false;
                 {% endif %}
                 let cards = JSON.parse('{% cards_to_json cards %}');
-                const untoggledZones = ['Side Deck', 'Magic Stone Deck', 'Ruler Area'];
+                const untoggledZones = ['Side Deck', 'Magic Stone Deck', 'Ruler'];
                 Chart.defaults.borderColor = 'gray';                
 
                 cards = cards.filter((card) => !untoggledZones.find((zone) => zone == card.zone));
@@ -151,6 +156,13 @@
                     document.getElementById('mana-curve-canvas'),
                     mobile
                 );
+
+                initRestrictions(
+                    $('#image-container'),
+                    'img[data-tags]',
+                    restrictions,
+                    $('#restriction-warnings')
+                )
                 
             </script>
         {% endif %}

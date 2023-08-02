@@ -218,3 +218,6 @@
 .hide-restrictions{
     display: none;
 }
+.restriction-wrapper{
+    margin-top:15px;
+}

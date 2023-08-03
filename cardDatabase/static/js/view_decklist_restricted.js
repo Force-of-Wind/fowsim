@@ -1,20 +1,20 @@
 function initRestrictions(cardContainer, tagSelector, restrictions, textElement) 
 {
     const singeltonRulerZones = ['Ruler', 'Ruler Area', 'Arcana Ruler'];
-    const singeltonIgnoreZones = ['Side', 'Side Board', 'Side Board Deck', 'Magic', 'Magic Stones', 'Magic Stone Deck']
+    const singeltonIgnoreZones = ['Side', 'Side Board', 'Side Board Deck', 'Magic', 'Magic Stones', 'Magic Stone Deck'];
 
     if(restrictions === null || restrictions === undefined || restrictions.length < 1)
         return;
 
     restrictions.forEach(restriction => {
-        applyAction(restriction.action, restriction.checkingTag, restriction.text, restriction.restrictedTag)
+        applyAction(restriction.action, restriction.checkingTag, restriction.text, restriction.restrictedTag);
     });
 
     function applyAction(actionName, tagToCheck, warninigText, restrictedTag = null) {
         
         differentCardTags = [];
-        cardsForTags = {};;
-        cardContainer.find(tagSelector).each((index, card) => {
+        cardsForTags = {};
+        cardContainer.find(tagSelector).each((_, card) => {
             $(card).data('tags').forEach(tag => {
                 if(!differentCardTags.includes(tag))
                     differentCardTags.push(tag);
@@ -30,13 +30,13 @@ function initRestrictions(cardContainer, tagSelector, restrictions, textElement)
 
         switch (actionName) {
             case 'conflicting_tag':
-                handleConflictingTagRestriction(tagToCheck, restrictedTag, differentCardTags, warninigText, cardsForTags);                
+                handleConflictingTagRestriction(tagToCheck, restrictedTag, differentCardTags, warninigText, cardsForTags);
                 break;
             case 'singelton':
-                handleSingeltonRestriction(tagToCheck, restrictedTag, differentCardTags, warninigText, cardsForTags, singeltonRulerZones, singeltonIgnoreZones)
+                handleSingeltonRestriction(tagToCheck, restrictedTag, differentCardTags, warninigText, cardsForTags, singeltonRulerZones, singeltonIgnoreZones);
                 break;
             case 'arcana_singelton':
-                handleSingeltonRestriction(tagToCheck, restrictedTag, differentCardTags, warninigText, cardsForTags, singeltonRulerZones, [])
+                handleSingeltonRestriction(tagToCheck, restrictedTag, differentCardTags, warninigText, cardsForTags, singeltonRulerZones, []);
                 break;
             default:
                 break;
@@ -53,7 +53,7 @@ function initRestrictions(cardContainer, tagSelector, restrictions, textElement)
             affectedCards.push(...cardsForTags[tagToCheck]);
             affectedCards.push(...cardsForTags[restrictedTag]);
             writeWarningToTextElement(warninigText);
-            highLightRestrictedCards(affectedCards.filter(distinctFilter), warninigText)
+            highLightRestrictedCards(affectedCards.filter(distinctFilter), warninigText);
         }
     }
 
@@ -81,7 +81,7 @@ function initRestrictions(cardContainer, tagSelector, restrictions, textElement)
                     $(card).data('tags').forEach(tag => {
                         if(skip)
                             return;
-                        skip = tag === tagIgnoreSingelton
+                        skip = tag === tagIgnoreSingelton;
                     });
                 }}
 
@@ -92,7 +92,6 @@ function initRestrictions(cardContainer, tagSelector, restrictions, textElement)
                         illegalCardsForSingelton.push(card);
                 }
             });
-            console.log(illegalCardsForSingelton);
 
             if(illegalCardsForSingelton.length > 0){
                 writeWarningToTextElement(warninigText);
@@ -110,7 +109,11 @@ function initRestrictions(cardContainer, tagSelector, restrictions, textElement)
     {
         if(textElement.hasClass('hide-restrictions'))
             textElement.removeClass('hide-restrictions');
-        textElement.append(`<div class="banned-card"><img class="banned-icon" src="${$('#banned_icon').attr('src')}"><div class="ban-text">${warninigText}</div></div>`);
+            
+        textElement.append(`<div class="banned-card">
+                                <img class="banned-icon" src="${$('#banned_icon').attr('src')}">
+                                <div class="ban-text">${warninigText}</div>
+                            </div>`);
     }
 
     function distinctFilter(value, index, array) {

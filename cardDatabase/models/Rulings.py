@@ -37,3 +37,5 @@ class Restriction(models.Model):
 class RestrictionAction(models.Model):
     name = models.CharField(max_length=200, null=False, blank=False)
     technical_name = models.CharField(max_length=50, null=False, blank=False)
+    def __str__(self):
+        return f'{self.name[:40]} - {self.technical_name}'

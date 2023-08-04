@@ -1,45 +1,30 @@
 class RestrictionEngine {
-    initRestrictions(cardContainer, tagSelector, restrictions, warningTextOutputElement) {
-        if (restrictions === null || restrictions === undefined || restrictions.length < 1)
+    initRestrictions(cardContainer, cardData, restrictions, warningTextOutputElement) {
+        if (restrictions === null || restrictions === undefined || restrictions.length < 1 || cardData.length < 1)
             return;
 
 
         const restrictionFactory = new RestricitonFactory();
-        let differentCardTags = [];
-        let cardsForTags = {};
-        cardContainer.find(tagSelector).each((_, card) => {
-            $(card).data('tags').forEach(tag => {
-                if (!differentCardTags.includes(tag))
-                    differentCardTags.push(tag);
-
-                let cardId = $(card).data('card-id');
-
-                if (cardsForTags[tag] && cardsForTags[tag].length > 0 && !cardsForTags[tag].includes(cardId))
-                    cardsForTags[tag].push(cardId);
-                else
-                    cardsForTags[tag] = [cardId];
-            })
-        });
 
         restrictions.forEach(restriction => {
-            let restricitonClass = restrictionFactory.getRestrictionForAction(restriction.action, cardContainer, restriction.checkingTag, restriction.restrictedTag, differentCardTags, restriction.text, warningTextOutputElement, cardsForTags);
+            let restricitonClass = restrictionFactory.getRestrictionForAction(restriction.action, cardContainer, cardData, restriction.checkingTag, restriction.restrictedTag, restriction.text, warningTextOutputElement);
             restricitonClass.applyAction();
         });
     }
 }
 
 class RestricitonFactory {
-    singeltonRulerZones = ['Ruler', 'Ruler Area', 'Arcana Ruler'];
-    singeltonIgnoreZones = ['Side', 'Side Board', 'Side Board Deck', 'Magic', 'Magic Stones', 'Magic Stone Deck'];
+    restrictedToZones = ['Ruler', 'Ruler Area', 'Arcana Ruler'];
+    ignoredZones = ['Side', 'Side Deck', 'Side Board', 'Side Board Deck', 'Magic', 'Magic Stones', 'Magic Stone Deck'];
 
-    getRestrictionForAction(technicalName, cardContainer, tagToCheck, restrictedTag, differentCardTags, warninigText, warningTextOutputElement, cardsForTags) {
+    getRestrictionForAction(technicalName, cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement) {
         switch (technicalName) {
             case 'conflicting_tag':
-                return new ConflictingTagRestriciton(cardContainer, tagToCheck, restrictedTag, differentCardTags, warninigText, warningTextOutputElement, cardsForTags);
+                return new ConflictingTagRestriciton(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, [], this.ignoredZones);
             case 'singelton':
-                return new SingeltonRestriciton(cardContainer, tagToCheck, restrictedTag, differentCardTags, warninigText, warningTextOutputElement, cardsForTags, this.singeltonRulerZones, this.singeltonIgnoreZones);
+                return new SingeltonRestriciton(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, this.restrictedToZones, this.ignoredZones);
             case 'arcana_singelton':
-                return new ArcanaSingeltonRestriciton(cardContainer, tagToCheck, restrictedTag, differentCardTags, warninigText, warningTextOutputElement, cardsForTags, this.singeltonRulerZones);
+                return new ArcanaSingeltonRestriciton(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, this.restrictedToZones);
             default:
                 console.error(`Restriciton ${technicalName} not implemented!`)
                 return new BaseRestriction();
@@ -48,17 +33,18 @@ class RestricitonFactory {
 }
 
 class BaseRestriction {
-    constructor(cardContainer, tagToCheck, restrictedTag, differentCardTags, warninigText, warningTextOutputElement, cardsForTags, singeltonRulerZones = [], singeltonIgnoreZones = []) {
+    constructor(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, restrictedToZones = [], ignoredZones = []) {
         Object.defineProperties(this, {
             cardContainer: { value: cardContainer},
             tagToCheck: { value: tagToCheck},
             restrictedTag: { value: restrictedTag},
-            differentCardTags: { value: differentCardTags},
             warninigText: { value: warninigText},
             warningTextOutputElement : { value: warningTextOutputElement},
-            cardsForTags: { value: cardsForTags},
-            singeltonRulerZones: { value: singeltonRulerZones},
-            singeltonIgnoreZones: { value: singeltonIgnoreZones}
+            restrictedToZones: { value: restrictedToZones},
+            ignoredZones: { value: ignoredZones},
+            cardData: { value: cardData },
+            differentCardTags: { write:true, value: []},
+            cardsForTags: { write:true, value: []}
         })
     }
 
@@ -80,13 +66,35 @@ class BaseRestriction {
         return array.indexOf(value) === index;
     }
 
-    highLightRestrictedCards = function (affectedCardIds, tooltip) {
-        affectedCardIds.forEach(cardId => {
-            this.cardContainer.find(`[data-card-id="${cardId}"]`).each((_, element) => {
+    highLightRestrictedCards = function (affectedCards, tooltip) {
+        affectedCards.forEach(card => {
+            this.cardContainer.find(`[data-card-id="${card.id}"][data-card-zone="${card.zone}"]`).each((_, element) => {
                 $(element).css('border', '3px solid red');
                 $(element).prop('title', tooltip);
             })
         })
+    }
+
+    initCardData = function () 
+    {
+        this.cardData.forEach(card => {
+            if(!this.ignoredZones.includes(card.zone))
+            {
+                if(card.tags.length > 0){
+                    card.tags.forEach(tag => {
+                        if (!this.differentCardTags.includes(tag))
+                            this.differentCardTags.push(tag);
+                        
+                        
+                        if (this.cardsForTags[tag] && this.cardsForTags[tag].length > 0 && !this.cardsForTags[tag].includes(card.id))
+                            this.cardsForTags[tag].push({id: card.id, zone: card.zone, tags: card.tags, quantity: card.quantity});
+                        else
+                            this.cardsForTags[tag] = [{id :card.id, zone: card.zone, tags: card.tags, quantity: card.quantity}];
+                    });
+                }
+            }
+        });
+
     }
 }
 
@@ -94,6 +102,8 @@ class ConflictingTagRestriciton extends BaseRestriction {
     applyAction = function() {
         if (this.tagToCheck == null || this.restrictedTag === null)
             return;
+
+        this.initCardData();
 
         if (this.differentCardTags.includes(this.tagToCheck) && this.differentCardTags.includes(this.restrictedTag)) {
             let affectedCards = [];
@@ -106,48 +116,45 @@ class ConflictingTagRestriciton extends BaseRestriction {
 }
 class SingeltonRestriciton extends BaseRestriction {
     applyAction = function() {
+        this.initCardData();
         const tagIgnoreSingelton = this.restrictedTag;
         if (this.differentCardTags.includes(this.tagToCheck)) {
             let legalSingeltonRuler = false;
-            this.cardsForTags[this.tagToCheck].forEach(cardId => {
+            let illegalCardsForSingelton = [];
+            this.cardsForTags[this.tagToCheck].forEach(card => {
                 if (legalSingeltonRuler)
                     return;
-                this.cardContainer.find(`[data-card-id="${cardId}"]`).each((_, element) => {
-                    if (this.singeltonRulerZones.includes($(element).data('card-zone')))
-                        legalSingeltonRuler = true;
-                });
+
+                if(card.tags.includes(this.tagToCheck) && this.restrictedToZones.includes(card.zone))
+                    legalSingeltonRuler = true;
             });
-            if (!legalSingeltonRuler)
-                return; // singelton card not in a deck restriction zone
 
-            let illegalCardsForSingelton = [];
-
-            this.cardContainer.find('img.deck-card-img').each((_, card) => {
+            this.cardData.forEach(card => {
                 let skip = false;
-                if (this.cardsForTags[tagIgnoreSingelton] !== undefined) {
-                    if ($(card).data('tags')) {
-                        $(card).data('tags').forEach(tag => {
+                if (this.cardsForTags[tagIgnoreSingelton]) {
+                    
+                    if (card.tags) {
+                        card.tags.forEach(tag => {
                             if (skip)
                                 return;
                             skip = tag === tagIgnoreSingelton;
                         });
                     }
                 }
-
                 if (!skip) {
-                    let cardQuantity = $(card).data('card-quantity');
-                    let cardZone = $(card).data('card-zone');
-                    if (cardQuantity && !isNaN(cardQuantity) && parseInt(cardQuantity) > 1 && !this.singeltonIgnoreZones.includes(cardZone))
+                    let cardQuantity = card.quantity;
+                    let cardZone = card.zone;
+                    if (cardQuantity && !isNaN(cardQuantity) && parseInt(cardQuantity) > 1 && !this.ignoredZones.includes(cardZone))
                         illegalCardsForSingelton.push(card);
                 }
             });
 
+            if (!legalSingeltonRuler)
+                return;
+
             if (illegalCardsForSingelton.length > 0) {
                 this.writeWarningTowarningTextOutputElement(this.warninigText);
-                illegalCardsForSingelton.forEach(card => {
-                    $(card).css('border', '3px solid red');
-                    $(card).prop('title', this.warninigText);
-                })
+                this.highLightRestrictedCards(illegalCardsForSingelton, this.warninigText);
             }
         }
     }

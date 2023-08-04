@@ -50,7 +50,7 @@
                                         {% for _ in range %}
                                             <div class="deck-card">
                                                 {% has_tags card as has_tags_flag %}
-                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}" data-card-zone={{ zone }} data-card-quantity={{ card.quantity }} {% if has_tags_flag %} data-card-id={{card.card.id}} data-tags='{% map_tags card %}' {% endif %}>
+                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}" data-card-id={{card.card.id}} data-card-zone="{{zone}}"">
                                                 <div class="card-preview">
                                                     <div class="multi-hovered-img">
                                                         <img class="hover-card-img" src="{{ card.card.card_image.url }}">
@@ -140,6 +140,7 @@
             </div>
             <script>
                 const restrictions = {% dict_to_json deckRestrictions %};
+                const cardsData = {% dict_to_json cardsData %};
                 {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
                 const mobile = true;
                 {% else %}
@@ -162,7 +163,7 @@
 
                 restrictionEngine.initRestrictions(
                     $('#image-container'),
-                    'img[data-tags]',
+                    cardsData,
                     restrictions,
                     $('#restriction-warnings')
                 )

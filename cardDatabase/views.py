@@ -651,7 +651,17 @@ def view_decklist(request, decklist_id):
                     'restrictedTag': restriction.restrictioned_tag.id
                 })
             
-                
+    cardsData = []
+    for card in cards:
+        tags = []
+        for tag in card.card.tag.all():
+            tags.append(tag.id)
+        cardsData.append({
+                    'quantity': card.quantity,
+                    'tags': tags,
+                    'id': card.card.id,
+                    'zone': card.zone.zone.name
+                })
 
     
     
@@ -662,7 +672,8 @@ def view_decklist(request, decklist_id):
         'cards': cards,
         'ban_warnings': ban_warnings,
         'combination_ban_warnings': combination_ban_warnings,
-        'deckRestrictions' : deckRestrictions
+        'deckRestrictions' : deckRestrictions,
+        'cardsData': cardsData
     })
 
 

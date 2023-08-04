@@ -158,7 +158,9 @@
                     mobile
                 );
 
-                initRestrictions(
+                const restrictionEngine = new RestrictionEngine();
+
+                restrictionEngine.initRestrictions(
                     $('#image-container'),
                     'img[data-tags]',
                     restrictions,

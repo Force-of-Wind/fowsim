@@ -3,12 +3,19 @@ class RestrictionEngine {
         if (restrictions === null || restrictions === undefined || restrictions.length < 1 || cardData.length < 1)
             return;
 
+        let registratedRestrictions = [];
+
 
         const restrictionFactory = new RestricitonFactory();
 
         restrictions.forEach(restriction => {
-            let restricitonClass = restrictionFactory.getRestrictionForAction(restriction.action, cardContainer, cardData, restriction.checkingTag, restriction.restrictedTag, restriction.text, warningTextOutputElement);
-            restricitonClass.applyAction();
+            if(!registratedRestrictions.includes(restriction.action)){
+                let restrictionObject = restrictionFactory.getRestrictionForAction(restriction.action, cardContainer, cardData, restriction.checkingTag, restriction.restrictedTag, restriction.text, warningTextOutputElement);
+                restrictionObject.applyAction();
+                registratedRestrictions.push(restriction.action);
+            }
+            else
+                console.error(`Attempted duplicate registration of restriction ${restriction.action}`);
         });
     }
 }

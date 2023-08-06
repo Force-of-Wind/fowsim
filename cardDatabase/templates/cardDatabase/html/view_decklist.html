@@ -123,7 +123,7 @@
         </div>
         {% if cards %}
             <br>
-            <h2 class="deck-stats">Deck Statistics</h2>            
+            <h2 class="deck-stats">Deck Statistics</h2>
                 <div class="attribute-dist-wrapper" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:99vw" {% endif %}>
                     <h4>Attribute distribution in %</h4>
                     <canvas id="attribute-dist-canvas" class="attribute-dist-canvas"></canvas>

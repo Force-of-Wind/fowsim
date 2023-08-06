@@ -34,8 +34,8 @@ class Migration(migrations.Migration):
                 ('last_modified', models.DateTimeField(auto_now_add=True)),
                 ('action', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='cardDatabase.restrictionaction')),
                 ('added_by', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='cardDatabase.profile')),
-                ('restrictioned_tag', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='cardDatabase.tag')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='restriction_tag', to='cardDatabase.tag')),
+                ('restricted_tag', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='cardDatabase.tag')),
+                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='restricted_tag', to='cardDatabase.tag')),
             ],
         ),
         migrations.AddField(

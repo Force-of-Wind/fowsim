@@ -6,7 +6,7 @@ class RestrictionEngine {
         let registratedRestrictions = [];
 
 
-        const restrictionFactory = new RestricitonFactory();
+        const restrictionFactory = new RestrictionFactory();
 
         restrictions.forEach(restriction => {
             if(!registratedRestrictions.includes(restriction.action)){
@@ -20,20 +20,20 @@ class RestrictionEngine {
     }
 }
 
-class RestricitonFactory {
+class RestrictionFactory {
     restrictedToZones = ['Ruler', 'Ruler Area', 'Arcana Ruler'];
     ignoredZones = ['Side', 'Side Deck', 'Side Board', 'Side Board Deck', 'Magic', 'Magic Stones', 'Magic Stone Deck'];
 
     getRestrictionForAction(technicalName, cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement) {
         switch (technicalName) {
             case 'conflicting_tag':
-                return new ConflictingTagRestriciton(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, [], this.ignoredZones);
-            case 'singelton':
-                return new SingeltonRestriciton(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, this.restrictedToZones, this.ignoredZones);
-            case 'arcana_singelton':
-                return new ArcanaSingeltonRestriciton(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, this.restrictedToZones);
+                return new ConflictingTagRestriction(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, [], this.ignoredZones);
+            case 'singleton':
+                return new SingletonRestriction(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, this.restrictedToZones, this.ignoredZones);
+            case 'arcana_singleton':
+                return new ArcanaSingletonRestriction(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, this.restrictedToZones);
             default:
-                console.error(`Restriciton ${technicalName} not implemented!`)
+                console.error(`Restriction ${technicalName} not implemented!`)
                 return new BaseRestriction();
         }
     }
@@ -73,7 +73,7 @@ class BaseRestriction {
         return array.indexOf(value) === index;
     }
 
-    highLightRestrictedCards = function (affectedCards, tooltip) {
+    highlightRestrictedCards = function (affectedCards, tooltip) {
         affectedCards.forEach(card => {
             this.cardContainer.find(`[data-card-id="${card.id}"][data-card-zone="${card.zone}"]`).each((_, element) => {
                 $(element).css('border', '3px solid red');
@@ -105,7 +105,7 @@ class BaseRestriction {
     }
 }
 
-class ConflictingTagRestriciton extends BaseRestriction {
+class ConflictingTagRestriction extends BaseRestriction {
     applyAction = function() {
         if (this.tagToCheck == null || this.restrictedTag === null)
             return;
@@ -117,34 +117,34 @@ class ConflictingTagRestriciton extends BaseRestriction {
             affectedCards.push(...this.cardsForTags[this.tagToCheck]);
             affectedCards.push(...this.cardsForTags[this.restrictedTag]);
             this.writeWarningTowarningTextOutputElement(this.warninigText);
-            this.highLightRestrictedCards(affectedCards.filter(this.distinctFilter), this.warninigText);
+            this.highlightRestrictedCards(affectedCards.filter(this.distinctFilter), this.warninigText);
         }
     }
 }
-class SingeltonRestriciton extends BaseRestriction {
+class SingletonRestriction extends BaseRestriction {
     applyAction = function() {
         this.initCardData();
-        const tagIgnoreSingelton = this.restrictedTag;
+        const tagIgnoreSingleton = this.restrictedTag;
         if (this.differentCardTags.includes(this.tagToCheck)) {
-            let legalSingeltonRuler = false;
-            let illegalCardsForSingelton = [];
+            let legalSingletonRuler = false;
+            let illegalCardsForSingleton = [];
             this.cardsForTags[this.tagToCheck].forEach(card => {
-                if (legalSingeltonRuler)
+                if (legalSingletonRuler)
                     return;
 
                 if(card.tags.includes(this.tagToCheck) && this.restrictedToZones.includes(card.zone))
-                    legalSingeltonRuler = true;
+                    legalSingletonRuler = true;
             });
 
             this.cardData.forEach(card => {
                 let skip = false;
-                if (this.cardsForTags[tagIgnoreSingelton]) {
+                if (this.cardsForTags[tagIgnoreSingleton]) {
                     
                     if (card.tags) {
                         card.tags.forEach(tag => {
                             if (skip)
                                 return;
-                            skip = tag === tagIgnoreSingelton;
+                            skip = tag === tagIgnoreSingleton;
                         });
                     }
                 }
@@ -152,21 +152,21 @@ class SingeltonRestriciton extends BaseRestriction {
                     let cardQuantity = card.quantity;
                     let cardZone = card.zone;
                     if (cardQuantity && !isNaN(cardQuantity) && parseInt(cardQuantity) > 1 && !this.ignoredZones.includes(cardZone))
-                        illegalCardsForSingelton.push(card);
+                        illegalCardsForSingleton.push(card);
                 }
             });
 
-            if (!legalSingeltonRuler)
+            if (!legalSingletonRuler)
                 return;
 
-            if (illegalCardsForSingelton.length > 0) {
+            if (illegalCardsForSingleton.length > 0) {
                 this.writeWarningTowarningTextOutputElement(this.warninigText);
-                this.highLightRestrictedCards(illegalCardsForSingelton, this.warninigText);
+                this.highlightRestrictedCards(illegalCardsForSingleton, this.warninigText);
             }
         }
     }
 }
 
-class ArcanaSingeltonRestriciton extends SingeltonRestriciton {
+class ArcanaSingletonRestriction extends SingletonRestriction {
 
 }

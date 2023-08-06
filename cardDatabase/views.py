@@ -648,7 +648,7 @@ def view_decklist(request, decklist_id):
                     'text': restriction.text,
                     'action': restriction.action.technical_name,
                     'checkingTag': restriction.tag.id,
-                    'restrictedTag': restriction.restrictioned_tag.id
+                    'restrictedTag': restriction.restricted_tag.id
                 })
             
     cardsData = []

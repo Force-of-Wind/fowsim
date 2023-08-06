@@ -14,12 +14,12 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mob
         { cost: '6+', count: 0 },
     ];
     attributeStatData = [
-        { shortTerm: 'R', attribute: 'Fire', count: 0, color: "#ef1919" },
-        { shortTerm: 'U', attribute: 'Water', count: 0, color: "#199eef" },
-        { shortTerm: 'W', attribute: 'Light', count: 0, color: "#efea19" },
-        { shortTerm: 'B', attribute: 'Darkness', count: 0, color: "#a451c8" },
-        { shortTerm: 'G', attribute: 'Wind', count: 0, color: "#19ef49" },
-        { shortTerm: 0, attribute: 'Void', count: 0, color: "#b1b5b2" }
+        { shortTerm: 'R', attribute: 'Fire', count: 0, color: "#ef1919", x: 0, cardCount: 0 },
+        { shortTerm: 'U', attribute: 'Water', count: 0, color: "#199eef", x: 0, cardCount: 0 },
+        { shortTerm: 'W', attribute: 'Light', count: 0, color: "#efea19", x: 0, cardCount: 0 },
+        { shortTerm: 'B', attribute: 'Dark', count: 0, color: "#a451c8", x: 0, cardCount: 0 },
+        { shortTerm: 'G', attribute: 'Wind', count: 0, color: "#19ef49", x: 0, cardCount: 0 },
+        { shortTerm: 0, attribute: 'Void', count: 0, color: "#b1b5b2", x: 0, cardCount: 0 }
     ];
     
 
@@ -27,14 +27,27 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mob
         if (card.cost !== null) {
             card.cost = [...card.cost.matchAll(attributeRegex)].map((el) => el[1]);
             let cardCost = 0;
+            let lastAttribute = '';
             card.cost.forEach(attribute => {
+                if(lastAttribute !== attribute)
+                {
+                    if (isNaN(attribute) && attribute != voidX) {
+                        
+                        attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == attribute)].cardCount += card.quantity;
+                    }
+                    else if (attribute !== voidX && parseInt(attribute) > 0){
+                        attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == 0)].cardCount += card.quantity;
+                    }
+                    lastAttribute = attribute;
+                }
                 if (isNaN(attribute) && attribute != voidX) {
                     cardCost++;
                     attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == attribute)].count += card.quantity;
                 }
                 else if (attribute !== voidX){
-                    cardCost += parseInt(attribute);
-                    attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == 0)].count += card.quantity;
+                    let currentCost = parseInt(attribute)
+                    cardCost += currentCost;
+                    attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == 0)].count += currentCost * card.quantity;
                 }
             });
 
@@ -53,7 +66,7 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mob
 
     attributeStatData.sort((a, b) => b.count - a.count);
     attributeStatData.forEach((attribute) => {
-        attribute.count = Math.round(attribute.count * 100 / (fullAttributeCount));
+        attribute.x = Math.round(attribute.count * 100 / (fullAttributeCount));
     });
 
     drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCurveStatData, mobile);
@@ -65,13 +78,27 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
             type: 'bar',
             plugins: [ChartDataLabels],
             options: {
+                parsing: {
+                    xAxisKey: 'x',
+                    yAxisKey: 'attribute'
+                },
                 indexAxis: 'y',
                 plugins: {
                     legend: {
                         display: false
                     },
                     tooltip: {
-                        enabled: true
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+
+                                if(context.raw.cardCount > 1)
+                                    return `${label}: ${context.raw.x} (${context.raw.cardCount} cards)`;
+                                else 
+                                    return `${label}: ${context.raw.x} (${context.raw.cardCount} card)`;
+                            }
+                        }
                     },
                     colors: {
                         enabled: false,
@@ -84,26 +111,26 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                     },
                     datalabels:{
                         formatter: function(value, _) {
-                            if(value <= 0 || isNaN(value))
+                            let percent = value.x;
+                            if(percent <= 0 || isNaN(percent))
                                 return '';
-                            else if(value < 5 && mobile)
-                                return value;
-                            else if(value <= 1)
-                                return value;
+                            else if(percent < 5 && mobile)
+                                return percent;
+                            else if(percent <= 1)
+                                return percent;
                             else
-                                return value + ' %';
+                                return percent + ' %';
                           }
                     }
                 },
             },
             data: {
-                labels: attributeStatData.map(row => row.attribute),
                 datasets: [
                     {
                         label: '%',
                         borderColor: 'white',
                         backgroundColor: attributeStatData.map(row => row.color),
-                        data: attributeStatData.map(row => row.count),
+                        data: attributeStatData,
                         datalabels: {
                             color: '#000000'
                           }
@@ -146,7 +173,7 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                     title: {
                         display: true,
                         position: 'bottom',
-                        text: 'Mana Value'
+                        text: 'Will Value'
                     }
                 },
             }

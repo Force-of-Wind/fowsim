@@ -124,13 +124,13 @@
         {% if cards %}
             <br>
             <h2 class="deck-stats">Deck Statistics</h2>
-            <div class="attribute-dist-wrapper">
-                <h4>Attribute distribution in %</h4>
-                <canvas id="attribute-dist-canvas" class="attribute-dist-canvas"></canvas>
-            </div>
+                <div class="attribute-dist-wrapper" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:99vw" {% endif %}>
+                    <h4>Attribute distribution in %</h4>
+                    <canvas id="attribute-dist-canvas" class="attribute-dist-canvas"></canvas>
+                </div>
             <br>
             <h4>Card cost distribution</h4>
-            <div class="mana-curve-wrapper">
+            <div class="mana-curve-wrapper" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:96vw" {% endif %}>
                 <canvas id="mana-curve-canvas" class="mana-curve-canvas"></canvas>
             </div>
             <script>

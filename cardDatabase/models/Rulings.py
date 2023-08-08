@@ -39,3 +39,18 @@ class RestrictionAction(models.Model):
     technical_name = models.CharField(max_length=50, null=False, blank=False)
     def __str__(self):
         return f'{self.name[:40]} - {self.technical_name}'
+    
+class RestrictionException(models.Model):
+    restriction = models.ForeignKey('Restriction', null=True, on_delete=models.CASCADE)
+    exception_applying_card = models.ForeignKey('Card', null=True, on_delete=models.CASCADE)
+    card_zone_restriction = models.CharField(max_length=50, null=True, blank=True)
+    exception_action = models.ForeignKey('ExceptionAction', null=True, on_delete=models.CASCADE)
+    def __str__(self):
+        return f'Exception for {self.restriction.name}'
+    
+class ExceptionAction(models.Model):
+    name = models.CharField(max_length=200, null=False, blank=False)
+    technical_name = models.CharField(max_length=50, null=False, blank=False)
+    applying_to_cards = models.ManyToManyField('Card', related_name='exceptions', blank=True)
+    def __str__(self):
+        return f'{self.name[:40]} - {self.technical_name}'

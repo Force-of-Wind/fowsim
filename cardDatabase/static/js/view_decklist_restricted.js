@@ -10,7 +10,7 @@ class RestrictionEngine {
 
         restrictions.forEach(restriction => {
             if(!registratedRestrictions.includes(restriction.action)){
-                let restrictionObject = restrictionFactory.getRestrictionForAction(restriction.action, cardContainer, cardData, restriction.checkingTag, restriction.restrictedTag, restriction.text, warningTextOutputElement);
+                let restrictionObject = restrictionFactory.getRestrictionForAction(restriction.action, cardContainer, cardData, restriction.checkingTag, restriction.restrictedTag, restriction.text, warningTextOutputElement, restriction.exceptions);
                 restrictionObject.applyAction();
                 registratedRestrictions.push(restriction.action);
             }
@@ -24,14 +24,14 @@ class RestrictionFactory {
     restrictedToZones = ['Ruler', 'Ruler Area', 'Arcana Ruler'];
     ignoredZones = ['Side', 'Side Deck', 'Side Board', 'Side Board Deck', 'Magic', 'Magic Stones', 'Magic Stone Deck'];
 
-    getRestrictionForAction(technicalName, cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement) {
+    getRestrictionForAction(technicalName, cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, restrictionExceptions) {
         switch (technicalName) {
             case 'conflicting_tag':
-                return new ConflictingTagRestriction(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, [], this.ignoredZones);
+                return new ConflictingTagRestriction(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, restrictionExceptions, [], this.ignoredZones);
             case 'singleton':
-                return new SingletonRestriction(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, this.restrictedToZones, this.ignoredZones);
+                return new SingletonRestriction(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, restrictionExceptions, this.restrictedToZones, this.ignoredZones);
             case 'arcana_singleton':
-                return new ArcanaSingletonRestriction(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, this.restrictedToZones);
+                return new ArcanaSingletonRestriction(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, restrictionExceptions, this.restrictedToZones);
             default:
                 console.error(`Restriction ${technicalName} not implemented!`)
                 return new BaseRestriction();
@@ -40,7 +40,15 @@ class RestrictionFactory {
 }
 
 class BaseRestriction {
-    constructor(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, restrictedToZones = [], ignoredZones = []) {
+    constructor(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, exceptions = [], restrictedToZones = [], ignoredZones = []) {
+        let generatedExceptions = [];
+        if(exceptions.length >= 1){
+            const factory = new RestrictionExceptionFactory();
+            exceptions.forEach((exception) => {
+                generatedExceptions.push(factory.getExceptionForType(exception.exceptionAction, exception.exceptionApplyingCard, exception.exceptionApplyingZone, exception.cardsExceptionApplysTo ?? []))
+            })
+        }
+
         Object.defineProperties(this, {
             cardContainer: { value: cardContainer},
             tagToCheck: { value: tagToCheck},
@@ -50,8 +58,9 @@ class BaseRestriction {
             restrictedToZones: { value: restrictedToZones},
             ignoredZones: { value: ignoredZones},
             cardData: { value: cardData },
+            exceptions: { write:true, value: generatedExceptions},
             differentCardTags: { write:true, value: []},
-            cardsForTags: { write:true, value: []}
+            cardsForTags: { write:true, value: []},
         })
     }
 
@@ -113,14 +122,34 @@ class ConflictingTagRestriction extends BaseRestriction {
         this.initCardData();
 
         if (this.differentCardTags.includes(this.tagToCheck) && this.differentCardTags.includes(this.restrictedTag)) {
+
+            if(this.exceptions.length >= 1){
+                for (let i = 0; i < this.exceptions.length; i++) {
+                    const exception = this.exceptions[i];
+                    if(exception.isExceptionValid(this.cardData)){
+                        if(exception.breakRestriction(this.cardData)){
+                            console.info('Ignoring Restricion because of full_exception!');
+                            return;
+                        }
+                        else{
+                            this.cardsForTags[this.tagToCheck] = exception.filterExceptedCards(this.cardsForTags[this.tagToCheck]);
+                            this.cardsForTags[this.restrictedTag] = exception.filterExceptedCards(this.cardsForTags[this.restrictedTag]);
+                        }
+                    }
+                }
+            }
+
             let affectedCards = [];
             affectedCards.push(...this.cardsForTags[this.tagToCheck]);
             affectedCards.push(...this.cardsForTags[this.restrictedTag]);
+            if(affectedCards.length <= 1)
+                return;
             this.writeWarningTowarningTextOutputElement(this.warninigText);
             this.highlightRestrictedCards(affectedCards.filter(this.distinctFilter), this.warninigText);
         }
     }
 }
+
 class SingletonRestriction extends BaseRestriction {
     applyAction = function() {
         this.initCardData();
@@ -159,6 +188,21 @@ class SingletonRestriction extends BaseRestriction {
             if (!legalSingletonRuler)
                 return;
 
+                if(this.exceptions.length >= 1){
+                    for (let i = 0; i < this.exceptions.length; i++) {
+                        const exception = this.exceptions[i];
+                        if(exception.isExceptionValid(this.cardData)){
+                            if(exception.breakRestriction(this.cardData)){
+                                console.info('Ignoring Restricion because of full_exception!');
+                                return;
+                            }
+                            else{
+                                illegalCardsForSingleton = exception.filterExceptedCards(illegalCardsForSingleton);
+                            }
+                        }
+                    }
+                }
+
             if (illegalCardsForSingleton.length > 0) {
                 this.writeWarningTowarningTextOutputElement(this.warninigText);
                 this.highlightRestrictedCards(illegalCardsForSingleton, this.warninigText);
@@ -169,4 +213,60 @@ class SingletonRestriction extends BaseRestriction {
 
 class ArcanaSingletonRestriction extends SingletonRestriction {
 
+}
+
+class RestrictionExceptionFactory {
+    getExceptionForType(type, exceptionApplyingCard, exceptionApplyingZone, applyingToCards){
+        switch (type) {
+            case 'full_exception':
+                return new FullRestrictionException(exceptionApplyingCard, exceptionApplyingZone, applyingToCards);
+            case 'partial_exception':
+                return new PartialRestrictionException(exceptionApplyingCard, exceptionApplyingZone, applyingToCards);
+            default:
+                console.error(`Cannot create restriction exception with unknown type ${type}. `)
+                break;
+        }
+    }
+}
+
+class BaseRestrictionException {
+    constructor(exceptionApplyingCard, exceptionApplyingZone, applyingToCards = []) {
+        Object.defineProperties(this, {
+            exceptionApplyingCard: { value: exceptionApplyingCard},
+            exceptionApplyingZone: { value: exceptionApplyingZone},
+            applyingToCards: { value: applyingToCards}
+        })
+    }
+
+    isExceptionValid = function (cards) 
+    { 
+        if(cards.length < 1)
+            return false;
+        
+        for (let i = 0; i < cards.length; i++) {
+            const card = cards[i];
+            if(this.exceptionApplyingZone.split(';').includes(card.zone) && card.id === this.exceptionApplyingCard){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    breakRestriction = function(){
+        return false;
+    }
+}
+
+class PartialRestrictionException extends BaseRestrictionException {
+    filterExceptedCards = function (cards) 
+    {
+        return cards.filter((card) => !this.applyingToCards.includes(card.id))
+    }
+}
+
+class FullRestrictionException extends BaseRestrictionException {
+    breakRestriction = function(cards){
+        return this.isExceptionValid(cards);
+    }
 }

@@ -46,7 +46,7 @@ class RestrictionException(models.Model):
     card_zone_restriction = models.CharField(max_length=50, null=True, blank=True)
     exception_action = models.ForeignKey('ExceptionAction', null=True, on_delete=models.CASCADE)
     def __str__(self):
-        return f'Exception for {self.restriction.name}'
+        return f'Exception for Restriction ({self.restriction.tag.name} restricts {self.restriction.restricted_tag.name}) for {self.exception_applying_card.name}'
     
 class ExceptionAction(models.Model):
     name = models.CharField(max_length=200, null=False, blank=False)

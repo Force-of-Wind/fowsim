@@ -6,7 +6,7 @@ from cardDatabase.models.User import Profile
 from cardDatabase.models.DeckList import DeckList, DeckListCard, DeckListZone, UserDeckListZone
 from cardDatabase.models.Spoilers import SpoilerSeason
 from cardDatabase.models.Banlist import CombinationBannedCards, BannedCard, Format
-from cardDatabase.models.Rulings import Ruling, Restriction, RestrictionAction
+from cardDatabase.models.Rulings import Ruling, Restriction, RestrictionAction, RestrictionException, ExceptionAction
 from cardDatabase.models.Metrics import *
 
 class AbilityTextInline(admin.TabularInline):
@@ -83,6 +83,8 @@ admin.site.register(CombinationBannedCards, CombinationBannedCardsAdmin)
 admin.site.register(Ruling, RulingAdmin)
 admin.site.register(Restriction)
 admin.site.register(RestrictionAction)
+admin.site.register(RestrictionException)
+admin.site.register(ExceptionAction)
 admin.site.register(Race)
 admin.site.register(CardColour)
 admin.site.register(MostPickedCardPickRate)

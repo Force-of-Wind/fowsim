@@ -128,7 +128,7 @@ class ConflictingTagRestriction extends BaseRestriction {
                     const exception = this.exceptions[i];
                     if(exception.isExceptionValid(this.cardData)){
                         if(exception.breakRestriction(this.cardData)){
-                            console.info('Ignoring Restricion because of full_exception!');
+                            console.info('Ignoring restriction because of full_exception!');
                             return;
                         }
                         else{
@@ -193,7 +193,7 @@ class SingletonRestriction extends BaseRestriction {
                         const exception = this.exceptions[i];
                         if(exception.isExceptionValid(this.cardData)){
                             if(exception.breakRestriction(this.cardData)){
-                                console.info('Ignoring Restricion because of full_exception!');
+                                console.info('Ignoring restriction because of full_exception!');
                                 return;
                             }
                             else{
@@ -223,7 +223,7 @@ class RestrictionExceptionFactory {
             case 'partial_exception':
                 return new PartialRestrictionException(exceptionApplyingCard, exceptionApplyingZone, applyingToCards);
             default:
-                console.error(`Cannot create restriction exception with unknown type ${type}. `)
+                console.error(`Cannot create restriction exception with unknown type ${type}.`);
                 break;
         }
     }

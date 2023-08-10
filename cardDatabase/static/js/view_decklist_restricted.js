@@ -261,7 +261,7 @@ class BaseRestrictionException {
 class PartialRestrictionException extends BaseRestrictionException {
     filterExceptedCards = function (cards) 
     {
-        return cards.filter((card) => !this.applyingToCards.includes(card.id))
+        return cards.filter((card) => !this.applyingToCards.includes(card.id));
     }
 }
 

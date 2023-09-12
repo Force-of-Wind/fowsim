@@ -216,6 +216,19 @@ def format_id_text(text):
 def dict_to_json(dict_obj):
     return mark_safe(json.dumps(ast.literal_eval(str(dict_obj))))
 
+@register.simple_tag
+def cards_to_json(cards):
+    output_cards = []
+    for card in cards:
+        simple_card = {
+            "name": card.card.name_without_punctuation,
+            "zone" : card.zone.zone.name,
+            "cost": card.card.cost,
+            "quantity" : card.quantity
+        }
+        output_cards.append(simple_card)
+    return dict_to_json(output_cards)
+
 
 @register.simple_tag
 def colours_to_imgs(colours):

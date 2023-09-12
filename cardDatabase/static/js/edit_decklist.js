@@ -1,7 +1,8 @@
 $(function() {
     let LAST_DATABASE_URL = '';
     function setupCardClickables(){
-        // Remove duplicate listeners when it gets called multiple times while generating new card html
+        // Remove duplicate listeners when it gets called multiple times while generating new card html       
+        const refreshBc = new BroadcastChannel("refresh_channel");
         $('.card-quantity-plus').unbind('click');
         $('.card-quantity-minus').unbind('click');
 
@@ -10,18 +11,23 @@ $(function() {
                 return Math.max(parseInt(oldVal, 10) - 1, 1);
             });
             setZoneCount($(this).parents('.deck-zone').eq(0));
+            refreshBc.postMessage('refresh');
         });
         $('.card-quantity-plus').click(function(event){
             $(this).siblings('input').val(function(i, oldVal){
                 return parseInt(oldVal, 10) + 1;
             });
             setZoneCount($(this).parents('.deck-zone').eq(0));
+            refreshBc.postMessage('refresh');
         });
         $('.deck-zone-cards .remove-card').on('click', function(event){
             let parent_deck_zone = $(this).parents('.deck-zone'); //Determine it before removing the element or jquery fails
             $(this).closest('.deck-zone-card').remove();
             setZoneCount(parent_deck_zone);
+            refreshBc.postMessage('refresh');
         });
+        
+        $(".card-quantity-input").change(() => {refreshBc.postMessage('refresh')});
         $('.remove-zone span').unbind('click');
         $('.remove-zone span').click(function(event){
             let el_title = $(this).parent().siblings('.deck-zone-title').text().trim();
@@ -30,7 +36,7 @@ $(function() {
                     $('#zone-counts .zone-count-title').each(function (index) {
                         if ($(this).html().trim() == el_title) {
                             $(this).next().remove();
-                            $(this).remove();
+                            $(this).remove();                            
                             return false;
                         }
                     });
@@ -39,19 +45,22 @@ $(function() {
                 if (!FOWDB_IS_MOBILE) {
                     setupCardOverlay();
                 }
+                refreshBc.postMessage('refresh');
             }
         });
 
         if (FOWDB_IS_MOBILE) {
             $('.deck-zone-title').on('focusin', function () {
                 $(this).data('prev-val', $(this).html().trim());
+                refreshBc.postMessage('refresh');
             });
         }
-        $('.decklist-name').off('paste').on('paste', handlePaste);
+        $('.decklist-name').off('paste').on('paste', () => {handlePaste; refreshBc.postMessage('refresh');});
         $('.deck-zone-title').unbind('blur keyup paste copy cut delete mouseup');
         $('.deck-zone-title').on('blur keyup paste copy cut delete mouseup', function (event) {
             if (event.type == 'paste'){
                 handlePaste(event);
+                refreshBc.postMessage('refresh');
             }
             if (FOWDB_IS_MOBILE){
                 let prev_val = $(this).data('prev-val');
@@ -60,11 +69,13 @@ $(function() {
                     if ($(this).html().trim() == prev_val){
                         $(this).html($(that).html().trim());
                         $(that).data('prev-val', $(that).html().trim());
+                        refreshBc.postMessage('refresh');
                         return false;
                     }
                 });
             } else {
                 setupCardOverlay();
+                refreshBc.postMessage('refresh');
             }
         });
 
@@ -258,7 +269,7 @@ $(function() {
     }
 
     function createCardHtml(name, img_urls, card_id){
-        return `<div class="deck-zone-card" data-card-id="${card_id}" draggable="true">
+        return `<div class="deck-zone-card" data-card-id="${card_id}" data-card-img-urls="${img_urls}" data-card-name="${name}" draggable="true">
                     <div class="card-quantity">
                         <a href="#" class="card-quantity-minus">
                             <span>-</span>
@@ -334,6 +345,7 @@ $(function() {
     }
 
     function setupDraggableCards() {
+        const refreshBc = new BroadcastChannel("refresh_channel");
         $('.deck-zone-card')
             .off('drag')
             .off('dragstart')
@@ -351,6 +363,7 @@ $(function() {
             })
             .on('dragend', function (event) {
                 event.target.style.opacity = 1;
+                refreshBc.postMessage('refresh');
             });
 
         $('.deck-zone')
@@ -436,6 +449,8 @@ $(function() {
                 setupDraggableCards();
                 setZoneCount(droppedOnZone[0]);
                 setZoneCount(previousParent);
+
+                refreshBc.postMessage('refresh');
             });
     }
     if(!FOWDB_IS_MOBILE) {

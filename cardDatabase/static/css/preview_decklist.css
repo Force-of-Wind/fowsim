@@ -1,0 +1,48 @@
+.preview-deck-view-container {
+    width: 100%;
+    padding-left: calc((100% - 850px) / 2);
+    padding-right: calc((100% - 400px) / 2);
+    padding-bottom: 50px;
+}
+
+
+.preview-deck-zone:not(:last-child) {
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgb(0 0 0 / 16%);
+    margin-bottom: 5px;
+}
+
+.preview-deck-zone-card-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 3px;
+    row-gap: 3px;
+}
+.preview-deck-card {
+    display: inline-block;
+    flex: 0 0 auto;
+}
+
+.preview-deck-card-img {
+    width: 60px;
+}
+
+.preview-deck-zone-title, .preview-comments-title, .preview-deck-zone-count, .preview-ban-title {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.preview-deck-zone-title, .preview-deck-zone-count{
+    display: inline-block;
+}
+
+.refresh-preview-btn{
+    margin-top: 5px;
+}
+
+.hidden-display {
+    /* this has to hide the element no matter what */
+    display: none !important;
+}

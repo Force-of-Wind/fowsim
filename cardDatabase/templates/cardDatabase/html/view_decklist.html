@@ -25,6 +25,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2 " type="text/javascript"></script>
     <script src="{% static 'js/view_decklist_statistics.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/view_decklist_restricted.js' %}" type="text/javascript"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="{% static 'js/view_decklist_testhand.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block body %}
@@ -125,6 +127,32 @@
             <a href="{% url 'cardDatabase-copy-decklist' decklist.pk %}"><button type="button" id="copy-decklist">Import to My Decklists</button></a>
             <button type="button" id="copy-image">Copy as Image</button>
             <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
+            <br>
+            <button type="button" id="draw-test-hand-button" class="draw-test-hand-button" data-toggle="modal" data-target="#testHandModal">
+                Draw Testhand
+            </button>
+              
+            <div class="modal fade" id="testHandModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Testhand</h5>
+                        <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="min-height: 50vh">
+                        <div id="test-hand-card-container">
+                            
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="close-modal-button" type="button" class="" data-dismiss="modal">Close</button>
+                        <button id="draw-card-button" type="button" >Draw card</button>
+                    </div>
+                </div>
+            </div>
+            </div>
         </div>
         {% if cards %}
             <br>
@@ -166,6 +194,13 @@
                     cardsData,
                     restrictions,
                     $('#restriction-warnings')
+                let mainDeckCards = buildCardWrappers(cards);
+
+                initTestHandModule(
+                    mainDeckCards,
+                    '#draw-test-hand-button', 
+                    '#test-hand-card-container', 
+                    '#draw-card-button'
                 )
                 
             </script>

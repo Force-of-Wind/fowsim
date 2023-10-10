@@ -222,4 +222,10 @@
 .restriction-wrapper{
     margin-top:15px;
     margin-bottom: 10px;
+.draw-test-hand-button{
+    margin-top: 10px;
+}
+
+button.close.modal-close-btn {
+    margin-top: -15px !important;
 }

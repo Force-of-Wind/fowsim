@@ -30,3 +30,7 @@
 .attribute-wrapper-disabled{
     display: none;
 }
+
+button.close.modal-close-btn {
+    margin-top: -15px !important;
+}

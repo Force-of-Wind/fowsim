@@ -200,10 +200,35 @@
 .ban-text, .banned-icon{
     min-width: 0;
 }
+
 .draw-test-hand-button{
     margin-top: 10px;
 }
 
 button.close.modal-close-btn {
     margin-top: -15px !important;
+}
+
+.statistics-attribute-img{
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+.attribute-wrapper{
+    opacity: 1;
+}
+
+.attribute-wrapper-disabled{
+    opacity: 0.4;
+}
+
+.hide-restrictions{
+    display: none;
+}
+  
+.restriction-wrapper{
+    margin-top:15px;
+    margin-bottom: 10px;
 }

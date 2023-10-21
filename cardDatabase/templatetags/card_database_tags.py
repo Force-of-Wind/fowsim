@@ -217,6 +217,23 @@ def dict_to_json(dict_obj):
     return mark_safe(json.dumps(ast.literal_eval(str(dict_obj))))
 
 @register.simple_tag
+def map_tags(card):
+    output = []
+    for tag in card.card.tag.all():
+        output.append(tag.id)
+    if len(output) > 0:
+        return mark_safe(json.dumps(ast.literal_eval(str(output))))
+    else:
+        return ''
+
+@register.simple_tag
+def has_tags(card):
+    if len(card.card.tag.all()) > 0 and card.zone.zone.name != 'Side Deck':
+        return True
+    else:
+        return False
+
+@register.simple_tag
 def cards_to_json(cards):
     output_cards = []
     for card in cards:

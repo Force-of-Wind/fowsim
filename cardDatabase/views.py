@@ -19,6 +19,7 @@ from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistration
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race
 from .models.Banlist import BannedCard, CombinationBannedCards
+from .models.Rulings import Restriction, RestrictionException
 from .models.Metrics import PickPeriod, MostPickedCardPickRate, AttributePickRate, CardTotalCostPickRate, CardTypePickRate
 from fowsim import constants as CONS
 from fowsim.decorators import site_admins, desktop_only, logged_out, mobile_only, reddit_bot
@@ -603,7 +604,7 @@ def view_decklist(request, decklist_id):
     cards = decklist.cards.all()
     zones = UserDeckListZone.objects.filter(decklist=decklist).order_by('position').values_list('zone__name', flat=True).distinct()
 
-    '''
+    ''' 
     DeckListCard is not the same as Card so compare the pk's by using values_list to get Card objects from DeckListCard
     Also avoids duplicate named/reprinted cards needing multiple banlist entries
     '''
@@ -639,6 +640,45 @@ def view_decklist(request, decklist_id):
                                                  kwargs={'card_id': card.card_id})
                     })
             combination_ban_warnings.append(combination_ban_warning)
+    
+    restricitons = Restriction.objects.all()
+    deckRestrictions = []
+    for restriction in restricitons:
+        exceptions = RestrictionException.objects.filter(restriction=restriction)
+        deckExceptions = []
+        for exception in exceptions:
+            cardsExceptionApplysTo = []
+            for card in exception.exception_action.applying_to_cards.all():
+                cardsExceptionApplysTo.append(card.id)
+            deckExceptions.append({
+                'exceptionApplyingCard' : exception.exception_applying_card.id,
+                'exceptionApplyingZone' : exception.card_zone_restriction,
+                'exceptionAction' : exception.exception_action.technical_name,
+                'cardsExceptionApplysTo': cardsExceptionApplysTo
+            })
+
+        deckRestrictions.append({
+                    'text': restriction.text,
+                    'action': restriction.action.technical_name,
+                    'checkingTag': restriction.tag.id,
+                    'restrictedTag': restriction.restricted_tag.id,
+                    'exceptions' : deckExceptions
+                })
+            
+    cardsData = []
+    for card in cards:
+        tags = []
+        for tag in card.card.tag.all():
+            tags.append(tag.id)
+        cardsData.append({
+                    'quantity': card.quantity,
+                    'tags': tags,
+                    'id': card.card.id,
+                    'zone': card.zone.zone.name
+                })
+
+    
+    
 
     return render(request, 'cardDatabase/html/view_decklist.html', context={
         'decklist': decklist,
@@ -646,6 +686,8 @@ def view_decklist(request, decklist_id):
         'cards': cards,
         'ban_warnings': ban_warnings,
         'combination_ban_warnings': combination_ban_warnings,
+        'deckRestrictions' : deckRestrictions,
+        'cardsData': cardsData
     })
 
 

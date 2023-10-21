@@ -63,6 +63,10 @@ class CardAbility(models.Model):
     ability_text = models.ForeignKey('AbilityText', on_delete=models.CASCADE, related_name='card')
     position = models.IntegerField(blank=False, null=False, default=1)
 
+class Tag(models.Model):
+    def __str__(self):
+        return self.name    
+    name = models.CharField(max_length=200, null=False, blank=False)
 
 class Card(AbstractModel):
     class Meta:
@@ -82,6 +86,7 @@ class Card(AbstractModel):
     types = models.ManyToManyField('Type', related_name='types')
     ability_texts = models.ManyToManyField('AbilityText', related_name='cards', blank=True, through=CardAbility)
     colours = models.ManyToManyField('CardColour', related_name='cards', blank=False)
+    tag = models.ManyToManyField('Tag', related_name='cards', blank=True)
 
     def __str__(self):
         return self.name

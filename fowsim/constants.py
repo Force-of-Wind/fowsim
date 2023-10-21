@@ -576,6 +576,7 @@ SETS_IN_ORDER = [
     'H5 Buy a Box',
     'H5 Prerelease Party',
     'CST',
+    'MC02',  # Memoria Collection
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -671,7 +672,8 @@ SEARCH_SETS_INCLUDE = {
     ],
     'CST': [
         'H5 Buy a Box',
-        'H5 Prerelease Party'
+        'H5 Prerelease Party',
+        'MC02'
     ]
 }
 

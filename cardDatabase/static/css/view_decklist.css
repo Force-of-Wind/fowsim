@@ -201,6 +201,14 @@
     min-width: 0;
 }
 
+.draw-test-hand-button{
+    margin-top: 10px;
+}
+
+button.close.modal-close-btn {
+    margin-top: -15px !important;
+}
+
 .statistics-attribute-img{
     width: 40px;
     height: 40px;
@@ -219,6 +227,7 @@
 .hide-restrictions{
     display: none;
 }
+  
 .restriction-wrapper{
     margin-top:15px;
     margin-bottom: 10px;

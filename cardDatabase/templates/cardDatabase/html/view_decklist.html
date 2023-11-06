@@ -36,6 +36,11 @@
             <div class="deck-creator-name">
                 by <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{{ decklist.profile.user.username }}</a>
             </div>
+            {% if decklist.shareMode == "tournament" %}
+                <p>
+                    <b>Edit is disabled when Deck is in tournament share mode!</b>    
+                </p>
+            {% endif %}
             {% for zone in zones %}
                 <div class="deck-zone">
                     <div class="deck-zone-title">
@@ -50,7 +55,7 @@
                                         {% for _ in range %}
                                             <div class="deck-card">
                                                 {% has_tags card as has_tags_flag %}
-                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}" data-card-id={{card.card.id}} data-card-zone="{{zone}}"">
+                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}" data-card-id={{card.card.id}} data-card-zone="{{zone}}">
                                                 <div class="card-preview">
                                                     <div class="multi-hovered-img">
                                                         <img class="hover-card-img" src="{{ card.card.card_image.url }}">
@@ -116,10 +121,30 @@
             <img id="banned_icon" class="banned-icon hide-restrictions" src="{% static 'img/banned-icon.svg' %}">
         </div>
         <div id="deck-options">
+            {% if decklist.shareMode == "tournament" %}
+                <b>
+                    <p>Edit is disabled when Deck is in tournament share mode!</p>
+                </b>
+            {% endif %}
+            {% if request.user == decklist.profile.user and decklist.shareCode != '' %}
+                <input type="hidden" id="share-link" value="{{ decklist.shareCode }}">
+                <button type="button" id="copy-share">Copy share link</button>
+                <button type="button" id="delete-share">Delete share link</button>
+                <br>
+            {% endif %}
+            
+            {% if request.user == decklist.profile.user and decklist.shareCode == '' %}
+                <button type="button" id="create-share">Create share link</button>
+                <button type="button" id="create-tournament-share">Create tournament share link</button>
+                <br>
+            {% endif %}
             {% if request.user == decklist.profile.user %}
-                <a href="{% get_edit_decklist_url decklist.pk request.user_agent %}">
-                    <button type="button" id="edit-decklist">Edit Decklist</button>
-                </a>
+                {% csrf_token %}
+                {% if decklist.shareMode != "tournament" %}
+                    <a href="{% get_edit_decklist_url decklist.pk request.user_agent %}">
+                        <button type="button" id="edit-decklist">Edit Decklist</button>
+                    </a>
+                {% endif %}
             {% endif %}
             <button type="button" id="untap-export">Export to Untap</button>
             <a href="{% url 'cardDatabase-copy-decklist' decklist.pk %}"><button type="button" id="copy-decklist">Import to My Decklists</button></a>

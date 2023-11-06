@@ -1,6 +1,7 @@
 import json
 import re
 import datetime
+import uuid;
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Count
@@ -528,6 +529,10 @@ def create_decklist(request):
 def edit_decklist(request, decklist_id=None):
     # Check that the user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+
+    if decklist.shareMode == "tournament":
+        return HttpResponseRedirect(reverse('cardDatabase-tournament-decklist'))
+
     ctx = get_search_form_ctx()
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
@@ -564,6 +569,10 @@ def save_decklist(request, decklist_id=None):
 
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+
+    if decklist.shareMode == "tournament":
+        return HttpResponse('Deck is in tournament mode and cannot be edited!', status=400)
+
     decklist.name = decklist_data['name']
     decklist.comments = decklist_data['comments']
     decklist.public = is_public
@@ -591,16 +600,47 @@ def save_decklist(request, decklist_id=None):
 
     return JsonResponse({'decklist_pk': decklist.pk})
 
+@login_required
+@require_POST
+def create_share_code(request, decklist_id=None):
+    data = json.loads(request.body.decode('UTF-8'))
+    if 'mode' in data:
+        mode = data['mode']
+    else:
+        mode = 'private'
+
+    # Check user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    decklist.shareMode = mode
+    decklist.shareCode = uuid.uuid4().hex
+    decklist.save()
+
+    return JsonResponse({'code': decklist.shareCode})
+
+@login_required
+@require_POST
+def delete_share_code(request, decklist_id=None):
+
+    # Check user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    decklist.shareMode = ''
+    decklist.shareCode = ''
+    decklist.save()
+
+    return JsonResponse({'decklist_pk': decklist.pk})
+
 
 def private_decklist(request):
     return render(request, 'cardDatabase/html/private_decklist.html')
 
+def tournament_decklist(request):
+    return render(request, 'cardDatabase/html/tournament_decklist.html')
 
-def view_decklist(request, decklist_id):
+def view_decklist(request, decklist_id, share_parameter = ''):
     decklist = get_object_or_404(DeckList, pk=decklist_id)
-    if not decklist.public and not request.user == decklist.profile.user and not request.user.is_superuser:
+    if (not decklist.public and not request.user == decklist.profile.user and not request.user.is_superuser) and (share_parameter == '' or not decklist.shareCode == share_parameter):
         return HttpResponseRedirect(reverse('cardDatabase-private-decklist'))
-
+    
     cards = decklist.cards.all()
     zones = UserDeckListZone.objects.filter(decklist=decklist).order_by('position').values_list('zone__name', flat=True).distinct()
 

@@ -3,11 +3,15 @@ function initTestHandModule(cardsToUse, buttonSelector, cardContainerSelector, d
     //cleanup
     $(cardContainerSelector).empty();
 
+    $(cardContainerSelector).off('click');
+
     $(cardContainerSelector).on('click', '.deck-card-img', function(event){
         $(this).siblings('.card-preview').addClass('show');
         $(this).parent().find('img').addClass('show-hover');
         $(this).parent().find('.multi-hovered-img').addClass('show-hover');
     });
+
+    $(document).off('keyup');
 
     $(document).on('keyup', function(e){
         if (e.key === "Escape"){
@@ -16,6 +20,8 @@ function initTestHandModule(cardsToUse, buttonSelector, cardContainerSelector, d
             $('.multi-hovered-img.show-hover').removeClass('show-hover');
         }
     });
+
+    $(cardContainerSelector).off('click');
  
     $(cardContainerSelector).on('click', '.card-preview', function(e){
          if (e.target.classList.contains('card-preview')){
@@ -24,6 +30,8 @@ function initTestHandModule(cardsToUse, buttonSelector, cardContainerSelector, d
              $('.multi-hovered-img.show-hover').removeClass('show-hover');
          }
      });
+
+    $(buttonSelector).off('click');
 
     $(buttonSelector).on('click', function (e) {
         cardsToUse = originalCardStack;
@@ -38,6 +46,8 @@ function initTestHandModule(cardsToUse, buttonSelector, cardContainerSelector, d
         });
         
     });
+
+    $(drawButtonSelector).off('click');
 
     $(drawButtonSelector).on('click', function (e) {
         $(cardContainerSelector).append(cardsToUse[0]);

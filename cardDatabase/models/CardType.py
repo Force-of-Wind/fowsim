@@ -136,15 +136,17 @@ class Card(AbstractModel):
 
     @property
     def other_sides(self):
-        shared_id = self.card_id
+        shared_number = self.set_number
+        if not shared_number:
+            return Card.objects.none()  # Unusual set code like "Prerelease party" or "Buy a box" without a -
         self_other_side_char = ''
         for to_remove in CONS.OTHER_SIDE_CHARACTERS:
-            if to_remove in shared_id:
-                shared_id = shared_id.replace(to_remove, '')
+            if to_remove in shared_number:
+                shared_number = shared_number.replace(to_remove, '')
                 self_other_side_char = to_remove
 
         other_side_query = Q()
-
+        shared_id = self.set_code + '-' + shared_number
         if self_other_side_char:
             # This isn't the front side so check with no extra chars
             other_side_query |= Q(card_id=shared_id)

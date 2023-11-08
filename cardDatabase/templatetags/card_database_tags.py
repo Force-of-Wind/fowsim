@@ -150,13 +150,13 @@ def referenced_card_img_html(card):
 
 def add_card_reference_links(ability_text):
     # Check for names in apostrophes that aren't preceded by "God's Art"
-    matches = re.findall(r'(?<!God\'s Art\W )"[^\"\"]+"', ability_text)
+    matches = re.findall(r'(?<!God\'s Art)\s"([^\"\"]+)"', ability_text)
     for match in matches:
         try:
             try:
-                card = Card.objects.get(name=match[1:-1])
+                card = Card.objects.get(name=match)
             except Card.MultipleObjectsReturned:
-                card = Card.objects.filter(name=match[1:-1]).first()
+                card = Card.objects.filter(name=match).first()
             card_url = card_id_to_url(card.card_id)
             ability_text = ability_text.replace(match, f'"<a class="referenced-card" href="{card_url}">{card.name}{referenced_card_img_html(card)}</a>"')
         except Card.DoesNotExist:

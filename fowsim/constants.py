@@ -580,6 +580,7 @@ SETS_IN_ORDER = [
     'MC02',  # Memoria Collection,
     'JRP',
     'H6 Prerelease Party',
+    'MC03',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -679,7 +680,8 @@ SEARCH_SETS_INCLUDE = {
         'MC02'
     ],
     'JRP': [
-        'H6 Prerelease Party'
+        'H6 Prerelease Party',
+        'MC03',
     ]
 }
 

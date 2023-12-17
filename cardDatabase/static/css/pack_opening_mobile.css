@@ -1,0 +1,11 @@
+.card-holder {
+  margin-bottom: 30px;
+}
+
+.action-btn {
+  width: 100%;
+}
+
+.actions-wrapper {
+  flex-direction: column;
+}

@@ -1,0 +1,44 @@
+{% extends 'cardDatabase/html/base.html' %}
+
+{% load static card_database_tags %}
+
+{% block js %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'js/pack_select.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{% static 'css/pack_select.css' %}" />
+{% endblock %}
+
+{% block body %}
+<div class="history-wrapper">
+  <p> </p>
+  <a href="/pack_history/">
+    History <i class="fa-solid fa-clock-rotate-left fa-xl"></i>
+  </a>
+</div>
+  <div class="container">
+    <div class="image-wrapper">
+      {% for cluster in clusters %}
+        <div class="cluster-wrapper">
+          <div class="cluster-name">
+            <h2>{{ cluster.name }}</h2>
+          </div>
+          <hr />
+          {# prettier-ignore-start #}
+          {% if cluster.sets|length < 1 %}
+          {# prettier-ignore-end #}
+            <p class="unsupported-text">Cluster not yet supported</p>
+          {% endif %}
+          {% for set in cluster.sets %}
+            <a href="/pack_opening/{{ set.code }}/" target="_blank"><img class="image-container" src="{% static set.image %}" title="{{ set.name }}" alt="{{ set.code }}" /></a>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

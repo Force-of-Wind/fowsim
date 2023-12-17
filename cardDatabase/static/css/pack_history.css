@@ -1,0 +1,42 @@
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    position: fixed;
+    max-width: 100%;
+    overflow: auto;
+}
+
+.action-wrapper {
+    display: flex;
+    justify-content: right;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.pull-entry {
+    margin-bottom: 20px;
+}
+
+.card-container {
+    display: flex;
+    gap: 10px;
+    align-content: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1700px;
+}
+
+.card {
+    border: 1px solid black;
+    border-radius: 12px;
+    width: 260px;
+    margin: 10px 10px;
+}
+
+.empty-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

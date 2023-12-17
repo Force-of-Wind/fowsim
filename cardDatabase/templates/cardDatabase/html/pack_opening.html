@@ -1,0 +1,98 @@
+{% extends 'cardDatabase/html/base.html' %}
+
+{% load static %}
+
+{% block js %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'js/pack_opening.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/pack_opening.css' %}" />
+  {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+    <link rel="stylesheet" href="{% static 'css/pack_opening_mobile.css' %}" />
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+  {% if not valid %}
+    <div class="container">
+      <div class="error-wrapper">
+        <h3>Pack not yet implemented or invalid!</h3>
+      </div>
+    </div>
+  {% else %}
+    <div class="container">
+      <div class="loader-wrapper">
+        <svg class="loader" viewBox="0 0 100 100" overflow="visible">
+          <g class="core">
+            <circle class="path" cx="50" cy="50" r="1" fill="none" />
+          </g>
+          <g class="layer-1">
+            <circle class="path" cx="50" cy="50" r="70" fill="none" />
+          </g>
+          <g class="layer-2">
+            <circle class="path" cx="50" cy="50" r="120" fill="none" />
+          </g>
+          <g class="layer-3">
+            <circle class="path" cx="50" cy="50" r="180" fill="none" />
+          </g>
+          <g class="layer-4">
+            <circle class="path" cx="50" cy="50" r="240" fill="none" />
+          </g>
+          <g class="layer-5">
+            <circle class="path" cx="50" cy="50" r="300" fill="none" />
+          </g>
+          <g class="layer-6">
+            <circle class="path" cx="50" cy="50" r="380" fill="none" />
+          </g>
+          <g class="layer-7">
+            <circle class="path" cx="50" cy="50" r="450" fill="none" />
+          </g>
+          <g class="layer-8">
+            <circle class="path" cx="50" cy="50" r="540" fill="none" />
+          </g>
+        </svg>
+      </div>
+      <div class="pack-container">
+        <a href="#" id="pack-standard"><img src="{% static packImage %}" alt="{% static packImage %}" /></a>
+      </div>
+      <div id="pack-wrapper" class="pack-wrapper">
+        <div class="card-holder">
+          {% for pull in pulls %}
+            <div class="card item hidden">
+              <img class="card__face card__face--front" src="{% static 'img/pack/card_back.png' %}" />
+              <img class="card__face card__face--back" src="{{ pull.card_image.url }}" title="{{ pull.name }}" alt="card_front" />
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="modal" id="exportModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Untap export</h5>
+              <button type="button" class="close dismiss-modal" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              {# prettier-ignore-start #}
+              <textarea cols="30" rows="10">{% for pull in pulls %}1 {{ pull.name }}
+{% endfor %}</textarea>
+              {# prettier-ignore-end #}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary dismiss-modal" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="actions-wrapper">
+        <button class="action-btn" id="openNewBtn">Open new Pack</button>
+        <button class="action-btn" id="exportBtn">Export Cards</button>
+        <button class="action-btn" id="packSelectBtn">Go to pack select</button>
+        <button class="action-btn" id="packHistoryBtn">History</button>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

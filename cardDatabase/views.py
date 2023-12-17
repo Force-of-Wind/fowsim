@@ -1,6 +1,10 @@
+import collections
 import json
+import os
 import re
 import datetime
+import random
+from os.path import exists
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Count
@@ -17,7 +21,7 @@ from django.contrib.auth import login, authenticate
 
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
-from .models.CardType import Card, Race
+from .models.CardType import Card, Race, Set
 from .models.Banlist import BannedCard, CombinationBannedCards
 from .models.Rulings import Restriction, RestrictionException
 from .models.Metrics import PickPeriod, MostPickedCardPickRate, AttributePickRate, CardTotalCostPickRate, CardTypePickRate
@@ -63,6 +67,12 @@ def get_card_type_query(data):
         if card_type in CONS.SEARCH_CARD_TYPES_INCLUDE:
             for also_included_type in CONS.SEARCH_CARD_TYPES_INCLUDE[card_type]:
                 card_type_query |= Q(types__name=also_included_type)
+    return card_type_query
+
+def get_not_card_type_query(data):
+    card_type_query = ~Q()
+    for card_type in data:
+        card_type_query = ~Q(types__name=card_type)
     return card_type_query
 
 
@@ -250,6 +260,7 @@ def advanced_search(advanced_form):
             advanced_form.cleaned_data['colour_combination'])
         race_query = get_race_query(advanced_form.cleaned_data['race'])
         set_query = get_set_query(advanced_form.cleaned_data['sets'])
+
         card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
         rarity_query = get_rarity_query(advanced_form.cleaned_data['rarity'])
         divinity_query = get_divinity_query(advanced_form.cleaned_data['divinity'])
@@ -826,3 +837,138 @@ def metrics(request):
         'pick_periods': PickPeriod.objects.all()
     }
     return render(request, 'cardDatabase/html/metrics.html', ctx)
+
+def get_image_for_config(set):
+    return 'img/pack/' + set + '-pack.png'
+
+def pack_select(request):
+    mapped_clusters = []
+
+    for cluster in CONS.SET_DATA['clusters']:
+        setsData = []
+        for fow_set in cluster['sets']:
+          for config in os.listdir('cardDataBase/static/pack_config/'):
+            lowerCode = fow_set['code'].lower()
+            if config.startswith(lowerCode):
+                setsData.append({
+                    'name': fow_set['name'],
+                    'code': fow_set['code'],
+                    'image': get_image_for_config(lowerCode),
+                })
+        mapped_clusters.append({
+            'name': cluster['name'],
+            'sets': setsData
+        })
+                
+    #return HttpResponse(str(json.dumps(list(mapped_clusters.values()))))
+    ctx = {
+        'clusters': mapped_clusters
+    }
+    return render(request, 'cardDatabase/html/pack_select.html', ctx)
+
+def read_file(path):
+    file = open(path, "r")
+    data = file.read()
+    file.close()
+    return data
+
+def weightSamples(pairs):
+    rand = random.randrange(1,100)
+    segments = []
+    for pair in pairs:
+        for _ in range(pair['chance']):
+            segments.append(pair)
+    
+    return segments[rand]
+
+def build_duplicate_filter(pull_history, slot):
+    set_query = ~Q()
+    for entry in pull_history:
+        if entry['slot'] is slot:
+            set_query &= ~Q(card_id=entry['cardId'])
+    return set_query
+
+def pack_opening(request, setcode=None):
+    if setcode is None:
+        return render(request, 'cardDatabase/html/pack_opening.html', {
+            'valid': False
+        })
+    pathToConfig = 'cardDataBase/static/pack_config/' + setcode.lower() + '.json'
+    if(not exists(pathToConfig)):
+        return render(request, 'cardDatabase/html/pack_opening.html', {
+            'valid': False
+        })
+    config = json.loads(read_file(pathToConfig))
+    slots = config['slots']
+    pulls = []
+    set_query = get_set_query([setcode.upper()])
+    pull_history = []
+
+    for slot in slots:
+        card_pool = (Card.objects.
+                    filter(set_query).
+                    filter(build_duplicate_filter(pull_history, slot)).
+                    distinct())
+        
+        if 'excludes' in config:
+            excludes = config['excludes']
+            for exclude in excludes:
+                if exclude['rarity'] is slot:
+                    cardTypes = exclude['type']
+                    card_type_query = get_not_card_type_query(cardTypes)
+                    card_pool = card_pool.filter(card_type_query)
+
+        if(not slot in config):
+            rarity_query = get_rarity_query([slot])
+            card_pool = card_pool.filter(rarity_query)
+            pool_count = card_pool.count() - 1
+            pull = random.randrange(0, pool_count)
+            card = card_pool[pull]
+            pulls.append(card)
+            pull_history.append({
+                'slot': slot,
+                'cardId': card.card_id
+            })
+
+        else:
+            slotConfig = config[slot]
+            if len(slotConfig) >= 2:
+                pulledSlot = weightSamples(slotConfig)
+            else:
+                pulledSlot = slotConfig[0]
+            if pulledSlot['rarity'] is not None:
+                rarity_query = get_rarity_query([pulledSlot['rarity']])
+                card_pool = card_pool.filter(rarity_query)
+            if 'conditions' in pulledSlot:
+                for condition in pulledSlot['conditions']:
+                    cardType = condition['type']
+                    equalsCriteria = condition['equals']
+                    if equalsCriteria:
+                        card_type_query = get_card_type_query([cardType])
+                        card_pool = card_pool.filter(card_type_query)
+                    else:
+                        card_type_query = get_not_card_type_query([cardType])
+                        card_pool = card_pool.filter(card_type_query)
+
+            pool_count = card_pool.count() - 1
+            pull = random.randrange(0, pool_count)
+            card = card_pool[pull]
+            pulls.append(card)
+            pull_history.append({
+                'slot': slot,
+                'cardId': card.card_id
+            })
+
+    
+    ctx = {
+        'pull_history': pull_history,
+        'valid': True,
+        'pulls': pulls,
+        'packImage': config['packImage']
+    }
+
+    return render(request, 'cardDatabase/html/pack_opening.html', ctx)
+
+def pack_history(request):
+ return render(request, 'cardDatabase/html/pack_history.html', {})
+

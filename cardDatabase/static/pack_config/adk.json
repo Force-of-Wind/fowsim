@@ -1,0 +1,78 @@
+{
+    "packImage": "img/pack/adk-pack.png",
+    "slots": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "U",
+        "U",
+        "R-SR",
+        "FOIL"
+    ],
+    "excludes": [],
+    "R-SR": [
+        {
+            "chance": 20,
+            "rarity": "SR"
+        },
+        {
+            "chance": 80,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 30,
+            "rarity": "U"
+        },
+        {
+            "chance": 48,
+            "rarity": "C"
+        },
+        {
+            "chance": 14,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 5,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 8,
+            "rarity": "SR"
+        }
+    ]
+}

@@ -1,0 +1,99 @@
+{
+    "packImage": "img/pack/skl-pack.png",
+    "slots": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "U",
+        "U",
+        "CM-SR",
+        "R-R",
+        "FOIL"
+    ],
+    "excludes": [
+        {
+            "rarity": "C",
+            "type": [
+                "Magic Stone"
+            ]
+        }
+    ],
+    "R-R": [
+        {
+            "chance": 5,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 95,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        }
+    ],
+    "CM-SR": [
+        {
+            "chance": 58,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 42,
+            "rarity": "SR"
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 31,
+            "rarity": "C"
+        },
+        {
+            "chance": 14,
+            "rarity": "U"
+        },
+        {
+            "chance": 34,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 4,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 17,
+            "rarity": "SR"
+        }
+    ]
+}

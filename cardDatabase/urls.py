@@ -30,5 +30,8 @@ urlpatterns = [
     path('copy_decklist/<int:decklist_id>/', views.copy_decklist, name='cardDatabase-copy-decklist'),
     path('private_decklist/', views.private_decklist, name='cardDatabase-private-decklist'),
     path('reddit_bot/query/', views.reddit_bot_query, name='cardDatabase-reddit-bot-query'),
-    path('metrics', views.metrics, name='cardDatabase-metrics')
+    path('metrics', views.metrics, name='cardDatabase-metrics'),
+    path('pack_opening/<str:setcode>/', views.pack_opening, name='cardDatabase-pack-opening'),
+    path('pack_select/', views.pack_select, name='cardDatabase-pack-select'),
+    path('pack_history/', views.pack_history, name='cardDatabase-pack-history')
 ]

@@ -1,38 +1,25 @@
 {
-    "packImage": "img/pack/skl-pack.png",
+    "packImage": "img/pack/tsw-pack.png",
     "slots": [
         "C",
         "C",
         "C",
         "C",
         "C",
+        "C",
+        "FOIL",
+        "R-SR",
         "U",
-        "U",
-        "CM-SR",
-        "R-R",
-        "FOIL"
+        "U"
     ],
-    "excludes": [
+    "excludes": [],
+    "R-SR": [
         {
-            "rarity": "C",
-            "type": [
-                "Magic Stone"
-            ]
-        }
-    ],
-    "R-R": [
-        {
-            "chance": 6,
-            "rarity": "R",
-            "conditions": [
-                {
-                    "equals": true,
-                    "type": "Ruler"
-                }
-            ]
+            "chance": 20,
+            "rarity": "SR"
         },
         {
-            "chance": 94,
+            "chance": 80,
             "rarity": "R",
             "conditions": [
                 {
@@ -46,53 +33,45 @@
             ]
         }
     ],
-    "CM-SR": [
-        {
-            "chance": 75,
-            "rarity": "C",
-            "conditions": [
-                {
-                    "equals": true,
-                    "type": "Magic Stone"
-                }
-            ]
-        },
-        {
-            "chance": 25,
-            "rarity": "SR"
-        }
-    ],
     "FOIL": [
         {
             "chance": 30,
+            "rarity": "U"
+        },
+        {
+            "chance": 42,
             "rarity": "C"
         },
         {
             "chance": 14,
-            "rarity": "U"
-        },
-        {
-            "chance": 34,
             "rarity": "R",
             "conditions": [
                 {
                     "equals": false,
                     "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
                 }
             ]
         },
         {
-            "chance": 6,
+            "chance": 3,
             "rarity": "R",
             "conditions": [
                 {
                     "equals": true,
                     "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
                 }
             ]
         },
         {
-            "chance": 16,
+            "chance": 11,
             "rarity": "SR"
         }
     ]

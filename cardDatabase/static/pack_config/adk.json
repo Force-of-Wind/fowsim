@@ -39,7 +39,7 @@
             "rarity": "U"
         },
         {
-            "chance": 7,
+            "chance": 42,
             "rarity": "C"
         },
         {
@@ -57,7 +57,7 @@
             ]
         },
         {
-            "chance": 5,
+            "chance": 3,
             "rarity": "R",
             "conditions": [
                 {
@@ -71,7 +71,7 @@
             ]
         },
         {
-            "chance": 6,
+            "chance": 11,
             "rarity": "SR"
         }
     ]

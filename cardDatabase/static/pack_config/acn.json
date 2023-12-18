@@ -58,22 +58,8 @@
             "rarity": "U"
         },
         {
-            "chance": 47,
-            "rarity": "C",
-            "conditions": [
-                {
-                    "equals": false,
-                    "type": "Magic Stone"
-                },
-                {
-                    "equals": false,
-                    "type": "Basic Ruler"
-                },
-                {
-                    "equals": false,
-                    "type": "Basic J-Ruler"
-                }
-            ]
+            "chance": 42,
+            "rarity": "C"
         },
         {
             "chance": 14,
@@ -104,7 +90,7 @@
             ]
         },
         {
-            "chance": 8,
+            "chance": 11,
             "rarity": "SR"
         }
     ]

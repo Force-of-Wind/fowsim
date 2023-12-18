@@ -90,8 +90,8 @@
       <div class="actions-wrapper">
         <button class="action-btn" id="openNewBtn">Open new Pack</button>
         <button class="action-btn" id="exportBtn">Export Cards</button>
-        <button class="action-btn" id="packSelectBtn">Go to pack select</button>
-        <button class="action-btn" id="packHistoryBtn">History</button>
+        <button class="action-btn" data-url="{% url 'cardDatabase-pack-select' %}" id="packSelectBtn">Go to pack select</button>
+        <button class="action-btn" data-url="{% url 'cardDatabase-pack-history' %}" id="packHistoryBtn">History</button>
       </div>
     </div>
   {% endif %}

@@ -66,11 +66,11 @@ $(document).ready(function () {
 	});
 
 	$('#packSelectBtn').on('click', function () {
-		window.location.replace("/pack_select/");
+		window.location.replace($(this).data('url'));
 	});
 
 	$('#packHistoryBtn').on('click', function () {
-		window.location.replace("/pack_history/");
+		window.location.replace($(this).data('url'));
 	});
 
 	window.onclick = function (event) {

@@ -15,7 +15,7 @@
 {% block body %}
   <div class="container">
     <div class="action-wrapper">
-      <button id="packSelectBtn">Go to pack select</button>
+      <button data-url="{% url 'cardDatabase-pack-select' %}" id="packSelectBtn">Go to pack select</button>
       <button id="clearHistory">Clear History</button>
       <button id="exportHistory">Export History</button>
     </div>

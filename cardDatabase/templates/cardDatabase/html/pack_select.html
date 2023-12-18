@@ -17,7 +17,7 @@
 {% block body %}
 <div class="history-wrapper">
   <p> </p>
-  <a href="/pack_history/">
+  <a href="{% url 'cardDatabase-pack-history' %}">
     History <i class="fa-solid fa-clock-rotate-left fa-xl"></i>
   </a>
 </div>
@@ -35,7 +35,7 @@
             <p class="unsupported-text">Cluster not yet supported</p>
           {% endif %}
           {% for set in cluster.sets %}
-            <a href="/pack_opening/{{ set.code }}/" target="_blank"><img class="image-container" src="{% static set.image %}" title="{{ set.name }}" alt="{{ set.code }}" /></a>
+            <a href="/pack_opening/{{ set.code }}/" ><img class="image-container" src="{% static set.image %}" title="{{ set.name }}" alt="{{ set.code }}" /></a>
           {% endfor %}
         </div>
       {% endfor %}

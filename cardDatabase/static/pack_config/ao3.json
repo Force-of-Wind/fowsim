@@ -6,10 +6,29 @@
         "N",
         "N",
         "N",
+        "BS",
         "R-SR",
         "FOIL"
     ],
     "excludes": [],
+    "set_override":[
+        {
+            "rarity": "BS",
+            "setCodes" : ["CMF"]
+        }
+    ],
+    "BS": [
+        {
+            "chance": 100,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        }
+    ],
     "R-SR": [
         {
             "chance": 40,

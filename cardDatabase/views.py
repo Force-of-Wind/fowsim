@@ -901,63 +901,86 @@ def pack_opening(request, setcode=None):
     config = json.loads(read_file(pathToConfig))
     slots = config['slots']
     pulls = []
-    set_query = get_set_query([setcode.upper()])
+    
     pull_history = []
 
     for slot in slots:
-        card_pool = (Card.objects.
-                    filter(set_query).
-                    filter(build_duplicate_filter(pull_history, slot)).
-                    distinct())
-        
-        if 'excludes' in config:
-            excludes = config['excludes']
-            for exclude in excludes:
-                if exclude['rarity'] is slot:
-                    cardTypes = exclude['type']
-                    card_type_query = get_not_card_type_query(cardTypes)
-                    card_pool = card_pool.filter(card_type_query)
-
-        if(not slot in config):
-            rarity_query = get_rarity_query([slot])
-            card_pool = card_pool.filter(rarity_query)
-            pool_count = card_pool.count() - 1
-            pull = random.randrange(0, pool_count)
-            card = card_pool[pull]
-            pulls.append(card)
-            pull_history.append({
-                'slot': slot,
-                'cardId': card.card_id
-            })
-
+        if 'card_override' in config:
+            card_overrides = config['card_override']
+            for override in card_overrides:
+                if len(pull_history) > 0:
+                    last_pulled_card = pull_history[-1]
+                    if override['rarity'] == slot and last_pulled_card.card_id == override['overridesCardId']:
+                        card = (Card.objects.
+                        filter(Q(card_id=override['newCardId'])).
+                        distinct())[0]
+                        pulls.append(card)
+                        pull_history.append({
+                            'slot': slot,
+                            'cardId': card.card_id
+                        })
+                        continue
         else:
-            slotConfig = config[slot]
-            if len(slotConfig) >= 2:
-                pulledSlot = weightSamples(slotConfig)
-            else:
-                pulledSlot = slotConfig[0]
-            if pulledSlot['rarity'] is not None:
-                rarity_query = get_rarity_query([pulledSlot['rarity']])
-                card_pool = card_pool.filter(rarity_query)
-            if 'conditions' in pulledSlot:
-                for condition in pulledSlot['conditions']:
-                    cardType = condition['type']
-                    equalsCriteria = condition['equals']
-                    if equalsCriteria:
-                        card_type_query = get_card_type_query([cardType])
-                        card_pool = card_pool.filter(card_type_query)
-                    else:
-                        card_type_query = get_not_card_type_query([cardType])
+            set_query = get_set_query([setcode.upper()])
+            if 'set_override' in config:
+                set_overrides = config['set_override']
+                for override in set_overrides:
+                    if override['rarity'] == slot:
+                        set_query = get_set_query(override['setCodes'])
+
+            card_pool = (Card.objects.
+                        filter(set_query).
+                        filter(build_duplicate_filter(pull_history, slot)).
+                        distinct())
+            
+            if 'excludes' in config:
+                excludes = config['excludes']
+                for exclude in excludes:
+                    if exclude['rarity'] == slot:
+                        cardTypes = exclude['type']
+                        card_type_query = get_not_card_type_query(cardTypes)
                         card_pool = card_pool.filter(card_type_query)
 
-            pool_count = card_pool.count() - 1
-            pull = random.randrange(0, pool_count)
-            card = card_pool[pull]
-            pulls.append(card)
-            pull_history.append({
-                'slot': slot,
-                'cardId': card.card_id
-            })
+            if(not slot in config):
+                rarity_query = get_rarity_query([slot])
+                card_pool = card_pool.filter(rarity_query)
+                pool_count = card_pool.count() - 1
+                pull = random.randrange(0, pool_count)
+                card = card_pool[pull]
+                pulls.append(card)
+                pull_history.append({
+                    'slot': slot,
+                    'cardId': card.card_id
+                })
+
+            else:
+                slotConfig = config[slot]
+                if len(slotConfig) >= 2:
+                    pulledSlot = weightSamples(slotConfig)
+                else:
+                    pulledSlot = slotConfig[0]
+                if pulledSlot['rarity'] is not None:
+                    rarity_query = get_rarity_query([pulledSlot['rarity']])
+                    card_pool = card_pool.filter(rarity_query)
+                if 'conditions' in pulledSlot:
+                    for condition in pulledSlot['conditions']:
+                        cardType = condition['type']
+                        equalsCriteria = condition['equals']
+                        if equalsCriteria:
+                            card_type_query = get_card_type_query([cardType])
+                            card_pool = card_pool.filter(card_type_query)
+                        else:
+                            card_type_query = get_not_card_type_query([cardType])
+                            card_pool = card_pool.filter(card_type_query)
+
+                pool_count = card_pool.count() - 1
+                pull = random.randrange(0, pool_count)
+                card = card_pool[pull]
+                pulls.append(card)
+                pull_history.append({
+                    'slot': slot,
+                    'cardId': card.card_id
+                })
 
     
     ctx = {

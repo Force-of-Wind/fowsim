@@ -1,0 +1,57 @@
+{
+    "packImage": "img/pack/ao2-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "R-SR",
+        "FOIL"
+    ],
+    "excludes": [],
+    "R-SR": [
+        {
+            "chance": 45,
+            "rarity": "SR"
+        },
+        {
+            "chance": 55,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 55,
+            "rarity": "N"
+        },
+        {
+            "chance": 30,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 15,
+            "rarity": "SR"
+        }
+    ]
+}

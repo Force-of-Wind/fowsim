@@ -1,0 +1,34 @@
+{
+    "packImage": "img/pack/rol-pack.png",
+    "slots": [
+        "R",
+        "R",
+        "R",
+        "SR-MR",
+        "FOIL"
+    ],
+    "SR-MR": [
+        {
+            "chance": 30,
+            "rarity": "MR"
+        },
+        {
+            "chance": 70,
+            "rarity": "SR"
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 40,
+            "rarity": "R"
+        },
+        {
+            "chance": 40,
+            "rarity": "SR"
+        },
+        {
+            "chance": 20,
+            "rarity": "MR"
+        }
+    ]
+}

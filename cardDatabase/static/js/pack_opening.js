@@ -6,9 +6,23 @@ $(document).ready(function () {
 		$('.pack-container').css('display', 'none');
 
 		$('.card').on('click', function () {
-			console.log($(this));
 			$(this).addClass('is-flipped');
 			$(this).off('click');
+			$(this).on('click', function () {
+				let resultSide = $(this).children('.card__face--back')
+				let src = resultSide.attr('src');
+				let alt = resultSide.attr('alt');
+				$('#highlight-img').attr('src', src);
+				$('#highlight-img').attr('alt', alt);
+				$('.card-highlight').css('display', 'flex');
+				window.onclick = function (event) {
+					console.log(event.target);
+					let overlay = document.getElementById("card-highlight");
+					if (event.target == overlay) {
+						$('.card-highlight').css('display', 'none');
+					}
+				}
+			});
 		});
 
 		$('.card img').on('dragstart', function (event) { event.preventDefault(); });

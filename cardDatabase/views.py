@@ -867,7 +867,6 @@ def pack_select(request):
             'sets': setsData
         })
                 
-    #return HttpResponse(str(json.dumps(list(mapped_clusters.values()))))
     ctx = {
         'clusters': mapped_clusters
     }

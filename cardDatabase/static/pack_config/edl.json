@@ -1,6 +1,7 @@
 {
-    "packImage": "img/pack/pofa-pack.png",
+    "packImage": "img/pack/edl-pack.png",
     "slots": [
+        "N",
         "N",
         "N",
         "N",
@@ -33,15 +34,15 @@
     ],
     "R-SR-MR": [
         {
-            "chance": 11,
+            "chance": 5,
             "rarity": "MR"
         },
         {
-            "chance": 31,
+            "chance": 28,
             "rarity": "SR"
         },
         {
-            "chance": 58,
+            "chance": 67,
             "rarity": "R",
             "conditions": [
                 {
@@ -57,7 +58,7 @@
     ],
     "FOIL": [
         {
-            "chance": 36,
+            "chance": 38,
             "rarity": "N"
         },
         {
@@ -75,12 +76,22 @@
             ]
         },
         {
-            "chance": 22,
+            "chance": 17,
             "rarity": "SR"
         },
         {
             "chance": 3,
             "rarity": "MR"
+        },
+        {
+            "chance": 3,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                }
+            ]
         }
     ]
 }

@@ -64,6 +64,10 @@
                 {
                     "equals": false,
                     "type": "J-Ruler"
+                },
+                {
+                    "equals": true,
+                    "races" : "Contract"
                 }
             ]
         }

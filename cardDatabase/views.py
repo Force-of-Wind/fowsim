@@ -52,6 +52,13 @@ def get_race_query(data):
         race_query |= Q(races__name=race)
     return race_query
 
+def get_not_card_race_query(data):
+    card_race_query = ~Q()
+    for card_race in data:
+        card_race_query &= ~Q(races__name=card_race)
+    return card_race_query
+
+
 
 def get_rarity_query(data):
     rarity_query = Q()
@@ -72,7 +79,7 @@ def get_card_type_query(data):
 def get_not_card_type_query(data):
     card_type_query = ~Q()
     for card_type in data:
-        card_type_query = ~Q(types__name=card_type)
+        card_type_query &= ~Q(types__name=card_type)
     return card_type_query
 
 
@@ -911,7 +918,6 @@ def pack_opening(request, setcode=None):
             for override in card_overrides:
                 if len(pull_history) > 0:
                     last_pulled_card = pull_history[-1]
-                    #return HttpResponse(str(json.dumps(last_pulled_card)))
                     if override['rarity'] == slot and last_pulled_card['cardId'] == override['overridesCardId']:
                         card = (Card.objects.
                         filter(Q(card_id=override['newCardId'])).
@@ -940,9 +946,17 @@ def pack_opening(request, setcode=None):
             excludes = config['excludes']
             for exclude in excludes:
                 if exclude['rarity'] == slot:
-                    cardTypes = exclude['type']
-                    card_type_query = get_not_card_type_query(cardTypes)
-                    card_pool = card_pool.filter(card_type_query)
+                    if 'type' in exclude:
+                        excluded_card_types = exclude['type']                    
+                        card_type_query = get_not_card_type_query(excluded_card_types)
+                        card_pool = card_pool.filter(card_type_query)
+                    
+                    if 'races' in exclude:
+                        excluded_card_races = exclude['races']
+                        card_type_query = get_not_card_race_query(excluded_card_races)
+                        card_pool = card_pool.filter(card_type_query)
+
+                    
 
         if(not slot in config):
             rarity_query = get_rarity_query([slot])
@@ -967,14 +981,23 @@ def pack_opening(request, setcode=None):
                 card_pool = card_pool.filter(rarity_query)
             if 'conditions' in pulledSlot:
                 for condition in pulledSlot['conditions']:
-                    cardType = condition['type']
                     equalsCriteria = condition['equals']
-                    if equalsCriteria:
-                        card_type_query = get_card_type_query([cardType])
-                        card_pool = card_pool.filter(card_type_query)
-                    else:
-                        card_type_query = get_not_card_type_query([cardType])
-                        card_pool = card_pool.filter(card_type_query)
+                    if 'type' in condition:
+                        filter_type = condition['type']                    
+                        if equalsCriteria:
+                            card_type_query = get_card_type_query([filter_type])
+                            card_pool = card_pool.filter(card_type_query)
+                        else:
+                            card_type_query = get_not_card_type_query([filter_type])
+                            card_pool = card_pool.filter(card_type_query)
+                    if 'race' in condition:
+                        filter_race = condition['race']                    
+                        if equalsCriteria:
+                            card_type_query = get_race_query([filter_race])
+                            card_pool = card_pool.filter(card_type_query)
+                        else:
+                            card_type_query = get_not_card_race_query([filter_race])
+                            card_pool = card_pool.filter(card_type_query)
 
             pool_count = card_pool.count() - 1
             pull = random.randrange(0, pool_count)

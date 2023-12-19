@@ -1,0 +1,88 @@
+{
+    "packImage": "img/pack/nwe-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "BS",
+        "R-SR",
+        "FOIL"
+    ],
+    "excludes": [],
+    "card_override":[
+        {
+            "rarity": "R-SR",
+            "overridesCardId": "CMF-101",
+            "newCardId": "GRV-085J"
+        },
+        {
+            "rarity": "FOIL",
+            "overridesCardId": "GRV-085J",
+            "newCardId": "GRV-087J"
+        }
+    ],
+    "set_override":[
+        {
+            "rarity": "BS",
+            "setCodes" : ["CMF"]
+        }
+    ],
+    "BS": [
+        {
+            "chance": 100,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        }
+    ],
+    "R-SR": [
+        {
+            "chance": 45,
+            "rarity": "SR"
+        },
+        {
+            "chance": 55,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 55,
+            "rarity": "N"
+        },
+        {
+            "chance": 30,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 15,
+            "rarity": "SR"
+        }
+    ]
+}

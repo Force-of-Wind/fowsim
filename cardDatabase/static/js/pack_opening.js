@@ -107,7 +107,6 @@ $(document).ready(function () {
 				pulledCards = JSON.parse(pulledCards);
 
 		let setBooster = pulledCards.filter((pack) => pack.set === set);
-		console.log(setBooster);
 		$('#packCounter').text(setBooster.length);
 	}
 

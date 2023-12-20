@@ -11,11 +11,11 @@ $(document).ready(function () {
         let history = JSON.parse(historyJson);
 
         history.forEach(entry => {
-            let imgHtml = ''
+            let imgHtml = '';
             entry.pulls.forEach(card => {
                 imgHtml += `<img class="card" title="${card.name}" src="${card.img}" data-card-url="${card.detailLink}" />`
                 exportArray.unshift(card.name);
-            })
+            });
 
 
             let pullhtml =
@@ -28,17 +28,17 @@ $(document).ready(function () {
             </div>
             <hr />
         </div>
-        `
+        `;
             $('#historyContainer').append(pullhtml);
 
             $('.card').on('click', function(){
-                let imgElement = $(this)
+                let imgElement = $(this);
 				let src = imgElement.attr('src');
 				let alt = imgElement.attr('alt');
-				let link = imgElement.data('card-url')
+				let link = imgElement.data('card-url');
 				$('#highlight-img').attr('src', src);
 				$('#highlight-img').attr('alt', alt);
-				$('#highlight-link').attr('href', link)
+				$('#highlight-link').attr('href', link);
 				$('.card-highlight').css('display', 'flex');
 				window.onclick = function (event) {
 					console.log(event.target);
@@ -67,7 +67,7 @@ $(document).ready(function () {
         let cards = '';
         for (const [key, value] of Object.entries(counts)) {
             console.log(`${key}: ${value}`);
-            cards += `${value} ${key}
+            cards += `${value} ${key};
 `
         }
 

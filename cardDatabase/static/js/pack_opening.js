@@ -43,8 +43,8 @@ $(document).ready(function () {
 			let body = $('body');
 			body.removeClass('restart').addClass('new-page');
 			$('.pack-wrapper').css('display', 'flex');
-			$('.loader-wrapper').css('visibility', 'hidden')
-			$('.actions-wrapper').css('visibility', 'visible')
+			$('.loader-wrapper').css('visibility', 'hidden');
+			$('.actions-wrapper').css('visibility', 'visible');
 
 			let pulledCards = localStorage.getItem('pulledCards');
 			if (!pulledCards)
@@ -65,8 +65,9 @@ $(document).ready(function () {
 
 			let set = (window.location.href.split('/pack_opening/')[1]).split('/')[0];
 
-			pulledCards.unshift({ pulls: pulls, pulledAt: new Date(Date.now()).toLocaleString(), set: set })
+			pulledCards.unshift({ pulls: pulls, pulledAt: new Date(Date.now()).toLocaleString(), set: set });
 			localStorage.setItem('pulledCards', JSON.stringify(pulledCards));
+			refreshCounter();
 		}, 700);
 	});
 
@@ -96,4 +97,19 @@ $(document).ready(function () {
 			$('#exportModal').css('display', 'none');
 		}
 	}
+
+	function refreshCounter(){
+		let set = (window.location.href.split('/pack_opening/')[1]).split('/')[0];
+		let pulledCards = localStorage.getItem('pulledCards');
+			if (!pulledCards)
+				pulledCards = [];
+			else
+				pulledCards = JSON.parse(pulledCards);
+
+		let setBooster = pulledCards.filter((pack) => pack.set === set);
+		console.log(setBooster);
+		$('#packCounter').text(setBooster.length);
+	}
+
+	refreshCounter();
 });

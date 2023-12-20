@@ -510,4 +510,19 @@
   width: 480px;
   border-radius: 26px;
   border: 1px solid black;
+  max-width: 90vw;
+}
+
+.view-in-another-tab{
+  border: 1px solid #dc0800;
+  width: max-content;
+  top: calc(50% + 345px);
+  height: 24px;
+  line-height: 24px;
+  width: 100px;
+  left: calc(50% - 50px);
+  position: absolute;
+  background-color: white;
+  border-radius: 20px;
+  text-align: center;
 }

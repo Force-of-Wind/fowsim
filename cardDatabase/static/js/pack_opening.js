@@ -12,8 +12,10 @@ $(document).ready(function () {
 				let resultSide = $(this).children('.card__face--back')
 				let src = resultSide.attr('src');
 				let alt = resultSide.attr('alt');
+				let link = resultSide.data('card-url')
 				$('#highlight-img').attr('src', src);
 				$('#highlight-img').attr('alt', alt);
+				$('#highlight-link').attr('href', link)
 				$('.card-highlight').css('display', 'flex');
 				window.onclick = function (event) {
 					console.log(event.target);
@@ -55,6 +57,7 @@ $(document).ready(function () {
 				let pull = {
 					name: $(this).attr('title'),
 					img: $(this).attr('src'),
+					detailLink: $(this).data('card-url')
 				};
 
 				pulls.push(pull);

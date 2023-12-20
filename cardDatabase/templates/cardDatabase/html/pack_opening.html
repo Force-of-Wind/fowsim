@@ -63,7 +63,7 @@
           {% for pull in pulls %}
             <div class="card item hidden">
               <img class="card__face card__face--front" src="{% static 'img/pack/card_back.png' %}" />
-              <img class="card__face card__face--back" src="{{ pull.card_image.url }}" title="{{ pull.name }}" alt="card_front" />
+              <img class="card__face card__face--back" src="{{ pull.card_image.url }}" title="{{ pull.name }}" data-card-url="{% url 'cardDatabase-view-card' pull.card_id %}" alt="card_front" />
             </div>
           {% endfor %}
         </div>
@@ -95,6 +95,9 @@
       </div>
       <div id="card-highlight" class="card-highlight">
         <img id="highlight-img" src="" alt="" />
+        <div class="view-in-another-tab">
+          <a id="highlight-link" href="" target="_blank">Go to Card</a>
+        </div>
       </div>
     </div>
   {% endif %}

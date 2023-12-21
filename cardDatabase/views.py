@@ -975,7 +975,7 @@ def pack_opening(request, setcode=None):
                 pulledSlot = weightSamples(slotConfig)
             else:
                 pulledSlot = slotConfig[0]
-            if pulledSlot['rarity'] is not None:
+            if 'rarity' in pulledSlot and pulledSlot['rarity'] is not None:
                 rarity_query = get_rarity_query([pulledSlot['rarity']])
                 card_pool = card_pool.filter(rarity_query)
             if 'conditions' in pulledSlot:

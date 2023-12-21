@@ -1,0 +1,63 @@
+{
+    "packImage": "img/pack/gog-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "R-SR-MR",
+        "FOIL",
+        "BS"
+    ],
+    "excludes": [],
+    "set_override": [],
+    "BS": [
+        {
+            "chance": 100,
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        }
+    ],
+    "R-SR-MR": [
+        {
+            "chance": 8,
+            "rarity": "MR"
+        },
+        {
+            "chance": 31,
+            "rarity": "SR"
+        },
+        {
+            "chance": 61,
+            "rarity": "R"
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 49,
+            "rarity": "N"
+        },
+        {
+            "chance": 25,
+            "rarity": "R"
+        },
+        {
+            "chance": 17,
+            "rarity": "SR"
+        },
+        {
+            "chance": 3,
+            "rarity": "MR"
+        },
+        {
+            "chance": 6,
+            "rarity": "RR"
+        }
+    ]
+}

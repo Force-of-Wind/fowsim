@@ -5,95 +5,94 @@
         "N",
         "N",
         "N",
-        "N",
-        "BS",
+        "N",        
         "R-SR",
-        "FOIL"
+        "FOIL",
+        "BS"
     ],
-    "---------------------------------------WORK IN PROGRESS": true,
-    "--------------------------------------WORK IN PROGRESS": true,
-    "-------------------------------------WORK IN PROGRESS": true,
-    "------------------------------------WORK IN PROGRESS": true,
-    "-----------------------------------WORK IN PROGRESS": true,
-    "----------------------------------WORK IN PROGRESS": true,
-    "---------------------------------WORK IN PROGRESS": true,
     "excludes": [],
     "card_override":[
-        {
-            "rarity": "R-SR",
-            "overridesCardId": "CMF-101",
-            "newCardId": "GRV-085J"
-        },
-        {
-            "rarity": "FOIL",
-            "overridesCardId": "GRV-085J",
-            "newCardId": "GRV-087J"
-        }
+        {"rarity":"FOIL","previousCardId":"NWE-060","newCardId":"NWE-057"},{"rarity":"BS","previousCardId":"NWE-057","newCardIds":["NWE-024","NWE-003","NWE-013","NWE-033","NWE-051"]},
+        {"rarity":"FOIL","previousCardId":"NWE-062","newCardId":"NWE-070"},{"rarity":"BS","previousCardId":"NWE-070","newCardIds":["NWE-024","NWE-003","NWE-013","NWE-033","NWE-051"]},
+        {"rarity":"FOIL","previousCardId":"NWE-065","newCardId":"NWE-085"},{"rarity":"BS","previousCardId":"NWE-085","newCardIds":["NWE-024","NWE-003","NWE-013","NWE-033","NWE-051"]},
+        {"rarity":"FOIL","previousCardId":"NWE-068","newCardId":"NWE-066"},{"rarity":"BS","previousCardId":"NWE-066","newCardIds":["NWE-024","NWE-003","NWE-013","NWE-033","NWE-051"]},
+        {"rarity":"FOIL","previousCardId":"NWE-072","newCardId":"NWE-058"},{"rarity":"BS","previousCardId":"NWE-058","newCardIds":["NWE-024","NWE-003","NWE-013","NWE-033","NWE-051"]},
+        {"rarity":"FOIL","previousCardId":"NWE-082","newCardId":"NWE-057"},{"rarity":"BS","previousCardId":"NWE-057","newCardIds":["NWE-024","NWE-003","NWE-013","NWE-033","NWE-051"]},
+        {"rarity":"FOIL","previousCardId":"NWE-098","newCardId":"NWE-090"},{"rarity":"BS","previousCardId":"NWE-090","newCardIds":["NWE-024","NWE-003","NWE-013","NWE-033","NWE-051"]}
     ],
     "set_override":[
         {
             "rarity": "BS",
-            "setCodes" : ["CMF"]
+            "setCodes" : ["NWE"]
         }
     ],
     "BS": [
         {
             "chance": 100,
-            "rarity": "C",
             "conditions": [
                 {
                     "equals": true,
-                    "type": "Magic Stone"
+                    "type": "Basic Magic Stone"
                 }
             ]
         }
     ],
     "R-SR": [
         {
-            "chance": 45,
+            "chance": 8,
+            "rarity": "MR"
+        },
+        {
+            "chance": 31,
             "rarity": "SR"
         },
         {
-            "chance": 55,
+            "chance": 44,
             "rarity": "R",
             "conditions": [
                 {
                     "equals": false,
-                    "type": "Ruler"
+                    "races": ["Contract"]
+                }
+            ]
+        },
+        {
+            "chance": 17,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": ["Contract"]
                 },
                 {
                     "equals": false,
-                    "type": "J-Ruler"
-                },
-                {
-                    "equals": true,
-                    "races" : "Contract"
+                    "cardIdPrefix": ["NWE-SEC"]
                 }
             ]
         }
     ],
     "FOIL": [
         {
-            "chance": 55,
+            "chance": 53,
             "rarity": "N"
         },
         {
-            "chance": 30,
+            "chance": 26,
             "rarity": "R",
             "conditions": [
                 {
                     "equals": false,
-                    "type": "Ruler"
-                },
-                {
-                    "equals": false,
-                    "type": "J-Ruler"
+                    "races": ["Contract"]
                 }
             ]
         },
         {
-            "chance": 15,
+            "chance": 18,
             "rarity": "SR"
+        },
+        {
+            "chance": 3,
+            "rarity": "MR"
         }
     ]
 }

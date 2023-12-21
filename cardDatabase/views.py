@@ -82,6 +82,18 @@ def get_not_card_type_query(data):
         card_type_query &= ~Q(types__name=card_type)
     return card_type_query
 
+def get_card_prefix_query(data):
+    card_prefix_query = Q()
+    for prefix in data:
+        card_prefix_query &= Q(card_id__startswith=prefix)
+    return card_prefix_query
+
+def get_not_card_prefix_query(data):
+    card_prefix_query = ~Q()
+    for prefix in data:
+        card_prefix_query &= ~Q(card_id__startswith=prefix)
+    return card_prefix_query
+
 
 def get_set_query(data):
     set_query = Q()
@@ -894,6 +906,11 @@ def build_duplicate_filter(pull_history, slot):
             set_query &= ~Q(card_id=entry['cardId'])
     return set_query
 
+def get_random_array_entry(array):
+    rand = random.randrange(1,len(array))
+    return array[rand]
+
+
 def pack_opening(request, setcode=None):
     if setcode is None:
         return render(request, 'cardDatabase/html/pack_opening.html', {
@@ -917,15 +934,23 @@ def pack_opening(request, setcode=None):
             for override in card_overrides:
                 if len(pull_history) > 0:
                     last_pulled_card = pull_history[-1]
-                    if override['rarity'] == slot and last_pulled_card['cardId'] == override['overridesCardId']:
-                        card = (Card.objects.
-                        filter(Q(card_id=override['newCardId'])).
-                        distinct())[0]
-                        pulls.append(card)
-                        pull_history.append({
-                            'slot': slot,
-                            'cardId': card.card_id
-                        })
+                    if override['rarity'] == slot and last_pulled_card['cardId'] == override['previousCardId']:
+                        card_id = ''
+                        if 'newCardIds' in override:
+                            card_id = get_random_array_entry(override['newCardIds'])
+
+                        if 'newCardId' in override:
+                            card_id = override['newCardId']
+
+                        if card_id != '':
+                            card = (Card.objects.
+                            filter(Q(card_id=card_id)).
+                            distinct())[0]
+                            pulls.append(card)
+                            pull_history.append({
+                                'slot': slot,
+                                'cardId': card.card_id
+                            })
             if(card is not None):
                 continue
         
@@ -954,6 +979,11 @@ def pack_opening(request, setcode=None):
                         excluded_card_races = exclude['races']
                         card_type_query = get_not_card_race_query(excluded_card_races)
                         card_pool = card_pool.filter(card_type_query)
+                    
+                    if 'cardIdPrefix' in exclude:
+                        excluded_card_id_prefix = exclude['cardIdPrefix']
+                        card_prefix_query = get_not_card_prefix_query(excluded_card_id_prefix)
+                        card_pool = card_pool.filter(card_prefix_query)
 
                     
 
@@ -989,13 +1019,21 @@ def pack_opening(request, setcode=None):
                         else:
                             card_type_query = get_not_card_type_query([filter_type])
                             card_pool = card_pool.filter(card_type_query)
-                    if 'race' in condition:
-                        filter_race = condition['race']                    
+                    if 'races' in condition:
+                        filter_race = condition['races']                    
                         if equalsCriteria:
-                            card_type_query = get_race_query([filter_race])
+                            card_type_query = get_race_query(filter_race)
                             card_pool = card_pool.filter(card_type_query)
                         else:
-                            card_type_query = get_not_card_race_query([filter_race])
+                            card_type_query = get_not_card_race_query(filter_race)
+                            card_pool = card_pool.filter(card_type_query)
+                    if 'cardIdPrefix' in condition:
+                        card_id_prefix = exclude['cardIdPrefix']
+                        if equalsCriteria:
+                            card_type_query = get_card_prefix_query(card_id_prefix)
+                            card_pool = card_pool.filter(card_type_query)
+                        else:
+                            card_type_query = get_not_card_prefix_query(card_id_prefix)
                             card_pool = card_pool.filter(card_type_query)
 
             pool_count = card_pool.count() - 1

@@ -20,6 +20,10 @@
                 {
                     "equals": true,
                     "type": "Magic Stone"
+                },
+                {
+                    "equals": false,
+                    "type": "Special Magic Stone"
                 }
             ]
         }

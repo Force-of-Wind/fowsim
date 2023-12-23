@@ -1,0 +1,202 @@
+{
+    "packImage": "img/pack/cst-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "R-SR",
+        "FOIL",
+        "ContStoneSKArcana"
+    ],
+    "card_override": [
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CST-002",
+            "newCardId": "CST-001"
+        },
+        {
+            "rarity": "ContStoneSKArcana",
+            "previousCardId": "CST-001",
+            "newCardId": "CST-LVW"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CST-016",
+            "newCardId": "CST-015"
+        },
+        {
+            "rarity": "ContStoneSKArcana",
+            "previousCardId": "CST-015",
+            "newCardId": "CST-Λ&∀"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CST-030",
+            "newCardId": "CST-029"
+        },
+        {
+            "rarity": "ContStoneSKArcana",
+            "previousCardId": "CST-029",
+            "newCardId": "CST-Λ&∀"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CST-045",
+            "newCardId": "CST-044"
+        },
+        {
+            "rarity": "ContStoneSKArcana",
+            "previousCardId": "CST-044",
+            "newCardId": "CST-Λ&∀"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CST-059",
+            "newCardId": "CST-058"
+        },
+        {
+            "rarity": "ContStoneSKArcana",
+            "previousCardId": "CST-058",
+            "newCardId": "CST-Λ&∀"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CST-073",
+            "newCardId": "CST-072"
+        },
+        {
+            "rarity": "ContStoneSKArcana",
+            "previousCardId": "CST-072",
+            "newCardId": "CST-000"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CST-083",
+            "newCardId": "CST-082"
+        },
+        {
+            "rarity": "ContStoneSKArcana",
+            "previousCardId": "CST-082",
+            "newCardId": "CST-000"
+        }
+    ],
+    "R-SR": [
+        {
+            "chance": 8,
+            "rarity": "MR"
+        },
+        {
+            "chance": 25,
+            "rarity": "SR"
+        },
+        {
+            "chance": 61,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 6,
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 53,
+            "rarity": "N"
+        },
+        {
+            "chance": 21,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 23,
+            "rarity": "SR"
+        },
+        {
+            "chance": 3,
+            "rarity": "MR"
+        }
+    ],
+    "ContStoneSKArcana": [
+        {
+            "chance": 17,
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 14,
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Seven Kings"
+                    ],
+                    "type": "J-Ruler",
+                    "setOverrides": [
+                        "SKL"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 50,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Special Magic Stone",
+                    "setOverrides": [
+                        "NWE",
+                        "TAT",
+                        "TUS",
+                        "CMF"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 19,
+            "rarity": "RR",
+            "conditions": [
+                {
+                    "equals": true,
+                    "setOverrides": [
+                        "ABC"
+                    ]
+                }
+            ]
+        }
+    ]
+}

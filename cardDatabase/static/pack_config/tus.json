@@ -1,5 +1,5 @@
 {
-    "packImage": "img/pack/nwe-pack.png",
+    "packImage": "img/pack/tus-pack.png",
     "slots": [
         "N",
         "N",
@@ -14,114 +14,110 @@
     "card_override": [
         {
             "rarity": "FOIL",
-            "previousCardId": "NWE-060",
-            "newCardId": "NWE-057"
+            "previousCardId": "TUS-004",
+            "newCardId": "TUS-008"
         },
         {
             "rarity": "N-Contract",
-            "previousCardId": "NWE-057",
+            "previousCardId": "TUS-008",
             "newCardIds": [
-                "NWE-024",
-                "NWE-003",
-                "NWE-013",
-                "NWE-033",
-                "NWE-051"
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
             ]
         },
         {
             "rarity": "FOIL",
-            "previousCardId": "NWE-062",
-            "newCardId": "NWE-070"
+            "previousCardId": "TUS-043",
+            "newCardId": "TUS-044"
         },
         {
             "rarity": "N-Contract",
-            "previousCardId": "NWE-070",
+            "previousCardId": "TUS-044",
             "newCardIds": [
-                "NWE-024",
-                "NWE-003",
-                "NWE-013",
-                "NWE-033",
-                "NWE-051"
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
             ]
         },
         {
             "rarity": "FOIL",
-            "previousCardId": "NWE-065",
-            "newCardId": "NWE-085"
+            "previousCardId": "TUS-063",
+            "newCardId": "TUS-070"
         },
         {
             "rarity": "N-Contract",
-            "previousCardId": "NWE-085",
+            "previousCardId": "TUS-070",
             "newCardIds": [
-                "NWE-024",
-                "NWE-003",
-                "NWE-013",
-                "NWE-033",
-                "NWE-051"
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
             ]
         },
         {
             "rarity": "FOIL",
-            "previousCardId": "NWE-068",
-            "newCardId": "NWE-066"
+            "previousCardId": "TUS-077",
+            "newCardId": "TUS-076"
         },
         {
             "rarity": "N-Contract",
-            "previousCardId": "NWE-066",
+            "previousCardId": "TUS-076",
             "newCardIds": [
-                "NWE-024",
-                "NWE-003",
-                "NWE-013",
-                "NWE-033",
-                "NWE-051"
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
             ]
         },
         {
             "rarity": "FOIL",
-            "previousCardId": "NWE-072",
-            "newCardId": "NWE-058"
+            "previousCardId": "TUS-079",
+            "newCardId": "TUS-068"
         },
         {
             "rarity": "N-Contract",
-            "previousCardId": "NWE-058",
+            "previousCardId": "TUS-068",
             "newCardIds": [
-                "NWE-024",
-                "NWE-003",
-                "NWE-013",
-                "NWE-033",
-                "NWE-051"
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
             ]
         },
         {
             "rarity": "FOIL",
-            "previousCardId": "NWE-082",
-            "newCardId": "NWE-057"
+            "previousCardId": "TUS-082",
+            "newCardId": "TUS-078"
         },
         {
             "rarity": "N-Contract",
-            "previousCardId": "NWE-057",
+            "previousCardId": "TUS-078",
             "newCardIds": [
-                "NWE-024",
-                "NWE-003",
-                "NWE-013",
-                "NWE-033",
-                "NWE-051"
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
             ]
         },
         {
             "rarity": "FOIL",
-            "previousCardId": "NWE-098",
-            "newCardId": "NWE-090"
+            "previousCardId": "TUS-102",
+            "newCardId": "TUS-095"
         },
         {
             "rarity": "N-Contract",
-            "previousCardId": "NWE-090",
-            "newCardIds": [
-                "NWE-024",
-                "NWE-003",
-                "NWE-013",
-                "NWE-033",
-                "NWE-051"
+            "previousCardId": "TUS-095",
+            "newCardId": "TUS-099"
+        }
+    ],
+    "set_override": [
+        {
+            "rarity": "BS",
+            "setCodes": [
+                "NWE"
             ]
         }
     ],
@@ -165,12 +161,6 @@
                     "races": [
                         "Contract"
                     ]
-                },
-                {
-                    "equals": false,
-                    "cardIdPrefix": [
-                        "NWE-SEC"
-                    ]
                 }
             ]
         }
@@ -209,12 +199,6 @@
                     "equals": true,
                     "races": [
                         "Contract"
-                    ]
-                },
-                {
-                    "equals": false,
-                    "cardIdPrefix": [
-                        "NWE-SEC"
                     ]
                 }
             ]

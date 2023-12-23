@@ -1,0 +1,159 @@
+{
+    "packImage": "img/pack/cmb-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "R-SR",
+        "FOIL",
+        "BS-XR-Sub-Contract"
+    ],
+    "card_override": [
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CMB-002",
+            "newCardId": "CMB-001"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CMB-015",
+            "newCardId": "CMB-067"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CMB-054",
+            "newCardId": "CMB-068"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CMB-071",
+            "newCardId": "CMB-074"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CMB-073",
+            "newCardId": "CMB-075"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "CMB-081",
+            "newCardId": "CMB-075"
+        }
+    ],
+    "R-SR": [
+        {
+            "chance": 8,
+            "rarity": "MR"
+        },
+        {
+            "chance": 31,
+            "rarity": "SR"
+        },
+        {
+            "chance": 56,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 5,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 53,
+            "rarity": "N"
+        },
+        {
+            "chance": 26,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 18,
+            "rarity": "SR",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Armament",
+                        "High Armament"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 3,
+            "rarity": "MR"
+        }
+    ],
+    "BS-XR-Sub-Contract": [
+        {
+            "chance": 11,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 3,
+            "rarity": "XR"
+        },
+        {
+            "chance": 11,
+            "rarity": "SR",
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Armament",
+                        "High Armament"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 75,
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Basic Magic Stone",
+                    "setOverrides": [
+                        "NWE"
+                    ]
+                }
+            ]
+        }
+    ]
+}

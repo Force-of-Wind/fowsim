@@ -85,7 +85,7 @@ def get_not_card_type_query(data):
 def get_card_prefix_query(data):
     card_prefix_query = Q()
     for prefix in data:
-        card_prefix_query &= Q(card_id__startswith=prefix)
+        card_prefix_query |= Q(card_id__startswith=prefix)
     return card_prefix_query
 
 def get_not_card_prefix_query(data):
@@ -104,6 +104,18 @@ def get_set_query(data):
                 # No trailing '-' because the '-' is included in CONS
                 set_query |= Q(card_id__istartswith=also_included_set)
         set_query |= Q(card_id__istartswith=fow_set + '-')
+    return set_query
+
+def get_simple_set_query(data):
+    set_query = Q()
+    for fow_set in data:
+        set_query |= Q(card_id__istartswith=fow_set + '-')
+    return set_query
+
+def get_not_set_query(data):
+    set_query = ~Q()
+    for fow_set in data:
+        set_query &= ~Q(card_id__istartswith=fow_set + '-')
     return set_query
 
 
@@ -962,7 +974,6 @@ def pack_opening(request, setcode=None):
                     set_query = get_set_query(override['setCodes'])
 
         card_pool = (Card.objects.
-                    filter(set_query).
                     filter(build_duplicate_filter(pull_history, slot)).
                     distinct())
         
@@ -989,7 +1000,7 @@ def pack_opening(request, setcode=None):
 
         if(not slot in config):
             rarity_query = get_rarity_query([slot])
-            card_pool = card_pool.filter(rarity_query)
+            card_pool = card_pool.filter(rarity_query).filter(set_query)
             pool_count = card_pool.count() - 1
             pull = random.randrange(0, pool_count)
             card = card_pool[pull]
@@ -1028,15 +1039,25 @@ def pack_opening(request, setcode=None):
                             card_type_query = get_not_card_race_query(filter_race)
                             card_pool = card_pool.filter(card_type_query)
                     if 'cardIdPrefix' in condition:
-                        card_id_prefix = exclude['cardIdPrefix']
+                        card_id_prefix = condition['cardIdPrefix']
                         if equalsCriteria:
-                            card_type_query = get_card_prefix_query(card_id_prefix)
-                            card_pool = card_pool.filter(card_type_query)
+                            card_id_prefix_query = get_card_prefix_query(card_id_prefix)
+                            card_pool = card_pool.filter(card_id_prefix_query)
                         else:
-                            card_type_query = get_not_card_prefix_query(card_id_prefix)
-                            card_pool = card_pool.filter(card_type_query)
+                            card_id_prefix_query = get_not_card_prefix_query(card_id_prefix)
+                            card_pool = card_pool.filter(card_id_prefix_query)
+                    if 'setOverrides' in condition:
+                        set_overrides = condition['setOverrides']
+                        if equalsCriteria:
+                            set_query = get_simple_set_query(set_overrides)
+                        else:
+                            set_query = get_not_set_query(set_overrides)
 
+
+            card_pool = card_pool.filter(set_query)
             pool_count = card_pool.count() - 1
+            # if pool_count < 1:
+            #     return HttpResponse(str(json.dumps(pulledSlot)))
             pull = random.randrange(0, pool_count)
             card = card_pool[pull]
             pulls.append(card)

@@ -1,0 +1,177 @@
+{
+    "packImage": "img/pack/tws-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "BS",
+        "R-SR",
+        "FOIL",
+        "N-Contract"
+    ],
+    "card_override": [
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TWS-017",
+            "newCardId": "TWS-001"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TWS-001",
+            "newCardId": "TWS-004"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TWS-032",
+            "newCardId": "TWS-022"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TWS-022",
+            "newCardId": "TWS-024"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TWS-051",
+            "newCardId": "TWS-048"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TWS-048",
+            "newCardId": "TWS-036"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TWS-065",
+            "newCardId": "TWS-067"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TWS-067",
+            "newCardId": "TWS-053"
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TWS-084",
+            "newCardId": "TWS-076"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TWS-076",
+            "newCardId": "TWS-073"
+        }
+    ],
+    "set_override": [
+        {
+            "rarity": "BS",
+            "setCodes": [
+                "NWE"
+            ]
+        }
+    ],
+    "BS": [
+        {
+            "chance": 100,
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Basic Magic Stone"
+                }
+            ]
+        }
+    ],
+    "R-SR": [
+        {
+            "chance": 8,
+            "rarity": "MR"
+        },
+        {
+            "chance": 25,
+            "rarity": "SR",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 61,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 6,
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 53,
+            "rarity": "N"
+        },
+        {
+            "chance": 26,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 18,
+            "rarity": "SR",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 3,
+            "rarity": "MR"
+        }
+    ],
+    "N-Contract": [
+        {
+            "chance": 11,
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 89,
+            "rarity": "N"
+        }
+    ]
+}

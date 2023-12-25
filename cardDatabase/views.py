@@ -958,7 +958,10 @@ def pack_opening(request, setcode=None):
                             card = (Card.objects.
                             filter(Q(card_id=card_id)).
                             distinct())[0]
-                            pulls.append(card)
+                            pulls.append({
+                            'card': card,
+                            'slot': slot.lower()
+                            })
                             pull_history.append({
                                 'slot': slot,
                                 'cardId': card.card_id
@@ -1004,7 +1007,10 @@ def pack_opening(request, setcode=None):
             pool_count = card_pool.count() - 1
             pull = random.randrange(0, pool_count)
             card = card_pool[pull]
-            pulls.append(card)
+            pulls.append({
+                'card': card,
+                'slot': slot.lower()
+                })
             pull_history.append({
                 'slot': slot,
                 'cardId': card.card_id
@@ -1060,7 +1066,10 @@ def pack_opening(request, setcode=None):
             #     return HttpResponse(str(json.dumps(pulledSlot)))
             pull = random.randrange(0, pool_count)
             card = card_pool[pull]
-            pulls.append(card)
+            pulls.append({
+                'card': card,
+                'slot': slot.lower()
+                })
             pull_history.append({
                 'slot': slot,
                 'cardId': card.card_id

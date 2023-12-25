@@ -13,7 +13,7 @@ $(document).ready(function () {
         history.forEach(entry => {
             let imgHtml = '';
             entry.pulls.forEach(card => {
-                imgHtml += `<img class="card" title="${card.name}" src="${card.img}" data-card-url="${card.detailLink}" />`
+                imgHtml += `<div class="card"><div class="${card.slot}"></div><img class="card-img" title="${card.name}" src="${card.img}" data-card-url="${card.detailLink}" /></div>`
                 exportArray.unshift(card.name);
             });
 
@@ -31,22 +31,22 @@ $(document).ready(function () {
         `;
             $('#historyContainer').append(pullhtml);
 
-            $('.card').on('click', function(){
+            $('.card-img').on('click', function () {
                 let imgElement = $(this);
-				let src = imgElement.attr('src');
-				let alt = imgElement.attr('alt');
-				let link = imgElement.data('card-url');
-				$('#highlight-img').attr('src', src);
-				$('#highlight-img').attr('alt', alt);
-				$('#highlight-link').attr('href', link);
-				$('.card-highlight').css('display', 'flex');
-				window.onclick = function (event) {
-					console.log(event.target);
-					let overlay = document.getElementById("card-highlight");
-					if (event.target == overlay) {
-						$('.card-highlight').css('display', 'none');
-					}
-				}
+                let src = imgElement.attr('src');
+                let alt = imgElement.attr('alt');
+                let link = imgElement.data('card-url');
+                $('#highlight-img').attr('src', src);
+                $('#highlight-img').attr('alt', alt);
+                $('#highlight-link').attr('href', link);
+                $('.card-highlight').css('display', 'flex');
+                window.onclick = function (event) {
+                    console.log(event.target);
+                    let overlay = document.getElementById("card-highlight");
+                    if (event.target == overlay) {
+                        $('.card-highlight').css('display', 'none');
+                    }
+                }
             })
 
         });

@@ -18,7 +18,6 @@ $(document).ready(function () {
 				$('#highlight-link').attr('href', link)
 				$('.card-highlight').css('display', 'flex');
 				window.onclick = function (event) {
-					console.log(event.target);
 					let overlay = document.getElementById("card-highlight");
 					if (event.target == overlay) {
 						$('.card-highlight').css('display', 'none');
@@ -57,7 +56,8 @@ $(document).ready(function () {
 				let pull = {
 					name: $(this).attr('title'),
 					img: $(this).attr('src'),
-					detailLink: $(this).data('card-url')
+					detailLink: $(this).data('card-url'),
+					slot: $(this).data('slot')
 				};
 
 				pulls.push(pull);
@@ -98,13 +98,13 @@ $(document).ready(function () {
 		}
 	}
 
-	function refreshCounter(){
+	function refreshCounter() {
 		let set = (window.location.href.split('/pack_opening/')[1]).split('/')[0];
 		let pulledCards = localStorage.getItem('pulledCards');
-			if (!pulledCards)
-				pulledCards = [];
-			else
-				pulledCards = JSON.parse(pulledCards);
+		if (!pulledCards)
+			pulledCards = [];
+		else
+			pulledCards = JSON.parse(pulledCards);
 
 		let setBooster = pulledCards.filter((pack) => pack.set === set);
 		$('#packCounter').text(setBooster.length);

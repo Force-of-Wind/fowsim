@@ -52,11 +52,11 @@ class Command(BaseCommand):
                     type_count = type_cards.aggregate(Sum('quantity'))['quantity__sum'] or 0
                     CardTypePickRate.objects.create(period=period, card_type=card_type, percentage=int(type_count * 100 / total_cards))
 
-                total_costs = [0] * 13
+                total_costs = [0] * 17
                 for card in deck_cards:
                     total_costs[card.card.total_cost] += card.quantity
 
-                for i in range(0, 13):
+                for i in range(0, 17):
                     CardTotalCostPickRate.objects.create(period=period, percentage=int(total_costs[i] * 100 / total_cards), total_cost=i)
 
 

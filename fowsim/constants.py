@@ -321,7 +321,8 @@ SET_DATA = {
                 {'code': 'TWS', 'name': 'The War of the Suns'},
                 {'code': 'CMB', 'name': 'Crimson Moon\'s Battleground'},
                 {'code': 'ABC', 'name': 'Arcana Battle Colosseum'},
-                {'code': 'CST', 'name': 'Clash of the Star Trees'}
+                {'code': 'CST', 'name': 'Clash of the Star Trees'},
+                {'code': 'JRP', 'name': 'Judgment of the Rogue Planet'}
             ]
         }
     ]
@@ -340,7 +341,7 @@ TEXT_SEARCH_FIELD_CHOICES = [
     ('card_id', 'Set Code'),
     ('flavour', 'Flavour')
 ]
-TOTAL_COST_CHOICES = listToChoices(list(range(0, 13)) + ['X'])
+TOTAL_COST_CHOICES = listToChoices(list(range(0, 17)) + ['X'])
 
 # Valhalla and Promos. Data exists in the database so we want to exclude it from.
 # Checks 'startswith' so codes that will clash need trailing - if possible. Good luck otherwise :)
@@ -576,7 +577,10 @@ SETS_IN_ORDER = [
     'H5 Buy a Box',
     'H5 Prerelease Party',
     'CST',
-    'MC02',  # Memoria Collection
+    'MC02',  # Memoria Collection,
+    'JRP',
+    'H6 Prerelease Party',
+    'MC03',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -674,6 +678,10 @@ SEARCH_SETS_INCLUDE = {
         'H5 Buy a Box',
         'H5 Prerelease Party',
         'MC02'
+    ],
+    'JRP': [
+        'H6 Prerelease Party',
+        'MC03',
     ]
 }
 

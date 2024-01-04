@@ -58,7 +58,7 @@
                                         {% for _ in range %}
                                             <div class="deck-card">
                                                 {% has_tags card as has_tags_flag %}
-                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}" data-card-id={{card.card.id}} data-card-zone="{{zone}}">
+                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}" data-card-id="{{card.card.id}}" data-card-zone="{{zone}}">
                                                 <div class="card-preview">
                                                     <div class="multi-hovered-img">
                                                         <img class="hover-card-img" src="{{ card.card.card_image.url }}">
@@ -190,7 +190,6 @@
                     return array.indexOf(value) === index;
                 }
 
-
                 const restrictions = {% dict_to_json deckRestrictions %};
                 const cardsData = {% dict_to_json cardsData %};
                 {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
@@ -204,44 +203,46 @@
 
                 let zones = cards.map((card) => card.zone).filter(onlyUnique);
 
-                zones.forEach((zone) => {
-                    $('#zones-select').append(`<option value="${zone}">${zone}</option>`)
+                $(function() {
+                    zones.forEach((zone) => {
+                        if(toggledZones.includes(zone))
+                            $('#zones-select').append(`<option selected value="${zone}">${zone}</option>`);
+                        else
+                            $('#zones-select').append(`<option value="${zone}">${zone}</option>`);
+                    });
+    
+                    $('.zone-select .mdb-select').materialSelect({
+                        'visibleOptions': 14,
+                        'placeholder': 'Select Zone(s)...',
+                        'maxSelectedOptions': 100
+                    });
+    
+                    limitedCards = cards.filter((card) => toggledZones.find((zone) => zone == card.zone));
+
+                    initStatistics(
+                        limitedCards, 
+                        document.getElementById('attribute-dist-canvas'), 
+                        document.getElementById('mana-curve-canvas'),
+                        mobile
+                    );
+    
+                    let mainDeckCards = buildCardWrappers(cards);
+    
+                    const restrictionEngine = new RestrictionEngine();
+    
+                    restrictionEngine.initRestrictions(
+                        $('#image-container'),
+                        cardsData,
+                        restrictions,
+                        $('#restriction-warnings'));
+    
+                    initTestHandModule(
+                        mainDeckCards,
+                        '#draw-test-hand-button', 
+                        '#test-hand-card-container', 
+                        '#draw-card-button'
+                    )
                 });
-
-                
-
-                $('.zone-select .mdb-select').materialSelect({
-                    'visibleOptions': 14,
-                    'placeholder': 'Select Zone(s)...',
-                    'maxSelectedOptions': 100
-                });
-
-                cards = cards.filter((card) => toggledZones.find((zone) => zone == card.zone));
-                
-                initStatistics(
-                    cards, 
-                    document.getElementById('attribute-dist-canvas'), 
-                    document.getElementById('mana-curve-canvas'),
-                    mobile
-                );
-
-                let mainDeckCards = buildCardWrappers(cards);
-
-                const restrictionEngine = new RestrictionEngine();
-
-                restrictionEngine.initRestrictions(
-                    $('#image-container'),
-                    cardsData,
-                    restrictions,
-                    $('#restriction-warnings'));
-
-                initTestHandModule(
-                    mainDeckCards,
-                    '#draw-test-hand-button', 
-                    '#test-hand-card-container', 
-                    '#draw-card-button'
-                )
-                
             </script>
         {% endif %}
         

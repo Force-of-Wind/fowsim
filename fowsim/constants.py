@@ -323,7 +323,7 @@ SET_DATA = {
                 {'code': 'ABC', 'name': 'Arcana Battle Colosseum'},
                 {'code': 'CST', 'name': 'Clash of the Star Trees'},
                 {'code': 'JRP', 'name': 'Judgment of the Rogue Planet'},
-                {'code': 'MP01', 'name': 'Master Piece 1'}
+                {'code': 'MP01', 'name': 'Masterpiece "Pilgrim Memories"'}
             ]
         },
     ]

@@ -325,7 +325,7 @@ SET_DATA = {
                 {'code': 'JRP', 'name': 'Judgment of the Rogue Planet'},
                 {'code': 'MP01', 'name': 'Masterpiece "Pilgrim Memories"'}
             ]
-        },
+        }
     ]
 }
 

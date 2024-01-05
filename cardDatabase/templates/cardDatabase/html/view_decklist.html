@@ -27,7 +27,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2 " type="text/javascript"></script>    
     
     <script src="{% static 'js/bootstrap/bootstrap.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/bootstrap/mdb.js' %}" type="text/javascript"></script>
+    
     
     {% comment %} Internal Libs {% endcomment %}
     <script src="{% static 'js/view_decklist_testhand.js' %}" type="text/javascript"></script>
@@ -139,47 +139,50 @@
             </button>
               
             <div class="modal fade" id="testHandModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">Testhand</h5>
-                        <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="min-height: 50vh">
-                        <div id="test-hand-card-container">
-                            
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel">Testhand</h5>
+                            <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="min-height: 50vh">
+                            <div id="test-hand-card-container">
+                                
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="close-modal-button" type="button" class="" data-dismiss="modal">Close</button>
+                            <button id="draw-card-button" type="button" >Draw card</button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button id="close-modal-button" type="button" class="" data-dismiss="modal">Close</button>
-                        <button id="draw-card-button" type="button" >Draw card</button>
-                    </div>
                 </div>
-            </div>
             </div>
         </div>
         {% if cards %}
             <br>
             <h2 class="deck-stats">Deck Statistics</h2>
-                <div class="stats-zone-chose-wrapper">
-                    <button id="open-stats-zone-picker" type="button">Choose Zones for Stats</button>
-                    <div class="fieldWrapper zone-select">
-                        <select id="zones-select" class="mdb-select md-form" multiple form="advanced-form" name="race" searchable="Search here...">
-                            {% for value in races_list %}
-                                <option value="{{ value }}"
-                                    {% if value in advanced_form_data.race %}selected{% endif %}>
-                                        {{ value }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-            </div>
-                <div class="attribute-dist-wrapper" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:99vw" {% endif %}>
-                    <h4>Attribute distribution in %</h4>
-                    <canvas id="attribute-dist-canvas" class="attribute-dist-canvas"></canvas>
+            <button type="button" class="mb-2" data-toggle="collapse" data-target="#collapseStatZones" aria-expanded="false" aria-controls="collapseStatZones">
+                Change zones for Statistics
+            </button>
+            <br>
+            {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                <div class="collapse mt-2 mb-2" id="collapseStatZones">
+            {% else %}
+                <div class="input-group collapse mt-2 mb-2" id="collapseStatZones">
+            {% endif %}
+            
+                <select multiple class="custom-select" id="zones-select" aria-label="Statistics zone select">
+                </select>
+                <div class="input-group-append mt-2">
+                    <button id="stats-zone-picker" class="ml-1" type="button">Change Zones for Stats</button>
                 </div>
+            </div>
+            <div class="attribute-dist-wrapper" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:99vw" {% endif %}>
+                <h4>Attribute distribution in %</h4>
+                <canvas id="attribute-dist-canvas" class="attribute-dist-canvas"></canvas>
+            </div>
             <br>
             <h4>Card cost distribution</h4>
             <div class="mana-curve-wrapper" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:96vw" {% endif %}>
@@ -208,25 +211,19 @@
                         if(toggledZones.includes(zone))
                             $('#zones-select').append(`<option selected value="${zone}">${zone}</option>`);
                         else
+                        {
                             $('#zones-select').append(`<option value="${zone}">${zone}</option>`);
+                        }
                     });
-    
-                    $('.zone-select .mdb-select').materialSelect({
-                        'visibleOptions': 14,
-                        'placeholder': 'Select Zone(s)...',
-                        'maxSelectedOptions': 100
-                    });
-    
-                    limitedCards = cards.filter((card) => toggledZones.find((zone) => zone == card.zone));
 
                     initStatistics(
-                        limitedCards, 
+                        cards, 
                         document.getElementById('attribute-dist-canvas'), 
-                        document.getElementById('mana-curve-canvas'),
+                        document.getElementById('mana-curve-canvas'),                        
+                        '#stats-zone-picker',
+                        '#zones-select',
                         mobile
                     );
-    
-                    let mainDeckCards = buildCardWrappers(cards);
     
                     const restrictionEngine = new RestrictionEngine();
     
@@ -237,7 +234,7 @@
                         $('#restriction-warnings'));
     
                     initTestHandModule(
-                        mainDeckCards,
+                        cards,
                         '#draw-test-hand-button', 
                         '#test-hand-card-container', 
                         '#draw-card-button'

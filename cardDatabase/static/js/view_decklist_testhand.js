@@ -1,11 +1,16 @@
-function initTestHandModule(cardsToUse, buttonSelector, cardContainerSelector, drawButtonSelector) {
+function initTestHandModule(cards, buttonSelector, cardContainerSelector, drawButtonSelector) {
+
+    let cardsToUse = buildCardWrappers(cards);
+
+    let defaultToggledZones = ['Main', 'Main Deck'];
+
     const originalCardStack = [...cardsToUse];
     //cleanup
     $(cardContainerSelector).empty();
 
     $(cardContainerSelector).off('click');
 
-    $(cardContainerSelector).on('click', '.deck-card-img', function(event){
+    $(cardContainerSelector).on('click', '.deck-card-img', function (event) {
         $(this).siblings('.card-preview').addClass('show');
         $(this).parent().find('img').addClass('show-hover');
         $(this).parent().find('.multi-hovered-img').addClass('show-hover');
@@ -13,8 +18,8 @@ function initTestHandModule(cardsToUse, buttonSelector, cardContainerSelector, d
 
     $(document).off('keyup');
 
-    $(document).on('keyup', function(e){
-        if (e.key === "Escape"){
+    $(document).on('keyup', function (e) {
+        if (e.key === "Escape") {
             $('.card-preview').removeClass('show');
             $('.hover-card-img.show-hover').removeClass('show-hover');
             $('.multi-hovered-img.show-hover').removeClass('show-hover');
@@ -22,14 +27,14 @@ function initTestHandModule(cardsToUse, buttonSelector, cardContainerSelector, d
     });
 
     $(cardContainerSelector).off('click');
- 
-    $(cardContainerSelector).on('click', '.card-preview', function(e){
-         if (e.target.classList.contains('card-preview')){
-             $(this).removeClass('show');
-             $('.hover-card-img.show-hover').removeClass('show-hover');
-             $('.multi-hovered-img.show-hover').removeClass('show-hover');
-         }
-     });
+
+    $(cardContainerSelector).on('click', '.card-preview', function (e) {
+        if (e.target.classList.contains('card-preview')) {
+            $(this).removeClass('show');
+            $('.hover-card-img.show-hover').removeClass('show-hover');
+            $('.multi-hovered-img.show-hover').removeClass('show-hover');
+        }
+    });
 
     $(buttonSelector).off('click');
 
@@ -44,7 +49,7 @@ function initTestHandModule(cardsToUse, buttonSelector, cardContainerSelector, d
         startHand.forEach(card => {
             $(cardContainerSelector).append(card);
         });
-        
+
     });
 
     $(drawButtonSelector).off('click');
@@ -71,7 +76,7 @@ function fisherYatesShuffle(array) {
         array.splice(randomIndex, 1);
     }
     return array;
- }
+}
 
 function buildCardWrappers(cards) {
     let htmlCards = [];
@@ -85,7 +90,7 @@ function buildCardWrappers(cards) {
     return htmlCards;
 }
 
-function createHtmlForCard(card) { 
+function createHtmlForCard(card) {
     return `
         <div class="deck-card">
             <img class="deck-card-img" src="${card.img}">
@@ -96,5 +101,5 @@ function createHtmlForCard(card) {
             </div>
         </div>
     `
- }
+}
 

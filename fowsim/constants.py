@@ -322,9 +322,10 @@ SET_DATA = {
                 {'code': 'CMB', 'name': 'Crimson Moon\'s Battleground'},
                 {'code': 'ABC', 'name': 'Arcana Battle Colosseum'},
                 {'code': 'CST', 'name': 'Clash of the Star Trees'},
-                {'code': 'JRP', 'name': 'Judgment of the Rogue Planet'}
+                {'code': 'JRP', 'name': 'Judgment of the Rogue Planet'},
+                {'code': 'MP01', 'name': 'Master Piece 1'}
             ]
-        }
+        },
     ]
 }
 
@@ -581,6 +582,7 @@ SETS_IN_ORDER = [
     'JRP',
     'H6 Prerelease Party',
     'MC03',
+    "MP01",
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {

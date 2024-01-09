@@ -25,10 +25,17 @@
   width: 100%;
   justify-content: center;
   display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .unsupported-text {
   width: 100%;
   justify-content: center;
   display: flex;
+}
+
+.sets-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }

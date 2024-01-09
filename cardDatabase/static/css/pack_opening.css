@@ -87,9 +87,8 @@
 
 .pack-wrapper {
   margin-top: 10vh;
-  margin-bottom: 20px;
   width: 100%;
-  padding: 0 100px;
+  padding: 0 10%;
   position: relative;
   display: none;
   justify-content: center;
@@ -528,9 +527,9 @@
 }
 
 .pack-counter {
-  top: 6vh;
-  right: 10vw;
-  position: fixed;
+  top: 20px;
+  right: 30px;
+  position: absolute;
 }
 
 

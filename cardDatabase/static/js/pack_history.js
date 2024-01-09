@@ -19,14 +19,14 @@ $(document).ready(function () {
 
 
             let pullhtml =
-                `<div class="pull-entry">
-            <span>Pack Opened: ${entry.pulledAt}</span>
-            <br />
-            <span>Pack: ${entry.set}</span>
-            <div class="card-container">
-            ${imgHtml}
+       `<div class="pull-entry">
+            <div class="pack-open-info">
+                <div>Pack Opened: ${entry.pulledAt}</div>
+                <div>Pack: ${entry.set}</div>
             </div>
-            <hr />
+            <div class="card-container">
+                ${imgHtml}
+            </div>
         </div>
         `;
             $('#historyContainer').append(pullhtml);

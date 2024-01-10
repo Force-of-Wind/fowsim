@@ -867,7 +867,7 @@ PACK_OPENING_SETS = [
     'msw',
     'ndr',
     'nwe',
-    'pofn',
+    'pofa',
     'rde',
     'rol',
     'skl',

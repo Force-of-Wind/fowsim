@@ -18,6 +18,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, Http404
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
@@ -898,9 +899,8 @@ def pack_select(request):
     return render(request, 'cardDatabase/html/pack_select.html', ctx)
 
 def read_file(path):
-    file = open(path, "r")
-    data = file.read()
-    file.close()
+    with staticfiles_storage.open(path, "r") as file:
+        data = file.read()
     return data
 
 def weightSamples(pairs):
@@ -929,12 +929,14 @@ def pack_opening(request, setcode=None):
         return render(request, 'cardDatabase/html/pack_opening.html', {
             'valid': False
         })
-    pathToConfig = 'cardDataBase/static/pack_config/' + setcode.lower() + '.json'
-    if(not exists(pathToConfig)):
+    pathToConfig = 'pack_config/' + setcode.lower() + '.json'
+    try:
+        config = json.loads(read_file(pathToConfig))
+    except FileNotFoundError:
         return render(request, 'cardDatabase/html/pack_opening.html', {
             'valid': False
         })
-    config = json.loads(read_file(pathToConfig))
+
     slots = config['slots']
     pulls = []
     

@@ -878,14 +878,15 @@ def pack_select(request):
     for cluster in CONS.SET_DATA['clusters']:
         setsData = []
         for fow_set in cluster['sets']:
-          for config in os.listdir('cardDataBase/static/pack_config/'):
-            lowerCode = fow_set['code'].lower()
-            if config.startswith(lowerCode):
-                setsData.append({
-                    'name': fow_set['name'],
-                    'code': fow_set['code'],
-                    'image': get_image_for_config(lowerCode),
-                })
+            for config in CONS.PACK_OPENING_SETS:
+                config += '.json'
+                lowerCode = fow_set['code'].lower()
+                if config.startswith(lowerCode):
+                    setsData.append({
+                        'name': fow_set['name'],
+                        'code': fow_set['code'],
+                        'image': get_image_for_config(lowerCode),
+                    })
         mapped_clusters.append({
             'name': cluster['name'],
             'sets': setsData

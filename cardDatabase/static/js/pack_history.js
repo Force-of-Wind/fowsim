@@ -19,7 +19,7 @@ $(document).ready(function () {
 
 
             let pullhtml =
-       `<div class="pull-entry">
+                `<div class="pull-entry">
             <div class="pack-open-info">
                 <div>Pack Opened: ${entry.pulledAt}</div>
                 <div>Pack: ${entry.set}</div>
@@ -47,6 +47,10 @@ $(document).ready(function () {
                         $('.card-highlight').css('display', 'none');
                     }
                 }
+            });
+
+            $('.foil').on('click', function (event) {
+                $(this).parent().children('img').trigger('click');
             })
 
         });

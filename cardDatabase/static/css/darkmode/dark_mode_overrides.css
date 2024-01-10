@@ -259,12 +259,12 @@ img.preview-deck-card-img {
     color: white;
 }
 
-.card-preview .view-in-another-tab {
+.view-in-another-tab {
     border: 1px solid mediumpurple;
     background-color: #303134;
 }
 
-.card-preview .view-in-another-tab a {
+.view-in-another-tab a {
     color: white;
 }
 

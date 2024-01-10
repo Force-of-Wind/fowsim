@@ -1,0 +1,78 @@
+{
+    "packImage": "img/pack/tsw-pack.png",
+    "slots": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "FOIL",
+        "R-SR",
+        "U",
+        "U"
+    ],
+    "excludes": [],
+    "R-SR": [
+        {
+            "chance": 20,
+            "rarity": "SR"
+        },
+        {
+            "chance": 80,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 30,
+            "rarity": "U"
+        },
+        {
+            "chance": 42,
+            "rarity": "C"
+        },
+        {
+            "chance": 14,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 3,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 11,
+            "rarity": "SR"
+        }
+    ]
+}

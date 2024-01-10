@@ -1,0 +1,113 @@
+{
+    "packImage": "img/pack/ttw-pack.png",
+    "slots": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "U",
+        "U",
+        "R",
+        "SR-Reg-SM-BS",
+        "FOIL"
+    ],
+    "excludes": [
+        {
+            "rarity": "C",
+            "type": [
+                "Magic Stone"
+            ]
+        },
+        {
+            "rarity": "R",
+            "type": [
+                "Regalia"
+            ]
+        }
+    ],
+    "SR-Reg-SM-BS": [
+        {
+            "chance": 3,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 22,
+            "rarity": "SR"
+        },
+        {
+            "chance": 41,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 17,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Special Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 17,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Regalia"
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 30,
+            "rarity": "C"
+        },
+        {
+            "chance": 34,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 3,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 17,
+            "rarity": "SR"
+        },
+        {
+            "chance": 15,
+            "rarity": "U"
+        }
+    ]
+}

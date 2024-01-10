@@ -1,0 +1,76 @@
+{
+    "packImage": "img/pack/gits2045-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "BS",
+        "R-SR",
+        "FOIL"
+    ],
+    "excludes": [],
+    "set_override":[
+        {
+            "rarity": "BS",
+            "setCodes" : ["CMF"]
+        }
+    ],
+    "BS": [
+        {
+            "chance": 100,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        }
+    ],
+    "R-SR": [
+        {
+            "chance": 40,
+            "rarity": "SR"
+        },
+        {
+            "chance": 60,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 55,
+            "rarity": "N"
+        },
+        {
+            "chance": 30,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 15,
+            "rarity": "SR"
+        }
+    ]
+}

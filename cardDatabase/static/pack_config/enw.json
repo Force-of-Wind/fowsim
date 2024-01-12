@@ -1,0 +1,103 @@
+{
+    "packImage": "img/pack/enw-pack.png",
+    "slots": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "U",
+        "U",
+        "R",
+        "S-DS-SR",
+        "FOIL"
+    ],
+    "excludes": [
+        {
+            "rarity": "C",
+            "type": [
+                "Magic Stone"
+            ]
+        },
+        {
+            "rarity": "R",
+            "type": [
+                "J-Ruler"
+            ]
+        }
+    ],
+    "S-DS-SR": [
+        {
+            "chance": 63,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 13,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Special Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 24,
+            "rarity": "SR"
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 22,
+            "rarity": "U"
+        },
+        {
+            "chance": 14,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 39,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 6,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 19,
+            "rarity": "SR"
+        }
+    ]
+}

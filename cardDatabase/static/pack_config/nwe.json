@@ -1,0 +1,227 @@
+{
+    "packImage": "img/pack/nwe-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "BS",
+        "R-SR",
+        "FOIL",
+        "N-Contract"
+    ],
+    "card_override": [
+        {
+            "rarity": "FOIL",
+            "previousCardId": "NWE-060",
+            "newCardId": "NWE-057"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "NWE-057",
+            "newCardIds": [
+                "NWE-024",
+                "NWE-003",
+                "NWE-013",
+                "NWE-033",
+                "NWE-051"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "NWE-062",
+            "newCardId": "NWE-070"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "NWE-070",
+            "newCardIds": [
+                "NWE-024",
+                "NWE-003",
+                "NWE-013",
+                "NWE-033",
+                "NWE-051"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "NWE-065",
+            "newCardId": "NWE-085"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "NWE-085",
+            "newCardIds": [
+                "NWE-024",
+                "NWE-003",
+                "NWE-013",
+                "NWE-033",
+                "NWE-051"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "NWE-068",
+            "newCardId": "NWE-066"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "NWE-066",
+            "newCardIds": [
+                "NWE-024",
+                "NWE-003",
+                "NWE-013",
+                "NWE-033",
+                "NWE-051"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "NWE-072",
+            "newCardId": "NWE-058"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "NWE-058",
+            "newCardIds": [
+                "NWE-024",
+                "NWE-003",
+                "NWE-013",
+                "NWE-033",
+                "NWE-051"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "NWE-082",
+            "newCardId": "NWE-057"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "NWE-057",
+            "newCardIds": [
+                "NWE-024",
+                "NWE-003",
+                "NWE-013",
+                "NWE-033",
+                "NWE-051"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "NWE-098",
+            "newCardId": "NWE-090"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "NWE-090",
+            "newCardIds": [
+                "NWE-024",
+                "NWE-003",
+                "NWE-013",
+                "NWE-033",
+                "NWE-051"
+            ]
+        }
+    ],
+    "BS": [
+        {
+            "chance": 100,
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Basic Magic Stone"
+                }
+            ]
+        }
+    ],
+    "R-SR": [
+        {
+            "chance": 8,
+            "rarity": "MR"
+        },
+        {
+            "chance": 31,
+            "rarity": "SR"
+        },
+        {
+            "chance": 56,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 5,
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Contract"
+                    ]
+                },
+                {
+                    "equals": false,
+                    "cardIdPrefix": [
+                        "NWE-SEC"
+                    ]
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 53,
+            "rarity": "N"
+        },
+        {
+            "chance": 26,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 18,
+            "rarity": "SR"
+        },
+        {
+            "chance": 3,
+            "rarity": "MR"
+        }
+    ],
+    "N-Contract": [
+        {
+            "chance": 11,
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Contract"
+                    ]
+                },
+                {
+                    "equals": false,
+                    "cardIdPrefix": [
+                        "NWE-SEC"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 89,
+            "rarity": "N"
+        }
+    ]
+}

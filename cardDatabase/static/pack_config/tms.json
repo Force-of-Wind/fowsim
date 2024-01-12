@@ -1,0 +1,150 @@
+{
+    "packImage": "img/pack/tms-pack.png",
+    "slots": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "U",
+        "U",
+        "R",
+        "SR-BS-S-Reg-R",
+        "FOIL"
+    ],
+    "excludes": [
+        {
+            "rarity": "C",
+            "type": [
+                "Magic Stone"
+            ]
+        },
+        {
+            "rarity": "R",
+            "type": [
+                "Ruler",
+                "J-Ruler"
+            ]
+        }
+    ],
+    "SR-BS-S-Reg-R": [
+        {
+            "chance": 3,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 17,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Special Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 17,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Regalia"
+                }
+            ]
+        },
+        {
+            "chance": 41,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 22,
+            "rarity": "SR"
+        }
+    ],
+    "CM-SR": [
+        {
+            "chance": 58,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 42,
+            "rarity": "SR"
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 33,
+            "rarity": "C"
+        },
+        {
+            "chance": 13,
+            "rarity": "U"
+        },
+        {
+            "chance": 28,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 3,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 3,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Special Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 3,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Regalia"
+                }
+            ]
+        },
+        {
+            "chance": 17,
+            "rarity": "SR"
+        }
+    ]
+}

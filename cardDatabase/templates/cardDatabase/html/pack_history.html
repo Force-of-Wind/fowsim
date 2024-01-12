@@ -1,0 +1,49 @@
+{% extends 'cardDatabase/html/base.html' %}
+
+{% load static card_database_tags %}
+
+{% block js %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'js/pack_history.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/pack_history.css' %}" />
+  {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+    <link rel="stylesheet" href="{% static 'css/pack_history_mobile.css' %}" />
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="action-wrapper">
+      <button data-url="{% url 'cardDatabase-pack-select' %}" id="packSelectBtn">Go to pack select</button>
+      <button id="clearHistory">Clear History</button>
+      <button id="exportHistory">Export History</button>
+    </div>
+    <div class="historyContainer" id="historyContainer"></div>
+    <div class="modal" id="exportModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Untap export</h5>
+            <button type="button" class="close dismiss-modal" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <textarea id="exportText" cols="50" rows="10"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary dismiss-modal" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="card-highlight" class="card-highlight">
+      <img id="highlight-img" src="" alt="" />
+      <div class="view-in-another-tab">
+        <a id="highlight-link" href="" target="_blank">Go to Card</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

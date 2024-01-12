@@ -1,0 +1,211 @@
+{
+    "packImage": "img/pack/tus-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "BS",
+        "R-SR",
+        "FOIL",
+        "N-Contract"
+    ],
+    "card_override": [
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TUS-004",
+            "newCardId": "TUS-008"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TUS-008",
+            "newCardIds": [
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TUS-043",
+            "newCardId": "TUS-044"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TUS-044",
+            "newCardIds": [
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TUS-063",
+            "newCardId": "TUS-070"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TUS-070",
+            "newCardIds": [
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TUS-077",
+            "newCardId": "TUS-076"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TUS-076",
+            "newCardIds": [
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TUS-079",
+            "newCardId": "TUS-068"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TUS-068",
+            "newCardIds": [
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TUS-082",
+            "newCardId": "TUS-078"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TUS-078",
+            "newCardIds": [
+                "TUS-020",
+                "TUS-025",
+                "TUS-036",
+                "TUS-059"
+            ]
+        },
+        {
+            "rarity": "FOIL",
+            "previousCardId": "TUS-102",
+            "newCardId": "TUS-095"
+        },
+        {
+            "rarity": "N-Contract",
+            "previousCardId": "TUS-095",
+            "newCardId": "TUS-099"
+        }
+    ],
+    "set_override": [
+        {
+            "rarity": "BS",
+            "setCodes": [
+                "NWE"
+            ]
+        }
+    ],
+    "BS": [
+        {
+            "chance": 100,
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Basic Magic Stone"
+                }
+            ]
+        }
+    ],
+    "R-SR": [
+        {
+            "chance": 8,
+            "rarity": "MR"
+        },
+        {
+            "chance": 31,
+            "rarity": "SR"
+        },
+        {
+            "chance": 56,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 5,
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 53,
+            "rarity": "N"
+        },
+        {
+            "chance": 26,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 18,
+            "rarity": "SR"
+        },
+        {
+            "chance": 3,
+            "rarity": "MR"
+        }
+    ],
+    "N-Contract": [
+        {
+            "chance": 11,
+            "conditions": [
+                {
+                    "equals": true,
+                    "races": [
+                        "Contract"
+                    ]
+                }
+            ]
+        },
+        {
+            "chance": 89,
+            "rarity": "N"
+        }
+    ]
+}

@@ -47,11 +47,12 @@ AWS_DEFAULT_ACL = None
 MEDIAFILES_LOCATION = 'media'
 STATICFILES_LOCATION = 'static'
 
-if os.environ.get('PRODUCTION'):
+if DEBUG:
+    DEFAULT_FILE_STORAGE = 'fowsim.custom_storages.LocalMediaStorage'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'cardDatabase/static/')
+else:
     DEFAULT_FILE_STORAGE = 'fowsim.custom_storages.MediaStorage'
     STATICFILES_STORAGE = 'fowsim.custom_storages.StaticStorage'
-else:
-    DEFAULT_FILE_STORAGE = 'fowsim.custom_storages.LocalMediaStorage'
 
 # Application definition
 

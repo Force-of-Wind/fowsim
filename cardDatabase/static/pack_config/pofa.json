@@ -1,0 +1,86 @@
+{
+    "packImage": "img/pack/pofa-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "BS",
+        "R-SR-MR",
+        "FOIL"
+    ],
+    "excludes": [],
+    "set_override": [
+        {
+            "rarity": "BS",
+            "setCodes": [
+                "CMF"
+            ]
+        }
+    ],
+    "BS": [
+        {
+            "chance": 100,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        }
+    ],
+    "R-SR-MR": [
+        {
+            "chance": 11,
+            "rarity": "MR"
+        },
+        {
+            "chance": 31,
+            "rarity": "SR"
+        },
+        {
+            "chance": 58,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 36,
+            "rarity": "N"
+        },
+        {
+            "chance": 39,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 22,
+            "rarity": "SR"
+        },
+        {
+            "chance": 3,
+            "rarity": "MR"
+        }
+    ]
+}

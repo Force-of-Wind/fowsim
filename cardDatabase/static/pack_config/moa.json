@@ -1,0 +1,51 @@
+{
+    "packImage": "img/pack/moa-pack.png",
+    "slots": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "C-SR",
+        "U",
+        "U",
+        "R",
+        "FOIL"
+    ],
+    "excludes": [
+        {
+            "rarity": "C",
+            "type": [
+                "Magic Stone"
+            ]
+        }
+    ],
+    "C-SR": [
+        {
+            "chance": 90,
+            "rarity": "C"
+        },
+        {
+            "chance": 10,
+            "rarity": "SR"
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 28,
+            "rarity": "C"
+        },
+        {
+            "chance": 19,
+            "rarity": "U"
+        },
+        {
+            "chance": 28,
+            "rarity": "R"
+        },
+        {
+            "chance": 22,
+            "rarity": "SR"
+        }
+    ]
+}

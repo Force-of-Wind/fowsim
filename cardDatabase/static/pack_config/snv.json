@@ -1,0 +1,44 @@
+{
+    "packImage": "img/pack/snv-pack.png",
+    "slots": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "U",
+        "U",
+        "R-SR",
+        "FOIL"
+    ],
+    "excludes": [],
+    "R-SR": [
+        {
+            "chance": 40,
+            "rarity": "SR"
+        },
+        {
+            "chance": 60,
+            "rarity": "R"
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 22,
+            "rarity": "U"
+        },
+        {
+            "chance": 47,
+            "rarity": "C"
+        },
+        {
+            "chance": 20,
+            "rarity": "R"
+        },
+        {
+            "chance": 11,
+            "rarity": "SR"
+        }
+    ]
+}

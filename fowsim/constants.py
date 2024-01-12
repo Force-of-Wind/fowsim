@@ -322,7 +322,8 @@ SET_DATA = {
                 {'code': 'CMB', 'name': 'Crimson Moon\'s Battleground'},
                 {'code': 'ABC', 'name': 'Arcana Battle Colosseum'},
                 {'code': 'CST', 'name': 'Clash of the Star Trees'},
-                {'code': 'JRP', 'name': 'Judgment of the Rogue Planet'}
+                {'code': 'JRP', 'name': 'Judgment of the Rogue Planet'},
+                {'code': 'MP01', 'name': 'Masterpiece "Pilgrim Memories"'}
             ]
         }
     ]
@@ -581,6 +582,7 @@ SETS_IN_ORDER = [
     'JRP',
     'H6 Prerelease Party',
     'MC03',
+    "MP01",
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -836,4 +838,46 @@ PICK_PERIOD_DAYS = [  # Also includes "all time" when created in importMetricPer
     7,
     30,
     90
+]
+
+PACK_OPENING_SETS = [
+    'acn',
+    'adk',
+    'adw',
+    'ao1',
+    'ao2',
+    'ao3',
+    'aoa',
+    'bfa',
+    'cfc',
+    'cmb',
+    'cmf',
+    'cst',
+    'dbv',
+    'edl',
+    'enw',
+    'gits2045',
+    'gog',
+    'grl',
+    'grv',
+    'jrp',
+    'lel',
+    'moa',
+    'mpr',
+    'msw',
+    'ndr',
+    'nwe',
+    'pofn',
+    'rde',
+    'rol',
+    'skl',
+    'snv',
+    'tat',
+    'tms',
+    'tst',
+    'tsw',
+    'ttw',
+    'tus',
+    'tws',
+    'wom'
 ]

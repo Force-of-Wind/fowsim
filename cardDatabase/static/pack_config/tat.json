@@ -1,0 +1,77 @@
+{
+    "packImage": "img/pack/tat-pack.png",
+    "slots": [
+        "C",
+        "C",
+        "C",
+        "C",
+        "C",
+        "U",
+        "U",
+        "C-S",
+        "R-R",
+        "C-SR"
+    ],
+    "excludes": [
+        {
+            "rarity": "C",
+            "type": [
+                "Magic Stone"
+            ]
+        }
+    ],
+    "R-R": [
+        {
+            "chance": 5,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 95,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        }
+    ],
+    "C-SR": [
+        {
+            "chance": 58,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Magic Stone"
+                }
+            ]
+        },
+        {
+            "chance": 42,
+            "rarity": "SR"
+        }
+    ],
+    "C-S": [
+        {
+            "chance": 100,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        }
+    ]
+}

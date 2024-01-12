@@ -1,0 +1,63 @@
+{
+    "packImage": "img/pack/jrp-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "R",
+        "R-SR",
+        "FOIL",
+        "Stone-Reprints"
+    ],
+    "R-SR": [
+        {
+            "chance": 8,
+            "rarity": "MR"
+        },
+        {
+            "chance": 31,
+            "rarity": "SR"
+        },
+        {
+            "chance": 61,
+            "rarity": "R"
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 53,
+            "rarity": "N"
+        },
+        {
+            "chance": 21,
+            "rarity": "R"
+        },
+        {
+            "chance": 23,
+            "rarity": "SR"
+        },
+        {
+            "chance": 3,
+            "rarity": "MR"
+        }
+    ],
+    "Stone-Reprints": [
+        {
+            "chance": 100,
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Special Magic Stone",
+                    "setOverrides": [
+                        "VIN003",
+                        "RDE",
+                        "LEL"
+                    ]
+                }
+            ]
+        }
+    ]
+}

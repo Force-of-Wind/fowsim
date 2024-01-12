@@ -1,0 +1,97 @@
+{
+    "packImage": "img/pack/edl-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "N",
+        "BS",
+        "R-SR-MR",
+        "FOIL"
+    ],
+    "excludes": [],
+    "set_override": [
+        {
+            "rarity": "BS",
+            "setCodes": [
+                "CMF"
+            ]
+        }
+    ],
+    "BS": [
+        {
+            "chance": 100,
+            "rarity": "C",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Magic Stone"
+                }
+            ]
+        }
+    ],
+    "R-SR-MR": [
+        {
+            "chance": 5,
+            "rarity": "MR"
+        },
+        {
+            "chance": 28,
+            "rarity": "SR"
+        },
+        {
+            "chance": 67,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 38,
+            "rarity": "N"
+        },
+        {
+            "chance": 39,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Ruler"
+                },
+                {
+                    "equals": false,
+                    "type": "J-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 17,
+            "rarity": "SR"
+        },
+        {
+            "chance": 3,
+            "rarity": "MR"
+        },
+        {
+            "chance": 3,
+            "rarity": "R",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Ruler"
+                }
+            ]
+        }
+    ]
+}

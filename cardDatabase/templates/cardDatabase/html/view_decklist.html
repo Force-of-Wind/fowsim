@@ -134,31 +134,6 @@
             <button type="button" id="copy-image">Copy as Image</button>
             <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
             <br>
-            <button type="button" id="draw-test-hand-button" class="draw-test-hand-button" data-toggle="modal" data-target="#testHandModal">
-                Draw Testhand
-            </button>
-              
-            <div class="modal fade" id="testHandModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalLabel">Testhand</h5>
-                            <button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" style="min-height: 50vh">
-                            <div id="test-hand-card-container">
-                                
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="close-modal-button" type="button" class="" data-dismiss="modal">Close</button>
-                            <button id="draw-card-button" type="button" >Draw card</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         {% if cards %}
             <br>
@@ -188,6 +163,29 @@
             <div class="mana-curve-wrapper" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:96vw" {% endif %}>
                 <canvas id="mana-curve-canvas" class="mana-curve-canvas"></canvas>
             </div>
+            <hr>
+            <button type="button" class="mb-2" data-toggle="collapse" data-target="#collapseTestHand" aria-expanded="false" aria-controls="collapseTestHand">
+                Change zones
+            </button>
+            
+            {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                <div class="collapse mt-2 mb-2" id="collapseTestHand">
+            {% else %}
+                <div class="input-group collapse mt-2 mb-2" id="collapseTestHand">
+            {% endif %}
+            
+                <select multiple class="custom-select" id="draw-hand-zones-select" aria-label="Testhand zone select">
+                </select>
+                <div class="input-group-append mt-2">
+                    <button id="test-hand-zone-picker" class="ml-1" type="button">Change Zones for Testhand</button>
+                </div>
+            </div>
+            <div id="test-hand-card-container" class="test-hand-card-container" style="--container-width:100%;">
+            </div>
+            <div class="draw-testhand-actions">                
+                <button id="draw-card-button" class="draw-testhand-actions-button" type="button" >Draw card</button>
+                <button id="reset-hand-button" class="draw-testhand-actions-button" type="button" >Redraw hand</button>
+            </div>
             <script>
                 function onlyUnique(value, index, array) {
                     return array.indexOf(value) === index;
@@ -211,9 +209,8 @@
                         if(toggledZones.includes(zone))
                             $('#zones-select').append(`<option selected value="${zone}">${zone}</option>`);
                         else
-                        {
                             $('#zones-select').append(`<option value="${zone}">${zone}</option>`);
-                        }
+                        
                     });
 
                     initStatistics(
@@ -231,13 +228,19 @@
                         $('#image-container'),
                         cardsData,
                         restrictions,
-                        $('#restriction-warnings'));
+                        $('#restriction-warnings')
+                    );
     
                     initTestHandModule(
                         cards,
+                        zones,
                         '#draw-test-hand-button', 
                         '#test-hand-card-container', 
-                        '#draw-card-button'
+                        '#draw-card-button',
+                        '#reset-hand-button',
+                        '#test-hand-zone-picker',
+                        '#draw-hand-zones-select',
+                        toggledZones
                     )
                 });
             </script>

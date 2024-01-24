@@ -1,62 +1,57 @@
-function initTestHandModule(cards, buttonSelector, cardContainerSelector, drawButtonSelector) {
+let zonesToLoadCards;
+let availableZones;
+let originalCards;
+const startingHandSize = 5;
 
-    let cardsToUse = buildCardWrappers(cards);
+function initTestHandModule(cards, zones, buttonSelector, cardContainerSelector, drawButtonSelector, resetHandButtonSelector, zonePickerButton, zonePickerSelect, toggledZones) {
+    availableZones = zones;
+    originalCards = cards;
+    zonesToLoadCards = toggledZones.map((zone) => { return zone.toLowerCase(); });
 
-    let defaultToggledZones = ['Main', 'Main Deck'];
+    zones.forEach((zone) => {
+        if (zonesToLoadCards.includes(zone.toLowerCase()))
+            $(zonePickerSelect).append(`<option selected value="${zone}">${zone}</option>`);
+        else
+            $(zonePickerSelect).append(`<option value="${zone}">${zone}</option>`);
+    });
 
-    const originalCardStack = [...cardsToUse];
-    //cleanup
+    setTestHandModule(cards, zones, buttonSelector, cardContainerSelector, drawButtonSelector, resetHandButtonSelector);
+
+    $(zonePickerButton).off('click');
+    $(zonePickerButton).on('click', function (e) {
+        zonesToLoadCards = $(zonePickerSelect).val().map((zone) => { return zone.toLowerCase(); });
+        setTestHandModule(originalCards, availableZones, buttonSelector, cardContainerSelector, drawButtonSelector, resetHandButtonSelector);
+    });
+}
+
+function setTestHandModule(cards, zones, buttonSelector, cardContainerSelector, drawButtonSelector, resetHandButtonSelector) {
+    let cardsForSelectedZones = cards.filter((card) => { return zonesToLoadCards.includes(card.zone.toLowerCase()) });
+
+    let cardsToUse = buildCardWrappers(cardsForSelectedZones);
+
     $(cardContainerSelector).empty();
+    //we need index
+    cardsToUse = randomizeCards(cardsToUse);
 
-    $(cardContainerSelector).off('click');
-
-    $(cardContainerSelector).on('click', '.deck-card-img', function (event) {
-        $(this).siblings('.card-preview').addClass('show');
-        $(this).parent().find('img').addClass('show-hover');
-        $(this).parent().find('.multi-hovered-img').addClass('show-hover');
+    let startHand = cardsToUse.slice(0, startingHandSize)
+    cardsToUse = cardsToUse.slice(startingHandSize, cardsToUse.length)
+    startHand.forEach((card, index) => {
+        $(cardContainerSelector).append(createHtmlForCard(card, index));
     });
-
-    $(document).off('keyup');
-
-    $(document).on('keyup', function (e) {
-        if (e.key === "Escape") {
-            $('.card-preview').removeClass('show');
-            $('.hover-card-img.show-hover').removeClass('show-hover');
-            $('.multi-hovered-img.show-hover').removeClass('show-hover');
-        }
-    });
-
-    $(cardContainerSelector).off('click');
-
-    $(cardContainerSelector).on('click', '.card-preview', function (e) {
-        if (e.target.classList.contains('card-preview')) {
-            $(this).removeClass('show');
-            $('.hover-card-img.show-hover').removeClass('show-hover');
-            $('.multi-hovered-img.show-hover').removeClass('show-hover');
-        }
-    });
-
-    $(buttonSelector).off('click');
-
-    $(buttonSelector).on('click', function (e) {
-        cardsToUse = originalCardStack;
-        $(cardContainerSelector).empty();
-        const startingHandSize = 5; //we need index
-        cardsToUse = randomizeCards(cardsToUse);
-
-        let startHand = cardsToUse.slice(0, startingHandSize)
-        cardsToUse = cardsToUse.slice(startingHandSize, cardsToUse.length)
-        startHand.forEach(card => {
-            $(cardContainerSelector).append(card);
-        });
-
-    });
+    $(cardContainerSelector).css('--child-count', startingHandSize);
 
     $(drawButtonSelector).off('click');
+    $(resetHandButtonSelector).off('click');
 
     $(drawButtonSelector).on('click', function (e) {
-        $(cardContainerSelector).append(cardsToUse[0]);
-        cardsToUse = cardsToUse.slice(1, cardsToUse.length)
+        let childCount = $(cardContainerSelector).children().length;
+        $(cardContainerSelector).append(createHtmlForCard(cardsToUse[0], childCount));
+        cardsToUse = cardsToUse.slice(1, cardsToUse.length - 1)
+        $(cardContainerSelector).css('--child-count', childCount + 1);
+    });
+
+    $(resetHandButtonSelector).on('click', function (e) {
+        setTestHandModule(originalCards, availableZones, buttonSelector, cardContainerSelector, drawButtonSelector, resetHandButtonSelector);
     });
 }
 
@@ -79,27 +74,19 @@ function fisherYatesShuffle(array) {
 }
 
 function buildCardWrappers(cards) {
-    let htmlCards = [];
+    let mappedCards = [];
 
     cards.forEach((card) => {
         for (let i = 0; i < card.quantity; i++) {
-            htmlCards.push(createHtmlForCard(card));
+            mappedCards.push(card);
         }
     });
 
-    return htmlCards;
+    return mappedCards;
 }
 
-function createHtmlForCard(card) {
+function createHtmlForCard(card, childCount) {
     return `
-        <div class="deck-card">
-            <img class="deck-card-img" src="${card.img}">
-            <div class="card-preview">
-                <div class="multi-hovered-img">
-                    <img class="hover-card-img" src="${card.img}">
-                </div>
-            </div>
-        </div>
+        <img class="samplehand-card" src="${card.img}" style="--child-index:${childCount}; z-index:${childCount}">
     `
 }
-

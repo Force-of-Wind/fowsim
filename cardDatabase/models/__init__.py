@@ -2,7 +2,7 @@ from inspect import isclass
 from pkgutil import iter_modules
 from pathlib import Path
 from importlib import import_module
-from .CardType import Card, CardColour
+from .CardType import Card, CardColour, CardArtist
 from .User import Profile
 from .DeckList import DeckListCard, DeckListZone, DeckList
 from .Spoilers import SpoilerSeason

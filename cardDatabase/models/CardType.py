@@ -68,6 +68,17 @@ class Tag(models.Model):
         return self.name    
     name = models.CharField(max_length=200, null=False, blank=False)
 
+
+class CardArtist(models.Model):
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+    name = models.CharField(max_length=200, null=False, blank=False)
+
+
 class Card(AbstractModel):
     class Meta:
         abstract = False
@@ -87,6 +98,7 @@ class Card(AbstractModel):
     ability_texts = models.ManyToManyField('AbilityText', related_name='cards', blank=True, through=CardAbility)
     colours = models.ManyToManyField('CardColour', related_name='cards', blank=False)
     tag = models.ManyToManyField('Tag', related_name='cards', blank=True)
+    artists = models.ManyToManyField('CardArtist', related_name='cards', blank=True)
 
     def __str__(self):
         return self.name

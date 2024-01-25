@@ -16,7 +16,8 @@ class DeckList(models.Model):
     comments = models.TextField(max_length=10000, blank=True, null=True, default='')
     public = models.BooleanField(default=True, blank=False, null=False)
     shareCode = models.TextField(max_length=32, blank=True, null=True, default='')
-    shareMode = models.TextField(max_length=32, blank=True, null=True, default='')
+    shareMode = models.TextField(max_length=32, blank=True, null=True, default='',
+                                 choices=CONS.DECK_LIST_SHARE_MODE_CHOICES)
 
     def save(self, *args, **kwargs):
         self.last_modified = datetime.datetime.now()

@@ -835,3 +835,8 @@ PICK_PERIOD_DAYS = [  # Also includes "all time" when created in importMetricPer
     30,
     90
 ]
+
+DECK_LIST_SHARE_MODE_CHOICES = [
+    ['private', 'private'],
+    ['tournament', 'tournament']
+]

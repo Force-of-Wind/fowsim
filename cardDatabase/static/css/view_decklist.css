@@ -301,7 +301,7 @@ button.close.modal-close-btn {
     position: relative;
     display: block;
     margin: auto;
-    min-height: 34vh;
+    min-height: 40vh;
 }
 
 .draw-testhand-actions {

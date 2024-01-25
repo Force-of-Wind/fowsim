@@ -45,9 +45,11 @@ function setTestHandModule(cards, zones, buttonSelector, cardContainerSelector, 
 
     $(drawButtonSelector).on('click', function (e) {
         let childCount = $(cardContainerSelector).children().length;
-        $(cardContainerSelector).append(createHtmlForCard(cardsToUse[0], childCount));
-        cardsToUse = cardsToUse.slice(1, cardsToUse.length - 1)
-        $(cardContainerSelector).css('--child-count', childCount + 1);
+        if (cardsToUse[0]) {
+            $(cardContainerSelector).append(createHtmlForCard(cardsToUse[0], childCount));
+            cardsToUse = cardsToUse.slice(1, cardsToUse.length - 1)
+            $(cardContainerSelector).css('--child-count', childCount + 1);
+        }
     });
 
     $(resetHandButtonSelector).on('click', function (e) {

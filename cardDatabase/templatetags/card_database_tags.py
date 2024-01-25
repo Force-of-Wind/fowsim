@@ -249,6 +249,7 @@ def cards_to_json(cards):
             "name": card.card.name_without_punctuation,
             "zone" : card.zone.zone.name,
             "cost": card.card.cost,
+            "img":  card.card.card_image.url,
             "quantity" : card.quantity
         }
         output_cards.append(simple_card)

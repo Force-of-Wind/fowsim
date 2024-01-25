@@ -1,4 +1,7 @@
 const attributeRegex = /\{(\w)\}+/g;
+let attributesChart;
+let curveChart;
+
 
 function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mobile) {
     let manaCurveThreshhold = 6;
@@ -21,23 +24,22 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mob
         { shortTerm: 'G', attribute: 'Wind', count: 0, color: "#19ef49", x: 0, cardCount: 0 },
         { shortTerm: 0, attribute: 'Void', count: 0, color: "#b1b5b2", x: 0, cardCount: 0 }
     ];
-    
 
-    cardsToCalc.forEach(card => {        
+
+    cardsToCalc.forEach(card => {
         if (card.cost !== null) {
             card.cost = [...card.cost.matchAll(attributeRegex)].map((el) => el[1]);
             let cardCost = 0;
             let lastAttribute = '';
             card.cost.forEach(attribute => {
-                if(lastAttribute !== attribute)
-                {
-                    if (isNaN(attribute) && attribute != voidX && attribute != 'M') {                        
+                if (lastAttribute !== attribute) {
+                    if (isNaN(attribute) && attribute != voidX && attribute != 'M') {
                         attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == attribute)].cardCount += card.quantity;
                     }
-                    else if(attribute == 'M'){
+                    else if (attribute == 'M') {
                         attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == 0)].cardCount += card.quantity;
                     }
-                    else if (attribute !== voidX && parseInt(attribute) > 0){
+                    else if (attribute !== voidX && parseInt(attribute) > 0) {
                         attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == 0)].cardCount += card.quantity;
                     }
                     lastAttribute = attribute;
@@ -46,29 +48,29 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mob
                     cardCost++;
                     attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == attribute)].count += card.quantity;
                 }
-                else if(attribute == 'M'){
+                else if (attribute == 'M') {
                     cardCost++;
                     attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == 0)].cardCount += card.quantity;
                 }
-                else if (attribute !== voidX){
+                else if (attribute !== voidX) {
                     let currentCost = parseInt(attribute)
                     cardCost += currentCost;
                     attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == 0)].count += currentCost * card.quantity;
                 }
             });
 
-            if(cardCost >= manaCurveThreshhold){
+            if (cardCost >= manaCurveThreshhold) {
                 manaCurveStatData[manaCurveStatData.findIndex((el) => el.cost == manaCurveThreshhold + '+')].count += card.quantity;
             }
-            else{
-                manaCurveStatData[manaCurveStatData.findIndex((el) => el.cost ==cardCost)].count += card.quantity;
+            else {
+                manaCurveStatData[manaCurveStatData.findIndex((el) => el.cost == cardCost)].count += card.quantity;
             }
         }
     });
 
     let fullAttributeCount = attributeStatData.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.count
-      },0);
+    }, 0);
 
     attributeStatData.sort((a, b) => b.count - a.count);
     attributeStatData.forEach((attribute) => {
@@ -79,7 +81,11 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mob
 }
 
 function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCurveStatData, mobile) {
-    new Chart(attributeCanvas,
+    if (attributesChart !== null && attributesChart !== undefined) {
+        attributesChart.destroy();
+    }
+
+    attributesChart = new Chart(attributeCanvas,
         {
             type: 'bar',
             plugins: [ChartDataLabels],
@@ -96,12 +102,12 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                     tooltip: {
                         enabled: true,
                         callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                                 let label = context.dataset.label || '';
 
-                                if(context.raw.cardCount > 1)
+                                if (context.raw.cardCount > 1)
                                     return `${label}: ${context.raw.x} (${context.raw.cardCount} cards)`;
-                                else 
+                                else
                                     return `${label}: ${context.raw.x} (${context.raw.cardCount} card)`;
                             }
                         }
@@ -115,18 +121,18 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                         position: 'bottom',
                         text: 'Card attributes in %'
                     },
-                    datalabels:{
-                        formatter: function(value, _) {
+                    datalabels: {
+                        formatter: function (value, _) {
                             let percent = value.x;
-                            if(percent <= 0 || isNaN(percent))
+                            if (percent <= 0 || isNaN(percent))
                                 return '';
-                            else if(percent < 5 && mobile)
+                            else if (percent < 5 && mobile)
                                 return percent;
-                            else if(percent <= 1)
+                            else if (percent <= 1)
                                 return percent;
                             else
                                 return percent + ' %';
-                          }
+                        }
                     }
                 },
             },
@@ -139,18 +145,22 @@ function drawCharts(attributeCanvas, attributeStatData, manaCurveCanvas, manaCur
                         data: attributeStatData,
                         datalabels: {
                             color: '#000000'
-                          }
+                        }
                     }
                 ]
             }
         });
-    new Chart(manaCurveCanvas,
+
+    if (curveChart !== null && curveChart !== undefined) {
+        curveChart.destroy();
+    }
+    curveChart = new Chart(manaCurveCanvas,
         {
             type: 'bar',
             data: {
                 labels: manaCurveStatData.map(row => row.cost),
                 datasets: [
-                    { 
+                    {
                         borderColor: 'white',
                         backgroundColor: '#a451c8',
                         label: 'Cards with cost',
@@ -192,6 +202,21 @@ function isNumeric(str) {
         !isNaN(parseFloat(str));
 }
 
-function initStatistics(cards, attributeCanvas, manaCurveCanvas, mobile = false) {
-    calculateDiagramData(cards, attributeCanvas, manaCurveCanvas, mobile);
+function initStatistics(cards, attributeCanvas, manaCurveCanvas, zoneChangeButton, zoneSelect, mobile = false) {
+    setStatistics(cards, attributeCanvas, manaCurveCanvas, zoneChangeButton, zoneSelect, mobile);
+
+    $(zoneChangeButton).on('click', function () {
+        setStatistics(cards, attributeCanvas, manaCurveCanvas, zoneChangeButton, zoneSelect, mobile);
+    });
+}
+
+function setStatistics(cards, attributeCanvas, manaCurveCanvas, zoneChangeButton, zoneSelect, mobile) {
+    let selectedZones = $(zoneSelect).val();
+
+    let limitedCards = cards.filter((card) => selectedZones.find((zone) => zone == card.zone));
+
+    //deep copy to avoid some issues with refs
+    limitedCards = JSON.parse(JSON.stringify(limitedCards));
+
+    calculateDiagramData(limitedCards, attributeCanvas, manaCurveCanvas, mobile);
 }

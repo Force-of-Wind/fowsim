@@ -4,7 +4,7 @@
 
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/view_decklist.css' %}">    
+    <link rel="stylesheet" href="{% static 'css/view_decklist.css' %}">
 {% endblock %}
 
 {% block ogtitle %}{{ decklist.name }} - Force of Wind{% endblock %}
@@ -19,13 +19,21 @@
 
 {% block js %}
     {{ block.super }}
-    <script src="{% static 'js/view_decklist.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/view_decklist.js' %}" type="text/javascript"></script>    
+
+    {% comment %} External Libs {% endcomment %}
     <script src="{% static 'js/html2canvas/html2canvas.js' %}" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.1/chart.umd.js" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2 " type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2 " type="text/javascript"></script>    
+    
+    <script src="{% static 'js/bootstrap/bootstrap.js' %}" type="text/javascript"></script>
+    
+    
+    {% comment %} Internal Libs {% endcomment %}
+    <script src="{% static 'js/view_decklist_testhand.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/view_decklist_statistics.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/view_decklist_restricted.js' %}" type="text/javascript"></script>
-{% endblock %}
+    {% endblock %}
 
 {% block body %}
     <div class="deck-view-container">
@@ -50,7 +58,7 @@
                                         {% for _ in range %}
                                             <div class="deck-card">
                                                 {% has_tags card as has_tags_flag %}
-                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}" data-card-id={{card.card.id}} data-card-zone="{{zone}}"">
+                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}" data-card-id="{{card.card.id}}" data-card-zone="{{zone}}">
                                                 <div class="card-preview">
                                                     <div class="multi-hovered-img">
                                                         <img class="hover-card-img" src="{{ card.card.card_image.url }}">
@@ -125,20 +133,65 @@
             <a href="{% url 'cardDatabase-copy-decklist' decklist.pk %}"><button type="button" id="copy-decklist">Import to My Decklists</button></a>
             <button type="button" id="copy-image">Copy as Image</button>
             <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
+            <br>
         </div>
         {% if cards %}
             <br>
             <h2 class="deck-stats">Deck Statistics</h2>
-                <div class="attribute-dist-wrapper" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:99vw" {% endif %}>
-                    <h4>Attribute distribution in %</h4>
-                    <canvas id="attribute-dist-canvas" class="attribute-dist-canvas"></canvas>
+            <button type="button" class="mb-2" data-toggle="collapse" data-target="#collapseStatZones" aria-expanded="false" aria-controls="collapseStatZones">
+                Change zones for Statistics
+            </button>
+            <br>
+            {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                <div class="collapse mt-2 mb-2" id="collapseStatZones">
+            {% else %}
+                <div class="input-group collapse mt-2 mb-2" id="collapseStatZones">
+            {% endif %}
+            
+                <select multiple class="custom-select" id="zones-select" aria-label="Statistics zone select">
+                </select>
+                <div class="input-group-append mt-2">
+                    <button id="stats-zone-picker" class="ml-1" type="button">Change Zones for Stats</button>
                 </div>
+            </div>
+            <div class="attribute-dist-wrapper" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:99vw" {% endif %}>
+                <h4>Attribute distribution in %</h4>
+                <canvas id="attribute-dist-canvas" class="attribute-dist-canvas"></canvas>
+            </div>
             <br>
             <h4>Card cost distribution</h4>
             <div class="mana-curve-wrapper" {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:96vw" {% endif %}>
                 <canvas id="mana-curve-canvas" class="mana-curve-canvas"></canvas>
             </div>
+            <hr>
+            <h4>Sample starting hand</h4>
+            <button type="button" class="mb-2" data-toggle="collapse" data-target="#collapseTestHand" aria-expanded="false" aria-controls="collapseTestHand">
+                Change zones
+            </button>
+            
+            {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                <div class="collapse mt-2 mb-2" id="collapseTestHand">
+            {% else %}
+                <div class="input-group collapse mt-2 mb-2" id="collapseTestHand">
+            {% endif %}
+            
+                <select multiple class="custom-select" id="draw-hand-zones-select" aria-label="Testhand zone select">
+                </select>
+                <div class="input-group-append mt-2">
+                    <button id="test-hand-zone-picker" class="ml-1" type="button">Change Zones for Testhand</button>
+                </div>
+            </div>
+            <div id="test-hand-card-container" class="test-hand-card-container" style="--container-width:100%;">
+            </div>
+            <div class="draw-testhand-actions">                
+                <button id="draw-card-button" class="draw-testhand-actions-button" type="button" >Draw card</button>
+                <button id="reset-hand-button" class="draw-testhand-actions-button" type="button" >Redraw hand</button>
+            </div>
             <script>
+                function onlyUnique(value, index, array) {
+                    return array.indexOf(value) === index;
+                }
+
                 const restrictions = {% dict_to_json deckRestrictions %};
                 const cardsData = {% dict_to_json cardsData %};
                 {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
@@ -147,27 +200,50 @@
                 const mobile = false;
                 {% endif %}
                 let cards = JSON.parse('{% cards_to_json cards %}');
-                const untoggledZones = ['Side Deck', 'Magic Stone Deck', 'Ruler', 'Ruler Zone'];
-                Chart.defaults.borderColor = 'gray';                
+                const toggledZones = ['Main Deck', 'Main'];
+                Chart.defaults.borderColor = 'gray';
 
-                cards = cards.filter((card) => !untoggledZones.find((zone) => zone == card.zone));
-                
-                initStatistics(
-                    cards, 
-                    document.getElementById('attribute-dist-canvas'), 
-                    document.getElementById('mana-curve-canvas'),
-                    mobile
-                );
+                let zones = cards.map((card) => card.zone).filter(onlyUnique);
 
-                const restrictionEngine = new RestrictionEngine();
+                $(function() {
+                    zones.forEach((zone) => {
+                        if(toggledZones.includes(zone))
+                            $('#zones-select').append(`<option selected value="${zone}">${zone}</option>`);
+                        else
+                            $('#zones-select').append(`<option value="${zone}">${zone}</option>`);
+                        
+                    });
 
-                restrictionEngine.initRestrictions(
-                    $('#image-container'),
-                    cardsData,
-                    restrictions,
-                    $('#restriction-warnings')
-                )
-                
+                    initStatistics(
+                        cards, 
+                        document.getElementById('attribute-dist-canvas'), 
+                        document.getElementById('mana-curve-canvas'),                        
+                        '#stats-zone-picker',
+                        '#zones-select',
+                        mobile
+                    );
+    
+                    const restrictionEngine = new RestrictionEngine();
+    
+                    restrictionEngine.initRestrictions(
+                        $('#image-container'),
+                        cardsData,
+                        restrictions,
+                        $('#restriction-warnings')
+                    );
+    
+                    initTestHandModule(
+                        cards,
+                        zones,
+                        '#draw-test-hand-button', 
+                        '#test-hand-card-container', 
+                        '#draw-card-button',
+                        '#reset-hand-button',
+                        '#test-hand-zone-picker',
+                        '#draw-hand-zones-select',
+                        toggledZones
+                    )
+                });
             </script>
         {% endif %}
         

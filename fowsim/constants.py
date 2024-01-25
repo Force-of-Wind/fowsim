@@ -864,3 +864,8 @@ PACK_OPENING_SETS = [
     'cst',
     'jrp'
 ]
+
+DECK_LIST_SHARE_MODE_CHOICES = [
+    ['private', 'private'],
+    ['tournament', 'tournament']
+]

@@ -19,21 +19,21 @@
 
 {% block js %}
     {{ block.super }}
-    <script src="{% static 'js/view_decklist.js' %}" type="text/javascript"></script>    
+    <script src="{% static 'js/view_decklist.js' %}" type="text/javascript"></script>
 
     {% comment %} External Libs {% endcomment %}
     <script src="{% static 'js/html2canvas/html2canvas.js' %}" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.1/chart.umd.js" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2 " type="text/javascript"></script>    
-    
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2 " type="text/javascript"></script>
+
     <script src="{% static 'js/bootstrap/bootstrap.js' %}" type="text/javascript"></script>
-    
-    
+
+
     {% comment %} Internal Libs {% endcomment %}
     <script src="{% static 'js/view_decklist_testhand.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/view_decklist_statistics.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/view_decklist_restricted.js' %}" type="text/javascript"></script>
-    {% endblock %}
+{% endblock %}
 
 {% block body %}
     <div class="deck-view-container">
@@ -44,6 +44,11 @@
             <div class="deck-creator-name">
                 by <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{{ decklist.profile.user.username }}</a>
             </div>
+            {% if decklist.shareMode == "tournament" %}
+                <p>
+                    <b>Edit is disabled when Deck is in tournament share mode!</b>
+                </p>
+            {% endif %}
             {% for zone in zones %}
                 <div class="deck-zone">
                     <div class="deck-zone-title">
@@ -124,10 +129,30 @@
             <img id="banned_icon" class="banned-icon hide-restrictions" src="{% static 'img/banned-icon.svg' %}">
         </div>
         <div id="deck-options">
+            {% if decklist.shareMode == "tournament" %}
+                <b>
+                    <p>Edit is disabled when Deck is in tournament share mode!</p>
+                </b>
+            {% endif %}
+            {% if request.user == decklist.profile.user and decklist.shareCode != '' %}
+                <input type="hidden" id="share-link" value="{{ decklist.shareCode }}">
+                <button type="button" id="copy-share">Copy share link</button>
+                <button type="button" id="delete-share">Delete share link</button>
+                <br>
+            {% endif %}
+
+            {% if request.user == decklist.profile.user and decklist.shareCode == '' %}
+                <button type="button" id="create-share">Create share link</button>
+                <button type="button" id="create-tournament-share">Create tournament share link</button>
+                <br>
+            {% endif %}
             {% if request.user == decklist.profile.user %}
-                <a href="{% get_edit_decklist_url decklist.pk request.user_agent %}">
-                    <button type="button" id="edit-decklist">Edit Decklist</button>
-                </a>
+                {% csrf_token %}
+                {% if decklist.shareMode != "tournament" %}
+                    <a href="{% get_edit_decklist_url decklist.pk request.user_agent %}">
+                        <button type="button" id="edit-decklist">Edit Decklist</button>
+                    </a>
+                {% endif %}
             {% endif %}
             <button type="button" id="untap-export">Export to Untap</button>
             <a href="{% url 'cardDatabase-copy-decklist' decklist.pk %}"><button type="button" id="copy-decklist">Import to My Decklists</button></a>
@@ -147,7 +172,7 @@
             {% else %}
                 <div class="input-group collapse mt-2 mb-2" id="collapseStatZones">
             {% endif %}
-            
+
                 <select multiple class="custom-select" id="zones-select" aria-label="Statistics zone select">
                 </select>
                 <div class="input-group-append mt-2">
@@ -168,13 +193,13 @@
             <button type="button" class="mb-2" data-toggle="collapse" data-target="#collapseTestHand" aria-expanded="false" aria-controls="collapseTestHand">
                 Change zones
             </button>
-            
+
             {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
                 <div class="collapse mt-2 mb-2" id="collapseTestHand">
             {% else %}
                 <div class="input-group collapse mt-2 mb-2" id="collapseTestHand">
             {% endif %}
-            
+
                 <select multiple class="custom-select" id="draw-hand-zones-select" aria-label="Testhand zone select">
                 </select>
                 <div class="input-group-append mt-2">
@@ -183,7 +208,7 @@
             </div>
             <div id="test-hand-card-container" class="test-hand-card-container" style="--container-width:100%;">
             </div>
-            <div class="draw-testhand-actions">                
+            <div class="draw-testhand-actions">
                 <button id="draw-card-button" class="draw-testhand-actions-button" type="button" >Draw card</button>
                 <button id="reset-hand-button" class="draw-testhand-actions-button" type="button" >Redraw hand</button>
             </div>
@@ -211,32 +236,32 @@
                             $('#zones-select').append(`<option selected value="${zone}">${zone}</option>`);
                         else
                             $('#zones-select').append(`<option value="${zone}">${zone}</option>`);
-                        
+
                     });
 
                     initStatistics(
-                        cards, 
-                        document.getElementById('attribute-dist-canvas'), 
-                        document.getElementById('mana-curve-canvas'),                        
+                        cards,
+                        document.getElementById('attribute-dist-canvas'),
+                        document.getElementById('mana-curve-canvas'),
                         '#stats-zone-picker',
                         '#zones-select',
                         mobile
                     );
-    
+
                     const restrictionEngine = new RestrictionEngine();
-    
+
                     restrictionEngine.initRestrictions(
                         $('#image-container'),
                         cardsData,
                         restrictions,
                         $('#restriction-warnings')
                     );
-    
+
                     initTestHandModule(
                         cards,
                         zones,
-                        '#draw-test-hand-button', 
-                        '#test-hand-card-container', 
+                        '#draw-test-hand-button',
+                        '#test-hand-card-container',
                         '#draw-card-button',
                         '#reset-hand-button',
                         '#test-hand-zone-picker',

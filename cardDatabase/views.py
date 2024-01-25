@@ -1,10 +1,9 @@
 import collections
 import json
-import os
 import re
 import datetime
 import random
-from os.path import exists
+import uuid;
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, Count
@@ -571,6 +570,10 @@ def create_decklist(request):
 def edit_decklist(request, decklist_id=None):
     # Check that the user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+
+    if decklist.shareMode == "tournament":
+        return HttpResponseRedirect(reverse('cardDatabase-tournament-decklist'))
+
     ctx = get_search_form_ctx()
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
@@ -607,6 +610,10 @@ def save_decklist(request, decklist_id=None):
 
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+
+    if decklist.shareMode == "tournament":
+        return HttpResponse('Deck is in tournament mode and cannot be edited!', status=400)
+
     decklist.name = decklist_data['name']
     decklist.comments = decklist_data['comments']
     decklist.public = is_public
@@ -634,14 +641,45 @@ def save_decklist(request, decklist_id=None):
 
     return JsonResponse({'decklist_pk': decklist.pk})
 
+@login_required
+@require_POST
+def create_share_code(request, decklist_id=None):
+    data = json.loads(request.body.decode('UTF-8'))
+    if 'mode' in data:
+        mode = data['mode']
+    else:
+        mode = 'private'
+
+    # Check user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    decklist.shareMode = mode
+    decklist.shareCode = uuid.uuid4().hex
+    decklist.save()
+
+    return JsonResponse({'code': decklist.shareCode})
+
+@login_required
+@require_POST
+def delete_share_code(request, decklist_id=None):
+
+    # Check user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    decklist.shareMode = ''
+    decklist.shareCode = ''
+    decklist.save()
+
+    return JsonResponse({'decklist_pk': decklist.pk})
+
 
 def private_decklist(request):
     return render(request, 'cardDatabase/html/private_decklist.html')
 
+def tournament_decklist(request):
+    return render(request, 'cardDatabase/html/tournament_decklist.html')
 
-def view_decklist(request, decklist_id):
+def view_decklist(request, decklist_id, share_parameter = ''):
     decklist = get_object_or_404(DeckList, pk=decklist_id)
-    if not decklist.public and not request.user == decklist.profile.user and not request.user.is_superuser:
+    if (not decklist.public and not request.user == decklist.profile.user and not request.user.is_superuser) and (share_parameter == '' or not decklist.shareCode == share_parameter):
         return HttpResponseRedirect(reverse('cardDatabase-private-decklist'))
 
     cards = decklist.cards.all()
@@ -892,7 +930,7 @@ def pack_select(request):
             'name': cluster['name'],
             'sets': setsData
         })
-                
+
     ctx = {
         'clusters': mapped_clusters
     }
@@ -909,7 +947,7 @@ def weightSamples(pairs):
     for pair in pairs:
         for _ in range(pair['chance']):
             segments.append(pair)
-    
+
     return segments[rand]
 
 def build_duplicate_filter(pull_history, slot):
@@ -939,7 +977,7 @@ def pack_opening(request, setcode=None):
 
     slots = config['slots']
     pulls = []
-    
+
     pull_history = []
 
     for slot in slots:
@@ -971,7 +1009,7 @@ def pack_opening(request, setcode=None):
                             })
             if(card is not None):
                 continue
-        
+
         set_query = get_set_query([setcode.upper()])
         if 'set_override' in config:
             set_overrides = config['set_override']
@@ -982,27 +1020,27 @@ def pack_opening(request, setcode=None):
         card_pool = (Card.objects.
                     filter(build_duplicate_filter(pull_history, slot)).
                     distinct())
-        
+
         if 'excludes' in config:
             excludes = config['excludes']
             for exclude in excludes:
                 if exclude['rarity'] == slot:
                     if 'type' in exclude:
-                        excluded_card_types = exclude['type']                    
+                        excluded_card_types = exclude['type']
                         card_type_query = get_not_card_type_query(excluded_card_types)
                         card_pool = card_pool.filter(card_type_query)
-                    
+
                     if 'races' in exclude:
                         excluded_card_races = exclude['races']
                         card_type_query = get_not_card_race_query(excluded_card_races)
                         card_pool = card_pool.filter(card_type_query)
-                    
+
                     if 'cardIdPrefix' in exclude:
                         excluded_card_id_prefix = exclude['cardIdPrefix']
                         card_prefix_query = get_not_card_prefix_query(excluded_card_id_prefix)
                         card_pool = card_pool.filter(card_prefix_query)
 
-                    
+
 
         if(not slot in config):
             rarity_query = get_rarity_query([slot])
@@ -1032,7 +1070,7 @@ def pack_opening(request, setcode=None):
                 for condition in pulledSlot['conditions']:
                     equalsCriteria = condition['equals']
                     if 'type' in condition:
-                        filter_type = condition['type']                    
+                        filter_type = condition['type']
                         if equalsCriteria:
                             card_type_query = get_card_type_query([filter_type])
                             card_pool = card_pool.filter(card_type_query)
@@ -1040,7 +1078,7 @@ def pack_opening(request, setcode=None):
                             card_type_query = get_not_card_type_query([filter_type])
                             card_pool = card_pool.filter(card_type_query)
                     if 'races' in condition:
-                        filter_race = condition['races']                    
+                        filter_race = condition['races']
                         if equalsCriteria:
                             card_type_query = get_race_query(filter_race)
                             card_pool = card_pool.filter(card_type_query)
@@ -1078,7 +1116,7 @@ def pack_opening(request, setcode=None):
                 'cardId': card.card_id
             })
 
-    
+
     ctx = {
         'pull_history': pull_history,
         'valid': True,

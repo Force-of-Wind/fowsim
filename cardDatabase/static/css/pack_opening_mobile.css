@@ -12,3 +12,7 @@
   margin: 0 auto 100px auto;
   gap: 15px;
 }
+
+.view-in-another-tab {
+  top: calc(80%);
+}

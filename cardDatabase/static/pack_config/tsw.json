@@ -67,6 +67,12 @@
                 {
                     "equals": false,
                     "type": "J-Ruler"
+                },
+                {
+                    "equals": false,
+                    "cardIdPrefix": [
+                        "WOM-057"
+                    ]
                 }
             ]
         },

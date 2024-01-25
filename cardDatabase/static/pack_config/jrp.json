@@ -12,6 +12,14 @@
         "FOIL",
         "Stone-Reprints"
     ],
+    "excludes": [
+        {
+            "rarity": "N",
+            "cardIdPrefix": [
+                "MC03"
+            ]
+        }
+    ],
     "R-SR": [
         {
             "chance": 8,
@@ -29,7 +37,15 @@
     "FOIL": [
         {
             "chance": 53,
-            "rarity": "N"
+            "rarity": "N",
+            "conditions": [
+                {
+                    "equals": false,
+                    "cardIdPrefix": [
+                        "MC03"
+                    ]
+                }
+            ]
         },
         {
             "chance": 21,

@@ -12,6 +12,14 @@
         "FOIL",
         "ContStoneSKArcana"
     ],
+    "excludes": [
+        {
+            "rarity": "N",
+            "cardIdPrefix": [
+                "MC02"
+            ]
+        }
+    ],
     "card_override": [
         {
             "rarity": "FOIL",
@@ -120,7 +128,15 @@
     "FOIL": [
         {
             "chance": 53,
-            "rarity": "N"
+            "rarity": "N",
+            "conditions": [
+                {
+                    "equals": false,
+                    "cardIdPrefix": [
+                        "MC02"
+                    ]
+                }
+            ]
         },
         {
             "chance": 21,

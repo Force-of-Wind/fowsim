@@ -614,23 +614,6 @@ SEARCH_CARD_TYPES_INCLUDE = {
     'J-Ruler': [
         'Basic J-Ruler'
     ],
-    'Basic Magic Stone': [
-        'Darkness Magic Stone',
-        'Fire Magic Stone',
-        'Light Magic Stone',
-        'Water Magic Stone',
-        'Wind Magic Stone'
-    ],
-    'Magic Stone': [
-        'Basic Magic Stone',
-        'Darkness Magic Stone',
-        'Fire Magic Stone',
-        'Light Magic Stone',
-        'Special Magic Stone',
-        'True Magic Stone',
-        'Water Magic Stone',
-        'Wind Magic Stone'
-    ],
     'Rune': [
         'Master Rune'
     ]

@@ -38,6 +38,7 @@ class Set(models.Model):
 class Race(models.Model):
     class Meta:
         app_label = 'cardDatabase'
+        ordering = ['name']
 
     def __str__(self):
         return self.name

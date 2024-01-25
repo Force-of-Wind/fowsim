@@ -49,3 +49,7 @@ button.close.modal-close-btn {
 .test-hand-card-container {
     margin-left: 5vw;
 }
+
+.last-edit, .disabled-edit{
+    text-align: center;
+}

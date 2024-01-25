@@ -316,3 +316,8 @@ button.close.modal-close-btn {
 .draw-testhand-actions-button {
     margin-left: 10px;
 }
+
+.last-edit > div{
+    display: inline-block;
+    padding-bottom: 10px;
+}

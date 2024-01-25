@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 
 from django.db import models
 
@@ -20,7 +20,7 @@ class DeckList(models.Model):
                                  choices=CONS.DECK_LIST_SHARE_MODE_CHOICES)
 
     def save(self, *args, **kwargs):
-        self.last_modified = datetime.datetime.now()
+        self.last_modified = timezone.now()
         super().save(*args, **kwargs)
 
     @property

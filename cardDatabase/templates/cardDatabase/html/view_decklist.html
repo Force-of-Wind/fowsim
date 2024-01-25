@@ -45,9 +45,12 @@
                 by <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{{ decklist.profile.user.username }}</a>
             </div>
             {% if decklist.shareMode == "tournament" %}
-                <p>
+                <p class="disabled-edit">
                     <b>Edit is disabled when Deck is in tournament share mode!</b>
                 </p>
+                <div class="last-edit">
+                    <div> Last modified: </div><div class="localized-dt" data-localizable-dt="{% datetime_to_timestamp decklist.last_modified %}"></div>
+                </div>
             {% endif %}
             {% for zone in zones %}
                 <div class="deck-zone">

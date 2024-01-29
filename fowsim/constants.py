@@ -582,7 +582,7 @@ SETS_IN_ORDER = [
     'JRP',
     'H6 Prerelease Party',
     'MC03',
-    "MP01",
+    'MP01',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -862,7 +862,8 @@ PACK_OPENING_SETS = [
     'tws',
     'cmb',    
     'cst',
-    'jrp'
+    'jrp',
+    'mp01'
 ]
 
 DECK_LIST_SHARE_MODE_CHOICES = [

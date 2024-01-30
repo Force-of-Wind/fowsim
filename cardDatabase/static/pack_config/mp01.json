@@ -1,0 +1,84 @@
+{
+    "packImage": "img/pack/mp01-pack.png",
+    "slots": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "R",
+        "R",
+        "SR-No-Subruler",
+        "SR-MR",
+        "FOIL"
+    ],
+    "excludes": [
+        {
+            "rarity": "MR",
+            "cardIdPrefix": [
+                "MP01-SEC"
+            ]
+        }
+    ],
+    "SR-No-Subruler": [
+        {
+            "chance": 100,
+            "rarity": "SR",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Sub-Ruler"
+                }
+            ]
+        }
+    ],
+    "SR-MR": [
+        {
+            "chance": 69,
+            "rarity": "MR"
+        },
+        {
+            "chance": 31,
+            "rarity": "SR",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Sub-Ruler"
+                }
+            ]
+        }
+    ],
+    "FOIL": [
+        {
+            "chance": 35,
+            "rarity": "SR",
+            "conditions": [
+                {
+                    "equals": false,
+                    "type": "Sub-Ruler"
+                }
+            ]
+        },
+        {
+            "chance": 24,
+            "rarity": "MR"
+        },
+        {
+            "chance": 29,
+            "rarity": "RR"
+        },
+        {
+            "chance": 9,
+            "rarity": "XR"
+        },
+        {
+            "chance": 9,
+            "rarity": "SR",
+            "conditions": [
+                {
+                    "equals": true,
+                    "type": "Sub-Ruler"
+                }
+            ]
+        }
+    ]
+}

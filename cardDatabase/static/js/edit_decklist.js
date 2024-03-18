@@ -97,7 +97,7 @@ $(function() {
     setupCardClickables();
     function setZoneCount(el){
         let zone_count = 0;
-        let zone_name = $(el).find('.deck-zone-title').html().trim();
+        let zone_name = $(el).find('.deck-zone-title').text().trim();
         $(el).find('.card-quantity').each(function(count_index){
             zone_count += parseInt($(this).find('input').val());
         });
@@ -124,14 +124,14 @@ $(function() {
         $('#save-deck-button').off('click');  // Stop double clicks from sending multiple save requests and messing up data
         let decklist_data = {
             "zones": [],
-            "name": $('.decklist-name').html().trim(),
+            "name": $('.decklist-name').text().trim(),
             "comments": $('#comments').val()
         };
         let zones = $('.deck-zone');
         for (let i = 0; i < zones.length; i++) {
             let zone = zones.eq(i);
             let zone_data = {};
-            zone_data.name = zone.find('.deck-zone-title').html().trim();
+            zone_data.name = zone.find('.deck-zone-title').text().trim();
             zone_data.cards = [];
             let zone_cards = zone.find('.deck-zone-card');
             for (let j = 0; j < zone_cards.length; j++) {

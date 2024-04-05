@@ -325,6 +325,12 @@ SET_DATA = {
                 {'code': 'JRP', 'name': 'Judgment of the Rogue Planet'},
                 {'code': 'MP01', 'name': 'Masterpiece "Pilgrim Memories"'}
             ]
+        },
+        {
+            'name': 'Trinity',
+            'sets': [
+                {'code': 'TSD1', 'name': 'Thoth of the Trinity'}
+            ]
         }
     ]
 }
@@ -583,6 +589,7 @@ SETS_IN_ORDER = [
     'H6 Prerelease Party',
     'MC03',
     'MP01',
+    'TSD1'
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {

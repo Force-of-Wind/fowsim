@@ -329,7 +329,8 @@ SET_DATA = {
         {
             'name': 'Trinity',
             'sets': [
-                {'code': 'TSD1', 'name': 'Thoth of the Trinity'}
+                {'code': 'TSD1', 'name': 'Lehen Deck'},
+                {'code': 'TSD2', 'name': 'Yokoshima Deck'},
             ]
         }
     ]
@@ -589,7 +590,8 @@ SETS_IN_ORDER = [
     'H6 Prerelease Party',
     'MC03',
     'MP01',
-    'TSD1'
+    'TSD1',
+    'TSD2'
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {

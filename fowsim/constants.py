@@ -331,6 +331,7 @@ SET_DATA = {
             'sets': [
                 {'code': 'TSD1', 'name': 'Lehen Deck'},
                 {'code': 'TSD2', 'name': 'Yokoshima Deck'},
+                {'code': 'TTT', 'name': 'Thoth of the Trinity'}
             ]
         }
     ]
@@ -591,7 +592,8 @@ SETS_IN_ORDER = [
     'MC03',
     'MP01',
     'TSD1',
-    'TSD2'
+    'TSD2',
+    'TTT',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {

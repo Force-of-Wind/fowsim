@@ -33,10 +33,10 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mob
             let lastAttribute = '';
             card.cost.forEach(attribute => {
                 if (lastAttribute !== attribute) {
-                    if (isNaN(attribute) && attribute != voidX && attribute != 'M') {
+                    if (isNaN(attribute) && attribute != voidX && attribute != 'M' && attribute != 'T') {
                         attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == attribute)].cardCount += card.quantity;
                     }
-                    else if (attribute == 'M') {
+                    else if (attribute == 'M' || attribute == 'T') {
                         attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == 0)].cardCount += card.quantity;
                     }
                     else if (attribute !== voidX && parseInt(attribute) > 0) {
@@ -44,11 +44,11 @@ function calculateDiagramData(cardsToCalc, attributeCanvas, manaCurveCanvas, mob
                     }
                     lastAttribute = attribute;
                 }
-                if (isNaN(attribute) && attribute != voidX && attribute != 'M') {
+                if (isNaN(attribute) && attribute != voidX && attribute != 'M' && attribute != 'T') {
                     cardCost++;
                     attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == attribute)].count += card.quantity;
                 }
-                else if (attribute == 'M') {
+                else if (attribute == 'M' || attribute == 'T') {
                     cardCost++;
                     attributeStatData[attributeStatData.findIndex((el) => el.shortTerm == 0)].cardCount += card.quantity;
                 }

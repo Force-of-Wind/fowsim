@@ -594,6 +594,8 @@ SETS_IN_ORDER = [
     'TSD1',
     'TSD2',
     'TTT',
+    'T1 Buy a Box',
+    'MC04'
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -678,6 +680,10 @@ SEARCH_SETS_INCLUDE = {
     'JRP': [
         'H6 Prerelease Party',
         'MC03',
+    ],
+    'TTT': [
+        'T1 Buy a Box',
+        'MC04'
     ]
 }
 

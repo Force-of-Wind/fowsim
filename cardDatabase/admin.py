@@ -20,8 +20,9 @@ class CardsWithAbilityTextInline(admin.TabularInline):
 
 class CardAdmin(admin.ModelAdmin):
     list_display = ('name', 'card_id', )
-    search_fields = ['name', 'ability_texts__text', 'card_id']
+    search_fields = ['name', 'name_without_punctuation', 'ability_texts__text', 'card_id']
     inlines = [AbilityTextInline]
+    autocomplete_fields = ['races', 'artists']
 
     class Media:
         css = {
@@ -40,15 +41,15 @@ class AbilityTextAdmin(admin.ModelAdmin):
     search_fields = ['text']
 
 
-class CombinationBannedCardsInline(admin.TabularInline):
-    model = CombinationBannedCards.cards.through
+class BannedCardAdmin(admin.ModelAdmin):
+    search_fields = ['card__name', 'card__name_withoout_punctuation']
+    autocomplete_fields = ['card']
+
 
 
 class CombinationBannedCardsAdmin(admin.ModelAdmin):
-    exclude = ('cards',)
-    inlines = [
-        CombinationBannedCardsInline,
-    ]
+    search_fields = ['cards__name', 'cards__name_without_punctuation', 'cards']
+    autocomplete_fields = ['cards']
 
 
 class RulingAdmin(admin.ModelAdmin):
@@ -66,6 +67,14 @@ class RulingAdmin(admin.ModelAdmin):
         return super(RulingAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+class RaceAdmin(admin.ModelAdmin):
+    search_fields = ['name']
+
+
+class ArtistAdmin(admin.ModelAdmin):
+    search_fields = ['name']
+
+
 admin.site.register(OneTimeEffect)
 admin.site.register(Card, CardAdmin)
 admin.site.register(Tag)
@@ -77,7 +86,7 @@ admin.site.register(DeckListCard)
 admin.site.register(DeckListZone)
 admin.site.register(UserDeckListZone)
 admin.site.register(SpoilerSeason)
-admin.site.register(BannedCard)
+admin.site.register(BannedCard, BannedCardAdmin)
 admin.site.register(Format)
 admin.site.register(CombinationBannedCards, CombinationBannedCardsAdmin)
 admin.site.register(Ruling, RulingAdmin)
@@ -85,7 +94,7 @@ admin.site.register(Restriction)
 admin.site.register(RestrictionAction)
 admin.site.register(RestrictionException)
 admin.site.register(ExceptionAction)
-admin.site.register(Race)
+admin.site.register(Race, RaceAdmin)
 admin.site.register(CardColour)
 admin.site.register(MostPickedCardPickRate)
 admin.site.register(CardTotalCostPickRate)
@@ -93,4 +102,4 @@ admin.site.register(CardTypePickRate)
 admin.site.register(AttributePickRate)
 admin.site.register(PickPeriod)
 admin.site.register(Type)
-admin.site.register(CardArtist)
+admin.site.register(CardArtist, ArtistAdmin)

@@ -83,6 +83,7 @@
                         <button class="fow-dropbtn"><i class="arrow down"></i></button>
                         <div class="fow-dropdown-content">
                             <a href="{% url 'cardDatabase-search' %}">Card Database</a>
+                            <a href="{% url 'cardDatabase-decklist-search' %}">Deck search</a>
                             <a href="{% url 'cardDatabase-metrics' %}">Metrics</a>
                             {% get_spoiler_link %}
                             <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>

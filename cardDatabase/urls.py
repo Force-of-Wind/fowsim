@@ -8,6 +8,7 @@ from .forms import UserLoginForm
 urlpatterns = [
     path('', lambda req: redirect('/search/'), name='cardDatabase-home'),
     path('search/', views.search_for_cards, name='cardDatabase-search'),
+    path('decklist_search/', views.search_for_decklist, name='cardDatabase-decklist-search'),
     path('card/<str:card_id>/', views.view_card, name='cardDatabase-view-card'),
     path('add_card/', views.add_card, name='cardDatabase-add-card'),
     path('decklists/', views.deprecated_decklist_url, name='cardDatabase-user-decklists'),

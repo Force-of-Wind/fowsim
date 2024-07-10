@@ -22,6 +22,10 @@
     margin-right: 50px;
 }
 
+#advanced-search-toggle{
+    margin-right: 50px;
+}
+
 .basic-showing #basic-search-toggle{
     border-bottom: 1px solid black;
     font-weight: bold;
@@ -29,6 +33,10 @@
 .advanced-showing #advanced-search-toggle{
     border-bottom: 1px solid black;
     font-weight: bold;
+}
+
+#decklist-search-toggle:hover{
+    border-bottom: 1px solid black;
 }
 
 .no-select {

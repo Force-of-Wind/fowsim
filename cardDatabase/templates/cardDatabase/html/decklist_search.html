@@ -1,0 +1,130 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/database_base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    <link rel="stylesheet" href="{% static 'css/decklist_search.css' %}">
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/search_mobile.css' %}">
+        <link rel="stylesheet" href="{% static 'css/decklist_search_mobile.css' %}">
+    {% endif %}
+{% endblock %}
+{% block mobilecss %}
+    {{ block.super }}
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/database_base_mobile.css' %}">
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/search.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/decklist_search.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+
+
+{% block body %}
+    <div class="flex-center mb-3">
+        <h3>Deck search</h3>
+    </div>
+    <div id="decklist-search" class="decklist-search flex-center">
+        <form id="decklist_form" method="get" action="{% url 'cardDatabase-decklist-search' %}">
+            {{ decklist_form }}
+            <div class="form-submit-button">
+                <input type="hidden" value="decklist-form" name="form_type">
+                <input type="submit" value="Search">
+            </div>
+        </form>
+    </div>
+    {% if decklists|length > 0 %}
+    <div>
+        <div class="number-of-results flex-center mt-3">
+            <div class="number-of-results-text">
+                Showing <b>{{ decklists|length }}</b> of <b>{{ total_count }}</b> results:
+            </div>
+        </div>
+        {% if decklists.has_other_pages %}
+            {% comment %}
+            js sets the href of the <a> tags using data-page-index because it needs to maintain all the other query params
+            {% endcomment %}
+            <div id="other-pages-top" class="pagination">
+                <div class="pagination-content">
+                    {% if decklists.has_previous %}
+                        <a data-page-index="{{ decklists.previous_page_number }}">
+                            <div class="pagination-page valid-choice">
+                                &laquo;
+                            </div>
+                        </a>
+                    {% else %}
+                        <div class="pagination-page disabled-choice">
+                            &laquo;
+                        </div>
+                    {% endif %}
+                    {% for page_num in page_range %}
+                        {% if page_num == decklists.number %}
+                            <div class="pagination-page current-page">
+                                {{ page_num }}
+                            </div>
+                        {% else %}
+                            {% if page_num == cards.paginator.ELLIPSIS %}
+                                <div class="pagination-page pagination-ellipsis">
+                                    {{ page_num }}
+                                </div>
+                            {% else %}
+                                <a data-page-index="{{ page_num }}">
+                                    <div class="pagination-page valid-choice">
+                                        {{ page_num }}
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if cards.has_next %}
+                        <a data-page-index="{{ decklists.next_page_number }}">
+                            <div class="pagination-page valid-choice">
+                                &raquo;
+                            </div>
+                        </a>
+                    {% else %}
+                        <div class="pagination-page disabled-choice">
+                            &raquo;
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <div id="decklists-container" class="decklists-container {% if decklists|length > 0 %}grid-skeleton{% endif %}">
+        {% if decklists|length > 0 %}
+            {% for decklist in decklists %}
+                <div id="{{decklist.id}}" class="decklist-result">
+                    <div class="decklist-wrapper">
+                        <a href="{% url 'cardDatabase-view-decklist' decklist.id %}">
+                            <img class="card-img" src="{{ decklist.get_front_card_of_deck.card.card_image.url }}">
+                        </a>
+                        <span class="decklist-name block">
+                            <a href="{% url 'cardDatabase-view-decklist' decklist.id %}">{{ decklist.name }}</a>
+                        </span>
+                        <span class="block">By <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{{ decklist.profile.user.username }}</a></span>
+                        <span class="block local-date-time" data-epoch="{% datetime_to_timestamp decklist.last_modified %}" title="Last Modified"></span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% elif request.GET.form_type %}
+        <div class="no-search-results">
+            <div class="no-results-text">
+                No decks found. Try a different search.
+            </div>
+            <img src="{% get_random_chibi 'sad' %}">
+        </div>
+        {% else %}
+            <div class="no-search-results">
+                <img src="{% get_random_chibi 'greetings' %}">
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

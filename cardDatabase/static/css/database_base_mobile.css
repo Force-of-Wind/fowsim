@@ -18,6 +18,11 @@
 
 #advanced-search-toggle{
     padding-right: 10px;
+    margin-left: 10px;
+}
+
+#decklist-search-toggle{
+    padding-right: 10px;
 }
 
 #basic-search-toggle{

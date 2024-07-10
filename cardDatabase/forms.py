@@ -58,6 +58,10 @@ class AdvancedSearchForm(forms.Form):
     def_comparator = forms.ChoiceField(required=False, choices=CONS.ATK_DEF_COMPARATOR_CHOICES)
     keywords = forms.MultipleChoiceField(label='Keyword(s):', choices=get_keywords_choices(), required=False)
 
+class DecklistSearchForm(forms.Form):
+    contains_card = forms.CharField(label='', strip=True,
+                                   widget=forms.TextInput(attrs={'placeholder': 'Card Name to search'}), required=False)
+
 
 class AddCardForm(forms.ModelForm):
     races = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Each race must be separated by a single newline'}))

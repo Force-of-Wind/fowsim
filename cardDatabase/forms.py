@@ -60,7 +60,7 @@ class AdvancedSearchForm(forms.Form):
 
 class DecklistSearchForm(forms.Form):
     contains_card = forms.CharField(label='', strip=True,
-                                   widget=forms.TextInput(attrs={'placeholder': 'Card Name to search'}), required=False)
+                                   widget=forms.TextInput(attrs={'placeholder': 'Card name(s) to search'}), required=False)
 
 
 class AddCardForm(forms.ModelForm):

@@ -67,7 +67,7 @@
                                 {{ page_num }}
                             </div>
                         {% else %}
-                            {% if page_num == cards.paginator.ELLIPSIS %}
+                            {% if page_num == decklists.paginator.ELLIPSIS %}
                                 <div class="pagination-page pagination-ellipsis">
                                     {{ page_num }}
                                 </div>
@@ -80,7 +80,7 @@
                             {% endif %}
                         {% endif %}
                     {% endfor %}
-                    {% if cards.has_next %}
+                    {% if decklists.has_next %}
                         <a data-page-index="{{ decklists.next_page_number }}">
                             <div class="pagination-page valid-choice">
                                 &raquo;

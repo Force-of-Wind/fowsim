@@ -9,13 +9,14 @@ class RestrictionEngine {
         const restrictionFactory = new RestrictionFactory();
 
         restrictions.forEach(restriction => {
-            if(!registratedRestrictions.includes(restriction.action)){
+            const restrictionKey = restriction.text.toLowerCase().replaceAll(' ', '');
+            if(!registratedRestrictions.includes(restrictionKey)){
                 let restrictionObject = restrictionFactory.getRestrictionForAction(restriction.action, cardContainer, cardData, restriction.checkingTag, restriction.restrictedTag, restriction.text, warningTextOutputElement, restriction.exceptions);
                 restrictionObject.applyAction();
-                registratedRestrictions.push(restriction.action);
+                registratedRestrictions.push(restrictionKey);
             }
             else
-                console.error(`Attempted duplicate registration of restriction ${restriction.action}`);
+                console.error(`Attempted duplicate registration of restriction ${restrictionKey}`);
         });
     }
 }

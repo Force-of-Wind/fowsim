@@ -17,6 +17,11 @@
 }
 
 #advanced-search-toggle{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#decklist-search-toggle{
     padding-right: 10px;
 }
 

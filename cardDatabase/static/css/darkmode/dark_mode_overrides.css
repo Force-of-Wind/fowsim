@@ -107,6 +107,10 @@ dialog {
     border-bottom: 1px solid rgb(156, 155, 155) !important;
 }
 
+#decklist-search-toggle:hover{
+    border-bottom: 1px solid rgb(156, 155, 155) !important;
+}
+
 .tooltip-icon{
     background-color: rgb(156, 155, 155);
     border-radius: 10px;
@@ -180,6 +184,12 @@ select{
 }
 
 /* /search */
+
+/* /deck-search */
+.decklist-wrapper{
+    background: #303134 !important;
+}
+/* /deck-search */
 
 /* deck builder */
 

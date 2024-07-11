@@ -29,6 +29,14 @@ function initDatabaseBase(){
             $('#search-toggles').removeClass('advanced-showing');
             focusOnInit($('#basic-form input[name="generic_text"]'));
         });
+    
+        $('#decklist-search-toggle').on('click',
+            function(){
+                window.location = $(this).data('url');
+            }
+        );
+    
+        
 
     $('.race-select .mdb-select').materialSelect({
         'visibleOptions': 14,

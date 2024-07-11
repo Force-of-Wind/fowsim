@@ -3,6 +3,7 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/database_base.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 {% endblock %}
 {% block mobilecss %}
     {{ block.super }}
@@ -27,6 +28,13 @@
             <div id="search-toggles" class="basic-showing no-select">
                 <div id="basic-search-toggle" class="search-toggle">Basic Search</div>
                 <div id="advanced-search-toggle" class="search-toggle">Advanced Search</div>
+                {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %}
+                    <div id="decklist-search-toggle" class="search-toggle" data-url="{% url 'cardDatabase-decklist-search' %}">
+                        <span>Decklist search </span>
+                        <i class="bi bi-arrow-right"></i>
+                    </div>
+                {% endif %}
+                
             </div>
             <div id="basic-search">
                 <form id="basic-form" method="post" action="{% url 'cardDatabase-search' %}">

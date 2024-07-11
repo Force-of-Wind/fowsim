@@ -30,6 +30,11 @@ class DeckList(models.Model):
         if len(colours) == 0:
             colours = [CONS.ATTRIBUTE_VOID_CODE]
         return colours
+    
+    @property
+    def get_front_card_of_deck(self):
+        front_card = self.cards.order_by('position').first()
+        return front_card
 
 
 class DeckListCard(models.Model):

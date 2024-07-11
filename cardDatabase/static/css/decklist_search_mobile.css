@@ -1,0 +1,16 @@
+.decklists-container {
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+}
+
+.decklist-result{
+    max-width: 256px;
+    max-height: 384px;
+}
+
+.decklist-search .form-submit-button{
+    display: flex;
+    justify-content: center;
+    width: unset;
+}

@@ -19,7 +19,7 @@ from django.urls import reverse
 from django.contrib.auth import login, authenticate
 from django.contrib.staticfiles.storage import staticfiles_storage
 
-from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm
+from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm, DecklistSearchForm
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race, Set
 from .models.Banlist import BannedCard, CombinationBannedCards
@@ -216,6 +216,12 @@ def get_unsupported_sets_query():
 
     return unsupported_sets
 
+def get_unsupported_decklists_query():
+    unsuported_decklists = Q()
+    unsuported_decklists |= Q(public=False)
+    unsuported_decklists |= Q(cards__quantity__isnull=True)
+
+    return unsuported_decklists
 
 def basic_search(basic_form):
     cards = []
@@ -225,6 +231,16 @@ def basic_search(basic_form):
         cards = apply_text_search(cards, search_text, ['name', 'ability_texts__text'], CONS.TEXT_CONTAINS_ALL)
         cards = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
     return {'cards': cards}
+
+def decklist_search(decklist_form):
+    decklists = []
+    if decklist_form.is_valid():
+        search_text = decklist_form.cleaned_data['contains_card']
+        decklists = DeckList.objects.exclude(get_unsupported_decklists_query()).distinct()
+        decklists = apply_deckcard_cardname_search(decklists, search_text, ['name'])
+        decklists = decklists.order_by('-last_modified')
+
+    return decklists
 
 
 def field_has_text(text, search_field, card):
@@ -276,6 +292,25 @@ def apply_text_search(cards, text, search_fields, exactness_option):
             q |= Q(**{search_field + '__icontains': text})
 
         output = cards.filter(q)
+
+    return output
+
+def apply_deckcard_cardname_search(decklists, text, search_fields):
+    if not text:
+        return decklists
+
+    output = []
+    words = text.split(' ')
+    if 'name' in search_fields:
+        search_fields.append('name_without_punctuation')
+
+    q = Q()
+    for word in words:
+        word_query = Q()
+        for search_field in search_fields:
+            word_query |= Q(**{'cards__card__' + search_field + '__icontains': word})
+        q |= word_query
+    output = decklists.filter(q)
 
     return output
 
@@ -363,10 +398,10 @@ def search_for_cards(request):
         form_type = request.GET.get('form_type', None)
         if form_type == 'basic-form':
             basic_form = get_form_from_params(SearchForm, request)
-            ctx = ctx | basic_search(basic_form)
+            ctx |= basic_search(basic_form)
         elif form_type == 'advanced-form':
             advanced_form = get_form_from_params(AdvancedSearchForm, request)
-            ctx = ctx | advanced_search(advanced_form)
+            ctx |= advanced_search(advanced_form)
 
     ctx['basic_form'] = basic_form or SearchForm()
     ctx['advanced_form'] = advanced_form or AdvancedSearchForm()
@@ -379,6 +414,25 @@ def search_for_cards(request):
         ctx['cards'] = paginator.get_page(page_number)
     return render(request, 'cardDatabase/html/search.html', context=ctx)
 
+@csrf_exempt
+def search_for_decklist(request):
+    ctx = {}
+    decklist_form = None
+    form_type = request.GET.get('form_type', None)
+    if form_type == 'decklist-form':
+        decklist_form = get_form_from_params(DecklistSearchForm, request)
+        ctx |= {'decklists': decklist_search(decklist_form)}
+
+    ctx['decklist_form'] = decklist_form or DecklistSearchForm()
+
+    if 'decklists' in ctx:
+        paginator = Paginator(ctx['decklists'], request.GET.get('num_per_page', 30))
+        page_number = request.GET.get('page', 1)
+        ctx['page_range'] = paginator.get_elided_page_range(number=page_number, on_each_side=1, on_ends=1)
+        ctx['total_count'] = len(ctx['decklists'])
+        ctx['decklists'] = paginator.get_page(page_number)
+    
+    return render(request, 'cardDatabase/html/decklist_search.html', context=ctx)
 
 def full_set_code_to_name(set_code):
     for cluster in CONS.SET_DATA['clusters']:

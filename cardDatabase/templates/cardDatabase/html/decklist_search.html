@@ -38,63 +38,63 @@
         </form>
     </div>
     {% if decklists|length > 0 %}
-    <div>
-        <div class="number-of-results flex-center mt-3">
-            <div class="number-of-results-text">
-                Showing <b>{{ decklists|length }}</b> of <b>{{ total_count }}</b> results:
+        <div>
+            <div class="number-of-results flex-center mt-3">
+                <div class="number-of-results-text">
+                    Showing <b>{{ decklists|length }}</b> of <b>{{ total_count }}</b> results:
+                </div>
             </div>
-        </div>
-        {% if decklists.has_other_pages %}
-            {% comment %}
-            js sets the href of the <a> tags using data-page-index because it needs to maintain all the other query params
-            {% endcomment %}
-            <div id="other-pages-top" class="pagination">
-                <div class="pagination-content">
-                    {% if decklists.has_previous %}
-                        <a data-page-index="{{ decklists.previous_page_number }}">
-                            <div class="pagination-page valid-choice">
+            {% if decklists.has_other_pages %}
+                {% comment %}
+                js sets the href of the <a> tags using data-page-index because it needs to maintain all the other query params
+                {% endcomment %}
+                <div id="other-pages-top" class="pagination">
+                    <div class="pagination-content">
+                        {% if decklists.has_previous %}
+                            <a data-page-index="{{ decklists.previous_page_number }}">
+                                <div class="pagination-page valid-choice">
+                                    &laquo;
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="pagination-page disabled-choice">
                                 &laquo;
                             </div>
-                        </a>
-                    {% else %}
-                        <div class="pagination-page disabled-choice">
-                            &laquo;
-                        </div>
-                    {% endif %}
-                    {% for page_num in page_range %}
-                        {% if page_num == decklists.number %}
-                            <div class="pagination-page current-page">
-                                {{ page_num }}
-                            </div>
-                        {% else %}
-                            {% if page_num == decklists.paginator.ELLIPSIS %}
-                                <div class="pagination-page pagination-ellipsis">
+                        {% endif %}
+                        {% for page_num in page_range %}
+                            {% if page_num == decklists.number %}
+                                <div class="pagination-page current-page">
                                     {{ page_num }}
                                 </div>
                             {% else %}
-                                <a data-page-index="{{ page_num }}">
-                                    <div class="pagination-page valid-choice">
+                                {% if page_num == decklists.paginator.ELLIPSIS %}
+                                    <div class="pagination-page pagination-ellipsis">
                                         {{ page_num }}
                                     </div>
-                                </a>
+                                {% else %}
+                                    <a data-page-index="{{ page_num }}">
+                                        <div class="pagination-page valid-choice">
+                                            {{ page_num }}
+                                        </div>
+                                    </a>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    {% if decklists.has_next %}
-                        <a data-page-index="{{ decklists.next_page_number }}">
-                            <div class="pagination-page valid-choice">
+                        {% endfor %}
+                        {% if decklists.has_next %}
+                            <a data-page-index="{{ decklists.next_page_number }}">
+                                <div class="pagination-page valid-choice">
+                                    &raquo;
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="pagination-page disabled-choice">
                                 &raquo;
                             </div>
-                        </a>
-                    {% else %}
-                        <div class="pagination-page disabled-choice">
-                            &raquo;
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        {% endif %}
-    </div>
+            {% endif %}
+        </div>
     {% endif %}
     
     <div id="decklists-container" class="decklists-container {% if decklists|length > 0 %}grid-skeleton{% endif %}">
@@ -113,6 +113,9 @@
                     </div>
                 </div>
             {% endfor %}
+            {% if decklists.has_other_pages %}
+                <div id="other-pages-bottom" class="pagination">{% comment %}Paginators behave weird when making duplicates. Copy the first one into here on load{% endcomment %}</div>
+            {% endif %}
         {% elif request.GET.form_type %}
         <div class="no-search-results">
             <div class="no-results-text">

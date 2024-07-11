@@ -236,10 +236,11 @@ def decklist_search(decklist_form):
     decklists = []
     if decklist_form.is_valid():
         search_text = decklist_form.cleaned_data['contains_card']
-        decklists = DeckList.objects.exclude(get_unsupported_decklists_query()).order_by('-last_modified').distinct()
+        decklists = DeckList.objects.exclude(get_unsupported_decklists_query()).distinct()
         decklists = apply_deckcard_cardname_search(decklists, search_text, ['name'])
+        decklists = decklists.order_by('-last_modified')
 
-    return {'decklists': decklists, 'text': search_text}
+    return decklists
 
 
 def field_has_text(text, search_field, card):
@@ -397,10 +398,10 @@ def search_for_cards(request):
         form_type = request.GET.get('form_type', None)
         if form_type == 'basic-form':
             basic_form = get_form_from_params(SearchForm, request)
-            ctx = ctx | basic_search(basic_form)
+            ctx |= basic_search(basic_form)
         elif form_type == 'advanced-form':
             advanced_form = get_form_from_params(AdvancedSearchForm, request)
-            ctx = ctx | advanced_search(advanced_form)
+            ctx |= advanced_search(advanced_form)
 
     ctx['basic_form'] = basic_form or SearchForm()
     ctx['advanced_form'] = advanced_form or AdvancedSearchForm()
@@ -420,7 +421,7 @@ def search_for_decklist(request):
     form_type = request.GET.get('form_type', None)
     if form_type == 'decklist-form':
         decklist_form = get_form_from_params(DecklistSearchForm, request)
-        ctx = ctx | decklist_search(decklist_form)
+        ctx |= {'decklists': decklist_search(decklist_form)}
 
     ctx['decklist_form'] = decklist_form or DecklistSearchForm()
 

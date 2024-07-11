@@ -18,6 +18,9 @@
 .decklists-container {
     display: flex;
     margin-top: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 30px;
 }
 
 .grid-skeleton{
@@ -46,4 +49,13 @@
     display: block;
     overflow-wrap: break-word;
     max-width: 200px;
+}
+
+.deck-search-title{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.decklist-result:last-child{
+    margin-bottom: 50px;
 }

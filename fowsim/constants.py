@@ -511,6 +511,7 @@ SETS_IN_ORDER = [
     'TMS',
     'BFA',
     'VIN002',
+    'FOWMOVIE',
     'SDL1',
     'SDL2',
     'SDL3',
@@ -633,6 +634,9 @@ SEARCH_CARD_TYPES_INCLUDE = {
 }
 
 SEARCH_SETS_INCLUDE = {
+    'BFA':[
+        'FOWMOVIE'
+    ],
     'AOA': [
         'AOA V3 Buy 2'
     ],

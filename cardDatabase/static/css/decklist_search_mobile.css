@@ -6,11 +6,12 @@
 
 .decklist-result{
     max-width: 256px;
-    max-height: 384px;
 }
 
 .decklist-search .form-submit-button{
     display: flex;
     justify-content: center;
     width: unset;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }

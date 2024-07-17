@@ -152,7 +152,8 @@ $(function() {
             url: `/save_decklist/${window.location.pathname.split('/')[2]}/`,
             data: JSON.stringify({
                 decklist_data: decklist_data,
-                is_public: $('#public-input').is(":checked")
+                is_public: $('#public-input').is(":checked"),
+                deck_type: $('#deck-type-input').val()
             }),
             success: function (data) {
                 window.onbeforeunload = undefined; // Remove warning of unsaved changes

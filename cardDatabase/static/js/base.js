@@ -18,6 +18,10 @@ $(function(){
     $("[data-localizable-dt]").each(function(i, obj){
         let dt = new Date($(this).data('localizable-dt') * 1000); // JS uses milliseconds, Py uses seconds
         let dt_string = dt.toLocaleString();
+
+        if ($(this).data('date-only')) 
+            dt_string = dt.toLocaleDateString();
+            
         $(this).text(dt_string);
     });
 });

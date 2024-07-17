@@ -44,6 +44,7 @@
             <div class="deck-creator-name">
                 by <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{{ decklist.profile.user.username }}</a>
             </div>
+            <div class="decklist-decklist-type">Format: {{decklist.deck_type}} </div>
             {% if decklist.shareMode == "tournament" %}
                 <p class="disabled-edit">
                     <b>Edit is disabled when Deck is in tournament share mode!</b>

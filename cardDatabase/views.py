@@ -236,8 +236,11 @@ def decklist_search(decklist_form):
     decklists = []
     if decklist_form.is_valid():
         search_text = decklist_form.cleaned_data['contains_card']
+        text_exactness = decklist_form.cleaned_data['text_exactness']
+        deck_type = decklist_form.cleaned_data['deck_type']
         decklists = DeckList.objects.exclude(get_unsupported_decklists_query()).distinct()
-        decklists = apply_deckcard_cardname_search(decklists, search_text, ['name'])
+        decklists = decklists.filter(deck_type = deck_type)
+        decklists = apply_deckcard_cardname_search(decklists, search_text, ['name'], text_exactness)
         decklists = decklists.order_by('-last_modified')
 
     return decklists
@@ -295,7 +298,7 @@ def apply_text_search(cards, text, search_fields, exactness_option):
 
     return output
 
-def apply_deckcard_cardname_search(decklists, text, search_fields):
+def apply_deckcard_cardname_search(decklists, text, search_fields, exactness_option = CONS.TEXT_CONTAINS_ALL):
     if not text:
         return decklists
 
@@ -304,13 +307,31 @@ def apply_deckcard_cardname_search(decklists, text, search_fields):
     if 'name' in search_fields:
         search_fields.append('name_without_punctuation')
 
-    q = Q()
-    for word in words:
-        word_query = Q()
+    if exactness_option == CONS.TEXT_CONTAINS_AT_LEAST_ONE:
+        q = Q()
+        for word in words:
+            word_query = Q()
+            for search_field in search_fields:
+                word_query |= Q(**{'cards__card__' + search_field + '__icontains': word})
+            q |= word_query
+        output = decklists.filter(q)
+
+    elif exactness_option == CONS.TEXT_CONTAINS_ALL:
+        # Use db because there's not many terms and this is more efficient
+        output = decklists
+        for word in words:
+            word_query = Q()
+            for search_field in search_fields:
+                word_query |= Q(**{'cards__card__' + search_field + '__icontains': word})
+
+            output = output.filter(word_query)
+
+    elif exactness_option == CONS.TEXT_EXACT:
+        q = Q()
         for search_field in search_fields:
-            word_query |= Q(**{'cards__card__' + search_field + '__icontains': word})
-        q |= word_query
-    output = decklists.filter(q)
+            q |= Q(**{'cards__card__' + search_field + '__icontains': text})
+
+        output = decklists.filter(q)
 
     return output
 
@@ -421,6 +442,8 @@ def search_for_decklist(request):
     form_type = request.GET.get('form_type', None)
     if form_type == 'decklist-form':
         decklist_form = get_form_from_params(DecklistSearchForm, request)
+        if decklist_form.is_valid():
+            ctx['decklists_form_data'] = decklist_form.cleaned_data
         ctx |= {'decklists': decklist_search(decklist_form)}
 
     ctx['decklist_form'] = decklist_form or DecklistSearchForm()
@@ -635,6 +658,7 @@ def edit_decklist(request, decklist_id=None):
         order_by('-zone__show_by_default', 'position')
     ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
     ctx['decklist'] = decklist
+    ctx['deckTypes'] = CONS.DECK_TYPE_VALUES
     return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)
 
 @login_required
@@ -657,6 +681,7 @@ def edit_decklist_mobile(request, decklist_id=None):
 def save_decklist(request, decklist_id=None):
     data = json.loads(request.body.decode('UTF-8'))
     decklist_data = data['decklist_data']
+    decklist_type = data['deck_type']
     if 'is_public' in data:
         is_public = data['is_public']
     else:
@@ -671,6 +696,7 @@ def save_decklist(request, decklist_id=None):
     decklist.name = decklist_data['name']
     decklist.comments = decklist_data['comments']
     decklist.public = is_public
+    decklist.deck_type = decklist_type
     decklist.save()
     #  Remove old cards, then rebuild it
     DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()

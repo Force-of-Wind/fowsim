@@ -1209,3 +1209,36 @@ def pack_opening(request, setcode=None):
 def pack_history(request):
  return render(request, 'cardDatabase/html/pack_history.html', {})
 
+
+def export_decklist(request, decklist_id):
+    decklist = DeckList.objects.filter(id=decklist_id, public=True).first()
+
+    if decklist is None:
+        return Http404()
+
+    deck_name = decklist.name
+    cards = []
+    for deckcard in decklist.cards.all():
+        other_faces = deckcard.card.other_sides
+        other_face_ids = []
+        if other_faces is not None:
+            for card in other_faces:
+                other_face_ids.append(card.card_id)
+        oracle_text = ""
+        delimiter = "\n"
+        for text in deckcard.card.ability_texts.all():
+            oracle_text += str(text) + str(delimiter)
+        
+        
+        card = {
+            'quantity': deckcard.quantity,
+            'id': deckcard.card.card_id,
+            'name': deckcard.card.name,
+            'zone': deckcard.zone.zone.name,
+            'img' : deckcard.card.card_image.url,
+            'otherFaces': other_face_ids,
+            'oracleText': oracle_text
+        }
+        cards.append(card)
+
+    return JsonResponse({ 'cards': cards, 'name': deck_name})

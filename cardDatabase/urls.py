@@ -38,5 +38,6 @@ urlpatterns = [
     path('metrics', views.metrics, name='cardDatabase-metrics'),
     path('pack_opening/<str:setcode>/', views.pack_opening, name='cardDatabase-pack-opening'),
     path('pack_select/', views.pack_select, name='cardDatabase-pack-select'),
-    path('pack_history/', views.pack_history, name='cardDatabase-pack-history')
+    path('pack_history/', views.pack_history, name='cardDatabase-pack-history'),
+    path('api/deck/<int:decklist_id>/', views.export_decklist, name='cardDatabase-export-decklist'),
 ]

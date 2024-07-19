@@ -1211,19 +1211,21 @@ def pack_history(request):
 
 
 def export_decklist(request, decklist_id):
-    decklist = DeckList.objects.filter(id=decklist_id, public=True).first()
-
-    if decklist is None:
-        return Http404()
+    decklist = get_object_or_404(DeckList, id=decklist_id, public=True)
 
     deck_name = decklist.name
     cards = []
     for deckcard in decklist.cards.all():
         other_faces = deckcard.card.other_sides
-        other_face_ids = []
+        other_face_list = []
         if other_faces is not None:
-            for card in other_faces:
-                other_face_ids.append(card.card_id)
+            for face in other_faces:
+                card = {
+                    'id': face.card_id,
+                    'name': face.name,
+                    'img' : face.card_image.url,
+                }
+                other_face_list.append(card)
         oracle_text = ""
         delimiter = "\n"
         for text in deckcard.card.ability_texts.all():
@@ -1236,7 +1238,7 @@ def export_decklist(request, decklist_id):
             'name': deckcard.card.name,
             'zone': deckcard.zone.zone.name,
             'img' : deckcard.card.card_image.url,
-            'otherFaces': other_face_ids,
+            'otherFaces': other_face_list,
             'oracleText': oracle_text
         }
         cards.append(card)

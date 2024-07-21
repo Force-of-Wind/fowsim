@@ -96,3 +96,7 @@
     display: flex;
     gap: 0.5rem;
 }
+
+.flex-center ul li{
+    margin-bottom: 0px;
+}

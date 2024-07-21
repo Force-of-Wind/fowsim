@@ -45,7 +45,6 @@ def get_search_form_ctx():
         'sets_json': CONS.SET_DATA
     }
 
-
 def get_race_query(data):
     race_query = Q()
     for race in data:
@@ -187,6 +186,12 @@ def get_set_number_sort_value(set_number):
             return -1 * int(num)
     return float('-inf')
 
+def get_deck_type_query(data):
+    deck_type_query = Q()
+    for deck_type in data:
+        deck_type_query |= Q(deck_type=deck_type)
+    return deck_type_query
+
 
 def sort_cards(cards, sort_by, is_reversed):
     if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT or not sort_by:
@@ -237,9 +242,9 @@ def decklist_search(decklist_form):
     if decklist_form.is_valid():
         search_text = decklist_form.cleaned_data['contains_card']
         text_exactness = decklist_form.cleaned_data['text_exactness']
-        deck_type = decklist_form.cleaned_data['deck_type']
+        deck_type_filter = get_deck_type_query(decklist_form.cleaned_data['deck_type'])
         decklists = DeckList.objects.exclude(get_unsupported_decklists_query()).distinct()
-        decklists = decklists.filter(deck_type = deck_type)
+        decklists = decklists.filter(deck_type_filter)
         decklists = apply_deckcard_cardname_search(decklists, search_text, ['name'], text_exactness)
         decklists = decklists.order_by('-last_modified')
 
@@ -443,7 +448,7 @@ def search_for_decklist(request):
     if form_type == 'decklist-form':
         decklist_form = get_form_from_params(DecklistSearchForm, request)
         if decklist_form.is_valid():
-            ctx['decklists_form_data'] = decklist_form.cleaned_data
+            ctx['decklist_form_data'] = decklist_form.cleaned_data
         ctx |= {'decklists': decklist_search(decklist_form)}
 
     ctx['decklist_form'] = decklist_form or DecklistSearchForm()

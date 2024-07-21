@@ -21,6 +21,7 @@
     {{ block.super }}
     <script src="{% static 'js\bootstrap\bootstrap.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/search.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/bootstrap/mdb.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/decklist_search.js' %}" type="text/javascript"></script>
 {% endblock %}
 
@@ -41,7 +42,7 @@
                     <input type="submit" value="Search">
                 </div>
             </div>
-            <div class="collapse" id="searchCollapse">
+            <div id="searchWrap">
                 <div class="fieldWrapper select-text-exactness">
                     <div class="text-exactness-title field-title">
                         Search terms match:
@@ -55,14 +56,21 @@
                     {% endfor %}
                 </div>
                 <div class="formatWrapper">
-                    <label>{{decklist_form.deck_type.label}}</label>
                     <div>
-                        {{decklist_form.deck_type}}
+                        <div class="fieldWrapper decktype-select">
+                            <select class="mdb-select" form="decklist_form" multiple name="deck_type" searchable="Search here...">
+                                {% for value, _ in decklist_form.deck_type.field.choices %}
+                                    <option value="{{ value }}"
+                                        {% if value in decklist_form_data.deck_type %}selected{% endif %}>
+                                            {{ value }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
         </form>
-        <button class="show-filter-btn" data-toggle="collapse" data-target="#searchCollapse" aria-expanded="true" aria-controls="searchCollapse">Show filter</button>
     </div>
     {% if decklists|length > 0 %}
         <div>

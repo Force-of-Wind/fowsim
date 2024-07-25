@@ -14,7 +14,7 @@ class PickPeriod(models.Model):
 
 
 class MostPickedCardPickRate(models.Model):
-    card = models.ForeignKey('Card', on_delete=models.CASCADE)
+    card = models.ForeignKey('Card', on_delete=models.CASCADE, related_name='popularities')
     percentage = models.IntegerField(null=False, blank=False)
     period = models.ForeignKey(PickPeriod, on_delete=models.CASCADE)
 

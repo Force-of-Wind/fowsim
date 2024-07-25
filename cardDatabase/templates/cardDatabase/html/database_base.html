@@ -94,6 +94,18 @@
                                 Reverse sorting
                             </label>
                         </div>
+                        <div class="select-popularity-time-period">
+                            <div class="pick-period-by-title field-title">
+                                Popularity Time Period:
+                            </div>
+                            {% for value, display in advanced_form.pick_period.field.choices %}
+                                <label for="id_pick_period_{{ forloop.counter0 }}">
+                                    <input type="checkbox" name="pick_period" id="id_pick_period_{{ forloop.counter0 }}"
+                                           value="{{ value }}" {% pick_period_is_in_data advanced_form_data.pick_period value %}>
+                                    {{ display }}
+                                </label>
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="fieldWrapper select-colours">
                         {% for value, display in advanced_form.colours.field.choices %}

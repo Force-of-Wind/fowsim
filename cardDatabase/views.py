@@ -6,7 +6,7 @@ import random
 import uuid;
 
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Q, Count
+from django.db.models import Q, F, Count
 from django.forms.fields import MultipleChoiceField
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -188,7 +188,7 @@ def get_set_number_sort_value(set_number):
     return float('-inf')
 
 
-def sort_cards(cards, sort_by, is_reversed):
+def sort_cards(cards, sort_by, is_reversed, pick_time_period = None):
     if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT or not sort_by:
         return sorted(cards, key=lambda item:
                       (CONS.SETS_IN_ORDER.index(item.set_code),
@@ -206,6 +206,17 @@ def sort_cards(cards, sort_by, is_reversed):
                        CONS.SETS_IN_ORDER.index(item.set_code),
                        get_set_number_sort_value(item.set_number)),
                       reverse=is_reversed)
+    elif sort_by == CONS.DATABASE_SORT_BY_POPULARITY:
+        print(pick_time_period)
+        if pick_time_period is None:
+            pick_time_period = CONS.PICK_PERIOD_NINETY_DAYS
+        all_time = pick_time_period == str(CONS.PICK_PERIOD_ALL_TIME)
+        pick_period = PickPeriod.objects.get(days=pick_time_period,all_time=all_time)
+        return (cards
+                .prefetch_related('popularities')
+                .filter(Q(popularities__isnull=True) | Q(popularities__period=pick_period))
+                .order_by(F('popularities__percentage').desc(nulls_last=True))
+                )
     raise Exception('Attempting to sort card by invalid selection')
 
 
@@ -365,9 +376,10 @@ def advanced_search(advanced_form):
                          or x.cost and '{X}' in x.cost]
             else:
                 cards = [x for x in cards if str(x.total_cost) in cost_filters]
-
+        
         cards = sort_cards(cards, advanced_form.cleaned_data['sort_by'],
-                           advanced_form.cleaned_data['reverse_sort'] or False)
+                           advanced_form.cleaned_data['reverse_sort'] or False,
+                           advanced_form.cleaned_data['pick_period'] or None)
     return ctx | {'cards': cards}
 
 

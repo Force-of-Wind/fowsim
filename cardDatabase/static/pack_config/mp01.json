@@ -59,19 +59,19 @@
             ]
         },
         {
-            "chance": 24,
+            "chance": 23,
             "rarity": "MR"
         },
         {
-            "chance": 29,
+            "chance": 28,
             "rarity": "RR"
         },
         {
-            "chance": 9,
+            "chance": 7,
             "rarity": "XR"
         },
         {
-            "chance": 9,
+            "chance": 7,
             "rarity": "SR",
             "conditions": [
                 {

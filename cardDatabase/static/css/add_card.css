@@ -10,3 +10,19 @@ label {
 #base-body{
     padding-bottom: 50px;
 }
+
+.import-wrapper{
+    display:flex;
+    border-bottom: 1px solid;
+    margin-bottom: 12px;
+    gap:10px;
+    justify-content: center;
+}
+
+.import-wrapper .import-card-select {
+    margin-bottom: 10px;
+}
+
+.hidden {
+    display:none;
+}

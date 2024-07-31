@@ -91,8 +91,8 @@ function mapFullTextColorToShortCode(fullTextColor){
     }
 }
 
-function arrayToText(array){
-    return array.join('\r\n\r\n');
+function arrayToText(array, seperator){
+    return array.join(seperator);
 }
 
 function autofillFields(cardId){
@@ -127,9 +127,9 @@ function autofillFields(cardId){
         $(checkbox).prop('checked', card.colour.includes(mappedCheckboxText));
     });
 
-    changeValueOfInput('#add_card textarea[name="races"]', arrayToText(card.race));
+    changeValueOfInput('#add_card textarea[name="races"]', arrayToText(card.race, '\r\n'));
 
-    changeValueOfInput('#add_card textarea[name="ability_texts"]', arrayToText(card.abilities));
+    changeValueOfInput('#add_card textarea[name="ability_texts"]', arrayToText(card.abilities, '\r\n\r\n'));
 }
 
 

@@ -4,6 +4,11 @@
 
 <html lang="en">
 {% block body %}
+    <div class="import-wrapper">
+        <h3>Upload Json</h3>
+        <input id="upload" class="upload-json-input" type="file" accept=".json" name="files" size=30>
+        <select id="importCardSelect" class="import-card-select hidden"></select>
+    </div>
     <form id="add_card" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ add_card_form.as_p }}
@@ -14,4 +19,9 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/add_card.css' %}">
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/add_card.js' %}"></script>
 {% endblock %}

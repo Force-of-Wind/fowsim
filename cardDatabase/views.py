@@ -689,6 +689,7 @@ def edit_decklist_mobile(request, decklist_id=None):
         order_by('-zone__show_by_default', 'position')
     ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
     ctx['decklist'] = decklist
+    ctx['deckTypes'] = CONS.DECK_TYPE_VALUES
     return render(request, 'cardDatabase/html/edit_decklist_mobile.html', context=ctx)
 
 

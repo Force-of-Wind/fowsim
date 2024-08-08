@@ -410,3 +410,7 @@ def embed_text_with_card_urls(text):
 @register.simple_tag
 def set_code_to_name(set_code):
     return searchable_set_and_name(set_code)[1]
+
+@register.simple_tag
+def trucateText(text, trucateAt = 40):
+    return (text[:trucateAt] + '...') if len(text) > trucateAt else text

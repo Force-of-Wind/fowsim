@@ -84,8 +84,19 @@
         <div id="deck-settings">
             <div class="settings-title">Settings</div>
             <div class="settings-container">
-                <input id="public-input" type="checkbox" {% if decklist.public %}checked{% endif %}>                
-                <label for="public-input">Public</label>                
+                <div>
+                    <input id="public-input" type="checkbox" {% if decklist.public %}checked{% endif %}>                
+                    <label for="public-input">Public</label>
+                </div>
+                <div>
+                    <label for="deck-type-input">Deck Type</label>
+                    <select id="deck-type-input" >
+                        {% for decktype in deckTypes %}
+                            {{decktype}}
+                            <option {% if decklist.deck_type == decktype %}selected{% endif %} value="{{decktype}}">{{decktype}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
             <button id="preview-decklist">Toggle Decklist Preview</button>
         </div>

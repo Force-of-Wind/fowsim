@@ -61,6 +61,8 @@ class AdvancedSearchForm(forms.Form):
 class DecklistSearchForm(forms.Form):
     contains_card = forms.CharField(label='', strip=True,
                                    widget=forms.TextInput(attrs={'placeholder': 'Card name(s) to search'}), required=False)
+    text_exactness = forms.ChoiceField(label='Match words', required=False, choices=CONS.TEXT_EXACTNESS_OPTIONS)
+    deck_type = forms.MultipleChoiceField(label='Format(s)', required=False, choices=CONS.DECK_TYPE_CHOICES)
 
 
 class AddCardForm(forms.ModelForm):

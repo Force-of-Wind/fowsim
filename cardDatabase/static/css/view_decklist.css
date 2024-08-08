@@ -321,3 +321,8 @@ button.close.modal-close-btn {
     display: inline-block;
     padding-bottom: 10px;
 }
+
+.decklist-decklist-type {
+    font-size: 14px;
+    font-style: italic;
+}

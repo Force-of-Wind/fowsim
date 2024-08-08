@@ -19,7 +19,10 @@
 
 {% block js %}
     {{ block.super }}
+    <script src="{% static 'js\bootstrap\bootstrap.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/search.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/bootstrap/mdb.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/decklist_search.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 
@@ -30,10 +33,42 @@
     </div>
     <div id="decklist-search" class="decklist-search flex-center">
         <form id="decklist_form" method="get" action="{% url 'cardDatabase-decklist-search' %}">
-            {{ decklist_form }}
-            <div class="form-submit-button">
-                <input type="hidden" value="decklist-form" name="form_type">
-                <input type="submit" value="Search">
+            <div class="search-bar">
+                <div class="fieldWrapper generic-text-input">
+                    {{ decklist_form.contains_card }}
+                </div>
+                <div class="form-submit-button">
+                    <input type="hidden" value="decklist-form" name="form_type">
+                    <input type="submit" value="Search">
+                </div>
+            </div>
+            <div id="searchWrap">
+                <div class="fieldWrapper select-text-exactness">
+                    <div class="text-exactness-title field-title">
+                        Search terms match:
+                    </div>
+                    {% for value, display in decklist_form.text_exactness.field.choices %}
+                        <label for="id_text_exactness_fields_{{ forloop.counter0 }}">
+                            <input type="checkbox" name="text_exactness" id="id_text_exactness_fields_{{ forloop.counter0 }}"
+                                value="{{ value }}" {% text_exactness_is_in_data decklists_form_data.text_exactness value %}>
+                            {{ display }}
+                        </label>
+                    {% endfor %}
+                </div>
+                <div class="formatWrapper">
+                    <div>
+                        <div class="fieldWrapper decktype-select">
+                            <select class="mdb-select" form="decklist_form" multiple name="deck_type" searchable="Search here...">
+                                {% for value, _ in decklist_form.deck_type.field.choices %}
+                                    <option value="{{ value }}"
+                                        {% if value in decklist_form_data.deck_type %}selected{% endif %}>
+                                            {{ value }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -105,11 +140,16 @@
                         <a href="{% url 'cardDatabase-view-decklist' decklist.id %}">
                             <img class="card-img" src="{{ decklist.get_front_card_of_deck.card.card_image.url }}">
                         </a>
-                        <span class="decklist-name block">
-                            <a href="{% url 'cardDatabase-view-decklist' decklist.id %}">{{ decklist.name }}</a>
-                        </span>
-                        <span class="block">By <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{{ decklist.profile.user.username }}</a></span>
-                        <span class="block local-date-time" data-localizable-dt="{% datetime_to_timestamp decklist.last_modified %}" title="Last Modified"></span>
+                        <div class="decklist-text">
+                            <span class="decklist-name block">
+                                <a href="{% url 'cardDatabase-view-decklist' decklist.id %}">{% trucateText decklist.name %}</a>
+                            </span>
+                            {% colours_to_imgs decklist.get_colours %}
+                            <div class="decklist-meta-info">
+                                <span class="block sm-text">By <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{% trucateText decklist.profile.user.username 10 %}</a></span>
+                                <span class="block local-date-time sm-text" data-localizable-dt="{% datetime_to_timestamp decklist.last_modified %}" data-date-only="true" title="Last Modified"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             {% endfor %}

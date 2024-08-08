@@ -207,7 +207,6 @@ def sort_cards(cards, sort_by, is_reversed, pick_time_period = None):
                        get_set_number_sort_value(item.set_number)),
                       reverse=is_reversed)
     elif sort_by == CONS.DATABASE_SORT_BY_POPULARITY:
-        print(pick_time_period)
         if pick_time_period is None:
             pick_time_period = CONS.PICK_PERIOD_NINETY_DAYS
         all_time = pick_time_period == str(CONS.PICK_PERIOD_ALL_TIME)

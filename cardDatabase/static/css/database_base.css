@@ -73,6 +73,7 @@ input[type="checkbox"][name="text_search_fields"],
 input[type="checkbox"].fow-checkbox,
 input[type="checkbox"][name="text_exactness"],
 input[type="checkbox"][name="sort_by"],
+input[type="checkbox"][name="pick_period"],
 input[type="checkbox"][name="reverse_sort"],
 input[type="checkbox"][name="colour_match"],
 input[type="checkbox"][name="colour_combination"]{

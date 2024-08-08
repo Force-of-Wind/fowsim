@@ -42,6 +42,7 @@ class AdvancedSearchForm(forms.Form):
     text_exactness = forms.ChoiceField(label='Search card for:', required=False, choices=CONS.TEXT_EXACTNESS_OPTIONS)
     text_search_fields = forms.MultipleChoiceField(label='Search Card:', choices=CONS.TEXT_SEARCH_FIELD_CHOICES, required=False)
     sort_by = forms.ChoiceField(label='Sort results by:', choices=CONS.DATABASE_SORT_BY_CHOICES, required=False)
+    pick_period = forms.ChoiceField(label='Popularity time period:', choices=CONS.PICK_PERIOD_CHOICES, required=False)
     reverse_sort = forms.BooleanField(label='Reverse sorting:', required=False)
     colours = forms.MultipleChoiceField(label='Color(s):', choices=CONS.COLOUR_CHOICES, required=False)
     colour_match = forms.ChoiceField(label='Color(s) match:', choices=CONS.DATABASE_COLOUR_MATCH_CHOICES, required=False)

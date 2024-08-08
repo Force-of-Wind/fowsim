@@ -64,7 +64,7 @@ function initDatabaseBase(){
         'maxSelectedOptions': 2
     });
 
-    $('.select-text-exactness input, .select-sort-by input, .colour-match input, .colour-combination input').change(function(){
+    $('.select-text-exactness input, .select-sort-by input, .select-popularity-time-period input, .colour-match input, .colour-combination input').change(function(){
         //Act like radio buttons, uncheck all the other ones in this form field
         if (this.checked){
             $(this).parent().siblings('label').each(function(index){

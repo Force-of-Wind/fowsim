@@ -204,6 +204,16 @@ def sort_by_is_in_data(form_values, value):
         default_value = 'checked'
     return advanced_form_is_in_data(form_values, value, default_value, 'checked')
 
+@register.simple_tag
+def pick_period_is_in_data(form_value, value):
+    default_value = ''
+    if value in [str(CONS.PICK_PERIOD_NINETY_DAYS)]:
+        default_value = 'checked'
+    if not form_value:
+        return default_value
+    elif value == form_value:
+        return 'checked'
+    return ''
 
 @register.simple_tag
 def get_random_chibi(category):

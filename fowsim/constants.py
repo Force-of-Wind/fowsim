@@ -600,7 +600,8 @@ SETS_IN_ORDER = [
     'TTT',
     'T1 Buy a Box',
     'MC04',
-    'TSR'
+    'TSR',
+    'T2 Buy a Box'
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -692,6 +693,9 @@ SEARCH_SETS_INCLUDE = {
     'TTT': [
         'T1 Buy a Box',
         'MC04'
+    ],
+    'TSR': [
+        'T2 Buy a Box'
     ]
 }
 

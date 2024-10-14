@@ -331,25 +331,25 @@ SET_DATA = {
                 {'code': 'TSD1', 'name': 'Lehen Deck'},
                 {'code': 'TSD2', 'name': 'Yokoshima Deck'},
                 {'code': 'TTT', 'name': 'Thoth of the Trinity'},
-                {'code': 'TSR', 'name': 'The Battle at the Sacred Ruins'}
+                {'code': 'TSR', 'name': 'The Battle at the Sacred Ruins'},
+                {'code': 'TEU', 'name': 'Timeless Eclipse of the Underworld'},
             ]
         },
         {
             'name': 'Arcana Battle Colosseum',
             'sets': [
                 {'code': 'ABC', 'name': 'Arcana Battle Colosseum'},
-                {'code': 'ABC-SD01', 'name': 'Starter Deck 1'},
-                {'code': 'ABC-SD02', 'name': 'Starter Deck 2'},
-                {'code': 'ABC-SD03', 'name': 'Starter Deck 3'},
-                {'code': 'ABC-SD04', 'name': 'Starter Deck 4'},
-                {'code': 'ABC-SD05', 'name': 'Starter Deck 5'},
-                {'code': 'ABC-SD06', 'name': 'Starter Deck 6'},
-                {'code': 'ABC-SD07', 'name': 'Starter Deck 7'},
-                {'code': 'ABC-SD08', 'name': 'Starter Deck 8'},
-                {'code': 'ABC-SD08', 'name': 'Starter Deck 9'},
-                {'code': 'ABC-SD08', 'name': 'Starter Deck 10'},
-                {'code': 'ABC-SD08', 'name': 'Starter Deck 11'},
-
+                {'code': 'ABC-SD01', 'name': 'Elektra vs The Lich King (Elektra)'},
+                {'code': 'ABC-SD02', 'name': 'Replicant: Aritstella vs Ki Lua (Replicant: Aristella)'},
+                {'code': 'ABC-SD03', 'name': 'Gnome vs Reinhardt (Gnome)'},
+                {'code': 'ABC-SD04', 'name': 'Hyde vs Undine (Hyde)'},
+                {'code': 'ABC-SD05', 'name': 'Hyde vs Undine (Undine)'},
+                {'code': 'ABC-SD06', 'name': 'Replicant: Aritstella vs Ki Lua (Ki Lua)'},
+                {'code': 'ABC-SD07', 'name': 'Efreet vs Falchion (Efreet)'},
+                {'code': 'ABC-SD08', 'name': 'Efreet vs Falchion (Falchion)'},
+                {'code': 'ABC-SD09', 'name': 'Gnome vs Reinhardt (Reinhardt)'},
+                {'code': 'ABC-SD10', 'name': 'Elektra vs The Lich King (The Lich King)'},
+                {'code': 'ABC-SD11', 'name': 'Void vs Void'},
             ]
         }
     ]
@@ -617,7 +617,7 @@ SETS_IN_ORDER = [
     'TTT',
     'T1 Buy a Box',
     'MC04',
-    'TSR',
+        'TSR',
     'T2 Buy a Box',
     'MC05',
     'ABC-SD01',
@@ -631,6 +631,9 @@ SETS_IN_ORDER = [
     'ABC-SD09',
     'ABC-SD10',
     'ABC-SD11',
+    'TEU',
+    'T3 Buy a Box',
+    'MC06',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -726,7 +729,11 @@ SEARCH_SETS_INCLUDE = {
     'TSR': [
         'T2 Buy a Box',
         'MC05',
-    ]
+    ],
+    'TEU': [
+        'T3 Buy a Box'
+        'MC06',
+    ],
 }
 
 KEYWORDS_CHOICES = [

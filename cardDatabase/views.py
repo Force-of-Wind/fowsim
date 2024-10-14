@@ -524,7 +524,7 @@ def view_card(request, card_id=None):
 def get_next_prev_cards(card_id, set_code):
     # get card number from card_id
     try:
-        card_id_int = card_id.split("-")[1]
+        card_id_int = card_id.split("-")[-1]
     except IndexError:
         # Unusual set code like 'H2 Buy a Box'
         return None, None

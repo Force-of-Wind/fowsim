@@ -114,13 +114,22 @@ class Card(AbstractModel):
 
     @property
     def set_code(self):
-        return self.card_id.split('-')[0]
+        """
+        Some set codes have multiple -
+        Assume all of them except the last one are part of the set code
+        e.g. LEL-123 or ABC-SD01-123 become LEL and ABC-SD01
+        """
+        if '-' in self.card_id:
+            return '-'.join(self.card_id.split('-')[:-1])
+
+        # No - so its something like 'H3 Buy a Box' or 'H3 Prerelease Party'
+        return self.card_id
 
     @property
     def set_number(self):
         splits = self.card_id.split('-')
         if len(splits) > 1:
-            return splits[1]
+            return splits[-1]
         return None
 
     @property

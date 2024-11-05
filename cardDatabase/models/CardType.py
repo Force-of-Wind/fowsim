@@ -51,6 +51,11 @@ class AbilityText(models.Model):
         return self.text
     text = models.TextField(null=False, blank=False)
 
+class AbilityStyle(models.Model):
+    def __str__(self):
+        return self.name
+    name = models.TextField(null=False, blank=False)
+    identifier = models.TextField(null=False, blank=False)
 
 class Type(models.Model):
     def __str__(self):
@@ -63,6 +68,7 @@ class CardAbility(models.Model):
     card = models.ForeignKey('Card', on_delete=models.CASCADE, related_name='abilities')
     ability_text = models.ForeignKey('AbilityText', on_delete=models.CASCADE, related_name='card')
     position = models.IntegerField(blank=False, null=False, default=1)
+    special_style = models.ForeignKey('AbilityStyle', blank=True, null=True, on_delete=models.SET_NULL)
 
 class Tag(models.Model):
     def __str__(self):

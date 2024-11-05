@@ -96,29 +96,9 @@
                     Text:
                 </div>
                 {% order_card_abilities card as abilities %}
-                {% aggregate_abilties_by_style_in_order abilities as aggregated_abilities %}
-                {% for aggregated_ability in aggregated_abilities %}
-                    {% if aggregated_ability.style.id != 'normal' %}
-                        <aside class="{{aggregated_ability.style.id}}">
-                            <h3>{{aggregated_ability.style.name}}</h3>
-                            <div class="style-container">
-                                {% for ability in aggregated_ability.abilities %}
-                                    <div class="card-text-info-text">
-                                        {% format_ability_text ability.ability_text.text %}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </aside>
-                    {% else %}
-                        {% for ability in aggregated_ability.abilities %}
-                            <div class="card-text-info-text">
-                                {% format_ability_text ability.ability_text.text %}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+                {% for ability in abilities %}
                     <div class="card-text-info-text">
-                        {% format_ability_text ability.ability_text.text %}
-                        {{ ability.special_style.identifier }}
+                        {% format_ability_text ability %}
                     </div>
                 {% endfor %}
             </div>

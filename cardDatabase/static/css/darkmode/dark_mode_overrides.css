@@ -185,15 +185,6 @@ select{
 
 /* /search */
 
-/* card view */
-
-.solo-mode{
-    border-left: 34px solid #303134;
-    background: #30313463;
-}
-
-/* /card view */
-
 /* /deck-search */
 .decklist-wrapper{
     background: #303134 !important;

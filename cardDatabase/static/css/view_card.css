@@ -191,33 +191,3 @@
 .reprints .card-text-info-text{
     display: block;
 }
-
-/* ability text formating */
-
-.solo-mode{
-    display: block;
-    position: relative;
-    margin-top: 20px;
-    border-left: 34px solid gray;
-    background: lightgray;
-    padding-left: 10px;
-    min-height: 125px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.solo-mode h3 {
-    font: bold 12px "Roboto", sans-serif;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #fff;
-    padding: 0 0px 30px 0;
-    margin: 0 0px 0 0px;
-    line-height: 24px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    transform-origin: 0;
-    transform: rotate(-90deg);
-}
-
-/* /ability text formating */

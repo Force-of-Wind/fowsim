@@ -360,7 +360,40 @@ def get_spoiler_link():
 
 @register.simple_tag
 def order_card_abilities(card):
-    return card.abilities.all().order_by('position').values_list('ability_text__text', flat=True)
+    return card.abilities.all().order_by('position')
+
+@register.simple_tag
+def aggregate_abilties_by_style_in_order(abilities):
+    result = []
+    temp_list = []
+    last_style = None
+    last_style_name = None
+    current_style = None
+    current_style_name = None
+    for ability in abilities:
+        if ability.special_style:
+            current_style = ability.special_style.identifier
+            current_style_name = ability.special_style.name
+        else:
+            current_style = 'normal'
+            current_style_name = current_style
+
+        if current_style == last_style:
+            temp_list.append(ability)
+            continue
+
+        #only add if not empty
+        if temp_list:
+            result.append({"style": {"id": last_style, "name": last_style_name}, "abilities": temp_list})
+            temp_list = []        
+        
+        last_style = current_style
+        last_style_name = current_style_name
+        temp_list.append(ability)
+
+    result.append({"style": {"id": last_style, "name": last_style_name}, "abilities": temp_list})
+
+    return result
 
 
 @register.simple_tag

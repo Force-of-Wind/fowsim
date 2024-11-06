@@ -41,6 +41,7 @@ RARITY_NORMAL = 'Normal'
 RARITY_SECRET_RARE = 'Secret Rare'
 RARITY_ASCENDED_RULER = 'Ascended Ruler'
 RARITY_ASCENDED_J_RULER = 'Ascended J-ruler'
+RARITY_SUB_RULER_RARE = 'Sub-ruler'
 
 RARITY_COMMON_VALUE = 'C'
 RARITY_UNCOMMON_VALUE = 'U'
@@ -73,7 +74,7 @@ RARITY_CHOICE_VALUES = (
     #(RARITY_SECRET_RARE_VALUE, RARITY_SECRET_RARE),  We don't have any yet
     (RARITY_ASCENDED_RULER_VALUE, RARITY_ASCENDED_RULER),
     (RARITY_ASCENDED_J_RULER_VALUE, RARITY_ASCENDED_J_RULER),
-    (RARITY_SUB_RULER_VALUE, RARITY_SUB_RULER_VALUE)
+    (RARITY_SUB_RULER_VALUE, RARITY_SUB_RULER_RARE)
 )
 
 CARD_TYPE_VALUES = [
@@ -92,6 +93,12 @@ CARD_TYPE_VALUES = [
     'Resonator',
     'Sub-ruler',
     'Extension Rule',
+    'Darkness Magic Stone',
+    'Fire Magic Stone',
+    'Light Magic Stone',
+    'Water Magic Stone',
+    'Wind Magic Stone',
+    'Void Magic Stone',
 ]
 CARD_SUBTYPE_VALUES = [
     'J',

@@ -49,6 +49,8 @@ WILL_TYPE_TO_FILENAMES = {
     '19': '19.png',
     '20': '20.png',
     'X': 'X.png',
+    'Y': 'Y.png',
+    'Z': 'Z.png',
 }
 
 

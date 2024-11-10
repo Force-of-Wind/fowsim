@@ -313,9 +313,11 @@ def apply_text_search(cards, text, search_fields, exactness_option):
 
     return output
 
-def apply_deckcard_cardname_search(decklists, text, search_fields, exactness_option = CONS.TEXT_CONTAINS_ALL):
+def apply_deckcard_cardname_search(decklists, text, search_fields, exactness_option):
     if not text:
         return decklists
+    
+    exactness_option = exactness_option or CONS.TEXT_CONTAINS_ALL
 
     output = []
     words = text.split(' ')

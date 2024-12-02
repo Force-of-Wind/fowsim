@@ -24,13 +24,27 @@ function handleFileSelect(evt) {
     }
 }
 
-function collectCards(json){
+function cacheJson(json) {
+    localStorage.setItem("cardsJson", JSON.stringify(json));
+}
+
+function getCachedJson() {
+    let json = localStorage.getItem("cardsJson") ?? false;
+    if (json)
+        return JSON.parse(json);
+}
+
+function collectCards(json) {
+    cacheJson(json);
     cards = [];
+    newCards = [];
     try{
         json.fow.clusters.forEach(cluster => {
             cluster.sets.forEach(set => {
                 set.cards.forEach(card => {
                     cards[card.id] = card;
+                    if (card.wind_new)
+                        newCards[card.id] = card.id;
                 })
             });
         });
@@ -47,14 +61,18 @@ function collectCards(json){
     }
         
 
-    buildSelect(Object.keys(cards));
+    buildSelect(Object.keys(cards), newCards);
 }
 
-function buildSelect(cardIds){
+function buildSelect(cardIds, newCards){
     $('#importCardSelect').empty();
     $('#importCardSelect').append(`<option selected disabled>---</option>`);
+    
     let options = cardIds.forEach(cardId => {
-        $('#importCardSelect').append(`<option value="${cardId}">${cardId}</option>`);
+        let clss = newCards[cardId] ? 'new-card' : 'old-card';
+        let hideOldCards = $('#onlyNewCards').is(':checked');
+            
+        $('#importCardSelect').append(`<option class="${clss}" value="${cardId}">${cardId}</option>`);
     });
 
     $('#importCardSelect').off('change');
@@ -101,9 +119,6 @@ function autofillFields(cardId){
     if(!card)
         return;
 
-    //maybe need to remove \
-    console.log(card);
-
     changeValueOfInput('#add_card input[name="name"]', card.name);
     changeValueOfInput('#add_card input[name="card_id"]', card.id);
     changeValueOfInput('#add_card input[name="cost"]', card.cost);
@@ -135,4 +150,17 @@ function autofillFields(cardId){
 
 $( document ).ready(function() {
     $('#upload').on('change', handleFileSelect);
+    $('#onlyNewCards').change(function() {
+        if(this.checked) {
+            $('#importCardSelect').removeClass('all-cards');
+            $('#importCardSelect').addClass('new-cards-only');
+        }
+        else {
+            $('#importCardSelect').removeClass('new-cards-only');
+            $('#importCardSelect').addClass('all-cards');
+        }
+    });
+    let cachedJson = getCachedJson();
+    if (cachedJson)
+        collectCards(cachedJson);
 });

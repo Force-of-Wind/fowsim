@@ -79,14 +79,14 @@
                     <div class="deck-zone-cards">
                         {% for card in decklist_cards %}
                             {% if card.zone == zone %}
-                                <div class="deck-zone-card" data-card-id="{{ card.card.card_id }}"  data-card-img-urls="{{ card.card.card_image.url }}" data-card-name="{{card.card.name}}">
+                                <div class="deck-zone-card" data-card-id="{{ card.card.card_id }}"  data-card-img-urls="{{ card.card.test_img.url }}" data-card-name="{{card.card.name}}">
                                     <div class="card-quantity">
                                         <a href="#/" class="card-quantity-minus"><span>-</span></a>
                                         <input type="number" class="card-quantity-input" value="{{ card.quantity }}">
                                         <a href="#/" class="card-quantity-plus"><span>+</span></a>
                                     </div>
                                     {# Can't have whitespace around card name to match jquery #}
-                                    <div class="deck-zone-card-name">{{ card.card.name }}<img class="hover-card-img" src="{{ card.card.card_image.url }}"></div>
+                                    <div class="deck-zone-card-name">{{ card.card.name }}<img class="hover-card-img" src="{{ card.card.test_img.url }}"></div>
                                     <div class="remove-card">&#10006;</div>
                                 </div>
                             {% endif %}

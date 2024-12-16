@@ -67,12 +67,12 @@
                                         {% for _ in range %}
                                             <div class="deck-card">
                                                 {% has_tags card as has_tags_flag %}
-                                                <img class="deck-card-img" src="{{ card.card.card_image.url }}" title="{{ card.card.name }}" data-card-id="{{card.card.id}}" data-card-zone="{{zone}}">
+                                                <img class="deck-card-img" src="{{ card.card.test_img.url }}" title="{{ card.card.name }}" data-card-id="{{card.card.id}}" data-card-zone="{{zone}}">
                                                 <div class="card-preview">
                                                     <div class="multi-hovered-img">
-                                                        <img class="hover-card-img" src="{{ card.card.card_image.url }}">
+                                                        <img class="hover-card-img" src="{{ card.card.test_img.url }}">
                                                         {% for other_side in card.card.other_sides %}
-                                                            <img class="hover-card-img" src="{{ other_side.card_image.url }}">
+                                                            <img class="hover-card-img" src="{{ other_side.test_img.url }}">
                                                         {% endfor %}
                                                     </div>
                                                     <div class="view-in-another-tab">

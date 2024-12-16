@@ -138,7 +138,7 @@
                 <div id="{{decklist.id}}" class="decklist-result">
                     <div class="decklist-wrapper">
                         <a href="{% url 'cardDatabase-view-decklist' decklist.id %}">
-                            <img class="card-img" src="{{ decklist.get_front_card_of_deck.card.card_image.url }}">
+                            <img class="card-img" src="{{ decklist.get_front_card_of_deck.card.test_img.url }}">
                         </a>
                         <div class="decklist-text">
                             <span class="decklist-name block">

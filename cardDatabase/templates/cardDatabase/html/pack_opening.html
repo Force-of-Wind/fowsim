@@ -64,7 +64,7 @@
             <div class="card item hidden">
               <div class="{{ pull.slot }}"></div>
               <img class="card__face card__face--front" src="{% static 'img/pack/card_back.png' %}" />
-              <img class="card__face card__face--back" src="{{ pull.card.card_image.url }}" title="{{ pull.card.name }}" data-slot="{{ pull.slot }}" data-card-url="{% url 'cardDatabase-view-card' pull.card.card_id %}" alt="card_front" />
+              <img class="card__face card__face--back" src="{{ pull.card.test_img.url }}" title="{{ pull.card.name }}" data-slot="{{ pull.slot }}" data-card-url="{% url 'cardDatabase-view-card' pull.card.card_id %}" alt="card_front" />
             </div>
           {% endfor %}
         </div>

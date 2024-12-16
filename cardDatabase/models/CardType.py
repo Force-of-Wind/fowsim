@@ -85,6 +85,10 @@ class CardArtist(models.Model):
 
     name = models.CharField(max_length=200, null=False, blank=False)
 
+class FalseCardImage():
+    def __init__(self, url=""):
+        self.url = url
+
 
 class Card(AbstractModel):
     class Meta:
@@ -193,6 +197,14 @@ class Card(AbstractModel):
     @property
     def reprints(self):
         return Card.objects.filter(name=self.name).filter(~Q(id=self.id))
+    
+    @property
+    def test_img(self):
+        try:
+            temp_img = FalseCardImage(url=self.card_image.url)
+            return temp_img
+        except:
+            return FalseCardImage(url="/media/cards/none.png")
 
 
 class Chant(models.Model):
@@ -233,7 +245,7 @@ def resize_image_if_new(sender, instance, **kwargs):
                 new_image.paste(im, (0, 0), im)
                 im = new_image
                 im = im.convert("RGB")
-            im = im.resize(size, Image.ANTIALIAS)
+            im = im.resize(size, Image.LANCZOS)
             im_io = BytesIO()
             im.save(im_io, 'JPEG', quality=70)
             instance.card_image = InMemoryUploadedFile(im_io, 'ImageField', f"{instance.card_id}.jpg", 'image/jpeg', sys.getsizeof(im_io), None)

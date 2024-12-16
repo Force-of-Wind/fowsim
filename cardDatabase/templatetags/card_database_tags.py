@@ -141,12 +141,12 @@ def referenced_card_img_html(card):
     if other_sides:
         output = ''
         output += '<div class="multi-hovered-img">'
-        output += f'<img class="hover-card-img" src="{card.card_image.url}"/>'
+        output += f'<img class="hover-card-img" src="{card.test_img.url}"/>'
         for other_card in other_sides:
-            output += f'<img class="hover-card-img" src="{other_card.card_image.url}"/>'
+            output += f'<img class="hover-card-img" src="{other_card.test_img.url}"/>'
         output += '</div>'
     else:
-        output = f'<img class="hover-card-img" src="{card.card_image.url}"/>'
+        output = f'<img class="hover-card-img" src="{card.test_img.url}"/>'
     return mark_safe(output)
 
 
@@ -261,7 +261,7 @@ def cards_to_json(cards):
             "name": card.card.name_without_punctuation,
             "zone" : card.zone.zone.name,
             "cost": card.card.cost,
-            "img":  card.card.card_image.url,
+            "img":  card.card.test_img.url,
             "quantity" : card.quantity
         }
         output_cards.append(simple_card)
@@ -339,7 +339,7 @@ def untap_list(cards):
 def decklist_preview_img_url(decklist):
     ruler_cards = decklist.cards.filter(zone__zone__name='Ruler')
     if ruler_cards.exists():
-        return mark_safe(ruler_cards.first().card.card_image.url)
+        return mark_safe(ruler_cards.first().card.test_img.url)
     else:
         return base_site_icon()
 
@@ -408,11 +408,11 @@ def get_edit_decklist_url(decklist_pk, user_agent):
 
 @register.simple_tag
 def get_card_img_urls(card):
-    output = [card.card_image.url]
+    output = ["card.test_img.url"]
     other_sides = card.other_sides
     if other_sides:
         for other_side in other_sides:
-            output.append(other_side.card_image.url)
+            output.append("other_side.test_img.url")
     return str(output).replace('\'', '"')
 
 

@@ -16,11 +16,11 @@ class Command(BaseCommand):
             try:
                 card_image_path = os.path.join('cards', f'{card.card_id}.jpg')
                 if default_storage.exists(card_image_path):
-                    card.card_image = card_image_path
+                    card._card_image = card_image_path
                 else:
                     second_attempt = card_image_path.replace('^', '')
                     if default_storage.exists(second_attempt):
-                        card.card_image = second_attempt
+                        card._card_image = second_attempt
                     else:
                         raise Exception(f'image for {card.set_code}: {card.name} does not exist')
                 card.save()

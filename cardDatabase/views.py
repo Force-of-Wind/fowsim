@@ -796,7 +796,7 @@ def view_decklist(request, decklist_id, share_parameter = ''):
             ban_warnings.append({
                 'format': banned_card.format.name,
                 'card': banned_card.card.name,
-                'card_img_url': banned_card.card.test_img.url,
+                'card_img_url': banned_card.card.card_image.url,
                 'view_card_url': reverse('cardDatabase-view-card', kwargs={'card_id': banned_card.card.card_id})
             })
 
@@ -815,7 +815,7 @@ def view_decklist(request, decklist_id, share_parameter = ''):
                 if card.name in overlap:
                     combination_ban_warning['cards'].append({
                         'name': card.name,
-                        'image_url': card.test_img.url,
+                        'image_url': card.card_image.url,
                         'view_card_url': reverse('cardDatabase-view-card',
                                                  kwargs={'card_id': card.card_id})
                     })
@@ -983,14 +983,14 @@ def reddit_bot_query(request):
     if card:
         ctx['cards'].append({
             'name': card.name,
-            'image_url': request.build_absolute_uri(card.test_img.url),
+            'image_url': request.build_absolute_uri(card.card_image.url),
             'view_card_url': request.build_absolute_uri(reverse('cardDatabase-view-card', kwargs={'card_id': card.card_id}))
         })
         if all_sides:
             for other_side in card.other_sides:
                 ctx['cards'].append({
                     'name': other_side.name,
-                    'image_url': request.build_absolute_uri(other_side.test_img.url),
+                    'image_url': request.build_absolute_uri(other_side.card_image.url),
                     'view_card_url': request.build_absolute_uri(reverse('cardDatabase-view-card', kwargs={'card_id': other_side.card_id}))
                 })
 
@@ -1241,7 +1241,7 @@ def export_decklist(request, decklist_id):
                 card = {
                     'id': face.card_id,
                     'name': face.name,
-                    'img' : face.test_img.url,
+                    'img' : face.card_image.url,
                 }
                 other_face_list.append(card)
         oracle_text = ""
@@ -1255,7 +1255,7 @@ def export_decklist(request, decklist_id):
             'id': deckcard.card.card_id,
             'name': deckcard.card.name,
             'zone': deckcard.zone.zone.name,
-            'img' : deckcard.card.test_img.url,
+            'img' : deckcard.card.card_image.url,
             'otherFaces': other_face_list,
             'oracleText': oracle_text
         }

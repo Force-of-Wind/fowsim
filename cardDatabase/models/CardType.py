@@ -85,7 +85,7 @@ class CardArtist(models.Model):
 
     name = models.CharField(max_length=200, null=False, blank=False)
 
-class FalseCardImage():
+class CardImageWrapper():
     def __init__(self, url=""):
         self.url = url
 
@@ -97,7 +97,7 @@ class Card(AbstractModel):
     name = models.CharField(max_length=200, null=False, blank=False)
     name_without_punctuation = models.CharField(max_length=200, null=False, blank=False)
     card_id = models.CharField(max_length=200, null=False, blank=False)
-    card_image = models.ImageField(default=None, blank=True, null=True, upload_to='cards')
+    _card_image = models.ImageField(default=None, blank=True, null=True, upload_to='cards')
     cost = models.CharField(max_length=200, null=True, blank=True)
     divinity = models.CharField(max_length=200, null=True, blank=True)
     flavour = models.TextField(null=True, blank=True)
@@ -199,12 +199,12 @@ class Card(AbstractModel):
         return Card.objects.filter(name=self.name).filter(~Q(id=self.id))
     
     @property
-    def test_img(self):
+    def card_image(self):
         try:
-            temp_img = FalseCardImage(url=self.card_image.url)
+            temp_img = CardImageWrapper(url=self.card_image.url)
             return temp_img
         except:
-            return FalseCardImage(url="/media/cards/none.png")
+            return CardImageWrapper(url="/media/cards/none.png")
 
 
 class Chant(models.Model):
@@ -234,9 +234,9 @@ def resize_image_if_new(sender, instance, **kwargs):
         obj = None
         pass
     finally:
-        if (not obj and instance.card_image) or (obj and obj.card_image != instance.card_image and instance.card_image):
+        if (not obj and instance._card_image) or (obj and obj._card_image != instance._card_image and instance._card_image):
             size = 480, 670
-            im = Image.open(instance.card_image)
+            im = Image.open(instance._card_image)
             if im.mode == 'P':
                 im = im.convert('RGBA')
 
@@ -248,4 +248,4 @@ def resize_image_if_new(sender, instance, **kwargs):
             im = im.resize(size, Image.ANTIALIAS)
             im_io = BytesIO()
             im.save(im_io, 'JPEG', quality=70)
-            instance.card_image = InMemoryUploadedFile(im_io, 'ImageField', f"{instance.card_id}.jpg", 'image/jpeg', sys.getsizeof(im_io), None)
+            instance._card_image = InMemoryUploadedFile(im_io, 'ImageField', f"{instance.card_id}.jpg", 'image/jpeg', sys.getsizeof(im_io), None)

@@ -74,7 +74,7 @@
                 <div class="card" data-card-name="{{ card.name }}" data-card-id="{{ card.card_id }}"
                      data-card-image-url="" data-card-image-urls='{% get_card_img_urls card %}'>
                     <a href="{% url 'cardDatabase-view-card' card.card_id %}">
-                        <img class="card-img" src="{{ card.test_img.url }}">
+                        <img class="card-img" src="{{ card.card_image.url }}">
                     </a>
                 </div>
             {% endfor %}

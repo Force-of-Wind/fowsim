@@ -1,7 +1,7 @@
 {% load static card_database_tags %}
 <div class="card-container">
     <div class="card-left-half">
-        <img class="card-img" src="{{ card.test_img.url }}">
+        <img class="card-img" src="{{ card.card_image.url }}">
     </div>
     <div class="card-right-half">
         <div class="card-text-info">
@@ -170,7 +170,7 @@
                         <a href="{% card_id_to_url card_referred_by.card_id %}">
                             <div class="referenced-card">
                                 {{ card_referred_by.name }}                                
-                                {% if card_referred_by.test_img %}
+                                {% if card_referred_by.card_image %}
                                     {% referenced_card_img_html card_referred_by %}
                                 {% else %}
                                     Image Missing
@@ -212,7 +212,7 @@
                                     {% for card_data in combination_ban.cards.all %}
                                         {% if not forloop.counter0 == 0 %}& {% endif %}
                                         {% url 'cardDatabase-view-card' card_id=card_data.card_id as view_card_url %}
-                                        {% include 'cardDatabase/html/referenced_card.html' with card_name=card_data.name card_img_url=card_data.test_img.url view_card_url=view_card_url %}
+                                        {% include 'cardDatabase/html/referenced_card.html' with card_name=card_data.name card_img_url=card_data.card_image.url view_card_url=view_card_url %}
                                     {% endfor %} banned in {{ combination_ban.format.name }}.
                                 </div>
                             </div>

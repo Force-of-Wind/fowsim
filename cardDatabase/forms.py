@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card, Race, AbilityText, CardAbility
 from cardDatabase.models.Ability import Keyword
+from cardDatabase.models.Banlist import Format
 from cardDatabase.management.commands.importjson import remove_punctuation
 
 
@@ -21,6 +22,15 @@ def get_races():
         return []
 
     return list(race_map)
+
+def get_formats():
+    try:
+        format_values = Format.objects.values('name')
+        format_map = map(lambda x : (x['name'], x['name']), format_values)
+    except:
+        return []
+
+    return list(format_map)
 
 
 def get_keywords_choices():
@@ -63,7 +73,7 @@ class DecklistSearchForm(forms.Form):
     contains_card = forms.CharField(label='', strip=True,
                                    widget=forms.TextInput(attrs={'placeholder': 'Card name(s) to search'}), required=False)
     text_exactness = forms.ChoiceField(label='Match words', required=False, choices=CONS.TEXT_EXACTNESS_OPTIONS)
-    deck_type = forms.MultipleChoiceField(label='Format(s)', required=False, choices=CONS.DECK_TYPE_CHOICES)
+    deck_format = forms.MultipleChoiceField(label='Format(s)', required=False, choices=get_formats())
 
 
 class AddCardForm(forms.ModelForm):

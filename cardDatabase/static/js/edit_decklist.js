@@ -153,7 +153,7 @@ $(function() {
             data: JSON.stringify({
                 decklist_data: decklist_data,
                 is_public: $('#public-input').is(":checked"),
-                deck_type: $('#deck-type-input').val()
+                deck_format: $('#deck-format-input').val()
             }),
             success: function (data) {
                 window.onbeforeunload = undefined; // Remove warning of unsaved changes

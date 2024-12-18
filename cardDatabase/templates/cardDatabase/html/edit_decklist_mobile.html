@@ -110,11 +110,11 @@
                 <input id="public-input" type="checkbox" {% if decklist.public %}checked{% endif %}>
                 <label for="public-input">Public</label>
                 <div>
-                    <label for="deck-type-input">Deck Type</label>
-                    <select id="deck-type-input" >
-                        {% for decktype in deckTypes %}
-                            {{decktype}}
-                            <option {% if decklist.deck_type == decktype %}selected{% endif %} value="{{decktype}}">{{decktype}}</option>
+                    <label for="deck-format-input">Deck Type</label>
+                    <select id="deck-format-input" >
+                        {% for deckFormat in deckFormats %}
+                            {{deckFormat.name}}
+                            <option {% if decklist.deck_format.name == deckFormat %}selected{% endif %} value="{{deckFormat.name}}">{{deckFormat.name}}</option>
                         {% endfor %}
                     </select>
                 </div>

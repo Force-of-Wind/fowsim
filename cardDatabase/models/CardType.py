@@ -201,7 +201,7 @@ class Card(AbstractModel):
     @property
     def card_image(self):
         try:
-            temp_img = CardImageWrapper(url=self.card_image.url)
+            temp_img = CardImageWrapper(url=self._card_image.url)
             return temp_img
         except:
             return CardImageWrapper(url="/media/cards/none.png")

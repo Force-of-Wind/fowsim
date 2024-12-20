@@ -6,6 +6,13 @@ class Format(models.Model):
 
     def __str__(self):
         return self.name
+    
+    @classmethod
+    def get_default(cls):
+        format, created = cls.objects.get_or_create(
+            name='Wanderer',
+        )
+        return format.pk
 
 
 # Universally banned cards by themselves

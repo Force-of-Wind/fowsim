@@ -112,7 +112,7 @@
                 <div>
                     <label for="deck-format-input">Deck Type</label>
                     <select id="deck-format-input" >
-                        {% for deckFormat in deckFormats %}
+                        {% for deckFormat in deck_formats %}
                             {{deckFormat.name}}
                             <option {% if decklist.deck_format.name == deckFormat %}selected{% endif %} value="{{deckFormat.name}}">{{deckFormat.name}}</option>
                         {% endfor %}

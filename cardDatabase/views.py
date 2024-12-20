@@ -676,7 +676,7 @@ def edit_decklist(request, decklist_id=None):
         order_by('-zone__show_by_default', 'position')
     ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
     ctx['decklist'] = decklist
-    ctx['deckFormat'] = Format.objects.all()
+    ctx['deck_formats'] = Format.objects.all()
     return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)
 
 @login_required
@@ -691,7 +691,7 @@ def edit_decklist_mobile(request, decklist_id=None):
         order_by('-zone__show_by_default', 'position')
     ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
     ctx['decklist'] = decklist
-    ctx['deckFormat'] = Format.objects.all()
+    ctx['deck_formats'] = Format.objects.all()
     return render(request, 'cardDatabase/html/edit_decklist_mobile.html', context=ctx)
 
 
@@ -789,7 +789,7 @@ def view_decklist(request, decklist_id, share_parameter = ''):
     Also avoids duplicate named/reprinted cards needing multiple banlist entries
     '''
     deck_card_names = list(cards.values_list('card__name', flat=True))
-    banned_cards = BannedCard.objects.all()
+    banned_cards = BannedCard.objects.filter(format=decklist.deck_format)
     ban_warnings = []
     for banned_card in banned_cards:
         if banned_card.card.name in deck_card_names:
@@ -800,7 +800,7 @@ def view_decklist(request, decklist_id, share_parameter = ''):
                 'view_card_url': reverse('cardDatabase-view-card', kwargs={'card_id': banned_card.card.card_id})
             })
 
-    combination_bans = CombinationBannedCards.objects.all()
+    combination_bans = CombinationBannedCards.objects.filter(format=decklist.deck_format)
     combination_ban_warnings = []
     for combination_ban in combination_bans:
         combination_banned_cards = combination_ban.cards.all()

@@ -58,11 +58,11 @@
                 <div class="formatWrapper">
                     <div>
                         <div class="fieldWrapper decktype-select">
-                            <select class="mdb-select" form="decklist_form" multiple name="deck_type" searchable="Search here...">
-                                {% for value, _ in decklist_form.deck_type.field.choices %}
-                                    <option value="{{ value }}"
-                                        {% if value in decklist_form_data.deck_type %}selected{% endif %}>
-                                            {{ value }}
+                            <select class="mdb-select md-form" multiple form="decklist_form" name="deck_format" searchable="Search here...">
+                                {% for value in formats %}
+                                    <option value="{{ value.name }}"
+                                        {% if value.name in decklist_form_data.deck_format %}selected{% endif %}>
+                                            {{ value.name }}
                                     </option>
                                 {% endfor %}
                             </select>

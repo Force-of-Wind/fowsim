@@ -464,6 +464,7 @@ def search_for_decklist(request):
             ctx['decklist_form_data'] = decklist_form.cleaned_data
         ctx |= {'decklists': decklist_search(decklist_form)}
 
+    ctx['formats'] = Format.objects.all()
     ctx['decklist_form'] = decklist_form or DecklistSearchForm()
 
     if 'decklists' in ctx:

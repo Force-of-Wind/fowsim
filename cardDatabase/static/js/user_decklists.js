@@ -48,5 +48,10 @@ $(function() {
         var dateTime = new Date(0); 
         dateTime.setUTCSeconds($(this).data('epoch'));
         $(this).text(dateTime.toLocaleString());
-    })
+    });
+
+    $('.format-tile').on('click', function(event){
+        let x = $(this).find('form');
+        console.log(x);
+    });
 });

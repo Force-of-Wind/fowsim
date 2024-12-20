@@ -93,7 +93,7 @@
                     <select id="deck-format-input" >
                         {% for deckFormat in deck_formats %}
                             {{deckFormat.name}}
-                            <option {% if decklist.deck_format.name == deckFormat %}selected{% endif %} value="{{deckFormat.name}}">{{deckFormat.name}}</option>
+                            <option {% if decklist.deck_format.name == deckFormat.name %}selected{% endif %} value="{{deckFormat.name}}">{{deckFormat.name}}</option>
                         {% endfor %}
                     </select>
                 </div>

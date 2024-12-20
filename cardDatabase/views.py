@@ -637,23 +637,25 @@ def view_users_public(request, username=None):
             if request.user.username == username:
                 #  Dont filter by is_public
                 ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile).order_by('-last_modified')
-                ctx['is_owner'] = True
+                ctx['is_owner'] = True                
             else:
                 ctx['decklists'] = DeckList.objects.filter(
                     profile=User.objects.get(username=username).profile, public=True).order_by('-last_modified')
                 ctx['is_owner'] = False
         except User.DoesNotExist:
             raise Http404
-            
+        
+        ctx['formats'] = Format.objects.all()
+
         return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
     else:
         raise Http404
 
 
 @login_required
-def create_decklist(request):
-    decklist = DeckList.objects.create(profile=request.user.profile, name='Untitled Deck')
-    for default_zone in DeckListZone.objects.filter(show_by_default=True):
+def create_decklist(request, format):
+    decklist = DeckList.objects.create(profile=request.user.profile, name='Untitled Deck', deck_format=Format.objects.get(name=format))
+    for default_zone in DeckListZone.objects.filter(show_by_default=True, format__name=format):
         UserDeckListZone.objects.create(zone=default_zone, position=default_zone.position, decklist=decklist)
     if request.user_agent.is_mobile or request.user_agent.is_tablet:
         return HttpResponseRedirect(reverse('cardDatabase-edit-decklist-mobile', kwargs={'decklist_id': decklist.id}))

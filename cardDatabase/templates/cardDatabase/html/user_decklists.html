@@ -8,6 +8,7 @@
 
 {% block js %}
     {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/bootstrap/bootstrap.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/user_decklists.js' %}"></script>
 {% endblock %}
 
@@ -22,11 +23,9 @@
 {% block body %}
     <div class="my-decklists">My Decklists</div>
     <div class="new-decklist">
-        <a href="{% url 'cardDatabase-create-decklist' %}">
-            <button type="button">
-                <b>&plus;</b> Create New Deck
-            </button>
-        </a>
+        <button id="create-decklist-btn" type="button" data-toggle="modal" data-target="#deck-format-modal">
+            <b>&plus;</b> Create New Deck
+        </button>
     </div>
     <div class="decklist-container {% if is_owner %}is-owner{% else %}not-owner{% endif %}">
         {% if decklists %}
@@ -109,4 +108,28 @@
             </div>
         {% endif %}
     </div>
+    <div class="modal fade" id="deck-format-modal" tabindex="-1" role="dialog" aria-labelledby="deck-format-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deck-format-modal-label">Format select</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body format-modal-body">
+                {% for format in formats %}
+                    <a href="{% url 'cardDatabase-create-decklist' format.name %}">
+                        <div class="format-tile">
+                            <span>{{format.name}}</span>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 {% endblock %}

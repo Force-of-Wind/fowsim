@@ -24,11 +24,8 @@ def get_races():
     return list(race_map)
 
 def get_formats():
-    try:
-        format_values = Format.objects.values('name')
-        format_map = map(lambda x : (x['name'], x['name']), format_values)
-    except:
-        return []
+    format_values = Format.objects.values('name')
+    format_map = map(lambda x : (x['name'], x['name']), format_values)
 
     return list(format_map)
 

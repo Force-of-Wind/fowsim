@@ -72,7 +72,7 @@ class AddCardForm(forms.ModelForm):
 
     class Meta:
         model = Card
-        fields = ['name', 'card_id', 'card_image', 'cost', 'divinity', 'flavour',
+        fields = ['name', 'card_id', '_card_image', 'cost', 'divinity', 'flavour',
                   'rarity', 'ATK', 'DEF', 'types', 'colours']
         widgets = {
             'types': forms.CheckboxSelectMultiple(),

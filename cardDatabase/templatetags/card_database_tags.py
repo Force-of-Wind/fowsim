@@ -408,11 +408,11 @@ def get_edit_decklist_url(decklist_pk, user_agent):
 
 @register.simple_tag
 def get_card_img_urls(card):
-    output = ["card.card_image.url"]
+    output = [card.card_image.url]
     other_sides = card.other_sides
     if other_sides:
         for other_side in other_sides:
-            output.append("other_side.card_image.url")
+            output.append(other_side.card_image.url)
     return str(output).replace('\'', '"')
 
 

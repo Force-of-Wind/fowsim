@@ -6,8 +6,13 @@
 {% block body %}
     <div class="import-wrapper">
         <h3>Upload Json</h3>
-        <input id="upload" class="upload-json-input" type="file" accept=".json" name="files" size=30>
-        <select id="importCardSelect" class="import-card-select hidden"></select>
+        <input id="upload" class="upload-json-input" type="file" accept=".json, .js, .txt" name="files" size=30>
+        <select id="importCardSelect" class="import-card-select hidden new-cards-only"></select>
+        <div>
+            <input id="onlyNewCards" type="checkbox" checked="checked" title="Only new cards">
+            <label for="onlyNewCards">Only new cards</label>
+        </div>
+        
     </div>
     <form id="add_card" method="post" enctype="multipart/form-data">
         {% csrf_token %}

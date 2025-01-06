@@ -26,3 +26,7 @@ label {
 .hidden {
     display:none;
 }
+
+.new-cards-only .old-card {
+    display:none;
+}

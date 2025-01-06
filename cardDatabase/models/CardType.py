@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
+from django.templatetags.static import static
 
 from cardDatabase.models.Effects import Effect
 from cardDatabase.models.Rulings import Ruling
@@ -204,7 +205,7 @@ class Card(AbstractModel):
             temp_img = CardImageWrapper(url=self._card_image.url)
             return temp_img
         except:
-            return CardImageWrapper(url="/static/img/none.png")
+            return CardImageWrapper(url=static("/img/none.png"))
 
 
 class Chant(models.Model):

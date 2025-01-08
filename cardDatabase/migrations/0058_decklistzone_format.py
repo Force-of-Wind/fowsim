@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     def initFormat(apps, schema_editor):
         Formats = apps.get_model('format', 'Format')
-        if Formats.objects.filter(name='custom').exits() is False:
+        if not Formats.objects.filter(name='custom').exists():
             format, created = Formats.objects.get_or_create(name='custom')
             format.save()
 
@@ -36,9 +36,4 @@ class Migration(migrations.Migration):
         migrations.RunPython(initFormat),
         #Update decklists to fill correct deck_format from existing deck_type
         migrations.RunPython(updateDeckListZonesFromDeckFormat),
-        #Delete deck_type from decklists
-        migrations.RemoveField(
-            model_name='decklist',
-            name='deck_type',
-        ),
     ]

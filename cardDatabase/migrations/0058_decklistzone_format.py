@@ -13,8 +13,8 @@ class Migration(migrations.Migration):
 
     def initFormat(apps, schema_editor):
         Formats = apps.get_model('format', 'Format')
-        if not Formats.objects.filter(name='custom').exists():
-            format, created = Formats.objects.get_or_create(name='custom')
+        if not Formats.objects.filter(name='Custom').exists():
+            format, created = Formats.objects.get_or_create(name='Custom')
             format.save()
 
     def updateDeckListZonesFromDeckFormat(apps, schema_editor):

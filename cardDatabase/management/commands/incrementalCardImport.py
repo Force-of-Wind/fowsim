@@ -116,4 +116,3 @@ class Command(BaseCommand):
                             except Exception as e:
                                 print(e)
                                 print('Failed, image doesn\'t exist?')
-        call_command('assign_existing_card_images')

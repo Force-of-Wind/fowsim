@@ -11,10 +11,34 @@ class Migration(migrations.Migration):
         ('cardDatabase', '0057_decklist_deck_format'),
     ]
 
+    def initFormat(apps, schema_editor):
+        Formats = apps.get_model('format', 'Format')
+        if Formats.objects.filter(name='custom').exits() is False:
+            format, created = Formats.objects.get_or_create(name='custom')
+            format.save()
+
+    def updateDeckListZonesFromDeckFormat(apps, schema_editor):
+        DeckLists = apps.get_model('decklist', 'DeckList')
+        Formats = apps.get_model('format', 'Format')
+        for row in DeckLists.objects.all():
+            name = row.deck_type
+            if(name=='ABC'):
+                name = 'Arcana Battle Colosseum'
+            row.deck_format = Formats.objects.get(name=name)
+
     operations = [
         migrations.AddField(
             model_name='decklistzone',
             name='format',
             field=models.ForeignKey(default=cardDatabase.models.Banlist.Format.get_default, on_delete=django.db.models.deletion.CASCADE, to='cardDatabase.format'),
+        ),
+        #Add Custom as Format
+        migrations.RunPython(initFormat),
+        #Update decklists to fill correct deck_format from existing deck_type
+        migrations.RunPython(updateDeckListZonesFromDeckFormat),
+        #Delete deck_type from decklists
+        migrations.RemoveField(
+            model_name='decklist',
+            name='deck_type',
         ),
     ]

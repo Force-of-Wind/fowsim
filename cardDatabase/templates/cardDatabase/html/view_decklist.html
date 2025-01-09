@@ -46,9 +46,9 @@
             </div>
             <div class="decklist-decklist-type">Format: {{decklist.deck_type}} </div>
             <input id="deck-id" hidden value="{{decklist.pk}}"/>
-            {% if decklist.shareMode == "tournament" %}
+            {% if decklist.deck_lock %}
                 <p class="disabled-edit">
-                    <b>Edit is disabled when Deck is in tournament share mode!</b>
+                    <p>Deck locked. Edit disabled!</p>
                 </p>
                 <div class="last-edit">
                     <div> Last modified: </div><div class="localized-dt" data-localizable-dt="{% datetime_to_timestamp decklist.last_modified %}"></div>
@@ -135,30 +135,37 @@
         </div>
         <div id="deck-options">
             <br>
-            {% if decklist.shareMode == "tournament" %}
+            {% if decklist.deck_lock %}
                 <b>
-                    <p>Edit is disabled when Deck is in tournament share mode!</p>
+                    <p>Deck locked. Edit disabled!</p>
                 </b>
             {% endif %}
-            {% if request.user == decklist.profile.user and decklist.shareCode != '' %}
-                <label for="share-link">Share Link</label>
-                <input class="form-control" readonly id="share-link" value="{{ absoluteShareLink }}">
-                <input hidden id="share-code" value="{{ decklist.shareCode }}">
-                <br>
-                <button type="button" id="copy-share">Copy share link</button>
-                <button type="button" id="delete-share">Delete share link</button>
-                
-                <br>
-            {% endif %}
-
-            {% if request.user == decklist.profile.user and decklist.shareCode == '' and not decklist.public  %}
-                <button type="button" id="create-share">Create share link</button>
-                <button type="button" id="create-tournament-share">Create tournament share link</button>
-                <br>
-            {% endif %}
+            
             {% if request.user == decklist.profile.user %}
                 {% csrf_token %}
-                {% if decklist.shareMode != "tournament" %}
+                
+                {% if decklist.shareCode != '' %}
+                    <label for="share-link">Share Link</label>
+                    <input class="form-control" readonly id="share-link" value="{{ absoluteShareLink }}">
+                    <input hidden id="share-code" value="{{ decklist.shareCode }}">
+                    <br>
+                    <button type="button" id="copy-share">Copy share link</button>
+                    <button type="button" data-url="{% url 'cardDatabase-delete-share-code' decklist.pk %}" id="delete-share">Delete share link</button>
+                {% endif %}
+
+                {% if decklist.shareCode == '' and not decklist.public  %}
+                    <button type="button" data-url="{% url 'cardDatabase-save-share-code' decklist.pk %}" id="create-share">Create share link</button>
+                {% endif %}
+                
+                {% if not decklist.deck_lock %}
+                    <button type="button" data-url="{% url 'cardDatabase-user-lock-decklist' decklist.pk %}" id="toggle-lock-decklist">Lock Decklist</button>
+                {% elif deckLockUserManaged %}
+                    <button type="button" data-url="{% url 'cardDatabase-user-unlock-decklist' decklist.pk %}" id="toggle-lock-decklist">Unlock Decklist</button>
+                {% endif %}
+                
+                <br>
+
+                {% if not decklist.deck_lock %}
                     <a href="{% get_edit_decklist_url decklist.pk request.user_agent %}">
                         <button type="button" id="edit-decklist">Edit Decklist</button>
                     </a>

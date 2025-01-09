@@ -666,8 +666,8 @@ def edit_decklist(request, decklist_id=None):
     # Check that the user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
 
-    if decklist.shareMode == "tournament":
-        return HttpResponseRedirect(reverse('cardDatabase-tournament-decklist'))
+    if not (decklist.deck_lock is None):
+        return HttpResponseRedirect(reverse('cardDatabase-locked-decklist'))
 
     ctx = get_search_form_ctx()
     ctx['basic_form'] = SearchForm()
@@ -684,6 +684,10 @@ def edit_decklist(request, decklist_id=None):
 def edit_decklist_mobile(request, decklist_id=None):
     # Check that the user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+
+    if not (decklist.deck_lock is None):
+        return HttpResponseRedirect(reverse('cardDatabase-locked-decklist'))
+    
     ctx = get_search_form_ctx()
     ctx['basic_form'] = SearchForm()
     ctx['advanced_form'] = AdvancedSearchForm()
@@ -747,11 +751,7 @@ def save_decklist(request, decklist_id=None):
 @login_required
 @require_POST
 def create_share_code(request, decklist_id=None):
-    data = json.loads(request.body.decode('UTF-8'))
-    if 'mode' in data:
-        mode = data['mode']
-    else:
-        mode = 'private'
+    mode = 'private'
 
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user, public=False)
@@ -773,12 +773,35 @@ def delete_share_code(request, decklist_id=None):
 
     return JsonResponse({'decklist_pk': decklist.pk})
 
+@login_required
+@require_POST
+def user_lock_decklist(request, decklist_id=None):
+    # Check user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    decklist.deck_lock = CONS.MODE_PRIVATE
+    decklist.save()
+
+    return JsonResponse({})
+
+@login_required
+@require_POST
+def user_unlock_decklist(request, decklist_id=None):
+    # Check user matches the decklist
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    if decklist.deck_lock is None or not (decklist.deck_lock == CONS.MODE_PRIVATE):
+        return HttpResponse('Deck cannot be unlocked by user!', status=400)
+    
+    decklist.deck_lock = None
+    decklist.save()
+
+    return JsonResponse({})
+
 
 def private_decklist(request):
     return render(request, 'cardDatabase/html/private_decklist.html')
 
-def tournament_decklist(request):
-    return render(request, 'cardDatabase/html/tournament_decklist.html')
+def locked_decklist(request):
+    return render(request, 'cardDatabase/html/locked_decklist.html')
 
 def view_decklist(request, decklist_id, share_parameter = ''):
     decklist = get_object_or_404(DeckList, pk=decklist_id)
@@ -826,45 +849,49 @@ def view_decklist(request, decklist_id, share_parameter = ''):
             combination_ban_warnings.append(combination_ban_warning)
     
     restricitons = Restriction.objects.all()
-    deckRestrictions = []
+    deck_restrictions = []
     for restriction in restricitons:
         exceptions = RestrictionException.objects.filter(restriction=restriction)
-        deckExceptions = []
+        deck_exceptions = []
         for exception in exceptions:
             cardsExceptionApplysTo = []
             for card in exception.exception_action.applying_to_cards.all():
                 cardsExceptionApplysTo.append(card.id)
-            deckExceptions.append({
+            deck_exceptions.append({
                 'exceptionApplyingCard' : exception.exception_applying_card.id,
                 'exceptionApplyingZone' : exception.card_zone_restriction,
                 'exceptionAction' : exception.exception_action.technical_name,
                 'cardsExceptionApplysTo': cardsExceptionApplysTo
             })
 
-        deckRestrictions.append({
+        deck_restrictions.append({
                     'text': restriction.text,
                     'action': restriction.action.technical_name,
                     'checkingTag': restriction.tag.id,
                     'restrictedTag': restriction.restricted_tag.id,
-                    'exceptions' : deckExceptions
+                    'exceptions' : deck_exceptions
                 })
             
-    cardsData = []
+    cards_data = []
     for card in cards:
         tags = []
         for tag in card.card.tag.all():
             tags.append(tag.id)
-        cardsData.append({
+        cards_data.append({
                     'quantity': card.quantity,
                     'tags': tags,
                     'id': card.card.id,
                     'zone': card.zone.zone.name
                 })
     absolute_share_link = None
+    deck_lock_user_managed = True
 
     if not (decklist.shareCode is None) and decklist.shareCode:
         relative_share_link = reverse('cardDatabase-view-decklist-share', kwargs={'decklist_id': decklist.pk, 'share_parameter': decklist.shareCode})
         absolute_share_link = request.build_absolute_uri(relative_share_link)
+
+    if not(decklist.deck_lock is None) and not (decklist.deck_lock == CONS.MODE_PRIVATE):
+        deck_lock_user_managed = False
     
 
     return render(request, 'cardDatabase/html/view_decklist.html', context={
@@ -873,9 +900,10 @@ def view_decklist(request, decklist_id, share_parameter = ''):
         'cards': cards,
         'ban_warnings': ban_warnings,
         'combination_ban_warnings': combination_ban_warnings,
-        'deckRestrictions' : deckRestrictions,
-        'cardsData': cardsData,
-        'absoluteShareLink': absolute_share_link
+        'deckRestrictions' : deck_restrictions,
+        'cardsData': cards_data,
+        'absoluteShareLink': absolute_share_link,
+        'deckLockUserManaged': deck_lock_user_managed
     })
 
 

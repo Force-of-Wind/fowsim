@@ -955,9 +955,17 @@ PACK_OPENING_SETS = [
     'mp01'
 ]
 
+MODE_PRIVATE = 'private'
+MODE_TOURNAMENT = 'tournament'
+
 DECK_LIST_SHARE_MODE_CHOICES = [
-    ['private', 'private'],
-    ['tournament', 'tournament']
+    [MODE_PRIVATE, MODE_PRIVATE],
+    [MODE_TOURNAMENT, MODE_TOURNAMENT]
+]
+
+DECK_LIST_LOCK_MODE_CHOICES = [
+    [MODE_PRIVATE, MODE_PRIVATE],
+    [MODE_TOURNAMENT, MODE_TOURNAMENT]
 ]
 
 DECK_TYPE_WANDERER = "Wanderer"

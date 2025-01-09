@@ -40,4 +40,5 @@ urlpatterns = [
     path('pack_select/', views.pack_select, name='cardDatabase-pack-select'),
     path('pack_history/', views.pack_history, name='cardDatabase-pack-history'),
     path('api/deck/<int:decklist_id>/', views.export_decklist, name='cardDatabase-export-decklist'),
+    path('api/deck/<int:decklist_id>/<str:share_parameter>', views.export_decklist_share, name='cardDatabase-export-decklist-share'),
 ]

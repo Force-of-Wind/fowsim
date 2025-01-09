@@ -115,25 +115,28 @@ $(function(){
     }
     else if($('#create-share').length > 0){
         $('#create-share').click(function(e){
-            createShareLink('private');
-        });
-
-        $('#create-tournament-share').click(function(e){
-            createShareLink('tournament');
+            createShareLink();
         });
     }
 
-    function createShareLink(mode){
+    if ($('#toggle-lock-decklist').length > 0) {
+        $('#toggle-lock-decklist').click(function (e) {
+            changeDeckListLock()
+        });
+        
+    }
+
+    function createShareLink(){
         $.ajaxSetup({
             headers: {'X-CSRFToken': getCookie('csrftoken')}
         });
         let deckId = document.getElementById('deck-id').value;
+        let url = $('#create-share').data('url');
+        
         $.ajax({
             type: 'POST',
-            url: `/create_share_code/${deckId}/`,
-            data: JSON.stringify({
-                mode: mode
-            }),
+            url: url,
+            data:{},
             success: function () {
                 window.location.reload();
             },
@@ -141,7 +144,7 @@ $(function(){
                 console.error('Error creating share link!');
             },
             contentType: 'application/json',
-        })
+        });
     }
 
     function deleteShareLink(){
@@ -149,10 +152,12 @@ $(function(){
             headers: {'X-CSRFToken': getCookie('csrftoken')}
         });
         let deckId = document.getElementById('deck-id').value;
+        let url = $('#delete-share').data('url');
 
         $.ajax({
             type: 'POST',
-            url: `/delete_share_code/${deckId}/`,
+            url: url,
+            data:{},
             success: function () {
                 window.location.reload();
             },
@@ -160,7 +165,27 @@ $(function(){
                 console.error('Error deleting share link!');
             },
             contentType: 'application/json',
-        })
+        });
+    }
+
+    function changeDeckListLock(){
+        $.ajaxSetup({
+            headers: {'X-CSRFToken': getCookie('csrftoken')}
+        });
+        let url = $('#toggle-lock-decklist').data('url');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data:{},
+            success: function () {
+                window.location.reload();
+            },
+            error: function () {
+                console.error('Error lock/unlocking Decklist!');
+            },
+            contentType: 'application/json',
+        });
     }
 
     function getCookie(c_name)

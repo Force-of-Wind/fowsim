@@ -8,6 +8,7 @@ from cardDatabase.models.Spoilers import SpoilerSeason
 from cardDatabase.models.Banlist import CombinationBannedCards, BannedCard, Format
 from cardDatabase.models.Rulings import Ruling, Restriction, RestrictionAction, RestrictionException, ExceptionAction
 from cardDatabase.models.Metrics import *
+from cardDatabase.models.Tournament import *
 
 class AbilityTextInline(admin.TabularInline):
     model = CardAbility
@@ -112,3 +113,8 @@ admin.site.register(AttributePickRate)
 admin.site.register(PickPeriod)
 admin.site.register(Type)
 admin.site.register(CardArtist, ArtistAdmin)
+admin.site.register(Tournament)
+admin.site.register(TournamentPlayer)
+admin.site.register(TournamentStaff)
+admin.site.register(StaffRole)
+admin.site.register(TournamentLevel)

@@ -716,6 +716,10 @@ def save_decklist(request, decklist_id=None):
     decklist.comments = decklist_data['comments']
     decklist.public = is_public
     decklist.deck_type = decklist_type
+    #reset state if public since public decklists cant have share codes
+    if is_public:
+        decklist.shareMode = ''
+        decklist.shareCode = ''
     decklist.save()
     #  Remove old cards, then rebuild it
     DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()
@@ -750,7 +754,7 @@ def create_share_code(request, decklist_id=None):
         mode = 'private'
 
     # Check user matches the decklist
-    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
+    decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user, public=False)
     decklist.shareMode = mode
     decklist.shareCode = uuid.uuid4().hex
     decklist.save()
@@ -856,8 +860,11 @@ def view_decklist(request, decklist_id, share_parameter = ''):
                     'id': card.card.id,
                     'zone': card.zone.zone.name
                 })
+    absolute_share_link = None
 
-    
+    if not (decklist.shareCode is None) and decklist.shareCode:
+        relative_share_link = reverse('cardDatabase-view-decklist-share', kwargs={'decklist_id': decklist.pk, 'share_parameter': decklist.shareCode})
+        absolute_share_link = request.build_absolute_uri(relative_share_link)
     
 
     return render(request, 'cardDatabase/html/view_decklist.html', context={
@@ -867,7 +874,8 @@ def view_decklist(request, decklist_id, share_parameter = ''):
         'ban_warnings': ban_warnings,
         'combination_ban_warnings': combination_ban_warnings,
         'deckRestrictions' : deckRestrictions,
-        'cardsData': cardsData
+        'cardsData': cardsData,
+        'absoluteShareLink': absolute_share_link
     })
 
 
@@ -1230,7 +1238,13 @@ def pack_history(request):
 
 def export_decklist(request, decklist_id):
     decklist = get_object_or_404(DeckList, id=decklist_id, public=True)
+    return generate_export_decklist(decklist)
 
+def export_decklist_share(request, decklist_id, share_parameter):
+    decklist = get_object_or_404(DeckList, id=decklist_id, shareCode=share_parameter, public=False)
+    return generate_export_decklist(decklist)
+
+def generate_export_decklist(decklist):
     deck_name = decklist.name
     cards = []
     for deckcard in decklist.cards.all():

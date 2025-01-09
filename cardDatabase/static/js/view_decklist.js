@@ -107,10 +107,11 @@ $(function(){
             deleteShareLink();
         });
         $('#copy-share').click(function(e){
-            let url = `${window.location.href}${$('#share-link').val()}/`;
-            navigator.clipboard.writeText(url);
-            alert("Copied link. " + url);
-        })
+            var copyText = document.getElementById("share-link");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+        });
     }
     else if($('#create-share').length > 0){
         $('#create-share').click(function(e){
@@ -126,17 +127,15 @@ $(function(){
         $.ajaxSetup({
             headers: {'X-CSRFToken': getCookie('csrftoken')}
         });
+        let deckId = document.getElementById('deck-id').value;
         $.ajax({
             type: 'POST',
-            url: `/create_share_code/${window.location.pathname.split('/')[2]}/`,
+            url: `/create_share_code/${deckId}/`,
             data: JSON.stringify({
                 mode: mode
             }),
-            success: function (data) {
-                let url = `${window.location.href}${data.code}/`;
-                alert(url);
-
-                window.location.assign(window.location.href);
+            success: function () {
+                window.location.reload();
             },
             error: function () {
                 console.error('Error creating share link!');
@@ -149,11 +148,13 @@ $(function(){
         $.ajaxSetup({
             headers: {'X-CSRFToken': getCookie('csrftoken')}
         });
+        let deckId = document.getElementById('deck-id').value;
+
         $.ajax({
             type: 'POST',
-            url: `/delete_share_code/${window.location.pathname.split('/')[2]}/`,
+            url: `/delete_share_code/${deckId}/`,
             success: function () {
-                window.location.assign(window.location.href);
+                window.location.reload();
             },
             error: function () {
                 console.error('Error deleting share link!');

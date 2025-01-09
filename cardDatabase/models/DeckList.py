@@ -19,6 +19,8 @@ class DeckList(models.Model):
     shareCode = models.TextField(max_length=32, blank=True, null=True, default='')
     shareMode = models.TextField(max_length=32, blank=True, null=True, default='',
                                  choices=CONS.DECK_LIST_SHARE_MODE_CHOICES)
+    deck_lock = models.TextField(max_length=32, blank=True, null=True, default=None,
+                                 choices=CONS.DECK_LIST_LOCK_MODE_CHOICES)
     deck_format = models.ForeignKey('Format', on_delete=models.CASCADE, default=Format.get_default)
 
     def save(self, *args, **kwargs):

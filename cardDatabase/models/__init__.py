@@ -9,6 +9,7 @@ from .Spoilers import SpoilerSeason
 from .Banlist import CombinationBannedCards, BannedCard, Format
 from .Rulings import Ruling
 from .Metrics import PickPeriod, MostPickedCardPickRate, AttributePickRate, CardTypePickRate, CardTotalCostPickRate
+from .Tournament import Tournament, TournamentLevel, TournamentPlayer, TournamentStaff, StaffRole
 '''
 # iterate through the modules in the current package
 package_dir = Path(__file__).resolve().parent

@@ -2,6 +2,8 @@ from django.contrib.auth import views as DjangoAuthViews
 from django.urls import path
 from django.shortcuts import redirect
 
+from . import views
+from .tournament import tournament_views
 from .forms import UserLoginForm
 from .views import search, search_for_decklist, deprecated_decklist_url, create_decklist, edit_decklist, \
     edit_decklist_mobile, view_decklist, view_user_public, delete_decklist, logout, user_preferences, register, \
@@ -46,4 +48,7 @@ urlpatterns = [
     path('pack_select/', pack_select.get, name='cardDatabase-pack-select'),
     path('pack_history/', pack_history.get, name='cardDatabase-pack-history'),
     path('api/deck/<int:decklist_id>/', export_decklist.get, name='cardDatabase-export-decklist'),
+
+    # TOURNAMENT SECTION
+    path('tournaments/', tournament_views.show_tournaments, name='cardDatabase-tournament-list'),
 ]

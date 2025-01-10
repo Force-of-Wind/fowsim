@@ -3,7 +3,7 @@ import json
 import re
 import datetime
 import random
-import uuid;
+import uuid
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q, F, Count

@@ -1,0 +1,28 @@
+{% extends 'cardDatabase/html/base.html' %}
+
+<span>Create new Tournament</span>
+
+<form id="create-tournament" data-action="{% url 'cardDatabase-create-tournament' %}">
+    <label for="title">Title</label>
+    <input id="title" type="text" name="title" class="form-control"/>
+    <label for="is_online">Is Online Tournament</label>
+    <input type="checkbox" id="is_online" name="is_online" class="form-control"/>
+    <label for="format">Restrict to Format</label>
+    <select id="format" name="format" class="form-control">
+        <option value="">No Format restriction</option>
+        {% for format in formats %}
+            <option value="{{format.pk}}">{{format.name}}</option>
+        {% endfor %}
+    </select>
+
+    <label for="level">Restrict to Format</label>
+    <select id="level" name="level" class="form-control" required>
+        {% for level in levels %}
+            <option value="{{level.pk}}">{{level.title}}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="title" class="form-control"/>
+    <input type="text" name="title" class="form-control"/>
+    <input type="text" name="title" class="form-control"/>
+    <input type="text" name="title" class="form-control"/>
+</form>

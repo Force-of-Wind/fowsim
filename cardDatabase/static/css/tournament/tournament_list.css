@@ -1,0 +1,16 @@
+.no-tournaments{
+    font-weight: bold;
+    width: max-content;
+    margin: 0 auto;
+}
+
+.no-tournaments{
+    width: max-content;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.new-tournament{
+    padding-left: 100px;
+    padding-bottom: 50px;
+}

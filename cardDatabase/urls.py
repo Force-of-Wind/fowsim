@@ -51,4 +51,6 @@ urlpatterns = [
 
     # TOURNAMENT SECTION
     path('tournaments/', tournament_views.show_tournaments, name='cardDatabase-tournament-list'),
+    path('new_tournament/', tournament_views.new_tournament, name='cardDatabase-new-tournament'),
+    path('create_tournament/', tournament_views.create_tournament, name='cardDatabase-create-tournament'),
 ]

@@ -16,6 +16,7 @@ from django.urls import reverse
 
 from ..forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm, DecklistSearchForm
 from ..models.Tournament import Tournament, TournamentLevel, TournamentPlayer, TournamentStaff, StaffRole
+from ..models.Banlist import Format
 from fowsim import constants as CONS
 
 
@@ -26,3 +27,20 @@ def show_tournaments(request):
     return render(request, 'tournament/tournament_list.html', context={
         "tournaments": tournaments
     })
+
+@login_required
+def new_tournament(request):
+    return render(request, 'tournament/tournament_create.html', context={
+        'formats': Format.objects.all(),
+        'levels': TournamentLevel.objects.all()
+    })
+
+@login_required
+def create_tournament(request):
+
+    #create tournament with GET DATA
+
+    return render(request, 'tournament/tournament_details.html', context={
+        #'tournament'
+    })
+

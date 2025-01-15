@@ -1,1 +1,31 @@
 {% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/tournament/tournament_list.css' %}">
+{% endblock %}
+
+{% block body %}
+    {% if request.user.is_authenticated %}
+        <div class="new-tournament">
+            <a href="{% url 'cardDatabase-new-tournament' %}">
+                <button type="button">
+                    <b>&plus;</b> Create Tournament
+                </button>
+            </a>
+        </div>
+    {% endif %}
+    {% if tournaments|length > 0 %}
+        {% for tournament in tournaments %}
+            {{ tournament.title }}
+        {% endfor %}
+    {% else %}
+        <div class="no-tournaments">
+            <div class="no-tournaments-text">
+                No Tournaments found
+            </div>
+            <img src="{% get_random_chibi 'sad' %}">
+        </div>
+    {% endif %}
+{% endblock %}

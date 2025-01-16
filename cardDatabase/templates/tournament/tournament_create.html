@@ -1,28 +1,73 @@
 {% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
 
-<span>Create new Tournament</span>
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/bootstrap/datepicker-bs4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tournament/tournament_edit.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
 
-<form id="create-tournament" data-action="{% url 'cardDatabase-create-tournament' %}">
-    <label for="title">Title</label>
-    <input id="title" type="text" name="title" class="form-control"/>
-    <label for="is_online">Is Online Tournament</label>
-    <input type="checkbox" id="is_online" name="is_online" class="form-control"/>
-    <label for="format">Restrict to Format</label>
-    <select id="format" name="format" class="form-control">
-        <option value="">No Format restriction</option>
-        {% for format in formats %}
-            <option value="{{format.pk}}">{{format.name}}</option>
-        {% endfor %}
-    </select>
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/bootstrap/datepicker.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/en-GB.min.js' %}"></script>
+    <script  src="{% static 'js/tournament/tournament_create.js' %}"></script>
+{% endblock %}
 
-    <label for="level">Restrict to Format</label>
-    <select id="level" name="level" class="form-control" required>
-        {% for level in levels %}
-            <option value="{{level.pk}}">{{level.title}}</option>
-        {% endfor %}
-    </select>
-    <input type="text" name="title" class="form-control"/>
-    <input type="text" name="title" class="form-control"/>
-    <input type="text" name="title" class="form-control"/>
-    <input type="text" name="title" class="form-control"/>
-</form>
+{% block body %}
+<div>
+    <span>Create new Tournament</span>
+
+    <form id="create-tournament" class="edit-form" data-action="{% url 'cardDatabase-create-tournament' %}">
+        <div class="container">
+            <div class="row">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input id="title" type="text" name="title" class="form-control"/>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <input type="checkbox" id="is_online" name="is_online"/>
+                    <label for="is_online">Is Online Tournament</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="format">Restrict to Format</label>
+                    <select id="format" name="format" class="form-control">
+                        <option value="">No Format restriction</option>
+                        {% for format in formats %}
+                            <option value="{{format.pk}}">{{format.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="level">Restrict to Format</label>
+                    <select id="level" name="level" class="form-control" required>
+                        {% for level in levels %}
+                            <option value="{{level.pk}}">{{level.title}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    {# date time picker for start datetime #}
+                 </div>
+            </div>
+
+            <div class="row">
+
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

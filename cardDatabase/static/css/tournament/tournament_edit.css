@@ -1,0 +1,5 @@
+.edit-form input[type="checkbox"] {
+    position: static;
+    opacity: 1;
+    pointer-events: all;
+}

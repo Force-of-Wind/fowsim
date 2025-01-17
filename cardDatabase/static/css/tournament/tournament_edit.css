@@ -9,3 +9,7 @@
     background-color: white !important;
     border: none !important;
 }
+
+.level-hint{
+    font-weight: bold;
+}

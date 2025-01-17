@@ -15,69 +15,101 @@
 {% endblock %}
 
 {% block body %}
-<div>
-    <span>Create new Tournament</span>
+    <div>
+        <span>Create new Tournament</span>
 
-    <form id="create-tournament" class="edit-form" data-action="{% url 'cardDatabase-create-tournament' %}">
-        <div class="container">
-            <div class="row">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input id="title" maxlength="200" type="text" name="title" class="form-control"/>
+        <form id="create-tournament" class="edit-form" data-action="{% url 'cardDatabase-create-tournament' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input id="title" maxlength="200" type="text" name="title" class="form-control"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <input type="checkbox" id="is_online" name="is_online"/>
+                        <label for="is_online">Is Online Tournament</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input id="location" maxlength="200" type="text" name="location" class="form-control"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="prices">Prices</label>
+                        <input id="prices" maxlength="200" type="text" name="prices" class="form-control"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="prices-link">Prices Link</label>
+                        <input id="prices-link" maxlength="200" type="text" name="prices-link" class="form-control"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="fee">Tournament Fee</label>
+                        <input id="fee" maxlength="200" type="text" name="fee" class="form-control"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="additional">Additional Information</label>
+                        <textarea id="additional" maxlength="500" type="textarea" name="additional" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="format">Restrict to Format</label>
+                        <select id="format" name="format" class="form-control">
+                            <option value="">No Format restriction</option>
+                            {% for format in formats %}
+                                <option value="{{format.pk}}">{{format.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="level">Tournament Level</label>
+                        <select id="level" name="level" class="form-control" required>
+                            {% for level in levels %}
+                                <option value="{{level.pk}}" data-hint="{{level.hint}}">{{level.title}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <span class="level-hint"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="start_date_time">Start Time</label>
+                        <input type="text" id="start_date_time" name="start_date_time" class="form-control date-time-picker" required />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="deck_registration_end_date_time">Registration End</label>
+                        <input type="text" id="deck_registration_end_date_time" name="deck_registration_end_date_time" class="form-control date-time-picker" required />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="deck_lock_date_time">Deck Edit lock after</label>
+                        <input type="text" id="deck_registration_end_date_time" name="deck_registration_end_date_time" class="form-control date-time-picker" />
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div>
-                    <input type="checkbox" id="is_online" name="is_online"/>
-                    <label for="is_online">Is Online Tournament</label>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label for="format">Restrict to Format</label>
-                    <select id="format" name="format" class="form-control">
-                        <option value="">No Format restriction</option>
-                        {% for format in formats %}
-                            <option value="{{format.pk}}">{{format.name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label for="level">Restrict to Format</label>
-                    <select id="level" name="level" class="form-control" required>
-                        {% for level in levels %}
-                            <option value="{{level.pk}}">{{level.title}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label for="start_date_time">Start Time</label>
-                    <input type="text" id="start_date_time" name="start_date_time" class="form-control date-time-picker" required />
-                 </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label for="deck_registration_end_date_time">Registration End</label>
-                    <input type="text" id="deck_registration_end_date_time" name="deck_registration_end_date_time" class="form-control date-time-picker" required />
-                 </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label for="deck_lock_date_time">Deck Edit lock after</label>
-                    <input type="text" id="deck_registration_end_date_time" name="deck_registration_end_date_time" class="form-control date-time-picker" />
-                 </div>
-            </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 {% endblock %}
 

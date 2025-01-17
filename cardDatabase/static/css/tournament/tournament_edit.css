@@ -3,3 +3,9 @@
     opacity: 1;
     pointer-events: all;
 }
+
+.numInput{
+    color: #393939 !important;
+    background-color: white !important;
+    border: none !important;
+}

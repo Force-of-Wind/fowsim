@@ -3,15 +3,14 @@
 
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/bootstrap/datepicker-bs4.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="{% static 'css/tournament/tournament_edit.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block js %}
     {{ block.super }}
-    <script src="{% static 'js/bootstrap/datepicker.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap/en-GB.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script  src="{% static 'js/tournament/tournament_create.js' %}"></script>
 {% endblock %}
 
@@ -24,7 +23,7 @@
             <div class="row">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input id="title" type="text" name="title" class="form-control"/>
+                    <input id="title" maxlength="200" type="text" name="title" class="form-control"/>
                 </div>
             </div>
             <div class="row">
@@ -59,12 +58,23 @@
 
             <div class="row">
                 <div class="form-group">
-                    {# date time picker for start datetime #}
+                    <label for="start_date_time">Start Time</label>
+                    <input type="text" id="start_date_time" name="start_date_time" class="form-control date-time-picker" required />
                  </div>
             </div>
 
             <div class="row">
+                <div class="form-group">
+                    <label for="deck_registration_end_date_time">Registration End</label>
+                    <input type="text" id="deck_registration_end_date_time" name="deck_registration_end_date_time" class="form-control date-time-picker" required />
+                 </div>
+            </div>
 
+            <div class="row">
+                <div class="form-group">
+                    <label for="deck_lock_date_time">Deck Edit lock after</label>
+                    <input type="text" id="deck_registration_end_date_time" name="deck_registration_end_date_time" class="form-control date-time-picker" />
+                 </div>
             </div>
         </div>
     </form>

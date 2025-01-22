@@ -651,6 +651,7 @@ SETS_IN_ORDER = [
     'T3 Buy a Box',
     'MC06',
     'MP02',
+    'MC07',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {

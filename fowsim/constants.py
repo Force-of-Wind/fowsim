@@ -330,8 +330,7 @@ SET_DATA = {
                 {'code': 'TWS', 'name': 'The War of the Suns'},
                 {'code': 'CMB', 'name': 'Crimson Moon\'s Battleground'},
                 {'code': 'CST', 'name': 'Clash of the Star Trees'},
-                {'code': 'JRP', 'name': 'Judgment of the Rogue Planet'},
-                {'code': 'MP01', 'name': 'Masterpiece "Pilgrim Memories"'}
+                {'code': 'JRP', 'name': 'Judgment of the Rogue Planet'}
             ]
         },
         {
@@ -360,7 +359,14 @@ SET_DATA = {
                 {'code': 'ABC-SD10', 'name': 'Elektra vs The Lich King (The Lich King)'},
                 {'code': 'ABC-SD11', 'name': 'Void vs Void'},
             ]
-        }
+        },
+        {
+            'name': 'Masterpiece Collection',
+            'sets': [
+                {'code': 'MP01', 'name': 'Masterpiece "Pilgrim Memories"'},
+                {'code': 'MP02', 'name': 'Masterpiece Collection 02 "Fates Reunited!"'}
+            ]
+        },
     ]
 }
 
@@ -644,6 +650,7 @@ SETS_IN_ORDER = [
     'TEU',
     'T3 Buy a Box',
     'MC06',
+    'MP02',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -741,9 +748,12 @@ SEARCH_SETS_INCLUDE = {
         'MC05',
     ],
     'TEU': [
-        'T3 Buy a Box'
+        'T3 Buy a Box',
         'MC06',
     ],
+    'MP02': [
+        'MC07',
+    ]
 }
 
 KEYWORDS_CHOICES = [

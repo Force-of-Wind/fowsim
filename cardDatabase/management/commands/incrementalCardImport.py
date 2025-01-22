@@ -65,9 +65,9 @@ class Command(BaseCommand):
                             if card['id'].startswith(unused_set):
                                 break
                         else:
-                            #card already exists -> break
+                            #card already exists -> continue to next card
                             if Card.objects.filter(card_id=card['id']).exists():
-                                break
+                                continue
                             # In a used set
                             card_types = card['type']
                             card_races = card['race']

@@ -748,9 +748,12 @@ SEARCH_SETS_INCLUDE = {
         'MC05',
     ],
     'TEU': [
-        'T3 Buy a Box'
+        'T3 Buy a Box',
         'MC06',
     ],
+    'MP02': [
+        'MC07',
+    ]
 }
 
 KEYWORDS_CHOICES = [

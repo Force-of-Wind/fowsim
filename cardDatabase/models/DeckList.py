@@ -4,6 +4,7 @@ from django.db import models
 
 from .User import Profile
 from fowsim import constants as CONS
+from .Banlist import Format
 
 
 class DeckList(models.Model):
@@ -18,7 +19,7 @@ class DeckList(models.Model):
     shareCode = models.TextField(max_length=32, blank=True, null=True, default='')
     shareMode = models.TextField(max_length=32, blank=True, null=True, default='',
                                  choices=CONS.DECK_LIST_SHARE_MODE_CHOICES)
-    deck_type = models.CharField(max_length=32,choices=CONS.DECK_TYPE_CHOICES, blank=False, null=False, default=CONS.DECK_TYPE_WANDERER)
+    deck_format = models.ForeignKey('Format', on_delete=models.CASCADE, default=Format.get_default)
 
     def save(self, *args, **kwargs):
         self.last_modified = timezone.now()
@@ -55,6 +56,7 @@ class DeckListZone(models.Model):
     name = models.CharField(max_length=10000, blank=False, null=False)
     show_by_default = models.BooleanField(blank=False, null=False, default=False)
     position = models.IntegerField(blank=True, null=True)
+    format = models.ForeignKey('Format', on_delete=models.CASCADE, default=Format.get_default)
 
 
 class UserDeckListZone(models.Model):

@@ -48,5 +48,5 @@ $(function() {
         var dateTime = new Date(0); 
         dateTime.setUTCSeconds($(this).data('epoch'));
         $(this).text(dateTime.toLocaleString());
-    })
+    });
 });

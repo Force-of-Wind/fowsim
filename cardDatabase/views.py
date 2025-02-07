@@ -22,7 +22,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm, DecklistSearchForm
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
 from .models.CardType import Card, Race, Set
-from .models.Banlist import BannedCard, CombinationBannedCards
+from .models.Banlist import BannedCard, CombinationBannedCards, Format
 from .models.Rulings import Restriction, RestrictionException
 from .models.Metrics import PickPeriod, MostPickedCardPickRate, AttributePickRate, CardTotalCostPickRate, CardTypePickRate
 from fowsim import constants as CONS
@@ -186,11 +186,11 @@ def get_set_number_sort_value(set_number):
             return -1 * int(num)
     return float('-inf')
 
-def get_deck_type_query(data):
-    deck_type_query = Q()
-    for deck_type in data:
-        deck_type_query |= Q(deck_type=deck_type)
-    return deck_type_query
+def get_deck_format_query(data):
+    deck_format_query = Q()
+    for deck_format in data:
+        deck_format_query |= Q(deck_format__name=deck_format)
+    return deck_format_query
 
 
 def sort_cards(cards, sort_by, is_reversed, pick_time_period = None):
@@ -252,9 +252,9 @@ def decklist_search(decklist_form):
     if decklist_form.is_valid():
         search_text = decklist_form.cleaned_data['contains_card']
         text_exactness = decklist_form.cleaned_data['text_exactness']
-        deck_type_filter = get_deck_type_query(decklist_form.cleaned_data['deck_type'])
+        deck_format_filter = get_deck_format_query(decklist_form.cleaned_data['deck_format'])
         decklists = DeckList.objects.exclude(get_unsupported_decklists_query()).distinct()
-        decklists = decklists.filter(deck_type_filter)
+        decklists = decklists.filter(deck_format_filter)
         decklists = apply_deckcard_cardname_search(decklists, search_text, ['name'], text_exactness)
         decklists = decklists.order_by('-last_modified')
 
@@ -464,6 +464,7 @@ def search_for_decklist(request):
             ctx['decklist_form_data'] = decklist_form.cleaned_data
         ctx |= {'decklists': decklist_search(decklist_form)}
 
+    ctx['formats'] = Format.objects.all()
     ctx['decklist_form'] = decklist_form or DecklistSearchForm()
 
     if 'decklists' in ctx:
@@ -637,23 +638,25 @@ def view_users_public(request, username=None):
             if request.user.username == username:
                 #  Dont filter by is_public
                 ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile).order_by('-last_modified')
-                ctx['is_owner'] = True
+                ctx['is_owner'] = True                
             else:
                 ctx['decklists'] = DeckList.objects.filter(
                     profile=User.objects.get(username=username).profile, public=True).order_by('-last_modified')
                 ctx['is_owner'] = False
         except User.DoesNotExist:
             raise Http404
-            
+        
+        ctx['formats'] = Format.objects.all()
+
         return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
     else:
         raise Http404
 
 
 @login_required
-def create_decklist(request):
-    decklist = DeckList.objects.create(profile=request.user.profile, name='Untitled Deck')
-    for default_zone in DeckListZone.objects.filter(show_by_default=True):
+def create_decklist(request, format):
+    decklist = DeckList.objects.create(profile=request.user.profile, name='Untitled Deck', deck_format=Format.objects.get(name=format))
+    for default_zone in DeckListZone.objects.filter(show_by_default=True, format__name=format):
         UserDeckListZone.objects.create(zone=default_zone, position=default_zone.position, decklist=decklist)
     if request.user_agent.is_mobile or request.user_agent.is_tablet:
         return HttpResponseRedirect(reverse('cardDatabase-edit-decklist-mobile', kwargs={'decklist_id': decklist.id}))
@@ -676,7 +679,7 @@ def edit_decklist(request, decklist_id=None):
         order_by('-zone__show_by_default', 'position')
     ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
     ctx['decklist'] = decklist
-    ctx['deckTypes'] = CONS.DECK_TYPE_VALUES
+    ctx['deck_formats'] = Format.objects.all()
     return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)
 
 @login_required
@@ -691,7 +694,7 @@ def edit_decklist_mobile(request, decklist_id=None):
         order_by('-zone__show_by_default', 'position')
     ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
     ctx['decklist'] = decklist
-    ctx['deckTypes'] = CONS.DECK_TYPE_VALUES
+    ctx['deck_formats'] = Format.objects.all()
     return render(request, 'cardDatabase/html/edit_decklist_mobile.html', context=ctx)
 
 
@@ -700,7 +703,7 @@ def edit_decklist_mobile(request, decklist_id=None):
 def save_decklist(request, decklist_id=None):
     data = json.loads(request.body.decode('UTF-8'))
     decklist_data = data['decklist_data']
-    decklist_type = data['deck_type']
+    decklist_format = data['deck_format']
     if 'is_public' in data:
         is_public = data['is_public']
     else:
@@ -715,7 +718,7 @@ def save_decklist(request, decklist_id=None):
     decklist.name = decklist_data['name']
     decklist.comments = decklist_data['comments']
     decklist.public = is_public
-    decklist.deck_type = decklist_type
+    decklist.deck_format = Format.objects.get(name=decklist_format)
     decklist.save()
     #  Remove old cards, then rebuild it
     DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()
@@ -789,7 +792,7 @@ def view_decklist(request, decklist_id, share_parameter = ''):
     Also avoids duplicate named/reprinted cards needing multiple banlist entries
     '''
     deck_card_names = list(cards.values_list('card__name', flat=True))
-    banned_cards = BannedCard.objects.all()
+    banned_cards = BannedCard.objects.filter(format=decklist.deck_format)
     ban_warnings = []
     for banned_card in banned_cards:
         if banned_card.card.name in deck_card_names:
@@ -800,7 +803,7 @@ def view_decklist(request, decklist_id, share_parameter = ''):
                 'view_card_url': reverse('cardDatabase-view-card', kwargs={'card_id': banned_card.card.card_id})
             })
 
-    combination_bans = CombinationBannedCards.objects.all()
+    combination_bans = CombinationBannedCards.objects.filter(format=decklist.deck_format)
     combination_ban_warnings = []
     for combination_ban in combination_bans:
         combination_banned_cards = combination_ban.cards.all()

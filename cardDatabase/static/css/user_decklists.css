@@ -72,3 +72,16 @@ body.hasHover #user-decklists tr:not(:first-child):hover{
 .private-icon{
     filter: opacity(0.5) drop-shadow(0 0 0 red);
 }
+
+.format-modal-body{
+    justify-content: center;
+    gap: 15px;
+    display: flex;
+}
+
+.format-tile{
+    border: 1px solid;
+    padding: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}

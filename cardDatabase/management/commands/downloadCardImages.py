@@ -69,7 +69,7 @@ class Command(BaseCommand):
                     im = new_image
                     im = im.convert("RGB")
 
-                im = im.resize(size, Image.ANTIALIAS)
+                im = im.resize(size, Image.LANCZOS)
                 im_io = BytesIO()
                 im.save(im_io, 'JPEG', quality=70)
 

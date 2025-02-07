@@ -1,11 +1,7 @@
 {% load static card_database_tags %}
 <div class="card-container">
     <div class="card-left-half">
-        {% if card.card_image %}
-            <img class="card-img" src="{{ card.card_image.url }}">
-        {% else %}
-            Image Missing
-        {% endif %}
+        <img class="card-img" src="{{ card.card_image.url }}">
     </div>
     <div class="card-right-half">
         <div class="card-text-info">

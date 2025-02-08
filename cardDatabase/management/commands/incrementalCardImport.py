@@ -63,7 +63,7 @@ class Command(BaseCommand):
         content_object = s3.Object('fowsim', 'static/cardBatchImport.json')
         json_file = content_object.get()['Body'].read().decode('utf-8')
         
-        data = json.load(json_file)
+        data = json.loads(json_file)
         for cluster in data['fow']['clusters']:
             sets = cluster['sets']
             for fow_set in sets:

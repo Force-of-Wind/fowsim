@@ -95,7 +95,7 @@ class Command(BaseCommand):
                         position = 1
                         for card_ability in card_abilities:
                             try:
-                                ability_text = AbilityText.objects.get_or_create(text=card_ability.strip())
+                                ability_text, created = AbilityText.objects.get_or_create(text=card_ability.strip())
                             except AbilityText.MultipleObjectsReturned:
                                 ability_text = AbilityText.objects.filter(text=card_ability.strip()).first()
 
@@ -103,19 +103,19 @@ class Command(BaseCommand):
                             position += 1
                         for card_race in card_races:
                             try:
-                                race = Race.objects.get_or_create(name=card_race.strip())
+                                race, created  = Race.objects.get_or_create(name=card_race.strip())
                             except Race.MultipleObjectsReturned:
                                 race = Race.objects.filter(name=card_race.strip()).first()
                             card.races.add(race)
                         for card_type in card_types:
                             try:
-                                type_obj = Type.objects.get_or_create(name=card_type.strip())
+                                type_obj, created  = Type.objects.get_or_create(name=card_type.strip())
                             except Type.MultipleObjectsReturned:
                                 type_obj = Type.objects.filter(name=card_type.strip()).first()
                             card.types.add(type_obj)
                         for card_colour in card_colours:
                             try:
-                                colour_obj = CardColour.objects.get_or_create(db_representation=card_colour.strip(), name=get_colour_name(card_colour.strip()))
+                                colour_obj, created = CardColour.objects.get_or_create(db_representation=card_colour.strip(), name=get_colour_name(card_colour.strip()))
                             except:
                                 colour_obj = CardColour.objects.filter(db_representation=card_colour.strip(), name=get_colour_name(card_colour.strip())).first()
                             card.colours.add(colour_obj)

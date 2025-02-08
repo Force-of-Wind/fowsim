@@ -205,7 +205,7 @@ class Card(AbstractModel):
             temp_img = CardImageWrapper(url=self._card_image.url)
             return temp_img
         except:
-            return CardImageWrapper(url=static("/img/none.png"))
+            return CardImageWrapper(url=static("img/none.png"))
 
 
 class Chant(models.Model):

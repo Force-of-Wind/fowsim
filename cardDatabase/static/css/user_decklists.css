@@ -74,9 +74,9 @@ body.hasHover #user-decklists tr:not(:first-child):hover{
 }
 
 .format-modal-body{
-    justify-content: center;
     gap: 15px;
     display: flex;
+    flex-direction: column;
 }
 
 .format-tile{

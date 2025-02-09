@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cardDatabase', '0058_decklist_deck_lock'),
+        ('cardDatabase', '0059_decklist_deck_lock'),
     ]
 
     def initRoles(apps, schema_editor):

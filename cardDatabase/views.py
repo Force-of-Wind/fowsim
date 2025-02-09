@@ -1291,7 +1291,7 @@ def generate_export_decklist(decklist):
                 other_face_list.append(card)
         oracle_text = ""
         delimiter = "\n"
-        for text in deckcard.card.ability_texts.all():
+        for text in deckcard.card.ability_texts.all().order_by('position'):
             oracle_text += str(text) + str(delimiter)
         
         

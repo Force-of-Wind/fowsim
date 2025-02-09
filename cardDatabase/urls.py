@@ -53,4 +53,6 @@ urlpatterns = [
     path('tournaments/', tournament_views.show_tournaments, name='cardDatabase-tournament-list'),
     path('new_tournament/', tournament_views.new_tournament, name='cardDatabase-new-tournament'),
     path('create_tournament/', tournament_views.create_tournament, name='cardDatabase-create-tournament'),
+    path('edit_tournament/', tournament_views.edit_tournament, name='cardDatabase-edit-tournament'),
+    path('tournament_detail/<int:tournament_id>/', tournament_views.tournament_detail, name='cardDatabase-detail-tournament'),
 ]

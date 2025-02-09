@@ -7,7 +7,7 @@ from fowsim import constants as CONS
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cardDatabase', '0057_rename_card_image_card__card_image'),
+        ('cardDatabase', '0058_merge_20250208_1750'),
     ]
 
     def updateLockFromShareMode(apps, schema_editor):

@@ -12,4 +12,13 @@
 
 .level-hint{
     font-weight: bold;
+    color: red;
+}
+
+.content-wrapper{
+    display: flex;
+    justify-content: center;
+}
+.row-gap{
+    gap: 25px;
 }

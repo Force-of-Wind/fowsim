@@ -15,16 +15,16 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <span>Create new Tournament</span>
-
-        <form id="create-tournament" class="edit-form" data-action="{% url 'cardDatabase-create-tournament' %}">
+    <div class="content-wrapper">
+        <form id="create-tournament" method="post" class="edit-form" action="{% url 'cardDatabase-create-tournament' %}">
+            <h2>Create new Tournament</h2>
+            {% csrf_token %}
             <div class="container">
                 <div class="row">
                     <div class="form-group">
-                        <label for="title">Title</label>
-                        <input id="title" maxlength="200" type="text" name="title" class="form-control"/>
-                    </div>
+                        <label for="title">Title*</label>
+                        <input id="title" required maxlength="200" type="text" name="title" class="form-control"/>
+                    </div>                    
                 </div>
                 <div class="row">
                     <div>
@@ -32,37 +32,19 @@
                         <label for="is_online">Is Online Tournament</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="location">Location</label>
-                        <input id="location" maxlength="200" type="text" name="location" class="form-control"/>
+                {% for field in meta_data %}
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <div class="row row-gap">
+                    {% endif %}
+                    <div class='form-group'>
+                        {% include 'tournament/field_renderer.html' with edit=True field=field %}
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="prices">Prices</label>
-                        <input id="prices" maxlength="200" type="text" name="prices" class="form-control"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="prices-link">Prices Link</label>
-                        <input id="prices-link" maxlength="200" type="text" name="prices-link" class="form-control"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="fee">Tournament Fee</label>
-                        <input id="fee" maxlength="200" type="text" name="fee" class="form-control"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label for="additional">Additional Information</label>
-                        <textarea id="additional" maxlength="500" type="textarea" name="additional" class="form-control"></textarea>
-                    </div>
-                </div>
-                <div class="row">
+                    {% if not forloop.counter0|divisibleby:2 or forloop.last %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                
+                <div class="row row-gap">
                     <div class="form-group">
                         <label for="format">Restrict to Format</label>
                         <select id="format" name="format" class="form-control">
@@ -72,9 +54,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="form-group">
                         <label for="level">Tournament Level</label>
                         <select id="level" name="level" class="form-control" required>
@@ -83,32 +62,28 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div>
-                        <span class="level-hint"></span>
-                    </div>
                 </div>
-
-                <div class="row">
+                <div>
+                    <span class="level-hint"></span>
+                </div>
+                <div class="row row-gap">
                     <div class="form-group">
-                        <label for="start_date_time">Start Time</label>
+                        <label for="start_date_time">Start Time*</label>
                         <input type="text" id="start_date_time" name="start_date_time" class="form-control date-time-picker" required />
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="form-group">
-                        <label for="deck_registration_end_date_time">Registration End</label>
+                        <label for="deck_registration_end_date_time">Registration End*</label>
                         <input type="text" id="deck_registration_end_date_time" name="deck_registration_end_date_time" class="form-control date-time-picker" required />
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="form-group">
                         <label for="deck_lock_date_time">Deck Edit lock after</label>
-                        <input type="text" id="deck_registration_end_date_time" name="deck_registration_end_date_time" class="form-control date-time-picker" />
+                        <input type="text" id="deck_lock_date_time" name="deck_lock_date_time" class="form-control date-time-picker" />
                     </div>
                 </div>
             </div>
+            <button id="save-tournament" class="button">Save Tournament</button>
         </form>
     </div>
 {% endblock %}

@@ -5,7 +5,15 @@ $(document).ready(function($) {
         altFormat: "Y-m-d H:i",
         dateFormat: "Z",
         minDate: "today",
-        time_24hr: true
+        time_24hr: true,
+        allowInput:true,
+        onOpen: function(selectedDates, dateStr, instance) {
+            $(instance.altInput).prop('readonly', true);
+        },
+        onClose: function(selectedDates, dateStr, instance) {
+            $(instance.altInput).prop('readonly', false);
+            $(instance.altInput).blur();
+        }
     });
 
     $('#level').on('change', function (e) {
@@ -16,42 +24,8 @@ $(document).ready(function($) {
         else
             $('.level-hint').text('');
     });
-
-    const defaultFields = {
-        localtion: {
-            label:'Location',
-            maxlength:'200',
-            type:'text',
-            name:'location',
-            class:'form-control'
-        },
-        prices: {
-            label:'Prices',
-            maxlength:'200',
-            type:'text',
-            name:'prices',
-            class:'form-control'
-        },
-        pricesLink: {
-            label:'Prices Link',
-            maxlength:'200',
-            type:'text',
-            name:'prices-link',
-            class:'form-control'
-        },
-        fee: {
-            label:'Tournament Fee',
-            maxlength:'200',
-            type:'text',
-            name:'fee',
-            class:'form-control'
-        },
-        additionalInfo: {
-            label:'Additional Info',
-            maxlength:'500',
-            type:'textarea',
-            name:'additional-info',
-            class:'form-control'
-        },
-    };
+    // $('#create-tournament').on('submit', function (event) {
+    //     event.preventDefault();
+    //     console.log($('#create-tournament').serializeArray());
+    // });
 });

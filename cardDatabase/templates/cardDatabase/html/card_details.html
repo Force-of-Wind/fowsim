@@ -95,8 +95,8 @@
                 {% aggregate_abilties_by_style_in_order abilities as aggregated_abilities %}
                 {% for aggregated_ability in aggregated_abilities %}
                     {% if aggregated_ability.style.id != 'normal' %}
-                        <aside class="{{aggregated_ability.style.id}}">
-                            <h3>{{aggregated_ability.style.name}}</h3>
+                        <aside class="aggregated-ability {{aggregated_ability.style.id}}">
+                            <div class="style-title">{{aggregated_ability.style.name}}</div>
                             <div class="style-container">
                                 {% for ability in aggregated_ability.abilities %}
                                     <div class="card-text-info-text">

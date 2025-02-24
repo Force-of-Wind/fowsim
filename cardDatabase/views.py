@@ -18,6 +18,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, Http40
 from django.urls import reverse
 from django.contrib.auth import login, authenticate
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.templatetags.static import static
 
 from .forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm, DecklistSearchForm
 from .models.DeckList import DeckList, UserDeckListZone, DeckListZone, DeckListCard
@@ -451,6 +452,7 @@ def search_for_cards(request):
         ctx['page_range'] = paginator.get_elided_page_range(number=page_number, on_each_side=1, on_ends=1)
         ctx['total_count'] = len(ctx['cards'])
         ctx['cards'] = paginator.get_page(page_number)
+        ctx['no_image_url'] = static("img/none.png")
     return render(request, 'cardDatabase/html/search.html', context=ctx)
 
 @csrf_exempt

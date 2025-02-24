@@ -83,3 +83,38 @@
     background-color: #ddd;
     border-radius: 5px;
 }
+
+.overlay-container {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;    
+    top: 0;
+    z-index: 1;
+}
+
+.card-overlay{
+    width: 100%;
+    top:25%;
+    transform: translateY(-50%);
+    display: block;
+    position: absolute;
+}
+
+.overlay-data{
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px 30px;    
+    font-size: 1.1rem;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.overlay-data:not(:last-child){
+    margin-bottom: 10px;
+}
+
+.overlay-data-title{
+    color: white;
+}

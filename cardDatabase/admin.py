@@ -70,14 +70,22 @@ class RulingAdmin(admin.ModelAdmin):
 class RaceAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
-
 class ArtistAdmin(admin.ModelAdmin):
     search_fields = ['name']
+
+class SetAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'code']
+
+class FormatAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['sets']
+    search_fields = ['sets__name', 'sets__code', 'sets']
 
 
 admin.site.register(OneTimeEffect)
 admin.site.register(Card, CardAdmin)
 admin.site.register(Tag)
+admin.site.register(Set, SetAdmin)
+admin.site.register(Cluster)
 admin.site.register(AbilityText, AbilityTextAdmin)
 admin.site.register(AbilityStyle)
 admin.site.register(Profile)
@@ -88,7 +96,7 @@ admin.site.register(DeckListZone)
 admin.site.register(UserDeckListZone)
 admin.site.register(SpoilerSeason)
 admin.site.register(BannedCard, BannedCardAdmin)
-admin.site.register(Format)
+admin.site.register(Format, FormatAdmin)
 admin.site.register(CombinationBannedCards, CombinationBannedCardsAdmin)
 admin.site.register(Ruling, RulingAdmin)
 admin.site.register(Restriction)

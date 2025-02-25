@@ -8,10 +8,16 @@ from cardDatabase.models.Ability import Keyword
 from cardDatabase.models.Banlist import Format
 from cardDatabase.management.commands.importjson import remove_punctuation
 
+def get_formats():
+    format_values = Format.objects.values('name')
+    format_map = map(lambda x : (x['name'], x['name']), format_values)
+
+    return list(format_map)
 
 class SearchForm(forms.Form):
     generic_text = forms.CharField(label='', strip=True,
                                    widget=forms.TextInput(attrs={'placeholder': 'Search...'}), required=False)
+    format = forms.ChoiceField(required=False, choices=get_formats(), widget=forms.HiddenInput())
 
 
 def get_races():
@@ -23,11 +29,7 @@ def get_races():
 
     return list(race_map)
 
-def get_formats():
-    format_values = Format.objects.values('name')
-    format_map = map(lambda x : (x['name'], x['name']), format_values)
 
-    return list(format_map)
 
 
 def get_keywords_choices():
@@ -51,6 +53,7 @@ class AdvancedSearchForm(forms.Form):
     sort_by = forms.ChoiceField(label='Sort results by:', choices=CONS.DATABASE_SORT_BY_CHOICES, required=False)
     pick_period = forms.ChoiceField(label='Popularity time period:', choices=CONS.PICK_PERIOD_CHOICES, required=False)
     reverse_sort = forms.BooleanField(label='Reverse sorting:', required=False)
+    solo_mode = forms.BooleanField(label='Solo Mode:', required=False)
     colours = forms.MultipleChoiceField(label='Color(s):', choices=CONS.COLOUR_CHOICES, required=False)
     colour_match = forms.ChoiceField(label='Color(s) match:', choices=CONS.DATABASE_COLOUR_MATCH_CHOICES, required=False)
     colour_combination = forms.ChoiceField(label='Color combinations:', choices=CONS.DATABASE_COLOUR_COMBINATION_CHOICES, required=False)
@@ -64,6 +67,7 @@ class AdvancedSearchForm(forms.Form):
     atk_comparator = forms.ChoiceField(required=False, choices=CONS.ATK_DEF_COMPARATOR_CHOICES)
     def_value = forms.IntegerField(label='DEF', required=False, min_value=0, widget=forms.NumberInput(attrs={'placeholder': 'Defense'}))
     def_comparator = forms.ChoiceField(required=False, choices=CONS.ATK_DEF_COMPARATOR_CHOICES)
+    format = forms.ChoiceField(required=False, choices=get_formats())
     keywords = forms.MultipleChoiceField(label='Keyword(s):', choices=get_keywords_choices(), required=False)
 
 class DecklistSearchForm(forms.Form):

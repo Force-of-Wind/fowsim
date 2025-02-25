@@ -74,6 +74,7 @@ input[type="checkbox"].fow-checkbox,
 input[type="checkbox"][name="text_exactness"],
 input[type="checkbox"][name="sort_by"],
 input[type="checkbox"][name="pick_period"],
+input[type="checkbox"][name="solo_mode"],
 input[type="checkbox"][name="reverse_sort"],
 input[type="checkbox"][name="colour_match"],
 input[type="checkbox"][name="colour_combination"]{
@@ -187,6 +188,14 @@ input:checked + .selected-backgrounds{
     display: inline-block;
 }
 
+.solo-mode-input, .solo-mode-label{
+    display: inline-block;
+}
+
+.format-select{
+    margin-top: 10px;
+}
+
 .referred-card{
     width: max-content;
 }
@@ -196,6 +205,10 @@ input:checked + .selected-backgrounds{
 }
 
 #id_reverse_sort{
+    pointer-events: auto;
+}
+
+#id_solo_mode{
     pointer-events: auto;
 }
 

@@ -24,6 +24,9 @@ class Cluster(models.Model):
     class Meta:
         app_label = 'cardDatabase'
 
+    def __str__(self):
+        return self.name
+
     name = models.CharField(max_length=200, null=False, blank=False)
 
 
@@ -31,8 +34,12 @@ class Set(models.Model):
     class Meta:
         app_label = 'cardDatabase'
 
+    def __str__(self):
+        return self.name
+
     name = models.CharField(max_length=200, null=False, blank=False)
     code = models.CharField(max_length=200, null=False, blank=False)
+    parent_code = models.CharField(max_length=200, null=True)
     cluster = models.ForeignKey('Cluster', on_delete=models.CASCADE)
 
 
@@ -108,6 +115,7 @@ class Card(AbstractModel):
     DEF = models.IntegerField(null=True, blank=True)
     types = models.ManyToManyField('Type', related_name='types')
     ability_texts = models.ManyToManyField('AbilityText', related_name='cards', blank=True, through=CardAbility)
+    ability_styles = models.ManyToManyField('AbilityStyle', related_name='cards', blank=True, through=CardAbility)
     colours = models.ManyToManyField('CardColour', related_name='cards', blank=False)
     tag = models.ManyToManyField('Tag', related_name='cards', blank=True)
     artists = models.ManyToManyField('CardArtist', related_name='cards', blank=True)

@@ -75,6 +75,14 @@
                             </label>
                         {% endfor %}
                     </div>
+                    <div class="fieldWrapper solo-mode-container">
+                        <div class="solo-mode-input">
+                            {{ advanced_form.solo_mode }}
+                        </div>
+                        <label class="solo-mode-label" for="id_solo_mode">
+                            Solo Mode
+                        </label>
+                    </div>
                     <div class="fieldWrapper select-sort-by">
                         <div class="sort-by-title field-title">
                             Sort by:
@@ -167,7 +175,7 @@
                         </select>
                     </div>
                     <div class="fieldWrapper sets-select">
-                        <select class="mdb-select md-form" multiple form="advanced-form" name="sets" searchable="Search here...">
+                        <select class="mdb-select md-form" multiple form="advanced-form" id="set-select" name="sets" searchable="Search here...">
                             {% for cluster in sets_json.clusters reversed %}
                                 <optgroup label="{{ cluster.name }} Cluster">
                                     {% for set in cluster.sets reversed %}
@@ -188,6 +196,32 @@
                         <button id="clear-all-sets" type="button">
                             Clear All Sets
                         </button>
+                    </div>
+                    <div class="format-select fieldWrapper">
+                        <div class="format-inputs">
+                            <div class="format-label field-title">
+                                Format
+                            </div>
+                            <div class="format">
+                                <select id="format-select" name="format">
+                                    <option value="" {% if not advanced_form_data.format %}selected{% endif %}>No Format</option>
+                                    {% for format in format_list %}
+                                        <option value="{{ format.name }}"
+                                        {# This is so that that if the format is given intitally via on edit_decklist we set it to the format of the deck #}
+                                        {% if decklist %}
+                                            {% if not advanced_form_data.format and decklist.deck_format.name == format.name %}
+                                                selected
+                                            {% endif %}
+                                        {% elif advanced_form_data.format == format.name %}
+                                        selected
+                                        {% endif %}
+                                        >
+                                            {{ format.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>                                
+                            </div>
+                        </div>
                     </div>
                     <div class="fieldWrapper card-type-select">
                         <select class="mdb-select md-form" multiple form="advanced-form" name="card_type" searchable="Search here...">

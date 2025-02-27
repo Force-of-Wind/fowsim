@@ -729,6 +729,7 @@ SEARCH_SETS_INCLUDE = {
         'V1 Buy a Box',
         'V2 Buy a Box',
         'V3 Buy a Box',
+        'V3 Buy 2 Boxes',
         'V4 Buy a Box',
         'AOA V3 Buy 2',
         'AO1 Buy a Box',

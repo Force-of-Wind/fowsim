@@ -38,9 +38,9 @@
             </div>
             <div id="basic-search">
                 <form id="basic-form" method="post" action="{% url 'cardDatabase-search' %}">
-                    {{ basic_form }}
-                    <div >
-                        <input class="form-submit-button" type="submit" value="Search" name="basic-form">
+                    {{ basic_form.generic_text }}
+                    <div class="form-submit-button">
+                        <input type="submit" value="Search" name="basic-form">
                     </div>
                     {% include 'cardDatabase/html/search_tooltip.html' %}
                 </form>

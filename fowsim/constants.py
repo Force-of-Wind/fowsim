@@ -367,6 +367,21 @@ SET_DATA = {
                 {'code': 'MP02', 'name': 'Masterpiece Collection 02 "Fates Reunited!"'}
             ]
         },
+        {
+            'name': 'Promo',
+            'sets': [
+                {'code': 'WL', 'name': "Wanderer League"},
+                {'code': 'RL', 'name': "Ruler League"},
+                {'code': 'World', 'name': "World's Rewards"},
+                {'code': 'WPG', 'name': "World Grand Prix"},
+                {'code': 'WPR', 'name': "Will Power Rewards"},
+                {'code': 'BaB', 'name': "Buy a Box"},
+                {'code': 'Pre', 'name': "Pre-release Party"},
+                {'code': 'PR2015', 'name': "2015 Promo"},
+                {'code': 'Souvenir', 'name': "Souvenir"},
+                {'code': 'Judge', 'name': "Judge"}
+            ]
+        },
     ]
 }
 
@@ -535,6 +550,16 @@ DATABASE_COLOUR_COMBINATION_CHOICES = [
 
 SETS_IN_ORDER = [
     'PR',  # Promos
+    'PR2015',
+    'WL',
+    'RL',
+    'World',
+    'WGP',
+    'WRP',
+    'BaB',
+    'Pre',
+    'Souvenir',
+    'Judge',    
     'BSR',  # Basic Rulers
     'CMF',
     'TAT',

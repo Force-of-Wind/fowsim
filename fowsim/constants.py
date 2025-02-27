@@ -717,6 +717,9 @@ SEARCH_SETS_INCLUDE = {
     'BFA':[
         'FOWMOVIE'
     ],
+    'WL':[
+        'BE'
+    ],
     'BaB':[
         'L1 Buy a Box',
         'L2 Buy a Box',

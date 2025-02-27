@@ -41,12 +41,12 @@ class RestrictionFactory {
 }
 
 class BaseRestriction {
-    constructor(cardContainer, cardData, tagToCheck, restrictedTag, warninigText, warningTextOutputElement, exceptions = [], restrictedToZones = [], ignoredZones = []) {
+    constructor(cardContainer, cardData, tagToCheck, restrictedTag, warningText, warningTextOutputElement, exceptions = [], restrictedToZones = [], ignoredZones = []) {
         let generatedExceptions = [];
         if(exceptions.length >= 1){
             const factory = new RestrictionExceptionFactory();
             exceptions.forEach((exception) => {
-                generatedExceptions.push(factory.getExceptionForType(exception.exceptionAction, exception.exceptionApplyingCard, exception.exceptionApplyingZone, exception.cardsExceptionApplysTo ?? []))
+                generatedExceptions.push(factory.getExceptionForType(exception.exceptionAction, exception.exceptionApplyingCard, exception.exceptionApplyingZone, exception.cardsExceptionAppliesTo ?? []))
             })
         }
 
@@ -54,7 +54,7 @@ class BaseRestriction {
             cardContainer: { value: cardContainer},
             tagToCheck: { value: tagToCheck},
             restrictedTag: { value: restrictedTag},
-            warninigText: { value: warninigText},
+            warningText: { value: warningText},
             warningTextOutputElement : { value: warningTextOutputElement},
             restrictedToZones: { value: restrictedToZones},
             ignoredZones: { value: ignoredZones},
@@ -69,7 +69,7 @@ class BaseRestriction {
         console.error('Function not implemented for Restriction!');
     }
 
-    writeWarningTowarningTextOutputElement = function (warninigText) {
+    writeWarningToWarningTextOutputElement = function (warninigText) {
         if (this.warningTextOutputElement.hasClass('hide-restrictions'))
             this.warningTextOutputElement.removeClass('hide-restrictions');
 
@@ -145,8 +145,8 @@ class ConflictingTagRestriction extends BaseRestriction {
             affectedCards.push(...this.cardsForTags[this.restrictedTag]);
             if(affectedCards.length <= 1)
                 return;
-            this.writeWarningTowarningTextOutputElement(this.warninigText);
-            this.highlightRestrictedCards(affectedCards.filter(this.distinctFilter), this.warninigText);
+            this.writeWarningToWarningTextOutputElement(this.warningText);
+            this.highlightRestrictedCards(affectedCards.filter(this.distinctFilter), this.warningText);
         }
     }
 }
@@ -205,8 +205,8 @@ class SingletonRestriction extends BaseRestriction {
                 }
 
             if (illegalCardsForSingleton.length > 0) {
-                this.writeWarningTowarningTextOutputElement(this.warninigText);
-                this.highlightRestrictedCards(illegalCardsForSingleton, this.warninigText);
+                this.writeWarningToWarningTextOutputElement(this.warningText);
+                this.highlightRestrictedCards(illegalCardsForSingleton, this.warningText);
             }
         }
     }

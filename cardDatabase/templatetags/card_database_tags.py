@@ -10,13 +10,12 @@ from django.urls import reverse
 from django.db.models import Sum, Q
 
 from cardDatabase.management.commands.importjson import remove_punctuation
+from cardDatabase.views.utils.search_context import searchable_set_and_name
 from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card
 from cardDatabase.models.Spoilers import SpoilerSeason
-from cardDatabase.views import searchable_set_and_name
 
 register = template.Library()
-
 
 WILL_TYPE_TO_FILENAMES = {
     CONS.ATTRIBUTE_FIRE_CODE: 'fire.png',
@@ -88,7 +87,7 @@ def make_bubble_html(text):
 
 
 def make_bubbles(text):
-    matches = re.findall('\[[^\]]*\]', text)
+    matches = re.findall(r'\[[^\]]*\]', text)
     for match in matches:
         if '/' not in match:  # Skip any ATK/DEF
             text = text.replace(match, make_bubble_html(match))
@@ -111,7 +110,7 @@ def replace_newlines(text):
 
 
 def replace_angled_brackets(text):
-    matches = re.findall('&lt;&lt;[\w]+&gt;&gt;', text)
+    matches = re.findall(r'&lt;&lt;[\w]+&gt;&gt;', text)
     for match in matches:
         text = text.replace(match, f'<b>‹‹{match[len("&lt;&lt;"):-len("&gt;&gt;")]}››</b>')
 
@@ -160,7 +159,8 @@ def add_card_reference_links(ability_text):
             except Card.MultipleObjectsReturned:
                 card = Card.objects.filter(name=match).first()
             card_url = card_id_to_url(card.card_id)
-            ability_text = ability_text.replace(match, f'"<a class="referenced-card" href="{card_url}">{card.name}{referenced_card_img_html(card)}</a>"')
+            ability_text = ability_text.replace(match,
+                                                f'<a class="referenced-card" href="{card_url}">{card.name}{referenced_card_img_html(card)}</a>')
         except Card.DoesNotExist:
             pass
     return ability_text
@@ -206,6 +206,7 @@ def sort_by_is_in_data(form_values, value):
         default_value = 'checked'
     return advanced_form_is_in_data(form_values, value, default_value, 'checked')
 
+
 @register.simple_tag
 def pick_period_is_in_data(form_value, value):
     default_value = ''
@@ -216,6 +217,7 @@ def pick_period_is_in_data(form_value, value):
     elif value == form_value:
         return 'checked'
     return ''
+
 
 @register.simple_tag
 def get_random_chibi(category):
@@ -236,6 +238,7 @@ def format_id_text(text):
 def dict_to_json(dict_obj):
     return mark_safe(json.dumps(ast.literal_eval(str(dict_obj))))
 
+
 @register.simple_tag
 def map_tags(card):
     output = []
@@ -246,6 +249,7 @@ def map_tags(card):
     else:
         return ''
 
+
 @register.simple_tag
 def has_tags(card):
     if len(card.card.tag.all()) > 0 and card.zone.zone.name != 'Side Deck':
@@ -253,16 +257,17 @@ def has_tags(card):
     else:
         return False
 
+
 @register.simple_tag
 def cards_to_json(cards):
     output_cards = []
     for card in cards:
         simple_card = {
             "name": card.card.name_without_punctuation,
-            "zone" : card.zone.zone.name,
+            "zone": card.zone.zone.name,
             "cost": card.card.cost,
-            "img":  card.card.card_image.url,
-            "quantity" : card.quantity
+            "img": card.card.card_image.url,
+            "quantity": card.quantity
         }
         output_cards.append(simple_card)
     return dict_to_json(output_cards)
@@ -364,6 +369,7 @@ def get_spoiler_link():
 def order_card_abilities(card):
     return card.abilities.all().order_by('position')
 
+
 @register.simple_tag
 def aggregate_abilties_by_style_in_order(abilities):
     result = []
@@ -384,11 +390,11 @@ def aggregate_abilties_by_style_in_order(abilities):
             temp_list.append(ability)
             continue
 
-        #only add if not empty
+        # only add if not empty
         if temp_list:
             result.append({"style": {"id": last_style, "name": last_style_name}, "abilities": temp_list})
-            temp_list = []        
-        
+            temp_list = []
+
         last_style = current_style
         last_style_name = current_style_name
         temp_list.append(ability)
@@ -424,7 +430,7 @@ def embed_text_with_card_urls(text):
     """
     output = []
     #  Either "\n" or text in "[[ ]]"
-    matches = re.findall('(\[\[.*?\]\])|(\\n)', text)
+    matches = re.findall(r'(\[\[.*?\]\])|(\n)', text)
     for match in matches:
         match = match[0] or match[1]
         if match == '\n':
@@ -434,7 +440,8 @@ def embed_text_with_card_urls(text):
             text = splits[1]
         else:
             match = match[2:-2]  # Cut off "[[ ]]"
-            card = Card.objects.filter(Q(name__iexact=match) | Q(name_without_punctuation__iexact=remove_punctuation(match))).first()
+            card = Card.objects.filter(
+                Q(name__iexact=match) | Q(name_without_punctuation__iexact=remove_punctuation(match))).first()
 
             # Card not found
             if not card:
@@ -444,7 +451,8 @@ def embed_text_with_card_urls(text):
             # Consume the string split by split so we can mark safe only the sections with imgs to avoid html injection
             splits = text.split(match, 1)
             output.append(splits[0][:-2])
-            output.append(mark_safe(f'<a class="referenced-card" href="{view_card_url}">{card.name}{referenced_card_img_html(card)}</a>'))
+            output.append(mark_safe(
+                f'<a class="referenced-card" href="{view_card_url}">{card.name}{referenced_card_img_html(card)}</a>'))
             text = splits[1][2:]
     else:
         output.append(text)
@@ -456,6 +464,7 @@ def embed_text_with_card_urls(text):
 def set_code_to_name(set_code):
     return searchable_set_and_name(set_code)[1]
 
+
 @register.simple_tag
-def trucateText(text, trucateAt = 40):
+def trucateText(text, trucateAt=40):
     return (text[:trucateAt] + '...') if len(text) > trucateAt else text

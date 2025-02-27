@@ -4,11 +4,11 @@ import re
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 
+from cardDatabase.views.utils.search_context import get_set_query, sort_cards
 from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card, AbilityText, Race, Type, CardColour, CardAbility
 from cardDatabase.models.DeckList import DeckListZone
 from cardDatabase.forms import AdvancedSearchForm
-from cardDatabase.views import get_set_query, sort_cards
 
 
 class Command(BaseCommand):

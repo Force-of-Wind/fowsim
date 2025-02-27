@@ -10,6 +10,7 @@ from django.conf import settings
 def site_admins(function):
     @wraps(function)
     def wrap(request, *args, **kwargs):
+        print(request.user.profile.site_admin)
         if request.user.is_active and request.user.profile.site_admin:
             return function(request, *args, **kwargs)
         else:

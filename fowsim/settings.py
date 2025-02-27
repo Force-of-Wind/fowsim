@@ -57,7 +57,6 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
     'game',
     'cardDatabase',
     'django.contrib.admin',

@@ -970,3 +970,7 @@ DECK_LIST_SHARE_MODE_CHOICES = [
     ['private', 'private'],
     ['tournament', 'tournament']
 ]
+
+PARADOX_FORMAT = 'Paradox'
+
+WANDERER_FORMAT = 'Wanderer'

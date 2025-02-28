@@ -792,7 +792,18 @@ def view_decklist(request, decklist_id, share_parameter = ''):
     Also avoids duplicate named/reprinted cards needing multiple banlist entries
     '''
     deck_card_names = list(cards.values_list('card__name', flat=True))
-    banned_cards = BannedCard.objects.filter(format=decklist.deck_format)
+    banned_cards = []
+    combination_bans = []
+
+    if decklist.deck_format != CONS.PARADOX_FORMAT:
+        banned_cards = BannedCard.objects.filter(format=decklist.deck_format)
+        combination_bans = CombinationBannedCards.objects.filter(format=decklist.deck_format)
+    else:
+        query = Q(format=decklist.deck_format)
+        query |= Q(format=CONS.WANDERER_FORMAT)
+        banned_cards = BannedCard.objects.filter(query)
+        combination_bans = CombinationBannedCards.objects.filter(query)
+        
     ban_warnings = []
     for banned_card in banned_cards:
         if banned_card.card.name in deck_card_names:
@@ -803,7 +814,7 @@ def view_decklist(request, decklist_id, share_parameter = ''):
                 'view_card_url': reverse('cardDatabase-view-card', kwargs={'card_id': banned_card.card.card_id})
             })
 
-    combination_bans = CombinationBannedCards.objects.filter(format=decklist.deck_format)
+    
     combination_ban_warnings = []
     for combination_ban in combination_bans:
         combination_banned_cards = combination_ban.cards.all()

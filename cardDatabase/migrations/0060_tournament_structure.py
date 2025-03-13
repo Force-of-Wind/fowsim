@@ -74,7 +74,7 @@ class Migration(migrations.Migration):
                 ('deck_edit_deadline', models.DateTimeField()),
                 ('deck_edit_locked', models.BooleanField(default=False)),
                 ('start_datetime', models.DateTimeField()),
-                ('phase', models.TextField(blank=True, choices=[['created', 'created'], ['registration', 'registration'], ['swizz', 'swizz'], ['tops', 'tops'], ['completed', 'completed']], default='created', max_length=32, null=True)),
+                ('phase', models.TextField(blank=True, choices=[['created', 'created'], ['registration', 'registration'], ['swiss', 'swiss'], ['tops', 'tops'], ['completed', 'completed']], default='created', max_length=32, null=True)),
                 ('reveal_decklists', models.BooleanField(default=False)),
                 ('format', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='cardDatabase.format')),
             ],

@@ -1,1 +1,116 @@
 {% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="{% static 'css/tournament/tournament_admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Tournament Management</h1>
+
+        <input type="hidden" id="status" value="{{ tournament.phase }}">
+
+        <!-- Current status display -->
+        <h3 class="mt-4" id="currentStatus">Current Phase: {{ tournament.phase }}</h3>
+
+        <div class="mt-4">
+            <!-- Separate buttons for each status change -->
+            <button class="btn btn-primary status-btn" id="createBtn" data-toggle="modal" data-target="#confirmModal">Start Registration</button>
+            <button class="btn btn-primary status-btn" id="registrationBtn" data-toggle="modal" data-target="#confirmModal">Start Swiss</button>
+            <button class="btn btn-primary status-btn" id="swissBtn" data-toggle="modal" data-target="#confirmModal">Start Tops</button>
+            <button class="btn btn-primary status-btn" id="topsBtn" data-toggle="modal" data-target="#confirmModal">Complete Tournament</button>
+        </div>
+    </div>
+
+    <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+    
+    <input type="hidden" id="tournamentId" value="{{ tournament.pk }}">
+
+    <input type="hidden" id="nextStatus" value="">
+
+    <!-- Bootstrap Modal for confirmation -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirm Status Change</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to advance the tournament status to the next stage?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmBtn">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h3><b>Title:</b> {{ tournament.title }}</h3>
+        <p><b>Start Time:</b> <span data-epoch="{% datetime_to_timestamp tournament.start_datetime %}" class="local-date-time"></span></p>
+        <p><b>Registration End:</b> <span data-epoch="{% datetime_to_timestamp tournament.registration_deadline %}" class="local-date-time"></span></p>
+        <p><b>Deck Edit End:</b> <span data-epoch="{% datetime_to_timestamp tournament.deck_edit_deadline %}" class="local-date-time"></span></p>
+        <p><b>Format:</b> <span>{{ tournament.format.name}}</span></p>
+        <p><b>Level:</b> <span>{{ tournament.level.title}}</span></p>
+        <p><b>Tournament style:</b> <span>{% if tournament.is_online %}Online{% else %}In Person{% endif %}</span></p>
+        <a href="{% url 'cardDatabase-edit-tournament' tournament.id %}"><button class="btn btn-primary">Edit Tournament</button></a>
+    </div>
+
+    <div class="container mt-5">
+        <h2>Registered Players</h2>
+
+        <button class="btn btn-info mb-3" onclick="fetchPlayersFromAPI()">
+            <i class="fas fa-sync-alt"></i> Refresh Players
+        </button>
+    
+        <button class="btn btn-success mb-3" onclick="savePlayersToAPI()">Save Players</button>
+    
+        <div class="row" id="playerList">
+            
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <button class="btn btn-danger" id="deleteBtn" data-toggle="modal" data-target="#deleteModal">Delete Tournament</button>
+    </div>
+    <br>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Tournament</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this tournament?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <a href="{% url 'cardDatabase-delete-tournament' tournament.id %}"><button type="button" class="btn btn-danger">Delete</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/bootstrap/bootstrap.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{% static 'js/tournament/admin/players.js' %}"></script>
+    <script src="{% static 'js/tournament/admin/status.js' %}"></script>
+    <script src="{% static 'js/tournament/tournament_admin.js' %}"></script>
+{% endblock %}

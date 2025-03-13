@@ -21,7 +21,7 @@ class Tournament(models.Model):
     
 class TournamentPlayer(models.Model):
     profile = models.ForeignKey('Profile', related_name='tournament_player' , on_delete=models.CASCADE)
-    tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE)
+    tournament = models.ForeignKey('Tournament', on_delete=models.CASCADE, related_name='players')
     registration_status = models.TextField(max_length=32, blank=True, null=True, default=None,
                                  choices=CONS.TOURNAMENT_PLAYER_REGISTRATION_STATES)
     last_registration_updated_by = models.ForeignKey('Profile', on_delete=models.SET_NULL, blank=True, null=True, default=None)

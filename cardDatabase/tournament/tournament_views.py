@@ -31,11 +31,12 @@ def show_tournaments(request):
     })
 
 @login_required
-def new_tournament(request):
+def new_tournament(request, error = False):
     return render(request, 'tournament/tournament_create.html', context={
         'meta_data': TOURNAMENTCONS.TOURNAMENT_DEFAULT_META_DATA,
         'formats': Format.objects.all().order_by('pk'),
-        'levels': TournamentLevel.objects.all()
+        'levels': TournamentLevel.objects.all(),
+        'error': error
     })
 
 
@@ -44,41 +45,48 @@ def new_tournament(request):
 def create_tournament(request):
     if not request.method == "POST":
         raise Http404
-    data = json.loads(request.body.decode('UTF-8'))
-    meta_data = []
-    for fieldName in data:
+    data = dict(request.POST)
+    meta_data = {}
+    for fieldName, _ in data.items():
         if check_value_is_meta_data(fieldName, TOURNAMENTCONS.TOURNAMENT_DEFAULT_META_DATA):
-            meta_data[fieldName] = map_meta_data(fieldName, data[fieldName], TOURNAMENTCONS.TOURNAMENT_DEFAULT_META_DATA)
+            meta_data[fieldName] = map_meta_data(fieldName, data.get(fieldName, [None])[0], TOURNAMENTCONS.TOURNAMENT_DEFAULT_META_DATA)
     
-    title = data['title']
+    title = request.POST.get('title')
 
-    is_online = False
-    if 'is_online' in data:
-        is_online = True
+    is_online = 'is_online' in data
 
-    format_id = data['format']
-    level_id = data['level']
+    format_id = request.POST.get('format')
+    level_id = request.POST.get('level')
 
-    start_date_time = parse_datetime(data['start_date_time'])
-    registration_deadline = parse_datetime(data['deck_registration_end_date_time'])
+    start_date_time = parse_datetime(request.POST.get('start_date_time'))
+    registration_deadline = parse_datetime(request.POST.get('deck_registration_end_date_time'))
     deck_edit_deadline = None
 
     if 'deck_lock_date_time' in data:
-        deck_edit_deadline = parse_datetime(data['deck_lock_date_time'])
+        deck_edit_deadline = parse_datetime(request.POST.get('deck_lock_date_time'))
+    
+
+    if deck_edit_deadline is None:
+        deck_edit_deadline = start_date_time
+        
+
+    if any_empty(title, meta_data, format_id, level_id, start_date_time, registration_deadline, deck_edit_deadline):
+        return HttpResponseRedirect(reverse('cardDatabase-new-tournament',  kwargs={'error': True}))
 
     tournament = Tournament.objects.create(
         title=title,
+        meta_data = meta_data,
         is_online = is_online,
         format = Format.objects.get(pk=format_id),
         level = TournamentLevel.objects.get(pk=level_id),
-        start_date_time = start_date_time,
+        start_datetime = start_date_time,
         registration_deadline = registration_deadline,
-        deck_edit_deadline = deck_edit_deadline
+        deck_edit_deadline = deck_edit_deadline,
     )
 
     TournamentStaff.objects.create(tournament=tournament, profile=request.user.profile, role=StaffRole.objects.get(default=True))
 
-    return HttpResponseRedirect(reverse('cardDatabase-tournament-admin', kwargs={'tournament_id': tournament.id}))
+    return HttpResponseRedirect(reverse('cardDatabase-admin-tournament', kwargs={'tournament_id': tournament.id}))
 
 def check_value_is_meta_data(name, default_meta_data_fields):
     for field in default_meta_data_fields:
@@ -93,12 +101,15 @@ def map_meta_data(name, value, default_meta_data_fields):
             return field
     return None
 
+def any_empty(*args):
+    return any(not arg for arg in args)
+
 @login_required
 def edit_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
     staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.canWrite:
+    if staffAccount is None or not staffAccount.role.can_write:
         return HttpResponse('Not authorized', 401)
     
     if not request.method == "POST":
@@ -129,7 +140,7 @@ def edit_tournament(request, tournament_id):
     tournament.is_online = is_online
     tournament.format = Format.objects.get(pk=format_id)
     tournament.level = TournamentLevel.objects.get(pk=level_id)
-    tournament.start_date_time = start_date_time
+    tournament.start_datetime = start_date_time
     tournament.registration_deadline = registration_deadline
     tournament.deck_edit_deadline = deck_edit_deadline
 
@@ -147,7 +158,7 @@ def tournament_admin(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
     staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.canDelete:
+    if staffAccount is None or not staffAccount.role.can_delete:
         return HttpResponse('Not authorized', 401)
 
     return render(request, 'tournament/tournament_admin.html', context={
@@ -159,7 +170,7 @@ def delete_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
     staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.canDelete:
+    if staffAccount is None or not staffAccount.role.can_delete:
         return HttpResponse('Not authorized', 401)
     
     tournament.delete()

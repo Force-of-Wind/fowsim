@@ -3,7 +3,7 @@ from django.urls import path
 from django.shortcuts import redirect
 
 from . import views
-from .tournament import tournament_views
+from .tournament import tournament_views, tournament_api_views
 from .forms import UserLoginForm
 from .views import search, search_for_decklist, deprecated_decklist_url, create_decklist, edit_decklist, \
     edit_decklist_mobile, view_decklist, view_user_public, delete_decklist, logout, user_preferences, register, \
@@ -53,6 +53,14 @@ urlpatterns = [
     path('tournaments/', tournament_views.show_tournaments, name='cardDatabase-tournament-list'),
     path('new_tournament/', tournament_views.new_tournament, name='cardDatabase-new-tournament'),
     path('create_tournament/', tournament_views.create_tournament, name='cardDatabase-create-tournament'),
-    path('edit_tournament/', tournament_views.edit_tournament, name='cardDatabase-edit-tournament'),
+    path('edit_tournament/<int:tournament_id>/', tournament_views.edit_tournament, name='cardDatabase-edit-tournament'),
+    path('tournament_delete/<int:tournament_id>/', tournament_views.delete_tournament, name='cardDatabase-delete-tournament'),
     path('tournament_detail/<int:tournament_id>/', tournament_views.tournament_detail, name='cardDatabase-detail-tournament'),
+    path('tournament_admin/<int:tournament_id>/', tournament_views.tournament_admin, name='cardDatabase-admin-tournament'),
+
+
+    #TOURNAMENT API
+    path('api/update_tournament_phase/<int:tournament_id>/', tournament_api_views.update_tournament_phase, name='cardDatabase-update-tournament-phase'),
+    path('api/get-tournament/players/<int:tournament_id>/', tournament_api_views.get_tournament_players, name='cardDatabase-get-tournament-players'),
+    #path('tournament_admin/<int:tournament_id>/', tournament_api_views.tournament_admin, name='cardDatabase-admin-tournament'),
 ]

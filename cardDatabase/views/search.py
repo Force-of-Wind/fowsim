@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.templatetags.static import static
 
 from cardDatabase.forms import SearchForm, AdvancedSearchForm
 from cardDatabase.views.utils.search_context import *
@@ -33,4 +34,5 @@ def get(request):
         ctx['page_range'] = paginator.get_elided_page_range(number=page_number, on_each_side=1, on_ends=1)
         ctx['total_count'] = len(ctx['cards'])
         ctx['cards'] = paginator.get_page(page_number)
+        ctx['no_image_url'] = static('img/none.png')
     return render(request, 'cardDatabase/html/search.html', context=ctx)

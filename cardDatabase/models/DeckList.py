@@ -56,7 +56,7 @@ class DeckListZone(models.Model):
     name = models.CharField(max_length=10000, blank=False, null=False)
     show_by_default = models.BooleanField(blank=False, null=False, default=False)
     position = models.IntegerField(blank=True, null=True)
-    format = models.ForeignKey('Format', on_delete=models.CASCADE, default=Format.get_default)
+    formats = models.ManyToManyField('Format', related_name='formats')
 
 
 class UserDeckListZone(models.Model):

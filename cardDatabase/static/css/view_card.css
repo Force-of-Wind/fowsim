@@ -13,6 +13,7 @@
     border: 1px solid black;
     border-radius: 10px;
     padding: 0 5px;
+    background-color: white;
 }
 
 .card-container{
@@ -194,30 +195,39 @@
 
 /* ability text formating */
 
-.solo-mode{
-    display: block;
+.aggregated-ability {
+    display: flex;
     position: relative;
-    margin-top: 20px;
-    border-left: 34px solid gray;
+    margin-top: 8px;
     background: lightgray;
-    padding-left: 10px;
-    min-height: 125px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.solo-mode h3 {
+.aggregated-ability .style-title {
+    min-width: 34px;
+    display: inline-flex;
+    flex-direction: row;
+    writing-mode: sideways-lr;
     font: bold 12px "Roboto", sans-serif;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #fff;
-    padding: 0 0px 30px 0;
-    margin: 0 0px 0 0px;
-    line-height: 24px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    transform-origin: 0;
-    transform: rotate(-90deg);
+    background-color: gray;
+    justify-content: center;
+    align-items: center;
+}
+
+.aggregated-ability .style-container {
+    padding: 4px 8px;
+    color: #212529;
+}
+
+.aggregated-ability.solo-mode {
+    background: lightgray;
+}
+
+.aggregated-ability.solo-mode .style-title {
+    background-color: gray;
 }
 
 /* /ability text formating */

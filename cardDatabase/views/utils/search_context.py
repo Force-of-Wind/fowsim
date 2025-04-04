@@ -1,6 +1,6 @@
 from django.forms import MultipleChoiceField
 
-from cardDatabase.models import PickPeriod, DeckList
+from cardDatabase.models import PickPeriod, DeckList, Format
 from cardDatabase.models.CardType import Race, Card
 from fowsim import constants as CONS
 from django.db.models import Q, Count, F
@@ -50,9 +50,16 @@ def basic_search(basic_form):
     cards = []
     if basic_form.is_valid():
         search_text = basic_form.cleaned_data['generic_text']
-        cards = Card.objects.exclude(get_unsupported_sets_query()).distinct()
+        set_query = Q()
+        format_string = basic_form.cleaned_data['format']
+        if format_string:
+            format = Format.objects.get(name=format_string)
+            if format.sets.count() > 0:
+                set_query = get_set_query(list(format.sets.values_list('code', flat=True).distinct()), True)
+
+        cards = Card.objects.filter(set_query).exclude(get_unsupported_sets_query()).distinct()
         cards = apply_text_search(cards, search_text, ['name', 'ability_texts__text'], CONS.TEXT_CONTAINS_ALL)
-        cards = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
+    cards = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
     return {'cards': cards}
 
 
@@ -68,6 +75,13 @@ def advanced_search(advanced_form):
         race_query = get_race_query(advanced_form.cleaned_data['race'])
         set_query = get_set_query(advanced_form.cleaned_data['sets'])
 
+        format_string = advanced_form.cleaned_data['format']
+        if format_string:
+            format = Format.objects.get(name=format_string)
+            if format.sets.count() > 0:
+                set_query = get_set_query(list(format.sets.values_list('code', flat=True).distinct()), True)
+                ctx['advanced_form_data']['sets'] = []
+
         card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
         rarity_query = get_rarity_query(advanced_form.cleaned_data['rarity'])
         divinity_query = get_divinity_query(advanced_form.cleaned_data['divinity'])
@@ -76,6 +90,7 @@ def advanced_search(advanced_form):
         def_query = get_atk_def_query(advanced_form.cleaned_data['def_value'],
                                       advanced_form.cleaned_data['def_comparator'], 'DEF')
         keywords_query = get_keywords_query(advanced_form.cleaned_data['keywords'])
+        solo_mode_query = get_solo_mode_query(advanced_form.cleaned_data['solo_mode'])
 
         cards = (Card.objects.
                  annotate(**attr_annotation).filter(attr_query).exclude(attr_exclusions).
@@ -87,6 +102,7 @@ def advanced_search(advanced_form):
                  filter(atk_query).
                  filter(def_query).
                  filter(keywords_query).
+                 filter(solo_mode_query).
                  exclude(get_unsupported_sets_query()).
                  distinct())
 
@@ -119,11 +135,15 @@ def get_search_form_ctx():
         races_list = list(map(lambda x: x['name'], race_values))  # Remove blank string
         races_list.sort()
         races_list.remove('')
+
+        format_list = Format.objects.annotate(num_sets=Count('sets')).filter(num_sets__gt=0).values('name')
     except Exception:
         races_list = []
+        format_list = []
 
     return {
         'races_list': list(races_list),
+        'format_list': list(format_list),
         'card_types_list': CONS.DATABASE_CARD_TYPE_GROUPS,
         'sets_json': CONS.SET_DATA
     }
@@ -181,10 +201,10 @@ def get_not_card_prefix_query(data):
     return card_prefix_query
 
 
-def get_set_query(data):
+def get_set_query(data, strict_search=False):
     set_query = Q()
     for fow_set in data:
-        if fow_set in CONS.SEARCH_SETS_INCLUDE:
+        if fow_set in CONS.SEARCH_SETS_INCLUDE and not strict_search:
             #  Search implies more than just itself, e.g. AO3 includes AO3 Buy a Box, so that those sets too
             for also_included_set in CONS.SEARCH_SETS_INCLUDE[fow_set]:
                 # No trailing '-' because the '-' is included in CONS
@@ -265,6 +285,11 @@ def get_keywords_query(data):
         keywords_query |= Q(ability_texts__text__icontains=keyword)
     return keywords_query
 
+def get_solo_mode_query(solo_mode):
+    solo_mode_query = Q()
+    if solo_mode:
+        solo_mode_query = Q(ability_styles__identifier=CONS.SOLO_MODE_STYLE)
+    return solo_mode_query
 
 def get_set_number_sort_value(set_number):
     #  Need to sort them backwards since it gets reversed to show most recent first

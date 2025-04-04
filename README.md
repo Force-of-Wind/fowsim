@@ -1,6 +1,6 @@
 # Running the Server Locally
 
-1. Create a python3 virtual environment (3.9.6):
+1. Create a python3 virtual environment (3.13.x):
 `python -m venv /path/to/make/venv`
 
 2. Use that virtual environment (must activate every time you open a new prompt)

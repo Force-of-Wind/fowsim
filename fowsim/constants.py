@@ -980,3 +980,5 @@ DECK_LIST_SHARE_MODE_CHOICES = [
     ['private', 'private'],
     ['tournament', 'tournament']
 ]
+
+SOLO_MODE_STYLE = 'solo-mode'

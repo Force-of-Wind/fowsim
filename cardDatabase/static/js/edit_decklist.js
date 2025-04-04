@@ -230,13 +230,22 @@ $(function() {
         });
     }
 
-    function handleSubmit(event){
+    function handleBaseSubmit(event){
+        event.preventDefault();
+        let params = form_to_url_params(this);
+        let search_url = window.location.origin + '/search/' + '?' + params.toString() + '&format=' + $('#deck-format-input').val();
+        requestAndSetDatabaseContent(search_url)
+    }
+
+    function handleAdvancedSubmit(event){
         event.preventDefault();
         let params = form_to_url_params(this);
         let search_url = window.location.origin + '/search/' + '?' + params.toString();
         requestAndSetDatabaseContent(search_url)
     }
-    $('#advanced-form, #basic-form').on('submit', handleSubmit);
+
+    $('#basic-form').on('submit', handleBaseSubmit);
+    $('#advanced-form').on('submit', handleAdvancedSubmit);
 
     function requestAndSetDatabaseContent(search_url){
         $.ajax({
@@ -256,7 +265,9 @@ $(function() {
                 } else {
                     setupCardOverlay();
                 }
-                $('#advanced-form, #basic-form').on('submit', handleSubmit)
+                
+                $('#basic-form').on('submit', handleBaseSubmit);
+                $('#advanced-form').on('submit', handleAdvancedSubmit);
             }
         })
     }

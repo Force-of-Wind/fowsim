@@ -3,6 +3,7 @@ from django.db import models
 
 class Format(models.Model):
     name = models.TextField(blank=False, null=False, default='')
+    sets = models.ManyToManyField('Set', related_name='sets')
 
     def __str__(self):
         return self.name

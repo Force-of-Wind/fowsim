@@ -121,6 +121,11 @@ function initDatabaseBase(){
         event.preventDefault();
         select_format_sets(FOWDB_SET_JSON.clusters, false);
     });
+
+    $('#format-select').on('change', function (event) {
+        select_format_sets(FOWDB_SET_JSON.clusters, false);
+    });
+
     $('.help-tooltip').on('click', function(event){
         if (event.target === this || event.target.matches('.tooltip-icon')) {
             $(this).addClass('show');

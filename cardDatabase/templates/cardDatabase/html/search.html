@@ -75,6 +75,17 @@
                      data-card-image-url="" data-card-image-urls='{% get_card_img_urls card %}'>
                     <a href="{% url 'cardDatabase-view-card' card.card_id %}">
                         <img class="card-img" src="{{ card.card_image.url }}">
+                        {% if card.card_image.url == no_image_url %}
+                            <div class="overlay-container">
+                                <div class="card-overlay">
+                                    <div class="overlay-data">
+                                        <div class="overlay-data-title">
+                                            {{ card.name }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                     </a>
                 </div>
             {% endfor %}

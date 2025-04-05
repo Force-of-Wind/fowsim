@@ -341,6 +341,7 @@ SET_DATA = {
                 {'code': 'TTT', 'name': 'Thoth of the Trinity'},
                 {'code': 'TSR', 'name': 'The Battle at the Sacred Ruins'},
                 {'code': 'TEU', 'name': 'Timeless Eclipse of the Underworld'},
+                {'code': 'TOP', 'name': 'Ten Oaths of Protopaterpolis\' War' },
             ]
         },
         {
@@ -722,6 +723,9 @@ SETS_IN_ORDER = [
     'MC06',
     'MP02',
     'MC07',
+    'TOP',
+    'T4 Buy a Box',
+    'MC08'
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -805,6 +809,7 @@ SEARCH_SETS_INCLUDE = {
         'T2 Buy a Box',
         'T3 Buy a Box',
         'MP02-BAB',
+        'T4 Buy a Box'
     ],
     'Pre':[
         'L1 Pre-release Party',
@@ -843,6 +848,7 @@ SEARCH_SETS_INCLUDE = {
         'T1 Pre-release Party',
         'T2 Pre-release Party',
         'T3 Pre-release Party',
+        'T4 Pre-release Party'
     ],
     'AOA': [
         'AOA V3 Buy 2'
@@ -906,7 +912,11 @@ SEARCH_SETS_INCLUDE = {
     ],
     'MP02': [
         'MC07',
-    ]
+    ],
+    'TOP': [
+        'T4 Buy a Box',
+        'MC08',
+    ],
 }
 
 KEYWORDS_CHOICES = [

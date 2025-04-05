@@ -21,7 +21,7 @@ function getCSRFToken() {
 
 function fetchPlayersFromAPI() {
     $.ajax({
-        url: `/api/get-tournament/players/${getTournamentId()}/`,
+        url: `/api/tournament/${getTournamentId()}/players/`,
         type: 'GET',
         dataType: 'json',
         headers: {
@@ -40,10 +40,10 @@ function fetchPlayersFromAPI() {
 
 function savePlayersToAPI() {
     $.ajax({
-        url: `/api/tournament-save-players/${getTournamentId()}/`, // Replace with your actual API endpoint
+        url: `/api/tournament/${getTournamentId()}/players/update/`,
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify(players),
+        data: JSON.stringify(players) ,
         headers: {
             'X-CSRFToken': getCSRFToken(),
         },

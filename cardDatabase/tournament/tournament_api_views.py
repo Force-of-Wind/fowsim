@@ -65,3 +65,27 @@ def get_tournament_players(request, tournament_id):
 
     return JsonResponse(players, safe=False)
 
+@login_required
+def update_tournament_players(request, tournament_id):
+    tournament = get_object_or_404(Tournament, pk=tournament_id)
+
+    updatedPlayers = json.loads(request.body)
+
+    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    
+    if staffAccount is None or not staffAccount.role.can_write:
+        return JsonResponse({'error': 'Not authorized'}, status=401)
+    
+    if updatedPlayers is None:
+        return JsonResponse({'error': 'Payload incorrect'}, status=400)
+        
+    for updatedPlayer in updatedPlayers:
+        dbPlayer = TournamentPlayer.get(pk=updatedPlayer.id)
+        dbPlayer.dropped_out = updatedPlayer.dropped
+        dbPlayer.notes = updatedPlayer.notes
+        dbPlayer.standing = updatedPlayer.standing
+        dbPlayer.registration_status = updatedPlayer.status
+        dbPlayer.save()
+
+    return JsonResponse()
+

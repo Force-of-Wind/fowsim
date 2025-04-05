@@ -61,7 +61,7 @@ $(document).ready(function() {
         document.getElementById('currentStatus').innerText = `Current Phase: ${translateStatus(nextStatus)}`;
 
         $.ajax({
-            url: `/api/update_tournament_phase/${getTournamentId()}/`,
+            url: `/api/tournament/${getTournamentId()}/phase/update/`,
             type: 'POST',
             headers: {
                 'X-CSRFToken': getCSRFToken(),

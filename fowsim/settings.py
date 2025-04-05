@@ -46,14 +46,27 @@ AWS_DEFAULT_ACL = None
 
 MEDIAFILES_LOCATION = 'media'
 STATICFILES_LOCATION = 'static'
+STORAGES = dict()
 
 if DEBUG:
-    DEFAULT_FILE_STORAGE = 'fowsim.custom_storages.LocalMediaStorage'
+    STORAGES = {
+        "default": {
+            "BACKEND": "fowsim.custom_storages.LocalMediaStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
     STATIC_ROOT = os.path.join(BASE_DIR, 'cardDatabase/static/')
 else:
-    STATIC_ROOT = './'
-    DEFAULT_FILE_STORAGE = 'fowsim.custom_storages.MediaStorage'
-    STATICFILES_STORAGE = 'fowsim.custom_storages.StaticStorage'
+    STORAGES = {
+        "default": {
+            "BACKEND": "fowsim.custom_storages.MediaStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "fowsim.custom_storages.StaticStorage",
+        },
+    }
 
 # Application definition
 

@@ -51,6 +51,7 @@ if DEBUG:
     DEFAULT_FILE_STORAGE = 'fowsim.custom_storages.LocalMediaStorage'
     STATIC_ROOT = os.path.join(BASE_DIR, 'cardDatabase/static/')
 else:
+    STATIC_ROOT = './'
     DEFAULT_FILE_STORAGE = 'fowsim.custom_storages.MediaStorage'
     STATICFILES_STORAGE = 'fowsim.custom_storages.StaticStorage'
 

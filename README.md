@@ -26,7 +26,7 @@ DB_PORT=
 python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 ```
 
-6. Apply the schema to the database:
+6. Apply the schema to the database (if you get an error at this step, please ask us):
 `python manage.py migrate`
 
 7. Create a superuser account to use on your local development server:

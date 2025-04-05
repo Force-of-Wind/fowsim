@@ -1134,3 +1134,7 @@ DECK_LIST_SHARE_MODE_CHOICES = [
 ]
 
 SOLO_MODE_STYLE = 'solo-mode'
+
+PARADOX_FORMAT = 'Paradox'
+
+WANDERER_FORMAT = 'Wanderer'

@@ -210,6 +210,10 @@ def get_set_query(data, strict_search=False):
                 # No trailing '-' because the '-' is included in CONS
                 set_query |= Q(card_id__istartswith=also_included_set)
         set_query |= Q(card_id__istartswith=fow_set + '-')
+
+        #Search for sets directly when in strict_search mode (promos like BAB wont show otherwise)
+        if strict_search:
+            set_query |= Q(card_id=fow_set)
     return set_query
 
 

@@ -191,6 +191,10 @@ select{
     background: #30313463;
 }
 
+.solo-mode .bubble-text {
+    background: #b3b0b0;
+}
+
 /* /card view */
 
 /* /deck-search */

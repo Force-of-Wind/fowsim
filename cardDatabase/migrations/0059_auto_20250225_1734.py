@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
             'MP02', 
             ]
         formats = apps.get_model('cardDatabase', 'Format')
-        paradox = formats.objects.get(name='Paradox')
+        paradox, created = formats.objects.get_or_create(name='Paradox')
         sets = apps.get_model('cardDatabase', 'Set')
         setQuery = Q()
         for s in paradoxInitialSets:

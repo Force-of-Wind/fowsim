@@ -254,7 +254,7 @@ def resize_image_if_new(sender, instance, **kwargs):
                 new_image.paste(im, (0, 0), im)
                 im = new_image
                 im = im.convert("RGB")
-            im = im.resize(size, Image.ANTIALIAS)
+            im = im.resize(size, Image.LANCZOS )
             im_io = BytesIO()
             im.save(im_io, 'JPEG', quality=70)
             instance._card_image = InMemoryUploadedFile(im_io, 'ImageField', f"{instance.card_id}.jpg", 'image/jpeg', sys.getsizeof(im_io), None)

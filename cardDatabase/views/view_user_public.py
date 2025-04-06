@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import Http404
 
-from cardDatabase.models import DeckList, User, Format
+from cardDatabase.models import DeckList, Format
+from django.contrib.auth.models import User
 
 
 def get(request, username=None):

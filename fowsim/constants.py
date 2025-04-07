@@ -379,7 +379,7 @@ SET_DATA = {
                 {'code': 'WL', 'name': "Wanderer League"},
                 {'code': 'RL', 'name': "Ruler League"},
                 {'code': 'World', 'name': "World's Rewards"},
-                {'code': 'WPG', 'name': "World Grand Prix"},
+                {'code': 'WGP', 'name': "World Grand Prix"},
                 {'code': 'WPR', 'name': "Will Power Rewards"},
                 {'code': 'BaB', 'name': "Buy a Box"},
                 {'code': 'Pre', 'name': "Pre-release Party"},

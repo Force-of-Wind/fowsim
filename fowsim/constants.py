@@ -224,6 +224,43 @@ FOWTCG_CARD_DATABASE_SET_INDEX = {
 SET_DATA = {
     'clusters': [
         {
+            'name': 'Promo',
+            'sets': [
+                {'code': 'WL', 'name': "Wanderer League"},
+                {'code': 'RL', 'name': "Ruler League"},
+                {'code': 'World', 'name': "World's Rewards"},
+                {'code': 'WGP', 'name': "World Grand Prix"},
+                {'code': 'WPR', 'name': "Will Power Rewards"},
+                {'code': 'BaB', 'name': "Buy a Box"},
+                {'code': 'Pre', 'name': "Pre-release Party"},
+                {'code': 'PR2015', 'name': "2015 Promo"},
+                {'code': 'Souvenir', 'name': "Souvenir"},
+                {'code': 'Judge', 'name': "Judge"}
+            ]
+        },
+        {
+            'name': 'Arcana Battle Colosseum',
+            'sets': [
+                {'code': 'ABC', 'name': 'Arcana Battle Colosseum'},
+                {'code': 'ABC-WB', 'name': 'ABC 2023 Light & Water'},
+                {'code': 'ABC-WD', 'name': 'ABC 2023 Light & Darkness'},
+                {'code': 'ABC-RG', 'name': 'ABC 2023 Fire & Wind'},
+                {'code': 'ABC-RD', 'name': 'ABC 2023 Fire & Darkness'},
+                {'code': 'ABC-BG', 'name': 'ABC 2023 Water & Wind'},
+                {'code': 'ABC-SD01', 'name': 'Elektra vs The Lich King (Elektra)'},
+                {'code': 'ABC-SD02', 'name': 'Replicant: Aritstella vs Ki Lua (Replicant: Aristella)'},
+                {'code': 'ABC-SD03', 'name': 'Gnome vs Reinhardt (Gnome)'},
+                {'code': 'ABC-SD04', 'name': 'Hyde vs Undine (Hyde)'},
+                {'code': 'ABC-SD05', 'name': 'Hyde vs Undine (Undine)'},
+                {'code': 'ABC-SD06', 'name': 'Replicant: Aritstella vs Ki Lua (Ki Lua)'},
+                {'code': 'ABC-SD07', 'name': 'Efreet vs Falchion (Efreet)'},
+                {'code': 'ABC-SD08', 'name': 'Efreet vs Falchion (Falchion)'},
+                {'code': 'ABC-SD09', 'name': 'Gnome vs Reinhardt (Reinhardt)'},
+                {'code': 'ABC-SD10', 'name': 'Elektra vs The Lich King (The Lich King)'},
+                {'code': 'ABC-SD11', 'name': 'Void vs Void'},
+            ]
+        },
+        {
             'name': 'Grimm',
             'sets': [
                 {'code': 'CMF', 'name': "Crimson Moon's Fairy Tale"},
@@ -345,47 +382,10 @@ SET_DATA = {
             ]
         },
         {
-            'name': 'Arcana Battle Colosseum',
-            'sets': [
-                {'code': 'ABC', 'name': 'Arcana Battle Colosseum'},
-                {'code': 'ABC-WB', 'name': 'ABC 2023 Light & Water'},
-                {'code': 'ABC-WD', 'name': 'ABC 2023 Light & Darkness'},
-                {'code': 'ABC-RG', 'name': 'ABC 2023 Fire & Wind'},
-                {'code': 'ABC-RD', 'name': 'ABC 2023 Fire & Darkness'},
-                {'code': 'ABC-BG', 'name': 'ABC 2023 Water & Wind'},
-                {'code': 'ABC-SD01', 'name': 'Elektra vs The Lich King (Elektra)'},
-                {'code': 'ABC-SD02', 'name': 'Replicant: Aritstella vs Ki Lua (Replicant: Aristella)'},
-                {'code': 'ABC-SD03', 'name': 'Gnome vs Reinhardt (Gnome)'},
-                {'code': 'ABC-SD04', 'name': 'Hyde vs Undine (Hyde)'},
-                {'code': 'ABC-SD05', 'name': 'Hyde vs Undine (Undine)'},
-                {'code': 'ABC-SD06', 'name': 'Replicant: Aritstella vs Ki Lua (Ki Lua)'},
-                {'code': 'ABC-SD07', 'name': 'Efreet vs Falchion (Efreet)'},
-                {'code': 'ABC-SD08', 'name': 'Efreet vs Falchion (Falchion)'},
-                {'code': 'ABC-SD09', 'name': 'Gnome vs Reinhardt (Reinhardt)'},
-                {'code': 'ABC-SD10', 'name': 'Elektra vs The Lich King (The Lich King)'},
-                {'code': 'ABC-SD11', 'name': 'Void vs Void'},
-            ]
-        },
-        {
             'name': 'Masterpiece Collection',
             'sets': [
                 {'code': 'MP01', 'name': 'Masterpiece "Pilgrim Memories"'},
                 {'code': 'MP02', 'name': 'Masterpiece Collection 02 "Fates Reunited!"'}
-            ]
-        },
-        {
-            'name': 'Promo',
-            'sets': [
-                {'code': 'WL', 'name': "Wanderer League"},
-                {'code': 'RL', 'name': "Ruler League"},
-                {'code': 'World', 'name': "World's Rewards"},
-                {'code': 'WGP', 'name': "World Grand Prix"},
-                {'code': 'WPR', 'name': "Will Power Rewards"},
-                {'code': 'BaB', 'name': "Buy a Box"},
-                {'code': 'Pre', 'name': "Pre-release Party"},
-                {'code': 'PR2015', 'name': "2015 Promo"},
-                {'code': 'Souvenir', 'name': "Souvenir"},
-                {'code': 'Judge', 'name': "Judge"}
             ]
         },
     ]

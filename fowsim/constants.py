@@ -224,6 +224,43 @@ FOWTCG_CARD_DATABASE_SET_INDEX = {
 SET_DATA = {
     'clusters': [
         {
+            'name': 'Promo',
+            'sets': [
+                {'code': 'WL', 'name': "Wanderer League"},
+                {'code': 'RL', 'name': "Ruler League"},
+                {'code': 'World', 'name': "World's Rewards"},
+                {'code': 'WGP', 'name': "World Grand Prix"},
+                {'code': 'WPR', 'name': "Will Power Rewards"},
+                {'code': 'BaB', 'name': "Buy a Box"},
+                {'code': 'Pre', 'name': "Pre-release Party"},
+                {'code': 'PR2015', 'name': "2015 Promo"},
+                {'code': 'Souvenir', 'name': "Souvenir"},
+                {'code': 'Judge', 'name': "Judge"}
+            ]
+        },
+        {
+            'name': 'Arcana Battle Colosseum',
+            'sets': [
+                {'code': 'ABC', 'name': 'Arcana Battle Colosseum'},
+                {'code': 'ABC-WB', 'name': 'ABC 2023 Light & Water'},
+                {'code': 'ABC-WD', 'name': 'ABC 2023 Light & Darkness'},
+                {'code': 'ABC-RG', 'name': 'ABC 2023 Fire & Wind'},
+                {'code': 'ABC-RD', 'name': 'ABC 2023 Fire & Darkness'},
+                {'code': 'ABC-BG', 'name': 'ABC 2023 Water & Wind'},
+                {'code': 'ABC-SD01', 'name': 'Elektra vs The Lich King (Elektra)'},
+                {'code': 'ABC-SD02', 'name': 'Replicant: Aritstella vs Ki Lua (Replicant: Aristella)'},
+                {'code': 'ABC-SD03', 'name': 'Gnome vs Reinhardt (Gnome)'},
+                {'code': 'ABC-SD04', 'name': 'Hyde vs Undine (Hyde)'},
+                {'code': 'ABC-SD05', 'name': 'Hyde vs Undine (Undine)'},
+                {'code': 'ABC-SD06', 'name': 'Replicant: Aritstella vs Ki Lua (Ki Lua)'},
+                {'code': 'ABC-SD07', 'name': 'Efreet vs Falchion (Efreet)'},
+                {'code': 'ABC-SD08', 'name': 'Efreet vs Falchion (Falchion)'},
+                {'code': 'ABC-SD09', 'name': 'Gnome vs Reinhardt (Reinhardt)'},
+                {'code': 'ABC-SD10', 'name': 'Elektra vs The Lich King (The Lich King)'},
+                {'code': 'ABC-SD11', 'name': 'Void vs Void'},
+            ]
+        },
+        {
             'name': 'Grimm',
             'sets': [
                 {'code': 'CMF', 'name': "Crimson Moon's Fairy Tale"},
@@ -345,47 +382,10 @@ SET_DATA = {
             ]
         },
         {
-            'name': 'Arcana Battle Colosseum',
-            'sets': [
-                {'code': 'ABC', 'name': 'Arcana Battle Colosseum'},
-                {'code': 'ABC-WB', 'name': 'ABC 2023 Light & Water'},
-                {'code': 'ABC-WD', 'name': 'ABC 2023 Light & Darkness'},
-                {'code': 'ABC-RG', 'name': 'ABC 2023 Fire & Wind'},
-                {'code': 'ABC-RD', 'name': 'ABC 2023 Fire & Darkness'},
-                {'code': 'ABC-BG', 'name': 'ABC 2023 Water & Wind'},
-                {'code': 'ABC-SD01', 'name': 'Elektra vs The Lich King (Elektra)'},
-                {'code': 'ABC-SD02', 'name': 'Replicant: Aritstella vs Ki Lua (Replicant: Aristella)'},
-                {'code': 'ABC-SD03', 'name': 'Gnome vs Reinhardt (Gnome)'},
-                {'code': 'ABC-SD04', 'name': 'Hyde vs Undine (Hyde)'},
-                {'code': 'ABC-SD05', 'name': 'Hyde vs Undine (Undine)'},
-                {'code': 'ABC-SD06', 'name': 'Replicant: Aritstella vs Ki Lua (Ki Lua)'},
-                {'code': 'ABC-SD07', 'name': 'Efreet vs Falchion (Efreet)'},
-                {'code': 'ABC-SD08', 'name': 'Efreet vs Falchion (Falchion)'},
-                {'code': 'ABC-SD09', 'name': 'Gnome vs Reinhardt (Reinhardt)'},
-                {'code': 'ABC-SD10', 'name': 'Elektra vs The Lich King (The Lich King)'},
-                {'code': 'ABC-SD11', 'name': 'Void vs Void'},
-            ]
-        },
-        {
             'name': 'Masterpiece Collection',
             'sets': [
                 {'code': 'MP01', 'name': 'Masterpiece "Pilgrim Memories"'},
                 {'code': 'MP02', 'name': 'Masterpiece Collection 02 "Fates Reunited!"'}
-            ]
-        },
-        {
-            'name': 'Promo',
-            'sets': [
-                {'code': 'WL', 'name': "Wanderer League"},
-                {'code': 'RL', 'name': "Ruler League"},
-                {'code': 'World', 'name': "World's Rewards"},
-                {'code': 'WPG', 'name': "World Grand Prix"},
-                {'code': 'WPR', 'name': "Will Power Rewards"},
-                {'code': 'BaB', 'name': "Buy a Box"},
-                {'code': 'Pre', 'name': "Pre-release Party"},
-                {'code': 'PR2015', 'name': "2015 Promo"},
-                {'code': 'Souvenir', 'name': "Souvenir"},
-                {'code': 'Judge', 'name': "Judge"}
             ]
         },
     ]
@@ -561,7 +561,7 @@ SETS_IN_ORDER = [
     'RL',
     'World',
     'WGP',
-    'WRP',
+    'WPR',
     'BaB',
     'Pre',
     'Souvenir',
@@ -586,17 +586,17 @@ SETS_IN_ORDER = [
     'SDL5',
     'CFC',
     'L1 Buy a Box',
-    'L1 Pre-release Party',
+    'L1 Prerelease Party',
     'LEL',
     'L2 Buy a Box',
-    'L2 Pre-release Party',
+    'L2 Prerelease Party',
     'VIN003',
     'RDE',
     'L3 Buy a Box',
-    'L3 Pre-release Party',
+    'L3 Prerelease Party',
     'ENW',
     'L4 Buy a Box',
-    'L4 Pre-release Party',
+    'L4 Prerelease Party',
     'SDR1',
     'SDR2',
     'SDR3',
@@ -604,17 +604,17 @@ SETS_IN_ORDER = [
     'SDR5',
     'ACN',
     'R1 Buy a Box',
-    'R1 Pre-release Party',
+    'R1 Prerelease Party',
     'ADK',
     'R2 Buy a Box',
-    'R2 Pre-release Party',
+    'R2 Prerelease Party',
     'TSW',
     'R3 Buy a Box',
-    'R3 Pre-release Party',
+    'R3 Prerelease Party',
     'SDR6',
     'WOM',
     'R4 Buy a Box',
-    'R4 Pre-release Party',
+    'R4 Prerelease Party',
     'SDV1',
     'SDV2',
     'SDV3',
@@ -622,18 +622,18 @@ SETS_IN_ORDER = [
     'SDV5',
     'NDR',
     'V1 Buy a Box',
-    'V1 Pre-release Party',
+    'V1 Prerelease Party',
     'SNV',
     'V2 Buy a Box',
-    'V2 Pre-release Party',
+    'V2 Prerelease Party',
     'AOA V3 Buy 2',   
     'AOA',
     'V3 Buy a Box',
     'V3 Buy 2 Boxes',
-    'V3 Pre-release Party',
+    'V3 Prerelease Party',
     'DBV',
     'V4 Buy a Box',
-    'V4 Pre-release Party',
+    'V4 Prerelease Party',
     'SDAO1',
     'AO1 Buy a Box',
     'AO1 Buy a BoxJ',
@@ -653,17 +653,17 @@ SETS_IN_ORDER = [
     'PofAMS',
     'EDL',
     'S1 Buy a Box',
-    'S1 Pre-release Party',
+    'S1 Prerelease Party',
     'MSW',
     'S2 Buy a Box',
-    'S2 Pre-release Party',
+    'S2 Prerelease Party',
     'ROL',
     'ADW',
     'S3 Buy a Box',
-    'S3 Pre-release Party',
+    'S3 Prerelease Party',
     'TST',
     'S4 Buy a Box',
-    'S4 Pre-release Party',
+    'S4 Prerelease Party',
     'DSD',
     'D1 Buy a Box',
     'D1 Prerelease Party',
@@ -780,10 +780,11 @@ SEARCH_SETS_INCLUDE = {
         'R4 Buy a Box',
         'V1 Buy a Box',
         'V2 Buy a Box',
+        'AOA V3 Buy 2',
         'V3 Buy a Box',
         'V3 Buy 2 Boxes',
         'V4 Buy a Box',
-        'AOA V3 Buy 2',
+        'V4 Buy 2 Boxes',
         'AO1 Buy a Box',
         'AO1 Buy a BoxJ',
         'AO2 Buy a Box',
@@ -812,62 +813,162 @@ SEARCH_SETS_INCLUDE = {
         'T4 Buy a Box'
     ],
     'Pre':[
-        'L1 Pre-release Party',
-        'L2 Pre-release Party',
-        'L3 Pre-release Party',
-        'L4 Pre-release Party',
-        'R1 Pre-release Party',
-        'R2 Pre-release Party',
-        'R3 Pre-release Party',
-        'R4 Pre-release Party',
-        'V1 Pre-release Party',
-        'V2 Pre-release Party',
-        'V3 Pre-release Party',
-        'V4 Pre-release Party',
-        'AO1 Pre-release Party',
-        'AO1 Pre-release PartyJ',
-        'AO2 Pre-release Party',
-        'AO2 Pre-release PartyJ',
-        'AO3 Pre-release Party',
-        'AO3 Pre-release PartyJ',
-        'AO4 Pre-release Party',
-        'AO4 Pre-release PartyJ',
-        'S1 Pre-release Party',
-        'S2 Pre-release Party',
-        'S3 Pre-release Party',
-        'S4 Pre-release Party',
-        'D1 Pre-release Party',
-        'D2 Pre-release Party',
-        'D2 Pre-release Party',
-        'D3 Pre-release Party',
-        'H2 Pre-release Party',
-        'H3 Pre-release Party',
-        'H4 Pre-release Party',
-        'H5 Pre-release Party',
-        'H6 Pre-release Party',
-        'T1 Pre-release Party',
-        'T2 Pre-release Party',
-        'T3 Pre-release Party',
-        'T4 Pre-release Party'
+        'L1 Prerelease Party',
+        'L2 Prerelease Party',
+        'L3 Prerelease Party',
+        'L4 Prerelease Party',
+        'R1 Prerelease Party',
+        'R2 Prerelease Party',
+        'R3 Prerelease Party',
+        'R4 Prerelease Party',
+        'V1 Prerelease Party',
+        'V2 Prerelease Party',
+        'V3 Prerelease Party',
+        'V4 Prerelease Party',
+        'AO1 Prerelease Party',
+        'AO2 Prerelease Party',
+        'AO3 Prerelease Party',
+        'AO4 Prerelease Party',
+        'S1 Prerelease Party',
+        'S2 Prerelease Party',
+        'S3 Prerelease Party',
+        'S4 Prerelease Party',
+        'D1 Prerelease Party',
+        'D2 Prerelease Party',
+        'D2 Prerelease Party',
+        'D3 Prerelease Party',
+        'H2 Prerelease Party',
+        'H3 Prerelease Party',
+        'H4 Prerelease Party',
+        'H5 Prerelease Party',
+        'H6 Prerelease Party',
+        'T1 Prerelease Party',
+        'T2 Prerelease Party',
+        'T3 Prerelease Party',
+        'T4 Prerelease Party'
+    ],
+    'World': [
+        'World2015',
+        'World2016',
+        'World2017',
+        'World2018',
+        'World2019',
+        'World2020',
+        'World2021',
+        'World2022',
+        'World2023',
+        'World2024',
+        'World2025',
+        'World2026',
+        'World2027',
+        'World2028',
+    ],
+    'WPR': [
+        'WPR2015',
+        'WPR2016',
+        'WPR2017',
+        'WPR2018',
+        'WPR2019',
+        'WPR2020',
+        'WPR2021',
+        'WPR2022',
+        'WPR2023',
+        'WPR2024',
+        'WPR2025',
+        'WPR2026',
+        'WPR2027',
+        'WPR2028',
+    ],
+    'CFC': [
+        'L1 Prerelease Party',
+        'L1 Buy a Box',
+    ],
+    'LEL': [
+        'L2 Prerelease Party',
+        'L2 Buy a Box',
+    ],
+    'RDE': [
+        'L3 Prerelease Party',
+        'L3 Buy a Box',
+    ],
+    'ENW': [
+        'L4 Prerelease Party',
+        'L4 Buy a Box',
+    ],
+    'ACN': [
+        'R1 Prerelease Party',
+        'R1 Buy a Box',
+    ],
+    'ADW': [
+        'R2 Prerelease Party',
+        'R2 Buy a Box',
+    ],
+    'TSW': [
+        'R3 Prerelease Party',
+        'R3 Buy a Box',
+    ],
+    'WOM': [
+        'R4 Prerelease Party',
+        'R4 Buy a Box',
+    ],
+    'NDR': [
+        'V1 Prerelease Party',
+        'V1 Buy a Box',
+    ],
+    'SVN': [
+        'V2 Prerelease Party',
+        'V2 Buy a Box',
     ],
     'AOA': [
-        'AOA V3 Buy 2'
+        'V3 Prerelease Party',
+        'V3 Buy a Box',
+        'V3 Buy 2 Boxes',
+        'AOA V3 Buy 2',
+    ],    
+    'DBV': [
+        'V4 Prerelease Party',
+        'V4 Buy a Box',
+        'V4 Buy 2 Boxes',
     ],
     'AO1': [
         'AO1 Buy a Box',
-        'AO1 Buy a BoxJ'
+        'AO1 Buy a BoxJ',
+        'AO1 Prerelease Party'
         ],
     'AO2': [
         'AO2 Buy a Box',
-        'AO2 Buy a BoxJ'
+        'AO2 Buy a BoxJ',
+        'AO2 Prerelease Party'
     ],
     'AO3': [
         'AO3 Buy a Box',
-        'AO3 Buy a BoxJ'
+        'AO3 Buy a BoxJ',
+        'AO3 Prerelease Party'
     ],
     'PofA': [
         'AO4 Buy a Box',
-        'AO4 Buy a BoxJ'
+        'AO4 Buy a BoxJ',
+        'AO4 Prerelease Party'
+    ],
+    'EDL': [
+        'S1 Buy a Box',
+        'S1 Prerelease Party',
+    ],
+    'MSW': [
+        'S2 Buy a Box',
+        'S2 Prerelease Party',
+    ],
+    'ADW': [
+        'S3 Buy a Box',
+        'S3 Prerelease Party',
+    ],
+    'TST': [
+        'S4 Buy a Box',
+        'S4 Prerelease Party',
+    ],
+    'GOG': [
+        'D1 Buy a Box',
+        'D1 Prerelease Party'
     ],
     'GRL': [
         'D2 Buy a Box',
@@ -876,6 +977,10 @@ SEARCH_SETS_INCLUDE = {
     'GRV': [
         'D3 Prerelease Party',
         'D3 Buy a Box'
+    ],
+    'NWE': [
+        'H1 Buy a Box',
+        'H1 Prerelease Party'
     ],
     'TUS': [
         'H2 Buy a Box',
@@ -895,20 +1000,24 @@ SEARCH_SETS_INCLUDE = {
         'MC02'
     ],
     'JRP': [
+        'H6 Buy a Box',
         'H6 Prerelease Party',
         'MC03',
     ],
     'TTT': [
         'T1 Buy a Box',
-        'MC04'
+        'MC04',
+        'T1 Prerelease Party'
     ],
     'TSR': [
         'T2 Buy a Box',
         'MC05',
+        'T2 Prerelease Party'
     ],
     'TEU': [
         'T3 Buy a Box',
         'MC06',
+        'T3 Prerelease Party'
     ],
     'MP02': [
         'MC07',
@@ -916,6 +1025,7 @@ SEARCH_SETS_INCLUDE = {
     'TOP': [
         'T4 Buy a Box',
         'MC08',
+        'T4 Prerelease Party'
     ],
 }
 

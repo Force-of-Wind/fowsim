@@ -780,10 +780,11 @@ SEARCH_SETS_INCLUDE = {
         'R4 Buy a Box',
         'V1 Buy a Box',
         'V2 Buy a Box',
+        'AOA V3 Buy 2',
         'V3 Buy a Box',
         'V3 Buy 2 Boxes',
         'V4 Buy a Box',
-        'AOA V3 Buy 2',
+        'V4 Buy 2 Boxes',
         'AO1 Buy a Box',
         'AO1 Buy a BoxJ',
         'AO2 Buy a Box',
@@ -825,13 +826,9 @@ SEARCH_SETS_INCLUDE = {
         'V3 Prerelease Party',
         'V4 Prerelease Party',
         'AO1 Prerelease Party',
-        'AO1 Prerelease PartyJ',
         'AO2 Prerelease Party',
-        'AO2 Prerelease PartyJ',
         'AO3 Prerelease Party',
-        'AO3 Prerelease PartyJ',
         'AO4 Prerelease Party',
-        'AO4 Prerelease PartyJ',
         'S1 Prerelease Party',
         'S2 Prerelease Party',
         'S3 Prerelease Party',
@@ -882,24 +879,96 @@ SEARCH_SETS_INCLUDE = {
         'WPR2027',
         'WPR2028',
     ],
+    'CFC': [
+        'L1 Prerelease Party',
+        'L1 Buy a Box',
+    ],
+    'LEL': [
+        'L2 Prerelease Party',
+        'L2 Buy a Box',
+    ],
+    'RDE': [
+        'L3 Prerelease Party',
+        'L3 Buy a Box',
+    ],
+    'ENW': [
+        'L4 Prerelease Party',
+        'L4 Buy a Box',
+    ],
+    'ACN': [
+        'R1 Prerelease Party',
+        'R1 Buy a Box',
+    ],
+    'ADW': [
+        'R2 Prerelease Party',
+        'R2 Buy a Box',
+    ],
+    'TSW': [
+        'R3 Prerelease Party',
+        'R3 Buy a Box',
+    ],
+    'WOM': [
+        'R4 Prerelease Party',
+        'R4 Buy a Box',
+    ],
+    'NDR': [
+        'V1 Prerelease Party',
+        'V1 Buy a Box',
+    ],
     'AOA': [
-        'AOA V3 Buy 2'
+        'V2 Prerelease Party',
+        'V2 Buy a Box',
+        'AOA V3 Buy 2',
+    ],
+    'SVN': [
+        'V3 Prerelease Party',
+        'V3 Buy a Box',
+        'V3 Buy 2 Boxes',
+    ],
+    'DBV': [
+        'V4 Prerelease Party',
+        'V4 Buy a Box',
+        'V4 Buy 2 Boxes',
     ],
     'AO1': [
         'AO1 Buy a Box',
-        'AO1 Buy a BoxJ'
+        'AO1 Buy a BoxJ',
+        'AO1 Prerelease Party'
         ],
     'AO2': [
         'AO2 Buy a Box',
-        'AO2 Buy a BoxJ'
+        'AO2 Buy a BoxJ',
+        'AO2 Prerelease Party'
     ],
     'AO3': [
         'AO3 Buy a Box',
-        'AO3 Buy a BoxJ'
+        'AO3 Buy a BoxJ',
+        'AO3 Prerelease Party'
     ],
     'PofA': [
         'AO4 Buy a Box',
-        'AO4 Buy a BoxJ'
+        'AO4 Buy a BoxJ',
+        'AO4 Prerelease Party'
+    ],
+    'EDL': [
+        'S1 Buy a Box',
+        'S1 Prerelease Party',
+    ],
+    'MSW': [
+        'S2 Buy a Box',
+        'S2 Prerelease Party',
+    ],
+    'ADW': [
+        'S3 Buy a Box',
+        'S3 Prerelease Party',
+    ],
+    'TST': [
+        'S4 Buy a Box',
+        'S4 Prerelease Party',
+    ],
+    'GOG': [
+        'D1 Buy a Box',
+        'D1 Prerelease Party'
     ],
     'GRL': [
         'D2 Buy a Box',
@@ -908,6 +977,10 @@ SEARCH_SETS_INCLUDE = {
     'GRV': [
         'D3 Prerelease Party',
         'D3 Buy a Box'
+    ],
+    'NWE': [
+        'H1 Buy a Box',
+        'H1 Prerelease Party'
     ],
     'TUS': [
         'H2 Buy a Box',
@@ -927,20 +1000,24 @@ SEARCH_SETS_INCLUDE = {
         'MC02'
     ],
     'JRP': [
+        'H6 Buy a Box',
         'H6 Prerelease Party',
         'MC03',
     ],
     'TTT': [
         'T1 Buy a Box',
-        'MC04'
+        'MC04',
+        'T1 Prerelease Party'
     ],
     'TSR': [
         'T2 Buy a Box',
         'MC05',
+        'T2 Prerelease Party'
     ],
     'TEU': [
         'T3 Buy a Box',
         'MC06',
+        'T3 Prerelease Party'
     ],
     'MP02': [
         'MC07',
@@ -948,6 +1025,7 @@ SEARCH_SETS_INCLUDE = {
     'TOP': [
         'T4 Buy a Box',
         'MC08',
+        'T4 Prerelease Party'
     ],
 }
 

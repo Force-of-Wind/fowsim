@@ -30,6 +30,10 @@ def post(request, decklist_id=None):
     decklist.comments = decklist_data['comments']
     decklist.public = is_public
     decklist.deck_format = Format.objects.get(name=decklist_format)
+    #reset state if public since public decklists cant have share codes
+    if is_public:
+        decklist.shareMode = ''
+        decklist.shareCode = ''
     decklist.save()
     #  Remove old cards, then rebuild it
     DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()

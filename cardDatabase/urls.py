@@ -7,8 +7,8 @@ from .tournament import tournament_views, tournament_api_views
 from .forms import UserLoginForm
 from .views import search, search_for_decklist, deprecated_decklist_url, create_decklist, edit_decklist, \
     edit_decklist_mobile, view_decklist, view_user_public, delete_decklist, logout, user_preferences, register, \
-    desktop_only, mobile_only, copy_decklist, private_decklist, tournament_decklist, metrics, pack_opening, pack_select, \
-    pack_history, export_decklist, view_card
+    desktop_only, mobile_only, copy_decklist, private_decklist, locked_decklist, metrics, pack_opening, pack_select, \
+    pack_history, export_decklist, export_decklist_share, view_card
 from .views.admin import add_card, test_error
 from .views.bot import reddit_bot
 from .views.post import save_decklist, create_share_code, delete_share_code
@@ -48,6 +48,7 @@ urlpatterns = [
     path('pack_select/', pack_select.get, name='cardDatabase-pack-select'),
     path('pack_history/', pack_history.get, name='cardDatabase-pack-history'),
     path('api/deck/<int:decklist_id>/', export_decklist.get, name='cardDatabase-export-decklist'),
+    path('api/deck/<int:decklist_id>/<str:share_parameter>', export_decklist_share.get, name='cardDatabase-export-decklist-share'),
 
     # TOURNAMENT SECTION
     path('tournaments/', tournament_views.show_tournaments, name='cardDatabase-tournament-list'),

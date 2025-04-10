@@ -915,16 +915,16 @@ SEARCH_SETS_INCLUDE = {
         'V1 Prerelease Party',
         'V1 Buy a Box',
     ],
-    'AOA': [
+    'SVN': [
         'V2 Prerelease Party',
         'V2 Buy a Box',
-        'AOA V3 Buy 2',
     ],
-    'SVN': [
+    'AOA': [
         'V3 Prerelease Party',
         'V3 Buy a Box',
         'V3 Buy 2 Boxes',
-    ],
+        'AOA V3 Buy 2',
+    ],    
     'DBV': [
         'V4 Prerelease Party',
         'V4 Buy a Box',

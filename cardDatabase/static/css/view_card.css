@@ -205,6 +205,7 @@
 
 .aggregated-ability .style-title {
     min-width: 34px;
+    padding: 8px 0;
     display: inline-flex;
     flex-direction: row;
     writing-mode: sideways-lr;

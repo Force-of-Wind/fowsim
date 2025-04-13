@@ -733,6 +733,7 @@ SETS_IN_ORDER = [
     'MC02',  # Memoria Collection,
     'JRP',
     'H6 Prerelease Party',
+    'H6 Prerelease PartyJ',
     'H6 Buy a Box',
     'MC03',
     'MP01',

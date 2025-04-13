@@ -683,7 +683,7 @@ SETS_IN_ORDER = [
     'AO3 Prerelease Party'
     'AO3',
     'AO4 Buy a Box',
-    'AO4 Prerelease Party'
+    'PofA Prerelease Party'
     'PofA',
     'PofAMS',
     'EDL',
@@ -871,20 +871,21 @@ SEARCH_SETS_INCLUDE = {
         'AO1 Prerelease Party',
         'AO2 Prerelease Party',
         'AO3 Prerelease Party',
-        'AO4 Prerelease Party',
+        'PofA Prerelease Party',
         'S1 Prerelease Party',
         'S2 Prerelease Party',
         'S3 Prerelease Party',
         'S4 Prerelease Party',
         'D1 Prerelease Party',
         'D2 Prerelease Party',
-        'D2 Prerelease Party',
         'D3 Prerelease Party',
+	'H1 Prerelease Party',
         'H2 Prerelease Party',
         'H3 Prerelease Party',
         'H4 Prerelease Party',
         'H5 Prerelease Party',
         'H6 Prerelease Party',
+        'H6 Prerelease PartyJ',
         'T1 Prerelease Party',
         'T2 Prerelease Party',
         'T3 Prerelease Party',
@@ -949,6 +950,7 @@ SEARCH_SETS_INCLUDE = {
     'TSW': [
         'R3 Prerelease Party',
         'R3 Buy a Box',
+	'R3 Quest',
     ],
     'WOM': [
         'R4 Prerelease Party',
@@ -991,7 +993,7 @@ SEARCH_SETS_INCLUDE = {
     'PofA': [
         'AO4 Buy a Box',
         'AO4 Buy a BoxJ',
-        'AO4 Prerelease Party'
+        'PofA Prerelease Party'
     ],
     'EDL': [
         'S1 Buy a Box',
@@ -1045,6 +1047,7 @@ SEARCH_SETS_INCLUDE = {
     'JRP': [
         'H6 Buy a Box',
         'H6 Prerelease Party',
+        'H6 Prerelease PartyJ',
         'MC03',
     ],
     'TTT': [

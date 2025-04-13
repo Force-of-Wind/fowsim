@@ -640,6 +640,7 @@ SETS_IN_ORDER = [
     'TSW',
     'R3 Buy a Box',
     'R3 Prerelease Party',
+    'R3 Quest',
     'SDR6',
     'WOM',
     'R4 Buy a Box',

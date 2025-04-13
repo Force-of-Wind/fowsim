@@ -848,6 +848,7 @@ SEARCH_SETS_INCLUDE = {
         'H3 Buy a Box',
         'H4 Buy a Box',
         'H5 Buy a Box',
+	'H6 Buy a Box',
         'MP01-ACV',
         'T1 Buy a Box',
         'T2 Buy a Box',

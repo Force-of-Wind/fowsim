@@ -662,22 +662,27 @@ SETS_IN_ORDER = [
     'V3 Prerelease Party',
     'DBV',
     'V4 Buy a Box',
+    'V4 Buy 2 Boxes',
     'V4 Prerelease Party',
     'SDAO1',
     'AO1 Buy a Box',
     'AO1 Buy a BoxJ',
+    'AO1 Prerelease Party'
     'AO1',
     'SDAO2',
     'AO2 Buy a Box',
     'AO2 Buy a BoxJ',
+    'AO2 Prerelease Party'
     'AO2',
     'GITS2045SD',
     'GITS2045',
     'SOUVENIR038',
     'SOUVENIR039',
     'AO3 Buy a Box',
+    'AO3 Prerelease Party'
     'AO3',
     'AO4 Buy a Box',
+    'AO4 Prerelease Party'
     'PofA',
     'PofAMS',
     'EDL',
@@ -705,6 +710,8 @@ SETS_IN_ORDER = [
     'GRV',
     'HSD',
     'NWE',
+    'H1 Buy a Box',
+    'H1 Prerelease Party'
     'TUS',
     'H2 Buy a Box',
     'H2 Prerelease Party',
@@ -726,15 +733,18 @@ SETS_IN_ORDER = [
     'MC02',  # Memoria Collection,
     'JRP',
     'H6 Prerelease Party',
+    'H6 Buy a Box',
     'MC03',
     'MP01',
     'TSD1',
     'TSD2',
     'TTT',
     'T1 Buy a Box',
+    'T1 Prerelease Party'
     'MC04',
     'TSR',
     'T2 Buy a Box',
+    'T2 Prerelease Party'
     'MC05',
     'ABC-SD01',
     'ABC-SD02',
@@ -749,11 +759,13 @@ SETS_IN_ORDER = [
     'ABC-SD11',
     'TEU',
     'T3 Buy a Box',
+    'T3 Prerelease Party'
     'MC06',
     'MP02',
     'MC07',
     'TOP',
     'T4 Buy a Box',
+    'T4 Prerelease Party'
     'MC08'
 ]
 

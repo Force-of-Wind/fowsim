@@ -315,19 +315,19 @@ def get_deck_format_query(data):
 def sort_cards(cards, sort_by, is_reversed, pick_time_period=None):
     if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT or not sort_by:
         return sorted(cards, key=lambda item:
-        (CONS.SETS_IN_ORDER.index(item.set_code),
+        (CONS.SETS_IN_ORDER.index(item.set_code) if item.set_code in CONS.SETS_IN_ORDER else 999999,
          get_set_number_sort_value(item.set_number)),
                       reverse=not is_reversed)  # (last set comes first, flip the reversed flag
     elif sort_by == CONS.DATABASE_SORT_BY_TOTAL_COST:
         return sorted(cards, key=lambda item:
         (item.total_cost,
-         -CONS.SETS_IN_ORDER.index(item.set_code),
+         -CONS.SETS_IN_ORDER.index(item.set_code) if item.set_code in CONS.SETS_IN_ORDER else 999999,
          get_set_number_sort_value(item.set_number)),
                       reverse=is_reversed)
     elif sort_by == CONS.DATABASE_SORT_BY_ALPHABETICAL:
         return sorted(cards, key=lambda item:
         (item.name,
-         CONS.SETS_IN_ORDER.index(item.set_code),
+         CONS.SETS_IN_ORDER.index(item.set_code) if item.set_code in CONS.SETS_IN_ORDER else 999999,
          get_set_number_sort_value(item.set_number)),
                       reverse=is_reversed)
     elif sort_by == CONS.DATABASE_SORT_BY_POPULARITY:

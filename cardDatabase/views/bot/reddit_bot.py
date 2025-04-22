@@ -8,6 +8,7 @@ from django.views.decorators.http import require_POST
 from cardDatabase.forms import AdvancedSearchForm
 from cardDatabase.views.utils.search_context import advanced_search
 from fowsim.decorators import reddit_bot
+from fowsim import constants as CONS
 
 
 @csrf_exempt

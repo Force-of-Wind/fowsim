@@ -668,22 +668,22 @@ SETS_IN_ORDER = [
     'SDAO1',
     'AO1 Buy a Box',
     'AO1 Buy a BoxJ',
-    'AO1 Prerelease Party'
+    'AO1 Prerelease Party',
     'AO1',
     'SDAO2',
     'AO2 Buy a Box',
     'AO2 Buy a BoxJ',
-    'AO2 Prerelease Party'
+    'AO2 Prerelease Party',
     'AO2',
     'GITS2045SD',
     'GITS2045',
     'SOUVENIR038',
     'SOUVENIR039',
     'AO3 Buy a Box',
-    'AO3 Prerelease Party'
+    'AO3 Prerelease Party',
     'AO3',
     'AO4 Buy a Box',
-    'PofA Prerelease Party'
+    'PofA Prerelease Party',
     'PofA',
     'PofAMS',
     'EDL',
@@ -712,7 +712,7 @@ SETS_IN_ORDER = [
     'HSD',
     'NWE',
     'H1 Buy a Box',
-    'H1 Prerelease Party'
+    'H1 Prerelease Party',
     'TUS',
     'H2 Buy a Box',
     'H2 Prerelease Party',
@@ -742,11 +742,11 @@ SETS_IN_ORDER = [
     'TSD2',
     'TTT',
     'T1 Buy a Box',
-    'T1 Prerelease Party'
+    'T1 Prerelease Party',
     'MC04',
     'TSR',
     'T2 Buy a Box',
-    'T2 Prerelease Party'
+    'T2 Prerelease Party',
     'MC05',
     'ABC-SD01',
     'ABC-SD02',
@@ -761,14 +761,14 @@ SETS_IN_ORDER = [
     'ABC-SD11',
     'TEU',
     'T3 Buy a Box',
-    'T3 Prerelease Party'
+    'T3 Prerelease Party',
     'MC06',
     'MP02',
     'MC07',
     'TOP',
     'T4 Buy a Box',
-    'T4 Prerelease Party'
-    'MC08'
+    'T4 Prerelease Party',
+    'MC08',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {

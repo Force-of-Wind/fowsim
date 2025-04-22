@@ -1,19 +1,19 @@
 {% if edit %}
     {% if field.type == 'text' or field.type == 'link' %}
         <label for="{{field.name}}">{{field.label}}{% if field.required %}*{% endif %}</label>
-        <input id="{{field.name}}" maxlength="{{field.maxlength}}" type="text" name="{{field.name}}" class="{{field.class}}" {% if field.required %}required{% endif %}/>
+        <input id="{{field.name}}" maxlength="{{field.maxlength}}" type="text" name="{{field.name}}" class="{{field.class}}" {% if field.required %}required{% endif %} {% if field.value %}value="{{field.value}}"{% endif %}/>
     {% endif %}
     {% if field.type == 'textarea' %}
         <label for="{{field.name}}">{{field.label}}{% if field.required %}*{% endif %}</label>
-        <textarea id="{{field.name}}" maxlength="{{field.maxlength}}" name="{{field.name}}" class="{{field.class}}" {% if field.required %}required{% endif %}></textarea>
+        <textarea id="{{field.name}}" maxlength="{{field.maxlength}}" name="{{field.name}}" class="{{field.class}}" {% if field.required %}required{% endif %} {% if field.value %}value="{{field.value}}"{% endif %}></textarea>
     {% endif %}
     {% if field.type == 'email' %}
         <label for="{{field.name}}">{{field.label}}{% if field.required %}*{% endif %}</label>
-        <input id="{{field.name}}" type="email" name="{{field.name}}" class="{{field.class}} {% if field.required %}required{% endif %}"/>
+        <input id="{{field.name}}" type="email" name="{{field.name}}" class="{{field.class}}" {% if field.required %}required{% endif %} {% if field.value %}value="{{field.value}}"{% endif %} />
     {% endif %}
     {% if field.type == 'year' %}
         <label for="{{field.name}}">{{field.label}}{% if field.required %}*{% endif %}</label>
-        <input id="{{field.name}}" name="{{field.name}}" type="number" min="1900" max="2099" step="1" class="{{field.class}}" {% if field.required %}required{% endif %} />
+        <input id="{{field.name}}" name="{{field.name}}" type="number" min="1900" max="2099" step="1" class="{{field.class}}" {% if field.required %}required{% endif %} {% if field.value %} value="{{field.value}}"{% endif %}/>
     {% endif %}
 {% else %}
     {% if field.type == 'text' or field.type == 'email' or field.type == 'year' %}

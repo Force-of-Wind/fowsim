@@ -1,21 +1,11 @@
 import json
-import re
-import datetime
 
-from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Q, F, Count
-from django.forms.fields import MultipleChoiceField
-from django.views.decorators.http import require_POST
-from django.core.paginator import Paginator
-from django.contrib.auth import logout as django_logout
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.http import JsonResponse
 
 
-from ..forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm, DecklistSearchForm
-from ..models.Tournament import Tournament, TournamentLevel, TournamentPlayer, TournamentStaff, StaffRole
-from ..models.Banlist import Format
+from ...models.Tournament import Tournament, TournamentLevel, TournamentPlayer, TournamentStaff, StaffRole
 from fowsim import constants as CONS
 from . import tournament_constants as TOURNAMENTCONS
 

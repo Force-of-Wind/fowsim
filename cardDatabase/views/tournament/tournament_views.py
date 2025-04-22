@@ -15,9 +15,9 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, Http40
 from django.urls import reverse
 from django.utils.dateparse import parse_datetime
 
-from ..forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm, DecklistSearchForm
-from ..models.Tournament import Tournament, TournamentLevel, TournamentPlayer, TournamentStaff, StaffRole
-from ..models.Banlist import Format
+from ...forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm, DecklistSearchForm
+from ...models.Tournament import Tournament, TournamentLevel, TournamentPlayer, TournamentStaff, StaffRole
+from ...models.Banlist import Format
 from fowsim import constants as CONS
 from . import tournament_constants as TOURNAMENTCONS
 
@@ -38,8 +38,6 @@ def new_tournament(request, error = False):
         'levels': TournamentLevel.objects.all(),
         'error': error
     })
-
-
 
 @login_required
 def create_tournament(request):
@@ -105,7 +103,23 @@ def any_empty(*args):
     return any(not arg for arg in args)
 
 @login_required
-def edit_tournament(request, tournament_id):
+def edit_tournament(request, tournament_id, error = False):
+    tournament = get_object_or_404(Tournament, pk=tournament_id)
+    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    
+    if staffAccount is None or not staffAccount.role.can_write:
+        return HttpResponse('Not authorized', 401)
+
+    return render(request, 'tournament/tournament_edit.html', context={
+        'meta_data': tournament.meta_data,
+        'formats': Format.objects.all().order_by('pk'),
+        'levels': TournamentLevel.objects.all(),
+        'tournament': tournament,
+        'error': error
+    })
+
+@login_required
+def update_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
     staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
@@ -144,7 +158,7 @@ def edit_tournament(request, tournament_id):
     tournament.registration_deadline = registration_deadline
     tournament.deck_edit_deadline = deck_edit_deadline
 
-    return HttpResponseRedirect(reverse('cardDatabase-tournament-admin', kwargs={'tournament_id': tournament.id}))
+    return HttpResponseRedirect(reverse('cardDatabase-admin-tournament', kwargs={'tournament_id': tournament.id}))
 
 def tournament_detail(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)

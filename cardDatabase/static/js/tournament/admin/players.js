@@ -1,15 +1,4 @@
-let players = [
-    { id: 1, username: "player1", firstName: "John", lastName: "Doe", decklist: "#", status: "accepted", standing: 1, dropped: false, notes: "" },
-    { id: 2, username: "player2", firstName: "Jane", lastName: "Smith", decklist: "#", status: "requested", standing: 2, dropped: false, notes: "" },
-    { id: 3, username: "player3", firstName: "Alice", lastName: "Johnson", decklist: "#", status: "completed", standing: 3, dropped: true, notes: "" },
-    { id: 4, username: "player4", firstName: "Bob", lastName: "Brown", decklist: "#", status: "accepted", standing: 4, dropped: false, notes: "" },
-    { id: 5, username: "player5", firstName: "Charlie", lastName: "Williams", decklist: "#", status: "requested", standing: 5, dropped: false, notes: "" },
-    { id: 6, username: "player6", firstName: "Diana", lastName: "Miller", decklist: "#", status: "completed", standing: 6, dropped: false, notes: "" },
-    { id: 7, username: "player7", firstName: "Ethan", lastName: "Davis", decklist: "#", status: "accepted", standing: 7, dropped: false, notes: "" },
-    { id: 8, username: "player8", firstName: "Fiona", lastName: "Garcia", decklist: "#", status: "requested", standing: 8, dropped: true, notes: "" },
-    { id: 9, username: "player9", firstName: "George", lastName: "Martinez", decklist: "#", status: "completed", standing: 9, dropped: false, notes: "" },
-    { id: 10, username: "player10", firstName: "Hannah", lastName: "Anderson", decklist: "#", status: "accepted", standing: 10, dropped: false, notes: "" }
-];
+let players = [];
 
 function getTournamentId() {
     return document.getElementById("tournamentId").value;
@@ -61,6 +50,13 @@ function savePlayersToAPI() {
 function renderPlayers() {
     const playerList = document.getElementById("playerList");
     playerList.innerHTML = "";
+
+    if (players.length < 1)
+    {
+        playerList.innerHTML = `<h3 class="ml-3"><b>No players registered!</b></h3>`;
+        document.getElementById("savePlayersBtn").setAttribute('disabled', true);
+        return;
+    }
 
     players.forEach((player, index) => {
         const card = `
@@ -118,4 +114,4 @@ function updateNotes(index, newNotes) {
 }
 
 // Render the player list on page load
-document.addEventListener("DOMContentLoaded", renderPlayers);
+document.addEventListener("DOMContentLoaded", fetchPlayersFromAPI);

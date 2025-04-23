@@ -10,13 +10,14 @@
 
 {% block js %}
     {{ block.super }}
+    <script  src="{% static 'js/date_localizer.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script  src="{% static 'js/tournament/tournament_create.js' %}"></script>
 {% endblock %}
 
 {% block body %}
     <div class="content-wrapper">
-        <form id="create-tournament" method="post" class="edit-form" action="{% url 'cardDatabase-edit-tournament' %}">
+        <form id="create-tournament" method="post" class="edit-form" action="{% url 'cardDatabase-update-tournament' tournament_id=tournament.pk %}">
             <h2>Edit Tournament</h2>
             {% csrf_token %}
             <div class="container">
@@ -69,17 +70,40 @@
                 <div class="row row-gap">
                     <div class="form-group">
                         <label for="start_date_time">Start Time*</label>
-                        <input type="text" id="start_date_time" name="start_date_time" class="form-control date-time-picker" required value="{{tournament.start_datetime}}"/>
+                        <input 
+                            type="text" 
+                            id="start_date_time" 
+                            name="start_date_time" 
+                            class="form-control date-time-picker local-date-time" 
+                            data-epoch="{% datetime_to_timestamp tournament.start_datetime %}"
+                            data-iso-date="true"
+                            required
+                        />
                     </div>
                     <div class="form-group">
                         <label for="deck_registration_end_date_time">Registration End*</label>
-                        <input type="text" id="deck_registration_end_date_time" name="deck_registration_end_date_time" class="form-control date-time-picker" required />
+                        <input 
+                            type="text" 
+                            id="deck_registration_end_date_time" 
+                            name="deck_registration_end_date_time" 
+                            class="form-control date-time-picker local-date-time"
+                            data-epoch="{% datetime_to_timestamp tournament.registration_deadline %}"
+                            data-iso-date="true"
+                            required 
+                        />
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group">
                         <label for="deck_lock_date_time">Deck Edit lock after</label>
-                        <input type="text" id="deck_lock_date_time" name="deck_lock_date_time" class="form-control date-time-picker" />
+                        <input 
+                            type="text" 
+                            id="deck_lock_date_time" 
+                            name="deck_lock_date_time"
+                            class="form-control date-time-picker local-date-time"
+                            {% if tournament.deck_edit_deadline %} data-epoch="{% datetime_to_timestamp tournament.deck_edit_deadline %}" {% endif %}
+                            data-iso-date="true"
+                        />
                     </div>
                 </div>
             </div>

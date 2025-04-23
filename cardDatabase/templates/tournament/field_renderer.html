@@ -5,7 +5,7 @@
     {% endif %}
     {% if field.type == 'textarea' %}
         <label for="{{field.name}}">{{field.label}}{% if field.required %}*{% endif %}</label>
-        <textarea id="{{field.name}}" maxlength="{{field.maxlength}}" name="{{field.name}}" class="{{field.class}}" {% if field.required %}required{% endif %} {% if field.value %}value="{{field.value}}"{% endif %}></textarea>
+        <textarea id="{{field.name}}" maxlength="{{field.maxlength}}" name="{{field.name}}" class="{{field.class}}" {% if field.required %}required{% endif %}>{% if field.value %}{{field.value}}{% endif %}</textarea>
     {% endif %}
     {% if field.type == 'email' %}
         <label for="{{field.name}}">{{field.label}}{% if field.required %}*{% endif %}</label>

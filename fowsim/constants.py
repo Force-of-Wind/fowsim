@@ -381,6 +381,12 @@ SET_DATA = {
                 {'code': 'TOP', 'name': 'Ten Oaths of Protopaterpolis\' War' },
             ]
         },
+	{
+	    'name': 'Ruler Collection',
+	    'sets': [
+		{'code': 'RCS', 'name': 'Ruler Collection Set'}
+	    ]
+	},
         {
             'name': 'Masterpiece Collection',
             'sets': [
@@ -717,6 +723,7 @@ SETS_IN_ORDER = [
     'H2 Buy a Box',
     'H2 Prerelease Party',
     'TWS',
+    'RCS',
     'H3 Buy a Box',
     'H3 Prerelease Party',
     'CMB',

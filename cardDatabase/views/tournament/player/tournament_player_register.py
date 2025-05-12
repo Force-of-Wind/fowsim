@@ -15,6 +15,11 @@ from .. import tournament_constants as TOURNAMENTCONS
 def get(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
+    player = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
+
+    if player is not None:
+        return render(request, 'tournament/player/tournament_player_already_registered.html')
+
     print(datetime.now().timestamp())
     print(tournament.registration_deadline.timestamp())
     print(datetime.now().timestamp() > tournament.registration_deadline.timestamp())

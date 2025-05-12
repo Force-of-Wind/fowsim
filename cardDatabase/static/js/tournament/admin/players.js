@@ -88,6 +88,10 @@ function renderPlayers() {
                         <button class="btn btn-sm btn-danger float-right" onclick="dropPlayer(${index})">
                             Drop Player
                         </button>
+                        ${canDelete ? 
+                            `<button class="btn btn-sm btn-danger float-right" onclick="removePlayer(${index})">
+                            Remove Player
+                        </button>` : '' }
                     </div>
                 </div>
             </div>
@@ -100,6 +104,11 @@ function dropPlayer(index) {
     players[index].dropped = true;
     renderPlayers();
 }
+
+function removePlayer(index) { 
+    console.log(players[index]);
+    console.log('Removing player from tournament.');
+ }
 
 function updateStatus(index, newStatus) {
     players[index].status = newStatus;

@@ -15,7 +15,7 @@
 {% block body %}
 <div class="container mt-5">
     <div class="mb-4">
-        <h2 class="mb-3">{{ tournament.title }}</h2>
+        <h1 class="mb-3">{{ tournament.title }}</h1>
         <p>
             <strong>Tournament style:</strong> {% if tournament.is_online %}Online{% else %}In Person{% endif %}<br>
             <strong>Format:</strong> {{ tournament.format }}<br>
@@ -39,7 +39,7 @@
 
         {% if request.user.is_authenticated %}
             <div class="mt-3">
-                {% if registrationOpen %}
+                {% if registrationOpen and currentPlayer is None %}
                     <a href="{% url 'cardDatabase-player-register-tournament' tournament_id=tournament.pk %}" class="btn btn-primary mr-2">Register for Tournament</a>
                 {% endif %}
                 {% if isStaff %}

@@ -1,4 +1,20 @@
 {% extends 'cardDatabase/html/base.html' %}
 {% block body %}
-    <h2>Tournament Player registration</h1>
+    <div class="container mt-5">
+        <h1>Tournament player registration</h1>
+        <h3>Tournament: {{ tournament.title }}</h2>
+        <strong>Format:</strong> {{ tournament.format }}<br>
+        <strong>Level:</strong> {{ tournament.level.title }} - {{ tournament.level.code }}<br>
+        {% for field in fields %}
+            {% if forloop.counter0|divisibleby:2 %}
+                <div class="row row-gap">
+            {% endif %}
+            <div class='form-group'>
+                {% include 'tournament/field_renderer.html' with edit=True field=field %}
+            </div>
+            {% if not forloop.counter0|divisibleby:2 or forloop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}

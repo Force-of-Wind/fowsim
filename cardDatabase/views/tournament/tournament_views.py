@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse, Http404
 from django.urls import reverse
 from django.utils.dateparse import parse_datetime
+from django.utils import timezone
 
 from ...forms import SearchForm, AdvancedSearchForm, AddCardForm, UserRegistrationForm, DecklistSearchForm
 from ...models.Tournament import Tournament, TournamentLevel, TournamentPlayer, TournamentStaff, StaffRole
@@ -172,8 +173,28 @@ def update_tournament(request, tournament_id):
 def tournament_detail(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
+    players = TournamentPlayer.objects.filter(tournament=tournament, registration_status=CONS.PLAYER_REGISTRATION_COMPLETED)
+    playerCounter = players.count()
+
+    currentPlayer = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
+
+    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile=request.user.profile).first()
+
+    isStaff = staffAccount is not None or staffAccount.role.can_read
+
+    registrationOpen = False
+
+    if(tournament.phase == CONS.TOURNAMENT_PHASE_REGISTRATION and not tournament.registration_locked and tournament.registration_deadline > timezone.now()):
+        registrationOpen = True
+    
+
     return render(request, 'tournament/tournament_detail.html', context={
-        'tournament': tournament
+        'tournament': tournament,
+        'players':players,
+        'playerCounter': playerCounter,
+        'currentPlayer': currentPlayer,
+        'isStaff': isStaff,
+        'registrationOpen': registrationOpen
     })
 
 @login_required
@@ -181,11 +202,12 @@ def tournament_admin(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
     staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.can_delete:
+    if staffAccount is None or not staffAccount.role.can_write:
         return HttpResponse('Not authorized', 401)
 
     return render(request, 'tournament/tournament_admin.html', context={
-        'tournament': tournament
+        'tournament': tournament,
+        'staffAccount' : staffAccount
     })
 
 @login_required

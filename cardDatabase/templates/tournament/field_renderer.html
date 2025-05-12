@@ -17,15 +17,12 @@
     {% endif %}
 {% else %}
     {% if field.type == 'text' or field.type == 'email' or field.type == 'year' %}
-        <label for="{{field.name}}">{{field.label}}</label>
-        <span id="{{field.name}}" name="{{field.name}}">{{field.value}}</span>
+        <strong>{{field.label}}:</strong><span id="{{field.name}}" name="{{field.name}}"> {{field.value}}</span></br>
     {% endif %}
     {% if field.type == 'textarea' %}
-        <label for="{{field.name}}">{{field.label}}</label>
-        <p class="long-text" id="{{field.name}}">{{field.value}}</p>
+        <strong>{{field.label}}:</strong><p class="long-text" id="{{field.name}}"> {{field.value}}</p>
     {% endif %}
     {% if field.type == 'link' %}
-        <label for="{{field.name}}">{{field.label}}</label>
-        <a id="{{field.name}}" name="{{field.name}}">{{field.value}}</a>
+        <strong>{{field.label}}:</strong><a id="{{field.name}}" href="{{field.value}}" target="_blank" name="{{field.name}}"> {{field.value}}</a></br>
     {% endif %}
 {% endif %}

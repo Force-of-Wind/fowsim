@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="{% static 'css/tournament/tournament_list.css' %}">
 {% endblock %}
 
+{% block js %}
+    {{ block.super }}
+    <script  src="{% static 'js/date_localizer.js' %}"></script>
+{% endblock %}
+
 {% block body %}
     {% if request.user.is_authenticated %}
         <div class="new-tournament">
@@ -17,9 +22,36 @@
         </div>
     {% endif %}
     {% if tournaments|length > 0 %}
-        {% for tournament in tournaments %}
-            {{ tournament.title }}
-        {% endfor %}
+        <div class="container mt-5">
+            <h2 class="mb-4">Tournaments</h2>
+        
+            <div class="row">
+                {% for tournament in tournaments %}
+                    <div class="col-md-4 mb-4 tournament">
+                        <div class="card h-100 {{tournament.level.code}}">
+                        <div class="card-body">
+                            <h4 class="card-title tournament-title">{{ tournament.title }}</h4>
+                            <p class="card-text tournament-text">
+                            <strong>Format:</strong> {{ tournament.format }}<br>
+                            <strong>Level:</strong> {{ tournament.level.title }}<br>
+                            <strong>Tournament style:</strong> {% if tournament.is_online %}Online{% else %}In Person{% endif %}<br>
+                            {% if tournament.phase == 'created' or tournament.phase == 'registration '%}
+                                <strong>Start Time:</strong> <span class="local-date-time" data-epoch="{% datetime_to_timestamp tournament.start_datetime %}"></span><br>
+                                <strong>Registration Deadline:</strong> <span class="local-date-time" data-epoch="{% datetime_to_timestamp tournament.registration_deadline %}"></span><br>
+                            {% endif %}
+                            <strong>Phase:</strong> {{ tournament.phase }}
+                            </p>
+                        </div>
+                        <div class="card-footer text-right">
+                            <a href="{% url 'cardDatabase-detail-tournament' tournament_id=tournament.pk %}" class="btn btn-sm btn-primary">View</a>
+                        </div>
+                        </div>
+                    </div>
+                    
+                {% endfor %}
+                
+            </div>
+        </div>
     {% else %}
         <div class="no-tournaments">
             <div class="no-tournaments-text">

@@ -17,12 +17,13 @@
         <!-- Current status display -->
         <h3 class="mt-4" id="currentStatus">Current Phase: {{ tournament.phase }}</h3>
 
+        
         <div class="mt-4">
             <!-- Separate buttons for each status change -->
-            <button class="btn btn-primary status-btn" id="createBtn" data-toggle="modal" data-target="#confirmModal">Start Registration</button>
-            <button class="btn btn-primary status-btn" id="registrationBtn" data-toggle="modal" data-target="#confirmModal">Start Swiss</button>
-            <button class="btn btn-primary status-btn" id="swissBtn" data-toggle="modal" data-target="#confirmModal">Start Tops</button>
-            <button class="btn btn-primary status-btn" id="topsBtn" data-toggle="modal" data-target="#confirmModal">Complete Tournament</button>
+            <button class="btn btn-primary status-btn" {% if staffAccount.role.can_write %} disabled {% endif %} id="createBtn" data-toggle="modal" data-target="#confirmModal">Start Registration</button>
+            <button class="btn btn-primary status-btn" {% if staffAccount.role.can_write %} disabled {% endif %} id="registrationBtn" data-toggle="modal" data-target="#confirmModal">Start Swiss</button>
+            <button class="btn btn-primary status-btn" {% if staffAccount.role.can_write %} disabled {% endif %} id="swissBtn" data-toggle="modal" data-target="#confirmModal">Start Tops</button>
+            <button class="btn btn-primary status-btn" {% if staffAccount.role.can_write %} disabled {% endif %} id="topsBtn" data-toggle="modal" data-target="#confirmModal">Complete Tournament</button>
         </div>
     </div>
 
@@ -61,7 +62,9 @@
         <p><b>Format:</b> <span>{{ tournament.format.name}}</span></p>
         <p><b>Level:</b> <span>{{ tournament.level.title}}</span></p>
         <p><b>Tournament style:</b> <span>{% if tournament.is_online %}Online{% else %}In Person{% endif %}</span></p>
-        <a href="{% url 'cardDatabase-edit-tournament' tournament.id %}"><button class="btn btn-primary">Edit Tournament</button></a>
+        {% if staffAccount.role.can_write %}
+            <a href="{% url 'cardDatabase-edit-tournament' tournament.id %}"><button class="btn btn-primary">Edit Tournament</button></a>
+        {% endif %}
     </div>
 
     <div class="container mt-5">
@@ -78,9 +81,11 @@
         </div>
     </div>
 
-    <div class="container mt-5">
-        <button class="btn btn-danger" id="deleteBtn" data-toggle="modal" data-target="#deleteModal">Delete Tournament</button>
-    </div>
+    {% if staffAccount.role.can_delete %}
+        <div class="container mt-5">
+            <button class="btn btn-danger" id="deleteBtn" data-toggle="modal" data-target="#deleteModal">Delete Tournament</button>
+        </div>
+    {% endif %}
     <br>
 
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">

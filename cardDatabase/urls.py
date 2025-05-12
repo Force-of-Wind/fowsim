@@ -67,5 +67,5 @@ urlpatterns = [
     path('api/tournament/<int:tournament_id>/phase/update/', tournament_api_views.update_tournament_phase, name='cardDatabase-update-tournament-phase'),
     path('api/tournament/<int:tournament_id>/players/', tournament_api_views.get_tournament_players, name='cardDatabase-get-tournament-players'),
     path('api/tournament/<int:tournament_id>/players/update/', tournament_api_views.update_tournament_players, name='cardDatabase-save-tournament-players'),
-    #path('tournament_admin/<int:tournament_id>/', tournament_api_views.tournament_admin, name='cardDatabase-admin-tournament'),
+
 ]

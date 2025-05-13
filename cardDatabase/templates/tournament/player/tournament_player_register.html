@@ -33,9 +33,12 @@
         {% if available_decks.count > 0 %}
             <select>
                 {% for deck in available_decks %}
-                    <option value="{{deck.pk}}">{{deck.name}}</option>
+                    <option value="{{deck.pk}}" data-name="{{deck.name}}" data-url="{% url 'cardDatabase-view-decklist' deck.pk %}">{{deck.name}}</option>
                 {% endfor %}
             </select>
+            <div id="selected_deck">
+                
+            </div>
         {% else %}
             <h5>No valid decks found that can be registered to this tournament!</h5>
         {% endif %}

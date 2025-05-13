@@ -12,7 +12,7 @@ from .views import search, search_for_decklist, deprecated_decklist_url, create_
     pack_history, export_decklist, export_decklist_share, view_card
 from .views.admin import add_card, test_error
 from .views.bot import reddit_bot
-from .views.post import save_decklist, create_share_code, delete_share_code
+from .views.post import save_decklist, create_share_code, delete_share_code, create_deck_lock, delete_deck_lock
 
 urlpatterns = [
     path('', lambda req: redirect('/search/'), name='cardDatabase-home'),
@@ -27,6 +27,8 @@ urlpatterns = [
     path('save_decklist/<int:decklist_id>/', save_decklist.post, name='cardDatabase-save-decklist'),
     path('create_share_code/<int:decklist_id>/', create_share_code.post, name='cardDatabase-save-share-code'),
     path('delete_share_code/<int:decklist_id>/', delete_share_code.post, name='cardDatabase-delete-share-code'),
+    path('create_deck_lock/<int:decklist_id>/', create_deck_lock.post, name='cardDatabase-user-lock-decklist'),
+    path('delete_deck_lock/<int:decklist_id>/', delete_deck_lock.post, name='cardDatabase-user-unlock-decklist'),
     path('deck/<int:decklist_id>/', lambda req, decklist_id=None: redirect('cardDatabase-view-decklist', decklist_id=decklist_id)),
     path('view_decklist/<int:decklist_id>/', view_decklist.get, name='cardDatabase-view-decklist'),
     path('view_decklist/<int:decklist_id>/<str:share_parameter>/', view_decklist.get, name='cardDatabase-view-decklist-share'),

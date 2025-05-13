@@ -1,20 +1,47 @@
 {% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/tournament/player/tournament_player_register.css' %}">
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script  src="{% static 'js/tournament/player/tournament_player_register.js' %}"></script>
+{% endblock %}
 {% block body %}
     <div class="container mt-5">
         <h1>Tournament player registration</h1>
         <h3>Tournament: {{ tournament.title }}</h2>
         <strong>Format:</strong> {{ tournament.format }}<br>
         <strong>Level:</strong> {{ tournament.level.title }} - {{ tournament.level.code }}<br>
-        {% for field in fields %}
-            {% if forloop.counter0|divisibleby:2 %}
-                <div class="row row-gap">
-            {% endif %}
-            <div class='form-group'>
-                {% include 'tournament/field_renderer.html' with edit=True field=field %}
-            </div>
-            {% if not forloop.counter0|divisibleby:2 or forloop.last %}
+        <div class="container">
+            {% for field in fields %}
+                {% if forloop.counter0|divisibleby:2 %}
+                    <div class="row row-gap">
+                {% endif %}
+                <div class='form-group'>
+                    {% include 'tournament/field_renderer.html' with edit=True field=field %}
                 </div>
-            {% endif %}
-        {% endfor %}
+                {% if not forloop.counter0|divisibleby:2 or forloop.last %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if available_decks.count > 0 %}
+            <select>
+                {% for deck in available_decks %}
+                    <option value="{{deck.pk}}">{{deck.name}}</option>
+                {% endfor %}
+            </select>
+        {% else %}
+            <h5>No valid decks found that can be registered to this tournament!</h5>
+        {% endif %}
+
+        <div class="mt-3">
+            <button class="btn btn-primary">Register</button>
+        </div>
     </div>
 {% endblock %}

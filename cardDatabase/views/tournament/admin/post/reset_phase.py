@@ -4,7 +4,7 @@ from django.http import JsonResponse, Http404
 from django.views.decorators.http import require_POST
 
 
-from .....models.Tournament import Tournament, TournamentStaff
+from .....models.Tournament import Tournament, TournamentStaff, TournamentPlayer
 
 from fowsim import constants as CONS
 
@@ -23,5 +23,9 @@ def post (request, tournament_id):
     
     tournament.phase = CONS.TOURNAMENT_PHASE_CREATED
     tournament.save()
+
+    for player in TournamentPlayer.objects.filter(tournament=tournament):
+            player.deck.deck_lock = ''
+            player.deck.save()
 
     return JsonResponse({ 'success': True })

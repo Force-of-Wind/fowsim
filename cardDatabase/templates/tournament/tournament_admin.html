@@ -154,11 +154,10 @@
             </div>
         </div>
     </div>
-    </div>
 
     {% if staffAccount.role.can_delete %}
         <h2>Staff Control</h2>
-        <div class="search-group">
+        <div class="search-group mt-3">
             <input id="staff-name-search" class="mr-3 form-control search-input" placeholder="Username"/>
             <button id="staff-add" class="btn btn-primary">Add User</button>
         </div>
@@ -187,15 +186,13 @@
             </div>
         </div>
     </div>
-
-    
 {% endblock %}
 
 {% block js %}
     {{ block.super }}
     <script>
         window.canDelete = {% if staffAccount.role.can_delete %}true{% else %}false{% endif %};
-        rulers = 
+        rulers = "";
     </script>
     <script type="text/javascript" src="{% static 'js/bootstrap/bootstrap.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

@@ -51,7 +51,6 @@ function advanceStatus() {
     }
 }
 
-
 $(document).ready(function() {
     $('#confirmBtn').on('click', function() {
         const nextStatus = document.getElementById('nextStatus').value;

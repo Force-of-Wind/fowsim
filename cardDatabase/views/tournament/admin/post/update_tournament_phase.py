@@ -4,7 +4,9 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 
-from .....models.Tournament import Tournament, TournamentStaff
+from .....models.Tournament import Tournament, TournamentStaff,TournamentPlayer
+
+from fowsim import constants as CONS
 
 
 @login_required
@@ -20,7 +22,14 @@ def post(request, tournament_id):
     if updated_state is None:
         return JsonResponse({'error': 'Payload incorrect'}, status=400)
     
+    previous_phase = tournament.phase
+    
     tournament.phase = updated_state
     tournament.save()
+
+    if previous_phase == CONS.TOURNAMENT_PHASE_REGISTRATION:
+        for player in TournamentPlayer.objects.filter(tournament=tournament):
+            player.deck.deck_lock = CONS.MODE_TOURNAMENT
+            player.deck.save()
 
     return JsonResponse({}, status=200)

@@ -5,6 +5,8 @@ from django.shortcuts import redirect
 from . import views
 from .views.tournament import tournament_views, tournament_api_views
 from .views.tournament.player import tournament_player_register
+from .views.tournament.admin import decklist_reveal_status, reset_phase, lock_deck_edit
+
 from .forms import UserLoginForm
 from .views import search, search_for_decklist, deprecated_decklist_url, create_decklist, edit_decklist, \
     edit_decklist_mobile, view_decklist, view_user_public, delete_decklist, logout, user_preferences, register, \
@@ -62,12 +64,15 @@ urlpatterns = [
     path('tournament_delete/<int:tournament_id>/', tournament_views.delete_tournament, name='cardDatabase-delete-tournament'),
     path('tournament_detail/<int:tournament_id>/', tournament_views.tournament_detail, name='cardDatabase-detail-tournament'),
     path('tournament_admin/<int:tournament_id>/', tournament_views.tournament_admin, name='cardDatabase-admin-tournament'),
-    path('tournament_player_register/<int:tournament_id>/', tournament_player_register.get, name='cardDatabase-player-register-tournament'),
+    path('tournament_player_registration/<int:tournament_id>/', tournament_player_register.get, name='cardDatabase-player-register-tournament'),
+    path('tournament_player_register/<int:tournament_id>/', tournament_player_register.post, name='cardDatabase-register-player-to-tournament'),
 
 
     #TOURNAMENT API
     path('api/tournament/<int:tournament_id>/phase/update/', tournament_api_views.update_tournament_phase, name='cardDatabase-update-tournament-phase'),
     path('api/tournament/<int:tournament_id>/players/', tournament_api_views.get_tournament_players, name='cardDatabase-get-tournament-players'),
     path('api/tournament/<int:tournament_id>/players/update/', tournament_api_views.update_tournament_players, name='cardDatabase-save-tournament-players'),
-
+    path('api/tournament/<int:tournament_id>/decklist/reveal/update/', decklist_reveal_status.post, name='cardDatabase-update-tournament-decklist-reveal-status'),
+    path('api/tournament/<int:tournament_id>/reset/phase', reset_phase.post, name='cardDatabase-update-tournament-reset-phase'),
+    path('api/tournament/<int:tournament_id>/lock/deck-edit', lock_deck_edit.post, name='cardDatabase-update-tournament-lock-deck-edit'),
 ]

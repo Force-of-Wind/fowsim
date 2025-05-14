@@ -149,8 +149,15 @@
                     <input class="form-control" readonly id="share-link" value="{{ absoluteShareLink }}">
                     <input hidden id="share-code" value="{{ decklist.shareCode }}">
                     <br>
+                    {% if not deckShareUserManaged %}
+                        <span>Deck is used in Tournament, Share Link cannot be deleted!</span>
+                    {% endif %}
+                    <br>
                     <button type="button" id="copy-share">Copy share link</button>
-                    <button type="button" data-url="{% url 'cardDatabase-delete-share-code' decklist.pk %}" id="delete-share">Delete share link</button>
+                    {% if deckShareUserManaged %}
+                        <button type="button" data-url="{% url 'cardDatabase-delete-share-code' decklist.pk %}" id="delete-share">Delete share link</button>
+                    {% endif %}
+                    
                 {% endif %}
 
                 {% if decklist.shareCode == '' and not decklist.public  %}

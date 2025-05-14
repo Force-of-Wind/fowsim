@@ -102,11 +102,15 @@ def get(request, decklist_id, share_parameter=''):
         })
     
     absolute_share_link = None
+    deck_share_user_managed = True
     deck_lock_user_managed = True
 
     if not (decklist.shareCode is None) and decklist.shareCode:
         relative_share_link = reverse('cardDatabase-view-decklist-share', kwargs={'decklist_id': decklist.pk, 'share_parameter': decklist.shareCode})
         absolute_share_link = request.build_absolute_uri(relative_share_link)
+
+    if not(decklist.shareMode is None) and not (decklist.shareMode == CONS.MODE_PRIVATE):
+        deck_share_user_managed = False
 
     if not(decklist.deck_lock is None) and not (decklist.deck_lock == CONS.MODE_PRIVATE):
         deck_lock_user_managed = False
@@ -120,5 +124,6 @@ def get(request, decklist_id, share_parameter=''):
         'deckRestrictions': deck_restrictions,
         'cardsData': cardsData,
         'absoluteShareLink': absolute_share_link,
-        'deckLockUserManaged': deck_lock_user_managed
+        'deckLockUserManaged': deck_lock_user_managed,
+        'deckShareUserManaged': deck_share_user_managed
     })

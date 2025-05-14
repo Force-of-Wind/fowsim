@@ -16,11 +16,11 @@ function fetchPlayersFromAPI() {
         headers: {
             'X-CSRFToken': getCSRFToken(),
         },
-        success: function(response) {
+        success: function (response) {
             players = response;
             renderPlayers();
         },
-        error: function(error) {
+        error: function (error) {
             alert('Error fetching players.');
             console.error(error);
         }
@@ -32,15 +32,15 @@ function savePlayersToAPI() {
         url: `/api/tournament/${getTournamentId()}/players/update/`,
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify(players) ,
+        data: JSON.stringify(players),
         headers: {
             'X-CSRFToken': getCSRFToken(),
         },
-        success: function(response) {
+        success: function (response) {
             alert('Players saved successfully!');
             console.log(response);
         },
-        error: function(error) {
+        error: function (error) {
             alert('Error saving players.');
             console.error(error);
         }
@@ -51,19 +51,22 @@ function renderPlayers() {
     const playerList = document.getElementById("playerList");
     playerList.innerHTML = "";
 
-    if (players.length < 1)
-    {
+    if (players.length < 1) {
         playerList.innerHTML = `<h3 class="ml-3"><b>No players registered!</b></h3>`;
         document.getElementById("savePlayersBtn").setAttribute('disabled', true);
         return;
     }
 
     players.forEach((player, index) => {
+        let baseUrl = $('#decklist_detail_url_base').val();
+        firstName = player.userData.filter(e => e.name == 'firstname')[0].value;
+        lastName = player.userData.filter(e => e.name == 'lastname')[0].value;
+        shareLink = baseUrl.replace('0', player.decklistId).replace('changeMe', player.decklistShareCode);
         const card = `
             <div class="col-md-4 mb-3">
                 <div class="card ${player.dropped ? 'border-danger' : ''}">
                     <div class="card-body">
-                        <h5 class="card-title">${player.firstName} ${player.lastName}</h5>
+                        <h5 class="card-title">${firstName} ${lastName}</h5>
                         <h6 class="card-subtitle text-muted">@${player.username}</h6>
                         <input type="hidden" class="player-id" value="${player.id}">
                         <p class="mt-2">
@@ -84,14 +87,20 @@ function renderPlayers() {
                             <strong>Notes:</strong>
                             <textarea class="form-control form-control-sm" rows="3" onchange="updateNotes(${index}, this.value)">${player.notes}</textarea>
                         </p>
-                        <a href="${player.decklist}" class="btn btn-sm btn-info" target="_blank">View Decklist</a>
-                        <button class="btn btn-sm btn-danger float-right" onclick="dropPlayer(${index})">
-                            Drop Player
-                        </button>
-                        ${canDelete ? 
-                            `<button class="btn btn-sm btn-danger float-right" onclick="removePlayer(${index})">
+                        <a href="${shareLink}" class="btn btn-sm btn-info" target="_blank">View Decklist</a>
+                        ${player.dropped ?
+                            `<button class="btn btn-sm btn-primary float-right" onclick="undropPlayer(${index})">
+                                Un-Drop Player
+                            </button>`:
+                            `<button class="btn btn-sm btn-danger float-right" onclick="dropPlayer(${index})">
+                                Drop Player
+                            </button>`
+                        }
+                        
+                        ${window.canDelete ?
+                            `<br><button class="btn btn-sm btn-danger float-right mt-3" onclick="removePlayer(${index})" data-toggle="modal" data-target="#playerRemoveModal">
                             Remove Player
-                        </button>` : '' }
+                        </button>` : ''}
                     </div>
                 </div>
             </div>
@@ -105,10 +114,24 @@ function dropPlayer(index) {
     renderPlayers();
 }
 
-function removePlayer(index) { 
-    console.log(players[index]);
-    console.log('Removing player from tournament.');
- }
+function undropPlayer(index) {
+    players[index].dropped = false;
+    renderPlayers();
+}
+
+function removePlayer(index) {
+    let player =  players[index];
+    firstName = player.userData.filter(e => e.name == 'firstname')[0].value;
+    lastName = player.userData.filter(e => e.name == 'lastname')[0].value;
+    
+    let name = `${firstName} ${lastName} - ${player.username}`
+    $('#remove-player-name').text(name);
+    $('#remove-player-id').val(player.id);
+}
+
+function removePlayerFromTournament() {
+
+}
 
 function updateStatus(index, newStatus) {
     players[index].status = newStatus;

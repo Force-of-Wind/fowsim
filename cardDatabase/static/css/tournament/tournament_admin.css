@@ -1,3 +1,6 @@
 .btn:disabled{
     color:black !important;
 }
+.warn-text{
+    color: darkorange;
+}

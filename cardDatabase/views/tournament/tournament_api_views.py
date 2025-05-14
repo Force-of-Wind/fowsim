@@ -12,17 +12,17 @@ from . import tournament_constants as TOURNAMENTCONS
 
 @login_required
 def update_tournament_phase(request, tournament_id):
-    updatedState = request.POST.get('status')
+    updated_state = request.POST.get('status')
     tournament = get_object_or_404(Tournament, pk=tournament_id)
-    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.can_delete:
+    if staff_account is None or not staff_account.role.can_delete:
         return JsonResponse({'error': 'Not authorized'}, status=401)
     
-    if updatedState is None:
+    if updated_state is None:
         return JsonResponse({'error': 'Payload incorrect'}, status=400)
     
-    tournament.phase = updatedState
+    tournament.phase = updated_state
     tournament.save()
 
     return JsonResponse({}, status=200)
@@ -32,9 +32,9 @@ def update_tournament_phase(request, tournament_id):
 def get_tournament_players(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
-    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.can_read:
+    if staff_account is None or not staff_account.role.can_read:
         return JsonResponse({'error': 'Not authorized'}, status=401)
     
     players = []
@@ -59,23 +59,23 @@ def get_tournament_players(request, tournament_id):
 def update_tournament_players(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
-    updatedPlayers = json.loads(request.body)
+    updated_players = json.loads(request.body)
 
-    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.can_write:
+    if staff_account is None or not staff_account.role.can_write:
         return JsonResponse({'error': 'Not authorized'}, status=401)
     
-    if updatedPlayers is None:
+    if updated_players is None:
         return JsonResponse({'error': 'Payload incorrect'}, status=400)
         
-    for updatedPlayer in updatedPlayers:
-        dbPlayer = TournamentPlayer.get(pk=updatedPlayer.id)
-        dbPlayer.dropped_out = updatedPlayer.dropped
-        dbPlayer.notes = updatedPlayer.notes
-        dbPlayer.standing = updatedPlayer.standing
-        dbPlayer.registration_status = updatedPlayer.status
+    for updatedPlayer in updated_players:
+        dbPlayer = TournamentPlayer.objects.get(pk=updatedPlayer['id'])
+        dbPlayer.dropped_out = updatedPlayer['dropped']
+        dbPlayer.notes = updatedPlayer['notes']
+        dbPlayer.standing = updatedPlayer['standing']
+        dbPlayer.registration_status = updatedPlayer['status']
         dbPlayer.save()
 
-    return JsonResponse()
+    return JsonResponse({'success':True})
 

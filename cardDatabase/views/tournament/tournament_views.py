@@ -106,9 +106,9 @@ def any_empty(*args):
 @login_required
 def edit_tournament(request, tournament_id, error = False):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
-    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.can_write:
+    if staff_account is None or not staff_account.role.can_write:
         return HttpResponse('Not authorized', 401)
     
     return render(request, 'tournament/tournament_edit.html', context={
@@ -122,9 +122,9 @@ def edit_tournament(request, tournament_id, error = False):
 @login_required
 def update_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
-    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.can_write:
+    if staff_account is None or not staff_account.role.can_write:
         return HttpResponse('Not authorized', 401)
         
     
@@ -174,48 +174,57 @@ def tournament_detail(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
     players = TournamentPlayer.objects.filter(tournament=tournament, registration_status=CONS.PLAYER_REGISTRATION_COMPLETED)
-    playerCounter = players.count()
+    player_counter = players.count()
 
-    currentPlayer = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
+    current_player = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
 
-    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile=request.user.profile).first()
+    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile=request.user.profile).first()
 
-    isStaff = staffAccount is not None or staffAccount.role.can_read
+    is_staff = staff_account is not None or staff_account.role.can_read
 
-    registrationOpen = False
+    registration_open = False
 
     if(tournament.phase == CONS.TOURNAMENT_PHASE_REGISTRATION and not tournament.registration_locked and tournament.registration_deadline > timezone.now()):
-        registrationOpen = True
+        registration_open = True
     
 
     return render(request, 'tournament/tournament_detail.html', context={
         'tournament': tournament,
         'players':players,
-        'playerCounter': playerCounter,
-        'currentPlayer': currentPlayer,
-        'isStaff': isStaff,
-        'registrationOpen': registrationOpen
+        'playerCount': player_counter,
+        'currentPlayer': current_player,
+        'isStaff': is_staff,
+        'registrationOpen': registration_open
     })
 
 @login_required
 def tournament_admin(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
-    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.can_write:
+    if staff_account is None or not staff_account.role.can_write:
         return HttpResponse('Not authorized', 401)
+    
+    deck_edit_locked = tournament.deck_edit_locked
+
+    over_edit_deadline = True
+
+    if tournament.deck_edit_deadline is None or tournament.deck_edit_deadline.timestamp() > timezone.now().timestamp():
+        over_edit_deadline = False
 
     return render(request, 'tournament/tournament_admin.html', context={
         'tournament': tournament,
-        'staffAccount' : staffAccount
+        'staffAccount' : staff_account,
+        'deckEditLocked': deck_edit_locked,
+        'overEditDeadline': over_edit_deadline
     })
 
 @login_required
 def delete_tournament(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
-    staffAccount = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staffAccount is None or not staffAccount.role.can_delete:
+    if staff_account is None or not staff_account.role.can_delete:
         return HttpResponse('Not authorized', 401)
     
     tournament.delete()

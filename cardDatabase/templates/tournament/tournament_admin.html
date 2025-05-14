@@ -25,6 +25,11 @@
             <button class="btn btn-primary status-btn" {% if staffAccount.role.can_write %} disabled {% endif %} id="swissBtn" data-toggle="modal" data-target="#confirmModal">Start Tops</button>
             <button class="btn btn-primary status-btn" {% if staffAccount.role.can_write %} disabled {% endif %} id="topsBtn" data-toggle="modal" data-target="#confirmModal">Complete Tournament</button>
         </div>
+        {% if staffAccount.role.can_write %}
+            <div class="mt-4">
+                <button class="btn btn-danger" data-toggle="modal" data-target="#reset-phase-modal">Reset to inital Phase</button><br>
+            </div>
+        {% endif %}
     </div>
 
     <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
@@ -54,6 +59,27 @@
         </div>
     </div>
 
+    <!-- Bootstrap Modal for confirmation -->
+    <div class="modal fade" id="reset-phase-modal" tabindex="-1" role="dialog" aria-labelledby="reset-phase-modal-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reset-phase-modal-label">Confirm Phase Reset</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to reset the tournament to its first stage?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="reset-phase" data-dismiss="modal">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container mt-5">
         <h3><b>Title:</b> {{ tournament.title }}</h3>
         <p><b>Start Time:</b> <span data-epoch="{% datetime_to_timestamp tournament.start_datetime %}" class="local-date-time"></span></p>
@@ -62,9 +88,33 @@
         <p><b>Format:</b> <span>{{ tournament.format.name}}</span></p>
         <p><b>Level:</b> <span>{{ tournament.level.title}}</span></p>
         <p><b>Tournament style:</b> <span>{% if tournament.is_online %}Online{% else %}In Person{% endif %}</span></p>
-        {% if staffAccount.role.can_write %}
-            <a href="{% url 'cardDatabase-edit-tournament' tournament.id %}"><button class="btn btn-primary">Edit Tournament</button></a>
-        {% endif %}
+        <p><b>Decklist reveal status:</b> <span>{% if tournament.reveal_decklists %} <span class="warn-text">Revealed to all</span>{% else %} Hidden{% endif %}</span></p>
+        <p><b>Deck Edit Lock:</b> <span>{% if deckEditLocked or overEditDeadline %} Locked{% else %} Open{% endif %}</span></p>
+        <div class="row">
+            {% if staffAccount.role.can_write %}
+                <div class="col-sm-3">
+                    {% if tournament.reveal_decklists == False %}
+                        <button id="reveal-decklists-btn" class="btn btn-warning">Reveal Decklists to all</button><br>
+                    {% else %}
+                        <button id="hide-decklists-btn" class="btn btn-warning">Hide Decklists</button><br>
+                    {% endif %}
+                </div>
+                {% if not overEditDeadline %}
+                    <div class="col-sm-3">
+                        {% if not deckEditLocked %}
+                            <button id="lock-decklist-edit-btn" class="btn btn-warning">Lock Decklist edit</button><br>
+                        {% else %}
+                            <button id="unlock-decklist-edit-btn" class="btn btn-warning">Unlock Decklist edit</button><br>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                    
+                
+                <div class="col-sm-2">
+                    <a href="{% url 'cardDatabase-edit-tournament' tournament.id %}"><button class="btn btn-primary">Edit Tournament</button></a>
+                </div>
+            {% endif %}
+        </div>
     </div>
 
     <div class="container mt-5">
@@ -75,10 +125,30 @@
         </button>
     
         <button id="savePlayersBtn" class="btn btn-success mb-3" onclick="savePlayersToAPI()">Save Players</button>
-    
+        <input id="decklist_detail_url_base" hidden value="{% url 'cardDatabase-view-decklist-share' decklist_id=0 share_parameter='changeMe' %}"/>
         <div class="row" id="playerList">
             
         </div>
+        <div class="modal fade" id="playerRemoveModal" tabindex="-1" role="dialog" aria-labelledby="playerRemoveModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="playerRemoveModalLabel">Remove Player from Tournament</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Remove player <strong id="remove-player-name"></strong> from tournament?
+                    <input id="remove-player-id" hidden></input>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button onclick="removePlayerFromTournament" data-dismiss="modal" type="button" class="btn btn-danger">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     {% if staffAccount.role.can_delete %}
@@ -114,11 +184,10 @@
 {% block js %}
     {{ block.super }}
     <script>
-        let canDelete = {{ staffAccount.role.can_delete }};
+        window.canDelete = {% if staffAccount.role.can_delete %}true{% else %}false{% endif %};
     </script>
     <script type="text/javascript" src="{% static 'js/bootstrap/bootstrap.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{% static 'js/tournament/admin/players.js' %}"></script>
     <script src="{% static 'js/tournament/admin/status.js' %}"></script>
-    <script src="{% static 'js/tournament/tournament_admin.js' %}"></script>
 {% endblock %}

@@ -82,7 +82,87 @@ $(document).ready(function() {
         });
     });
 
+    function revealDecklists(reveal = false) {
+        let data = {};
+        if(reveal)
+            data.revealState = true;
+
+        $.ajax({
+            url: `/api/tournament/${getTournamentId()}/decklist/reveal/update/`,
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken(),
+            },
+            data: data,
+            success: function(_) {
+                window.location.reload();
+            },
+            error: function(error) {
+                console.error('Error updating decklist reveal status:', error);
+                alert('There was an error updating the decklist reveal status. Please try again later.');
+            }
+        });
+    }
+
+    function resetPhase() { 
+        $.ajax({
+            url: `/api/tournament/${getTournamentId()}/reset/phase`,
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken(),
+            },
+            data: {},
+            success: function(_) {
+                window.location.reload();
+            },
+            error: function(error) {
+                console.error('Error resetting phase:', error);
+                alert('There was an error resetting the tournaments phase. Please try again later.');
+            }
+        });
+    }
+
+    function lockDecklistEdit(lock = true) {
+        let data = {};
+        if(lock)
+            data.lockState = true;
+        
+        $.ajax({
+            url: `/api/tournament/${getTournamentId()}/lock/deck-edit`,
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': getCSRFToken(),
+            },
+            data: data,
+            success: function(_) {
+                window.location.reload();
+            },
+            error: function(error) {
+                console.error('Error resetting phase:', error);
+                alert('There was an error resetting the tournaments phase. Please try again later.');
+            }
+        });
+    }
+
     $('.status-btn').on('click', advanceStatus);
+
+    $('#reveal-decklists-btn').on('click', function(e){
+        revealDecklists(true);
+    });
+
+    $('#hide-decklists-btn').on('click', function(e){
+        revealDecklists(false);
+    });
+
+    $('#lock-decklist-edit-btn').on('click',function(e) {
+        lockDecklistEdit(true);
+    });
+
+    $('#unlock-decklist-edit-btn').on('click',function(e) {
+        lockDecklistEdit(false);
+    });
+
+    $('#reset-phase').on('click', resetPhase)
 
     $('.local-date-time').each(function() {
         if(!$(this).data('epoch'))

@@ -26,7 +26,7 @@ class TournamentPlayer(models.Model):
                                  choices=CONS.TOURNAMENT_PLAYER_REGISTRATION_STATES)
     last_registration_updated_by = models.ForeignKey('Profile', on_delete=models.SET_NULL, blank=True, null=True, default=None)
     user_data = models.JSONField(null=False)
-    notes = models.CharField(max_length=500, null=False, blank=False)
+    notes = models.CharField(max_length=500, null=False, blank=True)
     deck = models.ForeignKey('DeckList', on_delete=models.CASCADE)
     standing = models.IntegerField(blank=False, null=False)
     dropped_out = models.BooleanField(blank=False, null=False, default=False)

@@ -4,3 +4,17 @@
 .warn-text{
     color: darkorange;
 }
+.btn-warning{
+    color:white;
+}
+.btn-warning:hover{
+    color:white;
+}
+
+.search-group{
+    display: flex;
+}
+
+.search-input{
+    max-width: 200px;
+}

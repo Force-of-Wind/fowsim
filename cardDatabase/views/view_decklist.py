@@ -1,8 +1,9 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.utils import timezone
 
-from cardDatabase.models import DeckList, BannedCard, CombinationBannedCards
+from cardDatabase.models import DeckList, BannedCard, CombinationBannedCards, TournamentPlayer
 from cardDatabase.models.DeckList import UserDeckListZone
 from cardDatabase.models.Rulings import Restriction, RestrictionException
 from django.db.models import Q
@@ -115,6 +116,20 @@ def get(request, decklist_id, share_parameter=''):
     if not(decklist.deck_lock is None) and not (decklist.deck_lock == CONS.MODE_PRIVATE):
         deck_lock_user_managed = False
 
+    deck_tournament_locked = False
+    tournament_player = TournamentPlayer.objects.filter(profile=request.user.profile, deck=decklist).first()
+
+    if tournament_player is not None:
+        tournament = tournament_player.tournament
+        deck_edit_locked = tournament.deck_edit_locked
+
+        over_edit_deadline = True
+        if tournament.deck_edit_deadline is None or tournament.deck_edit_deadline.timestamp() > timezone.now().timestamp():
+            over_edit_deadline = False
+
+        if deck_edit_locked or over_edit_deadline:
+            deck_tournament_locked = True
+
     return render(request, 'cardDatabase/html/view_decklist.html', context={
         'decklist': decklist,
         'zones': zones,
@@ -125,5 +140,7 @@ def get(request, decklist_id, share_parameter=''):
         'cardsData': cardsData,
         'absoluteShareLink': absolute_share_link,
         'deckLockUserManaged': deck_lock_user_managed,
-        'deckShareUserManaged': deck_share_user_managed
+        'deckShareUserManaged': deck_share_user_managed,
+        'deckTournamentLocked': deck_tournament_locked,
+        'tournamentDeck': tournament_player is not None
     })

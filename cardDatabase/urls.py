@@ -2,11 +2,6 @@ from django.contrib.auth import views as DjangoAuthViews
 from django.urls import path
 from django.shortcuts import redirect
 
-from . import views
-from .views.tournament import tournament_views, tournament_api_views
-from .views.tournament.player import tournament_player_register
-from .views.tournament.admin import decklist_reveal_status, reset_phase, lock_deck_edit
-
 from .forms import UserLoginForm
 from .views import search, search_for_decklist, deprecated_decklist_url, create_decklist, edit_decklist, \
     edit_decklist_mobile, view_decklist, view_user_public, delete_decklist, logout, user_preferences, register, \
@@ -15,6 +10,14 @@ from .views import search, search_for_decklist, deprecated_decklist_url, create_
 from .views.admin import add_card, test_error
 from .views.bot import reddit_bot
 from .views.post import save_decklist, create_share_code, delete_share_code, create_deck_lock, delete_deck_lock
+
+from .views.tournament import delete_tournament, show_tournaments, new_tournament, edit_tournament, \
+    tournament_detail, tournament_decklist, delete_tournament_registration, tournament_remove_invalid
+from .views.tournament.post import create_tournament, update_tournament
+from .views.tournament.player import tournament_player_register, tournament_player_change_decklist
+from .views.tournament.admin import get_tournament_players, tournament_admin
+from .views.tournament.admin.post import decklist_reveal_status, remove_tournament_player, reset_phase, \
+    lock_deck_edit, update_tournament_phase, update_tournament_players
 
 urlpatterns = [
     path('', lambda req: redirect('/search/'), name='cardDatabase-home'),
@@ -55,24 +58,29 @@ urlpatterns = [
     path('api/deck/<int:decklist_id>/', export_decklist.get, name='cardDatabase-export-decklist'),
     path('api/deck/<int:decklist_id>/<str:share_parameter>', export_decklist_share.get, name='cardDatabase-export-decklist-share'),
 
-    # TOURNAMENT SECTION
-    path('tournaments/', tournament_views.show_tournaments, name='cardDatabase-tournament-list'),
-    path('new_tournament/', tournament_views.new_tournament, name='cardDatabase-new-tournament'),
-    path('create_tournament/', tournament_views.create_tournament, name='cardDatabase-create-tournament'),
-    path('edit_tournament/<int:tournament_id>/', tournament_views.edit_tournament, name='cardDatabase-edit-tournament'),
-    path('update_tournament/<int:tournament_id>/', tournament_views.update_tournament, name='cardDatabase-update-tournament'),
-    path('tournament_delete/<int:tournament_id>/', tournament_views.delete_tournament, name='cardDatabase-delete-tournament'),
-    path('tournament_detail/<int:tournament_id>/', tournament_views.tournament_detail, name='cardDatabase-detail-tournament'),
-    path('tournament_admin/<int:tournament_id>/', tournament_views.tournament_admin, name='cardDatabase-admin-tournament'),
-    path('tournament_player_registration/<int:tournament_id>/', tournament_player_register.get, name='cardDatabase-player-register-tournament'),
-    path('tournament_player_register/<int:tournament_id>/', tournament_player_register.post, name='cardDatabase-register-player-to-tournament'),
+    # TOURNAMENT
+    path('tournaments/', show_tournaments.get, name='cardDatabase-tournament-list'),
+    path('tournament/new/', new_tournament.get, name='cardDatabase-new-tournament'),
+    path('tournament/<int:tournament_id>/edit/', edit_tournament.get, name='cardDatabase-edit-tournament'),
+    path('tournament/<int:tournament_id>/detail/', tournament_detail.get, name='cardDatabase-detail-tournament'),
+    path('tournament/<int:tournament_id>/admin/', tournament_admin.get, name='cardDatabase-admin-tournament'),
+    path('tournament/<int:tournament_id>/player/registration/', tournament_player_register.get, name='cardDatabase-player-register-tournament'),
+    path('tournament_decklist/', tournament_decklist.get, name='cardDatabase-tournament-decklist'),
+    path('tournament_remove_invalid/', tournament_remove_invalid.get, name='cardDatabase-tournament-remove-invalid'),
+    path('tournament_delete/<int:tournament_id>/', delete_tournament.get, name='cardDatabase-delete-tournament'),
+    path('api/tournament/<int:tournament_id>/players/', get_tournament_players.get, name='cardDatabase-get-tournament-players'),
+    path('tournament/<int:tournament_id>/delete/registration', delete_tournament_registration.get, name='cardDatabase-tournament-delete-registration'),
+    path('tournament/<int:tournament_id>/deck/change', tournament_player_change_decklist.get, name='cardDatabase-tournament-change-decklist'),
 
-
-    #TOURNAMENT API
-    path('api/tournament/<int:tournament_id>/phase/update/', tournament_api_views.update_tournament_phase, name='cardDatabase-update-tournament-phase'),
-    path('api/tournament/<int:tournament_id>/players/', tournament_api_views.get_tournament_players, name='cardDatabase-get-tournament-players'),
-    path('api/tournament/<int:tournament_id>/players/update/', tournament_api_views.update_tournament_players, name='cardDatabase-save-tournament-players'),
+    # TOURNAMENT POST
+    path('create_tournament/', create_tournament.post, name='cardDatabase-create-tournament'),
+    path('api/update_tournament/<int:tournament_id>/', update_tournament.post, name='cardDatabase-update-tournament'),
+    path('api/tournament_player_register/<int:tournament_id>/', tournament_player_register.post, name='cardDatabase-register-player-to-tournament'),
+    path('api/tournament/<int:tournament_id>/phase/update/', update_tournament_phase.post, name='cardDatabase-update-tournament-phase'),
+    path('api/tournament/<int:tournament_id>/players/update/', update_tournament_players.post, name='cardDatabase-save-tournament-players'),
     path('api/tournament/<int:tournament_id>/decklist/reveal/update/', decklist_reveal_status.post, name='cardDatabase-update-tournament-decklist-reveal-status'),
     path('api/tournament/<int:tournament_id>/reset/phase', reset_phase.post, name='cardDatabase-update-tournament-reset-phase'),
     path('api/tournament/<int:tournament_id>/lock/deck-edit', lock_deck_edit.post, name='cardDatabase-update-tournament-lock-deck-edit'),
+    path('api/tournament/<int:tournament_id>/players/remove/<int:player_id>/', remove_tournament_player.post, name='cardDatabase-remove-tournament-player'),
+    path('api/tournament/<int:tournament_id>/deck/change', tournament_player_change_decklist.post, name='cardDatabase-tournament-change-player-decklist'),
 ]

@@ -12,8 +12,6 @@ from fowsim.decorators import desktop_only
 from fowsim import constants as CONS
 
 
-
-
 @login_required
 @desktop_only
 def get(request, decklist_id=None):
@@ -23,7 +21,7 @@ def get(request, decklist_id=None):
     if decklist.deck_lock == CONS.MODE_TOURNAMENT:
         return HttpResponseRedirect(reverse('cardDatabase-tournament-decklist'))
 
-    tournament_player = TournamentPlayer.objects.filter(profile=request.user.profile, pk=decklist_id).first()
+    tournament_player = TournamentPlayer.objects.filter(profile=request.user.profile, deck=decklist).first()
 
     if tournament_player is not None:
         tournament = tournament_player.tournament

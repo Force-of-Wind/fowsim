@@ -46,14 +46,17 @@
             </div>
             <div class="decklist-decklist-type">Format: {{decklist.deck_format.name}} </div>
             <input id="deck-id" hidden value="{{decklist.pk}}"/>
-            {% if decklist.deck_lock %}
+            {% if decklist.deck_lock or deckTournamentLocked %}
                 <p class="disabled-edit">
                     <p>Deck locked. Edit disabled!</p>
+                    {% if deckTournamentLocked %}
+                        <p>Deck is submitted to a tournament!</p>
+                    {% endif %}
                 </p>
-                <div class="last-edit">
-                    <div> Last modified: </div><div class="localized-dt" data-localizable-dt="{% datetime_to_timestamp decklist.last_modified %}"></div>
-                </div>
             {% endif %}
+            <div class="last-edit">
+                    <div> Last modified: </div> <div class="localized-dt" data-localizable-dt="{% datetime_to_timestamp decklist.last_modified %}"></div>
+                </div>
             {% for zone in zones %}
                 <div class="deck-zone">
                     <div class="deck-zone-title">
@@ -164,15 +167,15 @@
                     <button type="button" data-url="{% url 'cardDatabase-save-share-code' decklist.pk %}" id="create-share">Create share link</button>
                 {% endif %}
                 
-                {% if not decklist.deck_lock %}
+                {% if not decklist.deck_lock and not deckTournamentLocked and not tournamentDeck %}
                     <button type="button" data-url="{% url 'cardDatabase-user-lock-decklist' decklist.pk %}" id="toggle-lock-decklist">Lock Decklist</button>
-                {% elif deckLockUserManaged %}
+                {% elif deckLockUserManaged and not deckTournamentLocked and not tournamentDeck %}
                     <button type="button" data-url="{% url 'cardDatabase-user-unlock-decklist' decklist.pk %}" id="toggle-lock-decklist">Unlock Decklist</button>
                 {% endif %}
                 
                 <br>
 
-                {% if not decklist.deck_lock %}
+                {% if not decklist.deck_lock and not deckTournamentLocked %}
                     <a href="{% get_edit_decklist_url decklist.pk request.user_agent %}">
                         <button type="button" id="edit-decklist">Edit Decklist</button>
                     </a>

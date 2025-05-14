@@ -38,7 +38,6 @@ function savePlayersToAPI() {
         },
         success: function (response) {
             alert('Players saved successfully!');
-            console.log(response);
         },
         error: function (error) {
             alert('Error saving players.');
@@ -130,7 +129,29 @@ function removePlayer(index) {
 }
 
 function removePlayerFromTournament() {
+    let playerId = $('#remove-player-id').val();
 
+    console.log(playerId);
+
+    if (!playerId)
+        return;
+
+    $.ajax({
+        url: `/api/tournament/${getTournamentId()}/players/remove/${playerId}/`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: {},
+        headers: {
+            'X-CSRFToken': getCSRFToken(),
+        },
+        success: function (response) {
+            fetchPlayersFromAPI();
+        },
+        error: function (error) {
+            alert('Error saving players.');
+            console.error(error);
+        }
+    });
 }
 
 function updateStatus(index, newStatus) {
@@ -144,6 +165,12 @@ function updateStanding(index, newStanding) {
 function updateNotes(index, newNotes) {
     players[index].notes = newNotes;
 }
+
+
+
+$(document).ready(function () {
+    $('#remove-player-btn').on('click', removePlayerFromTournament);
+});
 
 // Render the player list on page load
 document.addEventListener("DOMContentLoaded", fetchPlayersFromAPI);

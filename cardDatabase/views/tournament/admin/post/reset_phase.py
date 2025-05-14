@@ -1,10 +1,15 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, Http404
+from django.views.decorators.http import require_POST
 
-from ....models.Tournament import Tournament, TournamentStaff
+
+from .....models.Tournament import Tournament, TournamentStaff
+
+from fowsim import constants as CONS
 
 @login_required
+@require_POST
 def post (request, tournament_id):
     if not request.method == "POST":
         raise Http404
@@ -16,13 +21,7 @@ def post (request, tournament_id):
     if staff_account is None or not staff_account.role.can_write:
         return JsonResponse({'error': 'Not authorized'}, status=401)
     
-    data = dict(request.POST)
-    
-    lock_state = 'lockState' in data
-    
-    if tournament.deck_edit_locked != lock_state:
-        tournament.deck_edit_locked = lock_state
-        #update the lock state on each deck
-        tournament.save()
+    tournament.phase = CONS.TOURNAMENT_PHASE_CREATED
+    tournament.save()
 
-    return JsonResponse({'success': True})
+    return JsonResponse({ 'success': True })

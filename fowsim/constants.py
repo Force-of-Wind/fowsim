@@ -77,6 +77,8 @@ RARITY_CHOICE_VALUES = (
     (RARITY_SUB_RULER_VALUE, RARITY_SUB_RULER_RARE)
 )
 
+CARD_TYPE_RULER = 'Ruler'
+
 CARD_TYPE_VALUES = [
     'Regalia',
     'Chant',

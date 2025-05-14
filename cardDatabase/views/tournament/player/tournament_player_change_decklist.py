@@ -19,19 +19,13 @@ def get(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
     player = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
-
-    if player is not None:
-        return render(request, 'tournament/player/tournament_player_already_registered.html')
     
     if datetime.now().timestamp() > tournament.registration_deadline.timestamp() or tournament.registration_locked:
-        return render(request, 'tournament/player/tournament_player_register_denied.html')
-
-    fields = TOURNAMENTCONS.OFFLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA
-
-    if tournament.is_online:
-        fields = TOURNAMENTCONS.ONLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA
+        return render(request, 'tournament/player/tournament_deck_change_denied.html')
 
     deck_filter = Q(profile=request.user.profile)
+
+    deck_filter &= ~Q(pk=player.deck.pk)
 
     deck_filter &= ~Q(shareMode=CONS.MODE_TOURNAMENT, deck_lock=CONS.MODE_TOURNAMENT)
 
@@ -40,9 +34,8 @@ def get(request, tournament_id):
 
     available_decks = DeckList.objects.filter(deck_filter).order_by("-last_modified")
 
-    return render(request, 'tournament/player/tournament_player_register.html', context={
+    return render(request, 'tournament/player/tournament_deck_change.html', context={
         "tournament": tournament,
-        "fields": fields,
         "available_decks": available_decks
     })
 
@@ -53,25 +46,14 @@ def post(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
     player = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
-
-    if player is not None:
-        return render(request, 'tournament/player/tournament_player_already_registered.html')
     
     if datetime.now().timestamp() > tournament.registration_deadline.timestamp() or tournament.registration_locked:
-        return render(request, 'tournament/player/tournament_player_register_denied.html')
-    
-    if tournament.is_online:
-        metaFields = TOURNAMENTCONS.ONLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA
-    else:
-        metaFields = TOURNAMENTCONS.OFFLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA
-    
-    data = dict(request.POST)
-    meta_data = []
-    for fieldName, _ in data.items():
-        if check_value_is_meta_data(fieldName, metaFields):
-            meta_data.append(map_meta_data(fieldName, data.get(fieldName, [None])[0], metaFields))
+        return render(request, 'tournament/player/tournament_deck_change_denied.html')
     
     decklist_id = request.POST.get('decklist')
+
+    if decklist_id == player.deck.pk:
+        return render(request, 'tournament/player/tournament_deck_change_denied.html')
 
     deck_filter = Q(profile=request.user.profile)
 
@@ -87,6 +69,12 @@ def post(request, tournament_id):
     if decklist is None:
         raise Http404
     
+    #reset old decklist
+    player.deck.shareMode = ''
+    player.deck.shareCode = ''
+    player.deck.deck_lock = ''
+    player.deck.save()
+    
     decklist.shareMode = CONS.MODE_TOURNAMENT
     decklist.shareCode = uuid.uuid4().hex
 
@@ -94,19 +82,10 @@ def post(request, tournament_id):
         decklist.deck_lock = CONS.MODE_TOURNAMENT
 
     decklist.save()
-
-    init_standing = TournamentPlayer.objects.filter(tournament=tournament).count() + 1
     
-    TournamentPlayer.objects.create(
-        profile = request.user.profile,
-        tournament = tournament,
-        registration_status = CONS.PLAYER_REGISTRATION_REQUESTED,
+    TournamentPlayer.objects.update(
         last_registration_updated_by = request.user.profile,
-        user_data = meta_data,
-        notes = '',
-        deck = decklist,
-        standing = init_standing,
-        dropped_out = False
+        deck = decklist
     )
 
     return HttpResponseRedirect(reverse('cardDatabase-detail-tournament', kwargs={'tournament_id': tournament_id}))

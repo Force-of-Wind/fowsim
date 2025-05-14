@@ -39,6 +39,15 @@ class DeckList(models.Model):
     def get_front_card_of_deck(self):
         front_card = self.cards.order_by('position').first()
         return front_card
+    
+    @property
+    def get_deck_rulers(self):
+        first_ruler = self.cards.order_by('position').filter(card__types__name__exact=CONS.CARD_TYPE_RULER).first()
+        if first_ruler is None:
+            return None
+        
+        return self.cards.order_by('position').filter(card__types__name__exact=CONS.CARD_TYPE_RULER, zone= first_ruler.zone)
+        
 
 
 class DeckListCard(models.Model):

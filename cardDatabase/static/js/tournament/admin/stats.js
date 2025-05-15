@@ -121,6 +121,8 @@ $(document).ready(function () {
 
     let rulerBreakdownCanvas = $('#ruler-breakdown-canvas');
 
+    let textExport = '';
+
     let sortedRulerBreakdown = [];
 
     for (var rulerName in window.rulers) {
@@ -130,6 +132,13 @@ $(document).ready(function () {
     sortedRulerBreakdown.sort(function (a, b) {
         return a[1] - b[1];
     });
+
+    sortedRulerBreakdown.forEach(e => textExport += `${e[1]};${e[0].replaceAll('\n', ' + ')};\n`);
+
+    $('#ruler-breakdown-textarea').text(textExport);
+
+    if($('#ruler-export-btn').hasClass('d-none'))
+        $('#ruler-export-btn').removeClass('d-none');
 
     rulerBreakdownChart = new Chart(rulerBreakdownCanvas,
     {

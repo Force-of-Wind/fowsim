@@ -71,10 +71,10 @@ function renderPlayers() {
                         <p class="mt-2">
                             <strong>Standing:</strong> 
                             <input type="number" class="form-control form-control-sm d-inline w-25" 
-                                value="${player.standing}" onchange="updateStanding(${index}, this.value)">
+                                value="${player.standing}" ${window.can_write ? '' : 'disabled'} onchange="updateStanding(${index}, this.value)">
                             <br>
                             <strong>Status:</strong> 
-                            <select class="form-control form-control-sm d-inline w-50" 
+                            <select class="form-control ${window.can_write ? '' : 'disabled'} form-control-sm d-inline w-50" 
                                     onchange="updateStatus(${index}, this.value)">
                                 <option value="requested" ${player.status === 'requested' ? 'selected' : ''}>Requested</option>
                                 <option value="accepted" ${player.status === 'accepted' ? 'selected' : ''}>Accepted</option>
@@ -84,19 +84,19 @@ function renderPlayers() {
                             ${player.dropped ? '<span class="text-danger">Dropped Out</span>' : ''}
                             <br>
                             <strong>Notes:</strong>
-                            <textarea class="form-control form-control-sm" rows="3" onchange="updateNotes(${index}, this.value)">${player.notes}</textarea>
+                            <textarea class="form-control form-control-sm" rows="3" ${window.can_write ? '' : 'disabled'} onchange="updateNotes(${index}, this.value)">${player.notes}</textarea>
                         </p>
                         <a href="${shareLink}" class="btn btn-sm btn-info" target="_blank">View Decklist</a>
                         ${player.dropped ?
-                            `<button class="btn btn-sm btn-primary float-right" onclick="undropPlayer(${index})">
+                            `<button class="btn btn-sm btn-primary ${window.can_write ? '' : 'disabled'} float-right" onclick="undropPlayer(${index})">
                                 Un-Drop Player
                             </button>`:
-                            `<button class="btn btn-sm btn-danger float-right" onclick="dropPlayer(${index})">
+                            `<button class="btn btn-sm btn-danger ${window.can_write ? '' : 'disabled'} float-right" onclick="dropPlayer(${index})">
                                 Drop Player
                             </button>`
                         }
                         
-                        ${window.canDelete ?
+                        ${window.can_delete ?
                             `<br><button class="btn btn-sm btn-danger float-right mt-3" onclick="removePlayer(${index})" data-toggle="modal" data-target="#playerRemoveModal">
                             Remove Player
                         </button>` : ''}

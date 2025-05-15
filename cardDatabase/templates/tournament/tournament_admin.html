@@ -20,10 +20,10 @@
         
         <div class="mt-4">
             <!-- Separate buttons for each status change -->
-            <button class="btn btn-primary status-btn" {% if staffAccount.role.can_write %} disabled {% endif %} id="createBtn" data-toggle="modal" data-target="#confirmModal">Start Registration</button>
-            <button class="btn btn-primary status-btn" {% if staffAccount.role.can_write %} disabled {% endif %} id="registrationBtn" data-toggle="modal" data-target="#confirmModal">Start Swiss</button>
-            <button class="btn btn-primary status-btn" {% if staffAccount.role.can_write %} disabled {% endif %} id="swissBtn" data-toggle="modal" data-target="#confirmModal">Start Tops</button>
-            <button class="btn btn-primary status-btn" {% if staffAccount.role.can_write %} disabled {% endif %} id="topsBtn" data-toggle="modal" data-target="#confirmModal">Complete Tournament</button>
+            <button class="btn btn-primary status-btn" {% if not staffAccount.role.can_write %} disabled {% endif %} id="createBtn" data-toggle="modal" data-target="#confirmModal">Start Registration</button>
+            <button class="btn btn-primary status-btn" {% if not staffAccount.role.can_write %} disabled {% endif %} id="registrationBtn" data-toggle="modal" data-target="#confirmModal">Start Swiss</button>
+            <button class="btn btn-primary status-btn" {% if not staffAccount.role.can_write %} disabled {% endif %} id="swissBtn" data-toggle="modal" data-target="#confirmModal">Start Tops</button>
+            <button class="btn btn-primary status-btn" {% if not staffAccount.role.can_write %} disabled {% endif %} id="topsBtn" data-toggle="modal" data-target="#confirmModal">Complete Tournament</button>
         </div>
         {% if staffAccount.role.can_write %}
             <div class="mt-4">
@@ -130,14 +130,6 @@
         <div class="row" id="playerList">
             
         </div>
-        <hr>
-        <br>
-        <h4>Ruler breakdown</h4>
-        <br>
-        <div id='ruler-breakdown' {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:99vw" {% endif %}>
-            <canvas id="ruler-breakdown-canvas" class="attribute-dist-canvas"></canvas>
-        </div>
-        <br>
         <div class="modal fade" id="playerRemoveModal" tabindex="-1" role="dialog" aria-labelledby="playerRemoveModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -159,20 +151,71 @@
         </div>
     </div>
 
+    <hr>
+    <br>
+    <h4>Ruler breakdown</h4>
+    <br>
+    <div id='ruler-breakdown' {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:99vw" {% endif %}>
+        <canvas id="ruler-breakdown-canvas" class="attribute-dist-canvas"></canvas>
+    </div>
+    <button id="ruler-export-btn" data-toggle="modal" data-target="#rulerModal" class="d-none btn btn-primary">Export Breakdown</button>
+    <div class="modal fade" id="rulerModal" tabindex="-1" role="dialog" aria-labelledby="rulerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rulerModalLabel">Ruler Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="ruler-breakdown-textarea" readonly class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    
+
     {% if staffAccount.role.can_delete %}
         <hr>
-        <h2>Staff Control</h2>
-        <div class="search-group mt-3">
-            <input id="staff-name-search" class="mr-3 form-control search-input" placeholder="Username"/>
-            <button id="staff-add" class="btn btn-primary">Add User</button>
-        </div>
-        <div class="container mt-5">
-            <button class="btn btn-danger" id="deleteBtn" data-toggle="modal" data-target="#deleteModal">Delete Tournament</button>
+        <div class="container">
+            <h2>Staff Control</h2>
+            <div class="search-group mt-3">
+                <input id="staff-name-search" class="mr-3 form-control search-input" placeholder="Username"/>
+                <button id="staff-add-btn" class="btn btn-primary">Add User</button>
+            </div>
+            <table class="table table-bordered table-striped mt-3">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for staff in tournamentStaff %}
+                        <tr>
+                            <td>{{ staff.profile.user.username }}</td>
+                            <td>{{ staff.role.title }}</td>
+                            {% if not staff.role.can_delete %}
+                                <td><button id="staff-delete-btn" class="btn btn-danger" data-id="{{staff.pk}}">Remove</button></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     {% endif %}
     <br>
+    <div class="container mb-5">
+        <button class="btn btn-danger" id="deleteBtn" data-toggle="modal" data-target="#deleteModal">Delete Tournament</button>
+    </div>
 
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -196,8 +239,9 @@
 {% block js %}
     {{ block.super }}
     <script>
-        window.canDelete = {% if staffAccount.role.can_delete %}true{% else %}false{% endif %};
         window.rulers = {% dict_to_json rulerExport %};
+        window.can_write = {% if staffAccount.role.can_write %} true{% else %}false{% endif %};
+        window.can_delete = {% if staffAccount.role.can_delete %} true{% else %}false{% endif %};
     </script>
     <script type="text/javascript" src="{% static 'js/bootstrap/bootstrap.js' %}"></script>
 
@@ -207,4 +251,5 @@
     <script src="{% static 'js/tournament/admin/players.js' %}"></script>
     <script src="{% static 'js/tournament/admin/status.js' %}"></script>
     <script src="{% static 'js/tournament/admin/stats.js' %}"></script>
+    <script src="{% static 'js/tournament/admin/staff.js' %}"></script>
 {% endblock %}

@@ -25,6 +25,9 @@ function disableButtons(currentStatus) {
         button.disabled = true;
     });
 
+    if(!window.can_write)
+        return;
+
     if (currentStatus === 'created') {
         document.getElementById('createBtn').disabled = false;
     } else if (currentStatus === 'registration') {

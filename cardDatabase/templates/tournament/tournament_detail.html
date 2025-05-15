@@ -79,42 +79,42 @@
         {% endif %}
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
-            <thead class="thead-light">
-                <tr>
-                    <th>Standing</th>
-                    <th>Username</th>
-                    <th>Dropped</th>
-                    {% if tournament.reveal_decklists or isStaff %}
-                        <th>Decklist</th>
-                        <th>Rulers</th>
-                        <th>Will Attributes</th>
-                    {% endif %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for player in players %}
+                <thead class="thead-light">
                     <tr>
-                        <td>{{ player.standing }}</td>
-                        <td>{{ player.profile.user.username }}</td>
-                        <td>{% if player.dropped_out %}Yes{% else %}No{% endif %}</td>
+                        <th>Standing</th>
+                        <th>Username</th>
+                        <th>Dropped</th>
                         {% if tournament.reveal_decklists or isStaff %}
-                            <td><a href="{% url 'cardDatabase-view-decklist-share' decklist_id=player.deck.pk share_parameter=player.deck.shareCode %}" class="btn btn-sm btn-outline-primary">View</a></td>
-                            {% if player.deck.get_deck_rulers %}
-                                <td>
-                                    {% for ruler in player.deck.get_deck_rulers %}
-                                        <a href="{% url 'cardDatabase-view-card' ruler.card.card_id %}" target="_blank">
-                                            <img class="card-ruler-img" src="{{ ruler.card.card_image.url }}"/>
-                                        </a>
-                                    {% endfor %}
-                                </td>
-                            {% else %}
-                                <td></td>
-                            {% endif %}                            
-                            <td>{% colours_to_imgs player.deck.get_colours %}</td>
+                            <th>Decklist</th>
+                            <th>Rulers</th>
+                            <th>Will Attributes</th>
                         {% endif %}
                     </tr>
-                {% endfor %}
-            </tbody>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                        <tr>
+                            <td>{{ player.standing }}</td>
+                            <td>{{ player.profile.user.username }}</td>
+                            <td>{% if player.dropped_out %}Yes{% else %}No{% endif %}</td>
+                            {% if tournament.reveal_decklists or isStaff %}
+                                <td><a href="{% url 'cardDatabase-view-decklist-share' decklist_id=player.deck.pk share_parameter=player.deck.shareCode %}" class="btn btn-sm btn-outline-primary">View</a></td>
+                                {% if player.deck.get_deck_rulers %}
+                                    <td>
+                                        {% for ruler in player.deck.get_deck_rulers %}
+                                            <a href="{% url 'cardDatabase-view-card' ruler.card.card_id %}" target="_blank">
+                                                <img class="card-ruler-img" src="{{ ruler.card.card_image.url }}"/>
+                                            </a>
+                                        {% endfor %}
+                                    </td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}                            
+                                <td>{% colours_to_imgs player.deck.get_colours %}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     {% else %}

@@ -119,36 +119,6 @@ $(document).ready(function () {
         }
     };
 
-    
-    window.rulers = {
-        'Pandora': 2,
-        'Aristella, Ascendant Prince of the Crimson Moon + Little Red Riding Hood + Child of Crimson Wind': 4,
-        'Book of Light': 2,
-        'Ragnarok': 2,
-        'Hyde': 1,
-        'Hydes': 1,
-        'Hydey': 1,
-        'Hydee': 1,
-        'Hydet': 1,
-        'Hydez': 1,
-        'Hydeu': 1,
-        'Hydei': 1,
-        'Hydeo': 1,
-        'Hydep': 1,
-        'Hyde1': 1,
-        'Hyde2': 1,
-        'Funf': 1,
-        'Mars, Fortuneteller of the Fire Star + Mercurius, Wizard of the Water Star': 1,
-        'Valentina, the Princess of Love': 1,
-        'Aideen, the Fighting Doctor': 1,
-        'Glorius, Masked Crusader': 1,
-        'The King with no Throne, Moonglow VIII': 8,
-        'Helen, the Witch of Forgotten Memories': 1,
-        'Book of Dark': 7,
-        'Makoto Cloth Corps\' Martial Artist, Mi Sung': 1,
-        'Gill Lapis, Conqueror of Attoractia + Queen of the Eternal Eclipse, Giotto Sansta': 10,
-    }
-
     let rulerBreakdownCanvas = $('#ruler-breakdown-canvas');
 
     let sortedRulerBreakdown = [];

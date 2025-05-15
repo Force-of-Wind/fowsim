@@ -1,14 +1,12 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 
-from .....models.Tournament import Tournament, TournamentStaff, StaffRole, TournamentPlayer
+from cardDatabase.models.Tournament import Tournament, TournamentStaff, StaffRole
 
-from .....models import Profile
-
-from fowsim import constants as CONS
+from cardDatabase.models import Profile
 
 @login_required
 @require_POST

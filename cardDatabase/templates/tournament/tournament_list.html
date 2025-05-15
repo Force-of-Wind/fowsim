@@ -24,6 +24,8 @@
     {% if tournaments|length > 0 %}
         <div class="container mt-5">
             <h2 class="mb-4">Tournaments</h2>
+
+            {% csrf_token %}
         
             <div class="row">
                 {% for tournament in tournaments %}

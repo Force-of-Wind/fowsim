@@ -22,3 +22,7 @@
 .role-select{
     max-width: 150px;
 }
+
+.canvas-wrapper{
+    max-height: 90vh;
+}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 
-from ...models.Tournament import Tournament, TournamentPlayer, TournamentStaff
+from cardDatabase.models.Tournament import Tournament, TournamentPlayer, TournamentStaff
 from fowsim import constants as CONS
 
 def get(request, tournament_id):

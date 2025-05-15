@@ -5,12 +5,9 @@ from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from datetime import datetime
 
-from ....models.Tournament import Tournament, TournamentPlayer
-from ....models.DeckList import DeckList
+from cardDatabase.models.Tournament import Tournament, TournamentPlayer
+from cardDatabase.models.DeckList import DeckList
 from fowsim import constants as CONS
-from .. import tournament_constants as TOURNAMENTCONS
-
-from ..utils.utilities import check_value_is_meta_data, map_meta_data
 
 import uuid
 

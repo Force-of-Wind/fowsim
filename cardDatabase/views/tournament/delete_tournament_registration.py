@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
-from ...models.Tournament import Tournament, TournamentPlayer
+from cardDatabase.models.Tournament import Tournament, TournamentPlayer
 
 from fowsim import constants as CONS
 

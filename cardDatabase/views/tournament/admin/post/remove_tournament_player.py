@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
-from .....models.Tournament import Tournament, TournamentPlayer, TournamentStaff
+from cardDatabase.models.Tournament import Tournament, TournamentPlayer, TournamentStaff
 
 @login_required
 @require_POST

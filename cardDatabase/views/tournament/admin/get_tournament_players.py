@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
-from ....models.Tournament import Tournament, TournamentStaff
+from cardDatabase.models.Tournament import Tournament, TournamentStaff
 
 
 @login_required

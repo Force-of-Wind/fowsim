@@ -4,10 +4,10 @@ from django.urls import reverse
 from django.utils.dateparse import parse_datetime
 from django.views.decorators.http import require_POST
 
-from ....models.Tournament import Tournament, TournamentLevel, TournamentStaff, StaffRole
-from ....models.Banlist import Format
-from ..utils.utilities import check_value_is_meta_data, map_meta_data, any_empty
-from .. import tournament_constants as TOURNAMENTCONS
+from cardDatabase.models.Tournament import Tournament, TournamentLevel, TournamentStaff, StaffRole
+from cardDatabase.models.Banlist import Format
+from cardDatabase.views.tournament.utils.utilities import check_value_is_meta_data, map_meta_data, any_empty
+from cardDatabase.views.tournament import tournament_constants as TOURNAMENTCONS
 
 @login_required
 @require_POST

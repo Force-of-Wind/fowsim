@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
-from ...models.Tournament import Tournament, TournamentLevel, TournamentStaff
-from ...models.Banlist import Format
+from cardDatabase.models.Tournament import Tournament, TournamentLevel, TournamentStaff
+from cardDatabase.models.Banlist import Format
 
 @login_required
 def get(request, tournament_id, error = False):

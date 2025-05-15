@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, Http404
 from django.views.decorators.http import require_POST
 
-from .....models.Tournament import Tournament, TournamentStaff, TournamentPlayer
+from cardDatabase.models.Tournament import Tournament, TournamentStaff, TournamentPlayer
 
 from fowsim import constants as CONS
 

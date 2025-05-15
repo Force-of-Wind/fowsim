@@ -154,7 +154,7 @@ $(document).ready(function () {
         data: {
             labels: sortedRulerBreakdown.map(ruler => ruler[0]),
             datasets: [{
-                label: 'Ruler Breakdown',
+                label: 'Ruler Count',
                 data: sortedRulerBreakdown.map(ruler => ruler[1]),
                 backgroundColor: sortedRulerBreakdown.map(ruler => ruler[2]),
                 hoverOffset: 4

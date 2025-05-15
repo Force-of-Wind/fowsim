@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from ...models.Tournament import TournamentLevel
-from ...models.Banlist import Format
+from cardDatabase.models.Tournament import TournamentLevel
+from cardDatabase.models.Banlist import Format
 from . import tournament_constants as TOURNAMENTCONS
 
 @login_required

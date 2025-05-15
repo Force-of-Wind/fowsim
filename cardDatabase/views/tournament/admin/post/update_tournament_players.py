@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
-from .....models.Tournament import Tournament, TournamentPlayer, TournamentStaff
+from cardDatabase.models.Tournament import Tournament, TournamentPlayer, TournamentStaff
 
 @login_required
 @require_POST
@@ -28,6 +28,7 @@ def post(request, tournament_id):
         dbPlayer.notes = updatedPlayer['notes']
         dbPlayer.standing = updatedPlayer['standing']
         dbPlayer.registration_status = updatedPlayer['status']
+        dbPlayer.last_registration_updated_by = request.user.profile
         dbPlayer.save()
 
     return JsonResponse({'success':True})

@@ -4,7 +4,7 @@ from django.http import JsonResponse, Http404
 
 from django.views.decorators.http import require_POST
 
-from .....models.Tournament import Tournament, TournamentStaff
+from cardDatabase.models.Tournament import Tournament, TournamentStaff
 
 @login_required
 @require_POST

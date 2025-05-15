@@ -6,11 +6,18 @@ from fowsim import constants as CONS
 from cardDatabase.models.CardType import Card, Race, AbilityText, CardAbility
 from cardDatabase.models.Ability import Keyword
 from cardDatabase.models.Banlist import Format
+from cardDatabase.models.Tournament import TournamentLevel
 from cardDatabase.management.commands.importjson import remove_punctuation
 
 def get_formats():
     format_values = Format.objects.values('name')
     format_map = map(lambda x : (x['name'], x['name']), format_values)
+
+    return list(format_map)
+
+def get_tournament_levels():
+    level_values = TournamentLevel.objects.values('title')
+    format_map = map(lambda x : (x['title'], x['title']), level_values)
 
     return list(format_map)
 
@@ -28,8 +35,6 @@ def get_races():
         return []
 
     return list(race_map)
-
-
 
 
 def get_keywords_choices():
@@ -160,3 +165,8 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['email'].widget.attrs.update({'placeholder': 'Email'})
         self.fields['password1'].widget.attrs.update({'placeholder': 'Password'})
         self.fields['password2'].widget.attrs.update({'placeholder': 'Confirm Password'})
+
+class TournamentFilterForm(forms.Form):
+    tournament_phase = forms.ChoiceField(label='Phase', required=False, choices=CONS.TOURNAMENT_PHASES)
+    tournament_format = forms.ChoiceField(label='Format', required=False, choices=get_formats())
+    tournament_level = forms.ChoiceField(label='Level', required=False, choices=get_tournament_levels())

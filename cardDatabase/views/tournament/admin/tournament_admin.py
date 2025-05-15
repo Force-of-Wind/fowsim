@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils import timezone
 
-from ....models.Tournament import Tournament, TournamentStaff, TournamentPlayer, StaffRole
+from cardDatabase.models.Tournament import Tournament, TournamentStaff, TournamentPlayer, StaffRole
 
 @login_required
 def get(request, tournament_id):

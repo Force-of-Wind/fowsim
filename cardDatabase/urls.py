@@ -3,7 +3,7 @@ from django.urls import path
 from django.shortcuts import redirect
 
 from .forms import UserLoginForm
-from .views import search, search_for_decklist, deprecated_decklist_url, create_decklist, edit_decklist, \
+from .views import start, search, search_for_decklist, deprecated_decklist_url, create_decklist, edit_decklist, \
     edit_decklist_mobile, view_decklist, view_user_public, delete_decklist, logout, user_preferences, register, \
     desktop_only, mobile_only, copy_decklist, private_decklist, locked_decklist, metrics, pack_opening, pack_select, \
     pack_history, export_decklist, export_decklist_share, view_card
@@ -21,7 +21,7 @@ from .views.tournament.admin.post import decklist_reveal_status, remove_tourname
     lock_deck_edit, update_tournament_phase, update_tournament_players, staff_add, staff_remove
 
 urlpatterns = [
-    path('', lambda req: redirect('/search/'), name='cardDatabase-home'),
+    path('', start.get, name='cardDatabase-home'),
     path('search/', search.get, name='cardDatabase-search'),
     path('decklist_search/', search_for_decklist.get, name='cardDatabase-decklist-search'),
     path('card/<str:card_id>/', view_card.get, name='cardDatabase-view-card'),

@@ -364,6 +364,16 @@ def get_spoiler_link():
     url = reverse('cardDatabase-search') + f'?spoiler_season={(",".join(spoiler_sets))}'
     return mark_safe(f'<a href="{url}">Spoilers</a>')
 
+@register.simple_tag
+def get_spoiler_url():
+    spoiler_sets = list(SpoilerSeason.objects.filter(is_active=True).values_list('set_code', flat=True))
+
+    if len(spoiler_sets) == 0:
+        return ''
+
+    url = reverse('cardDatabase-search') + f'?spoiler_season={(",".join(spoiler_sets))}'
+    return url
+
 
 @register.simple_tag
 def order_card_abilities(card):

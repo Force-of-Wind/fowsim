@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.utils import timezone
 
-from ....models.Tournament import Tournament, TournamentStaff, TournamentPlayer
+from ....models.Tournament import Tournament, TournamentStaff, TournamentPlayer, StaffRole
 
 @login_required
 def get(request, tournament_id):
@@ -34,13 +34,17 @@ def get(request, tournament_id):
             ruler_export[ruler_combo_name] = 1
 
     tournamnet_staff = None
+    staff_roles = None
+
     if staff_account.role.can_delete:
         tournamnet_staff = TournamentStaff.objects.filter(tournament = tournament)
+        staff_roles = StaffRole.objects.filter(can_delete=False)
 
     return render(request, 'tournament/tournament_admin.html', context={
         'tournament': tournament,
         'staffAccount' : staff_account,
         'tournamentStaff': tournamnet_staff,
+        'staffRoles': staff_roles,
         'deckEditLocked': deck_edit_locked,
         'overEditDeadline': over_edit_deadline,
         'rulerExport': ruler_export

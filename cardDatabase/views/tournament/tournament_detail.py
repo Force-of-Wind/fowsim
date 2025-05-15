@@ -11,9 +11,13 @@ def get(request, tournament_id):
 
     player_counter = players.count()
 
-    current_player = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
+    current_player = None
 
-    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile=request.user.profile).first()
+    staff_account = None
+
+    if request.user.is_authenticated:
+        current_player = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
+        staff_account = TournamentStaff.objects.filter(tournament = tournament, profile=request.user.profile).first()
 
     is_staff = staff_account is not None and staff_account.role.can_read
 

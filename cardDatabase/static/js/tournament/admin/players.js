@@ -74,10 +74,10 @@ function renderPlayers() {
                                 value="${player.standing}" ${window.can_write ? '' : 'disabled'} onchange="updateStanding(${index}, this.value)">
                             <br>
                             <strong>Status:</strong> 
-                            <select class="form-control ${window.can_write ? '' : 'disabled'} form-control-sm d-inline w-50" 
+                            <select class="form-control form-control-sm d-inline w-50" ${window.can_write ? '' : 'disabled'}
                                     onchange="updateStatus(${index}, this.value)">
                                 <option value="requested" ${player.status === 'requested' ? 'selected' : ''}>Requested</option>
-                                <option value="accepted" ${player.status === 'accepted' ? 'selected' : ''}>Accepted</option>
+                                <option value="accepted"  ${player.status === 'accepted' ? 'selected' : ''}>Accepted</option>
                                 <option value="completed" ${player.status === 'completed' ? 'selected' : ''}>Completed</option>
                             </select>
                             <br>

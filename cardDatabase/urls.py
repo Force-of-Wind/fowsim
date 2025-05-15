@@ -18,7 +18,7 @@ from .views.tournament.post import create_tournament, update_tournament
 from .views.tournament.player import tournament_player_register, tournament_player_change_decklist
 from .views.tournament.admin import get_tournament_players, tournament_admin
 from .views.tournament.admin.post import decklist_reveal_status, remove_tournament_player, reset_phase, \
-    lock_deck_edit, update_tournament_phase, update_tournament_players
+    lock_deck_edit, update_tournament_phase, update_tournament_players, staff_add, staff_remove
 
 urlpatterns = [
     path('', lambda req: redirect('/search/'), name='cardDatabase-home'),
@@ -85,4 +85,6 @@ urlpatterns = [
     path('api/tournament/<int:tournament_id>/lock/deck-edit', lock_deck_edit.post, name='cardDatabase-update-tournament-lock-deck-edit'),
     path('api/tournament/<int:tournament_id>/players/remove/<int:player_id>/', remove_tournament_player.post, name='cardDatabase-remove-tournament-player'),
     path('api/tournament/<int:tournament_id>/deck/change', tournament_player_change_decklist.post, name='cardDatabase-tournament-change-player-decklist'),
+    path('api/tournament/<int:tournament_id>/staff/add/', staff_add.post, name='cardDatabase-tournament-staff-add'),
+    path('api/tournament/<int:tournament_id>/staff/remove/', staff_remove.post, name='cardDatabase-tournament-staff-remove'),
 ]

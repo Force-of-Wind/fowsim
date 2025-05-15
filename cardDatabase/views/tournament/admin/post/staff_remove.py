@@ -4,26 +4,29 @@ from django.http import JsonResponse, Http404
 from django.views.decorators.http import require_POST
 
 
-from .....models.Tournament import Tournament, TournamentStaff, TournamentPlayer
+from .....models.Tournament import Tournament, TournamentStaff, StaffRole, TournamentPlayer
+
+from .....models import Profile
 
 from fowsim import constants as CONS
 
 @login_required
 @require_POST
 def post (request, tournament_id):
-    
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
     staff_account = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
     
-    if staff_account is None or not staff_account.role.can_write:
+    if staff_account is None or not staff_account.role.can_delete:
         return JsonResponse({'error': 'Not authorized'}, status=401)
     
-    tournament.phase = CONS.TOURNAMENT_PHASE_CREATED
-    tournament.save()
+    key = request.POST.get('key')
 
-    for player in TournamentPlayer.objects.filter(tournament=tournament):
-            player.deck.deck_lock = ''
-            player.deck.save()
+    existing_staff = TournamentStaff.objects.filter(tournament=tournament, pk=key).first()
+
+    if existing_staff is None:
+        return JsonResponse({'error': 'Staff not found!'}, status=400)
+    
+    existing_staff.delete()
 
     return JsonResponse({ 'success': True })

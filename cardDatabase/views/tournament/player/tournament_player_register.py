@@ -33,7 +33,9 @@ def get(request, tournament_id):
 
     deck_filter = Q(profile=request.user.profile)
 
-    deck_filter &= ~Q(shareMode=CONS.MODE_TOURNAMENT, deck_lock=CONS.MODE_TOURNAMENT)
+    deck_filter &= ~Q(shareMode=CONS.MODE_TOURNAMENT)
+    
+    deck_filter &= ~Q(deck_lock=CONS.MODE_TOURNAMENT)
 
     if tournament.format is not None:
         deck_filter &= Q(deck_format=tournament.format)

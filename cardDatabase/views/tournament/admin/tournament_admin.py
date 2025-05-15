@@ -23,6 +23,8 @@ def get(request, tournament_id):
     ruler_export = {}
     for player in TournamentPlayer.objects.filter(tournament=tournament):
         ruler_names = []
+        if not player.deck.get_deck_rulers:
+            continue
         rulers = player.deck.get_deck_rulers.order_by('card__name')
         for ruler in rulers:
             ruler_names.append(ruler.card.name)

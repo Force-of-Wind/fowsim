@@ -167,6 +167,6 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['password2'].widget.attrs.update({'placeholder': 'Confirm Password'})
 
 class TournamentFilterForm(forms.Form):
-    tournament_phase = forms.ChoiceField(label='Phase', required=False, choices=CONS.TOURNAMENT_PHASES)
-    tournament_format = forms.ChoiceField(label='Format', required=False, choices=get_formats())
-    tournament_level = forms.ChoiceField(label='Level', required=False, choices=get_tournament_levels())
+    tournament_phase = forms.ChoiceField(label='Phase', required=False, choices=[('', 'Any')] + CONS.TOURNAMENT_PHASES)
+    tournament_format = forms.ChoiceField(label='Format', required=False, choices=[('', 'Any')] + get_formats())
+    tournament_level = forms.ChoiceField(label='Level', required=False, choices=[('', 'Any')] + get_tournament_levels())

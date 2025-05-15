@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 from cardDatabase.forms import TournamentFilterForm
 from cardDatabase.models import Format
@@ -16,6 +17,8 @@ def get(request):
         if tournament_form.is_valid():
             ctx['tournament_form_data'] = tournament_form.cleaned_data
         ctx |= {'tournaments': tournament_search(tournament_form)}
+    else:
+        ctx = {'tournaments': tournament_search(None)}
 
     ctx['tournament_levels'] = TournamentLevel.objects.all()
     ctx['formats'] = Format.objects.all()
@@ -28,19 +31,26 @@ def get(request):
         ctx['total_count'] = len(ctx['tournaments'])
         ctx['tournaments'] = paginator.get_page(page_number)
 
-    tournaments = Tournament.objects.order_by('-start_datetime').all()
-
     return render(request, 'tournament/tournament_list.html', context=ctx)
 
 def tournament_search(tournament_form):
-    decklists = []
-    if tournament_form.is_valid():
-        search_text = tournament_form.cleaned_data['contains_card']
-        text_exactness = tournament_form.cleaned_data['text_exactness']
-        deck_format_filter = get_deck_format_query(tournament_form.cleaned_data['deck_format'])
-        decklists = DeckList.objects.exclude(get_unsupported_decklists_query()).distinct()
-        decklists = decklists.filter(deck_format_filter)
-        decklists = apply_deckcard_cardname_search(decklists, search_text, ['name'], text_exactness)
-        decklists = decklists.order_by('-last_modified')
+    tournaments = []
+    if tournament_form is not None and tournament_form.is_valid():
+        tournaments_query = Q()
+        
+        if 'tournament_format' in tournament_form.cleaned_data and tournament_form.cleaned_data['tournament_format']:
+            tournaments_query &= Q(format__name=tournament_form.cleaned_data['tournament_format'])
+        
+        if 'tournament_level' in tournament_form.cleaned_data and tournament_form.cleaned_data['tournament_level']:
+            tournaments_query &= Q(level__title=tournament_form.cleaned_data['tournament_level'])
 
-    return decklists
+        if 'tournament_phase' in tournament_form.cleaned_data and tournament_form.cleaned_data['tournament_phase']:
+            tournaments_query &= Q(phase=tournament_form.cleaned_data['tournament_phase'])
+        tournaments = Tournament.objects.distinct()
+        tournaments = tournaments.filter(tournaments_query)
+        tournaments = tournaments.order_by('-start_datetime')
+    elif tournament_form is None:
+        tournaments = Tournament.objects.distinct()
+        tournaments = tournaments.order_by('-start_datetime')
+
+    return tournaments

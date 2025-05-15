@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="content-wrapper">
+    <div class="content-wrapper mb-3">
         <form id="create-tournament" method="post" class="edit-form" action="{% url 'cardDatabase-create-tournament' %}">
             <h2>Create new Tournament</h2>
             {% csrf_token %}

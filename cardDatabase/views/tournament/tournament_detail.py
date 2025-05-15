@@ -7,14 +7,15 @@ from fowsim import constants as CONS
 def get(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
-    players = TournamentPlayer.objects.filter(tournament=tournament, registration_status=CONS.PLAYER_REGISTRATION_COMPLETED)
+    players = TournamentPlayer.objects.filter(tournament=tournament, registration_status=CONS.PLAYER_REGISTRATION_COMPLETED).order_by('standing')
+
     player_counter = players.count()
 
     current_player = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
 
     staff_account = TournamentStaff.objects.filter(tournament = tournament, profile=request.user.profile).first()
 
-    is_staff = staff_account is not None or staff_account.role.can_read
+    is_staff = staff_account is not None and staff_account.role.can_read
 
     registration_open = False
 

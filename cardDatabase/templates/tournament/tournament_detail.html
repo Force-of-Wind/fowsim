@@ -72,6 +72,11 @@
     {% endif %}
     <h4 class="mb-3">Players</h4>
     {% if playerCount > 0 %}
+        {% if not tournament.reveal_decklists and isStaff %}
+            <br>
+            <span class="badge badge-light">Only staff can see Decklists right now!</span>
+            <br>
+        {% endif %}
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
             <thead class="thead-light">
@@ -79,7 +84,7 @@
                     <th>Standing</th>
                     <th>Username</th>
                     <th>Dropped</th>
-                    {% if tournament.reveal_decklists %}
+                    {% if tournament.reveal_decklists or isStaff %}
                         <th>Decklist</th>
                         <th>Rulers</th>
                         <th>Will Attributes</th>
@@ -92,7 +97,7 @@
                         <td>{{ player.standing }}</td>
                         <td>{{ player.profile.user.username }}</td>
                         <td>{% if player.dropped_out %}Yes{% else %}No{% endif %}</td>
-                        {% if tournament.reveal_decklists %}
+                        {% if tournament.reveal_decklists or isStaff %}
                             <td><a href="{% url 'cardDatabase-view-decklist-share' decklist_id=player.deck.pk share_parameter=player.deck.shareCode %}" class="btn btn-sm btn-outline-primary">View</a></td>
                             {% if player.deck.get_deck_rulers %}
                                 <td>

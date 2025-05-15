@@ -116,8 +116,9 @@
             {% endif %}
         </div>
     </div>
-
+    
     <div class="container mt-5">
+        <hr>
         <h2>Registered Players</h2>
 
         <button class="btn btn-info mb-3" onclick="fetchPlayersFromAPI()">
@@ -129,10 +130,13 @@
         <div class="row" id="playerList">
             
         </div>
+        <hr>
         <br>
         <h4>Ruler breakdown</h4>
         <br>
-        <div id='ruler-breakdown'>
+        <div id='ruler-breakdown' {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:99vw" {% endif %}>
+            <canvas id="ruler-breakdown-canvas" class="attribute-dist-canvas"></canvas>
+        </div>
         <br>
         <div class="modal fade" id="playerRemoveModal" tabindex="-1" role="dialog" aria-labelledby="playerRemoveModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -156,6 +160,7 @@
     </div>
 
     {% if staffAccount.role.can_delete %}
+        <hr>
         <h2>Staff Control</h2>
         <div class="search-group mt-3">
             <input id="staff-name-search" class="mr-3 form-control search-input" placeholder="Username"/>
@@ -192,10 +197,14 @@
     {{ block.super }}
     <script>
         window.canDelete = {% if staffAccount.role.can_delete %}true{% else %}false{% endif %};
-        rulers = "";
+        window.rulers = {% dict_to_json rulerExport %};
     </script>
     <script type="text/javascript" src="{% static 'js/bootstrap/bootstrap.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     <script src="{% static 'js/tournament/admin/players.js' %}"></script>
     <script src="{% static 'js/tournament/admin/status.js' %}"></script>
+    <script src="{% static 'js/tournament/admin/stats.js' %}"></script>
 {% endblock %}

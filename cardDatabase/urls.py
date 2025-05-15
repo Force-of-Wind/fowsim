@@ -12,7 +12,8 @@ from .views.bot import reddit_bot
 from .views.post import save_decklist, create_share_code, delete_share_code, create_deck_lock, delete_deck_lock
 
 from .views.tournament import delete_tournament, show_tournaments, new_tournament, edit_tournament, \
-    tournament_detail, tournament_decklist, delete_tournament_registration, tournament_remove_invalid
+    tournament_detail, tournament_decklist, delete_tournament_registration, tournament_remove_invalid, \
+    tournament_create_unauthorized
 from .views.tournament.post import create_tournament, update_tournament
 from .views.tournament.player import tournament_player_register, tournament_player_change_decklist
 from .views.tournament.admin import get_tournament_players, tournament_admin
@@ -71,6 +72,7 @@ urlpatterns = [
     path('api/tournament/<int:tournament_id>/players/', get_tournament_players.get, name='cardDatabase-get-tournament-players'),
     path('tournament/<int:tournament_id>/delete/registration', delete_tournament_registration.get, name='cardDatabase-tournament-delete-registration'),
     path('tournament/<int:tournament_id>/deck/change', tournament_player_change_decklist.get, name='cardDatabase-tournament-change-decklist'),
+    path('tournament/create/unauthorized', tournament_create_unauthorized.get, name='cardDatabase-tournament-create-unauthorized'),
 
     # TOURNAMENT POST
     path('create_tournament/', create_tournament.post, name='cardDatabase-create-tournament'),

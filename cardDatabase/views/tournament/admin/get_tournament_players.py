@@ -16,7 +16,7 @@ def get(request, tournament_id):
     
     players = []
 
-    for player in tournament.players.all():
+    for player in tournament.players.order_by('standing').all():
         playerObj = {
             "id": player.pk,
             "dropped": player.dropped_out,

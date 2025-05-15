@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.dateparse import parse_datetime
 from django.views.decorators.http import require_POST
@@ -12,6 +12,9 @@ from .. import tournament_constants as TOURNAMENTCONS
 @login_required
 @require_POST
 def post(request):
+    if not request.user.profile.can_create_tournament:
+        return HttpResponseRedirect(reverse('cardDatabase-tournament-create-unauthorized'))
+    
     data = dict(request.POST)
     meta_data = []
     for fieldName, _ in data.items():

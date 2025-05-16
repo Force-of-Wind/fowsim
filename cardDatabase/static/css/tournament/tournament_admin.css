@@ -1,0 +1,28 @@
+.btn:disabled{
+    color:black !important;
+}
+.warn-text{
+    color: darkorange;
+}
+.btn-warning{
+    color:white;
+}
+.btn-warning:hover{
+    color:white;
+}
+
+.search-group{
+    display: flex;
+}
+
+.search-input{
+    max-width: 200px;
+}
+
+.role-select{
+    max-width: 150px;
+}
+
+.canvas-wrapper{
+    max-height: 90vh;
+}

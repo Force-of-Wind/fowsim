@@ -1,0 +1,12 @@
+.countdown {
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.cost-img{
+    width: 18px;
+}
+.card-ruler-img{
+    max-width: 50px;
+    margin-left: 3px;
+}

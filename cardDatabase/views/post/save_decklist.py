@@ -1,12 +1,15 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 import json
 
-from cardDatabase.models import Format, DeckList, Card
+from cardDatabase.models import Format, DeckList, Card, TournamentPlayer
 from cardDatabase.models.DeckList import UserDeckListZone, DeckListCard, DeckListZone
+
+from fowsim import constants as CONS
 
 
 @login_required
@@ -23,13 +26,30 @@ def post(request, decklist_id=None):
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
 
-    if decklist.shareMode == "tournament":
+    if decklist.deck_lock == CONS.MODE_TOURNAMENT:
         return HttpResponse('Deck is in tournament mode and cannot be edited!', status=400)
+        
+    tournament_player = TournamentPlayer.objects.filter(profile=request.user.profile, deck=decklist).first()
+
+    if tournament_player is not None:
+        tournament = tournament_player.tournament
+        deck_edit_locked = tournament.deck_edit_locked
+
+        over_edit_deadline = True
+        if tournament.deck_edit_deadline is None or tournament.deck_edit_deadline.timestamp() > timezone.now().timestamp():
+            over_edit_deadline = False
+
+        if deck_edit_locked or over_edit_deadline:
+            return HttpResponse('Deck is in tournament mode and cannot be edited!', status=400)
 
     decklist.name = decklist_data['name']
     decklist.comments = decklist_data['comments']
     decklist.public = is_public
     decklist.deck_format = Format.objects.get(name=decklist_format)
+    #reset state if public since public decklists cant have share codes
+    if is_public and not tournament_player:
+        decklist.shareMode = ''
+        decklist.shareCode = ''
     decklist.save()
     #  Remove old cards, then rebuild it
     DeckListCard.objects.filter(decklist__pk=decklist.pk).delete()

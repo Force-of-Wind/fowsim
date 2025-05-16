@@ -1,0 +1,104 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/start.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block ogtitle %}
+  Home - Force of Wind
+{% endblock %}
+
+{% block body %}
+  <div class="container mt-5">
+    <div class="row">
+      <!-- Panel 1 -->
+      <div class="col-md-6 d-flex">
+        <div class="card w-100">
+          <div class="card-inner">
+            <div>
+              <h5 class="card-title"><i class="fa-solid fa-magnifying-glass"></i> Search</h5>
+            </div>
+            <div class="card-buttons">
+              <a href="{% url 'cardDatabase-search' %}" class="btn btn-primary btn-sm">Card Search</a>
+              <a href="{% url 'cardDatabase-decklist-search' %}" class="btn btn-primary btn-sm">Deck Search</a>
+              <a href="{% url 'cardDatabase-tournament-list' %}" class="btn btn-primary btn-sm">Tournaments</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2 -->
+      <div class="col-md-6 d-flex">
+        <div class="card w-100">
+          <div class="card-inner">
+            <div>
+              <h5 class="card-title"><i class="fa-regular fa-circle-user"></i> User</h5>
+            </div>
+            <div class="card-buttons">
+              {% if user.is_authenticated %}
+                <a href="{% url 'cardDatabase-user-decklists' %}" class="btn btn-outline-info btn-sm">My Decklists</a>
+              {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline-info btn-sm">Login</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3 -->
+      <div class="col-md-6 d-flex">
+        <div class="card w-100">
+          <div class="card-inner">
+            <div>
+              <h5 class="card-title"><i class="fa-solid fa-toolbox"></i> Utilities</h5>
+            </div>
+            <div class="card-buttons">
+                {% get_spoiler_url as spoiler_url %}
+                {% if spoiler_url %}
+                    <a href="{% get_spoiler_url %}" class="btn btn-info btn-sm">Spoilers</a>
+                {% endif %}
+              <a href="{% url 'cardDatabase-pack-select' %}" class="btn btn-info btn-sm">Pack Simulator</a>
+              <a href="{% url 'cardDatabase-metrics' %}" class="btn btn-info btn-sm">Metrics</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 4 -->
+      <div class="col-md-6 d-flex">
+        <div class="card w-100">
+          <div class="card-inner">
+            <div>
+              <h5 class="card-title"><i class="fa-solid fa-globe"></i> External Link</h5>
+            </div>
+            <div class="card-buttons">
+                <a href="https://discord.com/invite/8S5XW6pUEF" target="_blank" class="btn btn-outline-primary btn-sm"><i class="fa-brands fa-discord"></i> Force of Wind Tools</a>
+                <a href="https://discord.com/invite/0xN4Mgo37JyrCEc1" target="_blank" class="btn btn-outline-primary btn-sm"><i class="fa-brands fa-discord"></i> Force of Will TCG</a>
+                <a href="https://fowtcg.com/" target="_blank" class="btn btn-outline-primary btn-sm">Force of Will Official Site</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 5: Admin only -->
+      {% if user.is_staff %}
+        <div class="col-md-6 d-flex">
+          <div class="card w-100">
+            <div class="card-inner">
+              <div>
+                <h5 class="card-title"><i class="fa-solid fa-screwdriver-wrench"></i> Admin</h5>
+              </div>
+              <div class="card-buttons">
+                <a href="{% url 'admin:index' %}" class="btn btn-danger btn-sm">Admin Site</a>
+                <a href="{% url 'cardDatabase-add-card' %}" class="btn btn-danger btn-sm">Add Card</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

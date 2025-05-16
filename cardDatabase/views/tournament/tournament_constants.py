@@ -22,16 +22,16 @@ TOURNAMENT_DEFAULT_META_DATA = [
         'class': 'form-control'
     },
     {
-        'name': 'prices',
-        'label': 'Prices',
+        'name': 'prizes',
+        'label': 'Prizes',
         'required': True,
         'type': FIELD_TYPE_TEXTAREA,
         'maxlength': 500,
         'class': 'form-control'
     },
     {
-        'name': 'prices-link',
-        'label': 'Prices Link',
+        'name': 'prizes-link',
+        'label': 'Prizes Link',
         'required': False,
         'type': FIELD_TYPE_LINK,
         'maxlength': 200,

@@ -49,7 +49,7 @@ def post(request, tournament_id):
         
 
     if any_empty(title, meta_data, format_id, level_id, start_date_time, registration_deadline, deck_edit_deadline):
-        return HttpResponseRedirect(reverse('cardDatabase-edit-tournament',  kwargs={'error': True, 'tournament_id': tournament_id}))
+        return HttpResponseRedirect(reverse('cardDatabase-error-edit-tournament',  kwargs={'tournament_id': tournament_id}))
 
     tournament.title=title
     tournament.is_online = is_online

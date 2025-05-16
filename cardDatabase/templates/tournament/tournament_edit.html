@@ -19,6 +19,7 @@
     <div class="content-wrapper">
         <form id="create-tournament" method="post" class="edit-form" action="{% url 'cardDatabase-update-tournament' tournament_id=tournament.pk %}">
             <h2>Edit Tournament</h2>
+            {% if error %}<span class="badge badge-danger">Error when saving tournament occured!</span>{% endif %}
             {% csrf_token %}
             <div class="container">
                 <div class="row">

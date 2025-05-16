@@ -47,19 +47,27 @@ function savePlayersToAPI() {
 }
 
 function renderPlayers() {
-    const playerList = document.getElementById("playerList");
-    playerList.innerHTML = "";
+    let html;
 
     if (players.length < 1) {
-        playerList.innerHTML = `<h3 class="ml-3"><b>No players registered!</b></h3>`;
+        html = `<h3 class="ml-3"><b>No players registered!</b></h3>`;
         document.getElementById("savePlayersBtn").setAttribute('disabled', true);
         return;
     }
 
     players.forEach((player, index) => {
         let baseUrl = $('#decklist_detail_url_base').val();
-        firstName = player.userData.filter(e => e.name == 'firstname')[0].value;
-        lastName = player.userData.filter(e => e.name == 'lastname')[0].value;
+        firstName = escapeHtml(player.userData.filter(e => e.name == 'firstname')[0].value);
+        lastName = escapeHtml(player.userData.filter(e => e.name == 'lastname')[0].value);
+
+        additionalInfoFields =  player.userData.filter(e => e.name != 'firstname' && e.name != 'lastname');
+
+        infoFieldsHtml = "";
+
+        additionalInfoFields.forEach(e => {
+            infoFieldsHtml += `<strong>${e.label}:</strong><span class="text-wrapper"> ${escapeHtml(e.value)}</span><br>`
+        });
+
         shareLink = baseUrl.replace('0', player.decklistId).replace('changeMe', player.decklistShareCode);
         const card = `
             <div class="col-md-4 mb-3">
@@ -86,6 +94,14 @@ function renderPlayers() {
                             <strong>Notes:</strong>
                             <textarea class="form-control form-control-sm" rows="3" ${window.can_write ? '' : 'disabled'} onchange="updateNotes(${index}, this.value)">${player.notes}</textarea>
                         </p>
+                        <a href="#collapse-${player.id}" class="btn btn-outline-primary flex-center mt-1 mb-2" data-toggle="collapse" data-target="#collapse-${player.id}" aria-expanded="true" aria-controls="collapse-${player.id}">
+                                Details
+                            </a>
+                            <div id="accordion-${player.id}">
+                                <div id="collapse-${player.id}" class="collapse" data-parent="#accordion-${player.id}">
+                                    ${infoFieldsHtml}
+                                </div>
+                            </div>
                         <a href="${shareLink}" class="btn btn-sm btn-info" target="_blank">View Decklist</a>
                         ${player.dropped ?
                             `<button class="btn btn-sm btn-primary ${window.can_write ? '' : 'disabled'} float-right" onclick="undropPlayer(${index})">
@@ -104,8 +120,10 @@ function renderPlayers() {
                 </div>
             </div>
         `;
-        playerList.innerHTML += card;
+        html += card;
     });
+
+    $('#playerList').html(html);
 }
 
 function dropPlayer(index) {
@@ -116,6 +134,10 @@ function dropPlayer(index) {
 function undropPlayer(index) {
     players[index].dropped = false;
     renderPlayers();
+}
+
+function escapeHtml(string) {
+  return $('<div>').text(string).html();
 }
 
 function removePlayer(index) {

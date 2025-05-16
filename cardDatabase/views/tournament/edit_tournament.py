@@ -20,3 +20,7 @@ def get(request, tournament_id, error = False):
         'tournament': tournament,
         'error': error
     })
+
+@login_required
+def error(request, tournament_id):
+    return get(request, tournament_id, True)

@@ -63,6 +63,7 @@ urlpatterns = [
     path('tournaments/', show_tournaments.get, name='cardDatabase-tournament-list'),
     path('tournament/new/', new_tournament.get, name='cardDatabase-new-tournament'),
     path('tournament/<int:tournament_id>/edit/', edit_tournament.get, name='cardDatabase-edit-tournament'),
+    path('tournament/<int:tournament_id>/edit/error/', edit_tournament.error, name='cardDatabase-error-edit-tournament'),
     path('tournament/<int:tournament_id>/detail/', tournament_detail.get, name='cardDatabase-detail-tournament'),
     path('tournament/<int:tournament_id>/admin/', tournament_admin.get, name='cardDatabase-admin-tournament'),
     path('tournament/<int:tournament_id>/player/registration/', tournament_player_register.get, name='cardDatabase-player-register-tournament'),
@@ -76,7 +77,7 @@ urlpatterns = [
 
     # TOURNAMENT POST
     path('create_tournament/', create_tournament.post, name='cardDatabase-create-tournament'),
-    path('api/update_tournament/<int:tournament_id>/', update_tournament.post, name='cardDatabase-update-tournament'),
+    path('api/update_tournament/<int:tournament_id>/', update_tournament.post, name='cardDatabase-update-tournament'),    
     path('api/tournament_player_register/<int:tournament_id>/', tournament_player_register.post, name='cardDatabase-register-player-to-tournament'),
     path('api/tournament/<int:tournament_id>/phase/update/', update_tournament_phase.post, name='cardDatabase-update-tournament-phase'),
     path('api/tournament/<int:tournament_id>/players/update/', update_tournament_players.post, name='cardDatabase-save-tournament-players'),

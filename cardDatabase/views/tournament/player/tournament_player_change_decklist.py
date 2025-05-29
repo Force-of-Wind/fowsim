@@ -39,7 +39,7 @@ def get(request, tournament_id):
     })
 
 def post(request, tournament_id):
-    if not request.method == "POST":
+    if not request.method == "POST":  # TODO: use @require_POSTgi
         raise Http404
     
     tournament = get_object_or_404(Tournament, pk=tournament_id)

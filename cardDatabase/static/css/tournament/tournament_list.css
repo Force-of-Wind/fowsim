@@ -1,0 +1,39 @@
+.no-tournaments{
+    font-weight: bold;
+    width: max-content;
+    margin: 0 auto;
+}
+
+.no-tournaments{
+    width: max-content;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.new-tournament{
+    padding-left: 100px;
+}
+
+.L0 {
+    
+}
+
+.L1 {
+    border:1px solid lightpink;
+}
+
+.L2 {
+    border:1px solid lightblue;
+}
+
+.L3{
+    border:1px solid lightgreen;
+}
+
+.L4 {
+    border:1px solid lightcoral;
+}
+
+.L5 {
+    border:1px solid magenta;
+}

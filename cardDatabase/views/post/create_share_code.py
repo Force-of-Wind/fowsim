@@ -8,19 +8,15 @@ import uuid
 
 from cardDatabase.models import DeckList
 
+from fowsim import constants as CONS
+
 
 @login_required
 @require_POST
 def post(request, decklist_id=None):
-    data = json.loads(request.body.decode('UTF-8'))
-    if 'mode' in data:
-        mode = data['mode']
-    else:
-        mode = 'private'
-
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
-    decklist.shareMode = mode
+    decklist.shareMode = CONS.MODE_PRIVATE
     decklist.shareCode = uuid.uuid4().hex
     decklist.save()
 

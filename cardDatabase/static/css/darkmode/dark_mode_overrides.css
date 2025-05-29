@@ -385,3 +385,9 @@ body.hasHover #user-decklists tr:not(:first-child):hover{
 }
 
 /* /metrics */
+
+/* tournaments */
+.card-text{
+    color: #c5c4c4 !important;
+}
+/* /tournaments */

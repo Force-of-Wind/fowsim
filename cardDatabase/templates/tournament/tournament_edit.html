@@ -1,0 +1,114 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="{% static 'css/tournament/tournament_edit.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script  src="{% static 'js/date_localizer.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script  src="{% static 'js/tournament/tournament_create.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="content-wrapper">
+        <form id="create-tournament" method="post" class="edit-form" action="{% url 'cardDatabase-update-tournament' tournament_id=tournament.pk %}">
+            <h2>Edit Tournament</h2>
+            {% if error %}<span class="badge badge-danger">Error when saving tournament occured!</span>{% endif %}
+            {% csrf_token %}
+            <div class="container">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="title">Title*</label>
+                        <input id="title" required maxlength="200" type="text" name="title" class="form-control" value="{{tournament.title}}" />
+                    </div>                    
+                </div>
+                <div class="row">
+                    <div>
+                        <input type="checkbox" id="is_online" name="is_online" {% if tournament.is_online %} checked {% endif %} />
+                        <label for="is_online">Is Online Tournament</label>
+                    </div>
+                </div>
+                {% for field in meta_data %}
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <div class="row row-gap">
+                    {% endif %}
+                    <div class='form-group'>
+                        {% include 'tournament/field_renderer.html' with edit=True field=field %}
+                    </div>
+                    {% if not forloop.counter0|divisibleby:2 or forloop.last %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                
+                <div class="row row-gap">
+                    <div class="form-group">
+                        <label for="format">Restrict to Format</label>
+                        <select id="format" name="format" class="form-control">
+                            <option value="">No Format restriction</option>
+                            {% for format in formats %}
+                                <option value="{{format.pk}}" {% if tournament.format.pk ==  format.pk %} selected {% endif %}>{{format.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="level">Tournament Level</label>
+                        <select id="level" name="level" class="form-control" required>
+                            {% for level in levels %}
+                                <option value="{{level.pk}}" data-hint="{{level.hint}}" {% if tournament.level.pk ==  level.pk %} selected {% endif %}>{{level.title}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <span class="level-hint"></span>
+                </div>
+                <div class="row row-gap">
+                    <div class="form-group">
+                        <label for="start_date_time">Start Time*</label>
+                        <input 
+                            type="text" 
+                            id="start_date_time" 
+                            name="start_date_time" 
+                            class="form-control date-time-picker local-date-time" 
+                            data-epoch="{% datetime_to_timestamp tournament.start_datetime %}"
+                            data-iso-date="true"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="deck_registration_end_date_time">Registration End*</label>
+                        <input 
+                            type="text" 
+                            id="deck_registration_end_date_time" 
+                            name="deck_registration_end_date_time" 
+                            class="form-control date-time-picker local-date-time"
+                            data-epoch="{% datetime_to_timestamp tournament.registration_deadline %}"
+                            data-iso-date="true"
+                            required 
+                        />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="deck_lock_date_time">Deck Edit lock after</label>
+                        <input 
+                            type="text" 
+                            id="deck_lock_date_time" 
+                            name="deck_lock_date_time"
+                            class="form-control date-time-picker local-date-time"
+                            {% if tournament.deck_edit_deadline %} data-epoch="{% datetime_to_timestamp tournament.deck_edit_deadline %}" {% endif %}
+                            data-iso-date="true"
+                        />
+                    </div>
+                </div>
+            </div>
+            <button id="save-tournament" class="button">Save Tournament</button>
+        </form>
+    </div>
+{% endblock %}

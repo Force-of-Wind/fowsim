@@ -5,6 +5,7 @@ import re
 
 from django import template
 from django.utils.safestring import mark_safe
+from django.utils.html import escape
 from django.templatetags.static import static
 from django.urls import reverse
 from django.db.models import Sum, Q
@@ -173,7 +174,6 @@ def advanced_form_is_in_data(form_values, value, default_value, success_value):
     elif form_values and value in form_values:
         return success_value
     return ''
-
 
 @register.simple_tag
 def text_exactness_is_in_data(form_values, value):
@@ -363,6 +363,16 @@ def get_spoiler_link():
 
     url = reverse('cardDatabase-search') + f'?spoiler_season={(",".join(spoiler_sets))}'
     return mark_safe(f'<a href="{url}">Spoilers</a>')
+
+@register.simple_tag
+def get_spoiler_url():
+    spoiler_sets = list(SpoilerSeason.objects.filter(is_active=True).values_list('set_code', flat=True))
+
+    if len(spoiler_sets) == 0:
+        return ''
+
+    url = reverse('cardDatabase-search') + f'?spoiler_season={(",".join(spoiler_sets))}'
+    return url
 
 
 @register.simple_tag

@@ -17,9 +17,6 @@ def post (request, tournament_id):
     
     if staff_account is None or not staff_account.role.can_delete:
         return JsonResponse({'error': 'Not authorized'}, status=401)
-    
-    print(request)
-    print(request.POST)
 
     username = request.POST.get('userName')
     role = request.POST.get('role')

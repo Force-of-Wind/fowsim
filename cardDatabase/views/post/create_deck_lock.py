@@ -13,8 +13,6 @@ from fowsim import constants as CONS
 def post(request, decklist_id=None):
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
-    print(decklist.deck_lock)
-    print(decklist.deck_lock != '' or decklist.deck_lock is not None)
     if decklist.deck_lock != '' and decklist.deck_lock is not None:
         return HttpResponse('Deck lock already set!', status=400)
     

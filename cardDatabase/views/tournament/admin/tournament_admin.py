@@ -35,17 +35,17 @@ def get(request, tournament_id):
         else:
             ruler_export[ruler_combo_name] = 1
 
-    tournamnet_staff = None
+    tournament_staff = None
     staff_roles = None
 
     if staff_account.role.can_delete:
-        tournamnet_staff = TournamentStaff.objects.filter(tournament = tournament)
+        tournament_staff = TournamentStaff.objects.filter(tournament = tournament)
         staff_roles = StaffRole.objects.filter(can_delete=False)
 
     return render(request, 'tournament/tournament_admin.html', context={
         'tournament': tournament,
         'staffAccount' : staff_account,
-        'tournamentStaff': tournamnet_staff,
+        'tournamentStaff': tournament_staff,
         'staffRoles': staff_roles,
         'deckEditLocked': deck_edit_locked,
         'overEditDeadline': over_edit_deadline,

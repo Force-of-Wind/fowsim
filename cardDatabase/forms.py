@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
@@ -16,7 +17,8 @@ def get_formats():
     return list(format_map)
 
 def get_tournament_levels():
-    level_values = TournamentLevel.objects.values('title')
+    tournament_levels_model = apps.get_model('cardDatabase', 'TournamentLevel')
+    level_values = tournament_levels_model.objects.values('title')
     format_map = map(lambda x : (x['title'], x['title']), level_values)
 
     return list(format_map)

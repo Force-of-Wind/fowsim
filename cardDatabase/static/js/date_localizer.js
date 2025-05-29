@@ -1,3 +1,5 @@
+/* TODO this is more or less already done in base.js to all pages. We could just add an attribute flag to choose whether to use ISO string or DateString
+*/
 $(function () {
     $('.local-date-time').each(function() {
         if(!$(this).data('epoch'))

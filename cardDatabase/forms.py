@@ -138,7 +138,7 @@ class AddCardForm(forms.ModelForm):
 
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
-        super(UserLoginForm).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     username = UsernameField(widget=forms.TextInput(attrs={
         'class': 'form-control',

@@ -47,7 +47,7 @@ function savePlayersToAPI() {
 }
 
 function renderPlayers() {
-    let html;
+    let html = "";
 
     if (players.length < 1) {
         html = `<h3 class="ml-3"><b>No players registered!</b></h3>`;
@@ -152,8 +152,6 @@ function removePlayer(index) {
 
 function removePlayerFromTournament() {
     let playerId = $('#remove-player-id').val();
-
-    console.log(playerId);
 
     if (!playerId)
         return;

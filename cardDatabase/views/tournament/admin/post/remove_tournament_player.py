@@ -19,7 +19,6 @@ def post(request, tournament_id, player_id):
     
     tournamentPlayer = get_object_or_404(TournamentPlayer, tournament=tournament, pk=player_id)
 
-    tournamentPlayer.deck.decklist = ''
     tournamentPlayer.deck.shareMode = ''
     tournamentPlayer.deck.deck_lock = ''
 

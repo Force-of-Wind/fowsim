@@ -13,7 +13,6 @@ def get(request, tournament_id):
     
     tournamentPlayer = get_object_or_404(TournamentPlayer, tournament=tournament, profile=request.user.profile)
 
-    tournamentPlayer.deck.decklist = ''
     tournamentPlayer.deck.shareMode = ''
     tournamentPlayer.deck.deck_lock = ''
 

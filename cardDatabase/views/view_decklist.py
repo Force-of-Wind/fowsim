@@ -117,7 +117,10 @@ def get(request, decklist_id, share_parameter=''):
         deck_lock_user_managed = False
 
     deck_tournament_locked = False
-    tournament_player = TournamentPlayer.objects.filter(profile=request.user.profile, deck=decklist).first()
+    tournament_player = None
+    if request.user.is_authenticated:
+        tournament_player = TournamentPlayer.objects.filter(profile=request.user.profile, deck=decklist).first()
+
 
     if tournament_player is not None:
         tournament = tournament_player.tournament

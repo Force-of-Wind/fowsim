@@ -1,4 +1,7 @@
+from django.contrib.auth.models import User
+from django.utils.html import format_html
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from cardDatabase.models.Ability import *
 from cardDatabase.models.CardType import *
 from cardDatabase.models.Effects import OneTimeEffect
@@ -81,6 +84,20 @@ class FormatAdmin(admin.ModelAdmin):
     autocomplete_fields = ['sets']
     search_fields = ['sets__name', 'sets__code', 'sets']
 
+class CustomUserAdmin(UserAdmin):
+    list_display = UserAdmin.list_display + ('profile_link',)
+
+    def profile_link(self, obj):
+        profile_url = "/admin/%s/%s/%d" % (
+            'cardDatabase',
+            'profile',
+            obj.profile.pk
+        )
+        return format_html(f'<a href="{profile_url}">Profile</a>')
+
+#  Replace django UserAdmin
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
 
 admin.site.register(OneTimeEffect)
 admin.site.register(Card, CardAdmin)

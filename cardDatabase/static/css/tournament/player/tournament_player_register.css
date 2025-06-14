@@ -1,0 +1,11 @@
+.row-gap{
+    gap: 25px;
+}
+
+.hidden{
+    display: none;
+}
+
+.error-text{
+    color: red;
+}

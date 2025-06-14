@@ -1,0 +1,65 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/tournament/player/tournament_player_register.css' %}">
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script  src="{% static 'js/tournament/player/tournament_player_register.js' %}"></script>
+{% endblock %}
+{% block body %}
+    <div class="container mt-5">
+        <h1>Tournament player registration</h1>
+        <h3>Tournament: {{ tournament.title }}</h2>
+        <strong>Format:</strong> {{ tournament.format }}<br>
+        <strong>Level:</strong> {{ tournament.level.title }} - {{ tournament.level.code }}<br>
+        <form method="post" action="{% url 'cardDatabase-register-player-to-tournament' tournament.pk %}">
+            {% csrf_token %}
+            <div class="container">
+                {% for field in fields %}
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <div class="row row-gap">
+                    {% endif %}
+                    <div class='form-group'>
+                        {% include 'tournament/field_renderer.html' with edit=True field=field %}
+                    </div>
+                    {% if not forloop.counter0|divisibleby:2 or forloop.last %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <br>
+            <span class="badge badge-light">Decks can only be registered to one tournament. You need to copy your deck to use it in another!</span>
+            <br>
+
+            <input id="selected_deck" name="decklist" hidden required value=""/>
+            <span class="error-text hidden">No Deck chosen to register with!</span><br>
+            {% if available_decks.count > 0 %}
+                <select id="deck-select" required>
+                    <option value="-1" selected disabled>Choose deck</option>
+                    {% for deck in available_decks %}
+                        <option 
+                            value="{{deck.pk}}" 
+                            data-name="{{deck.name}}" 
+                            data-front-card="{{ deck.get_front_card_of_deck.card.card_image.url }}"
+                            data-last-modified="{% datetime_to_timestamp deck.last_modified %}"
+                            data-url='{% url 'cardDatabase-view-decklist' deck.pk %}'>{{deck.name}}</option>
+                    {% endfor %}
+                </select>
+                <div id="deck_preview" class="container">
+                    
+                </div>
+                
+            {% else %}
+                <h5>No valid decks found that can be registered to this tournament!</h5>
+            {% endif %}
+
+            <div class="mt-3 mb-5">
+                <button id="register-btn" type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -8,6 +8,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     site_admin = models.BooleanField(null=False, blank=False, default=False)
     is_judge = models.BooleanField(null=False, blank=False, default=False)
+    can_create_tournament = models.BooleanField(null=False, blank=False, default=True)
 
     def __str__(self):
         return self.user.username

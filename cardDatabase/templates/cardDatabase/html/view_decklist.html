@@ -45,14 +45,18 @@
                 by <a href="{% url 'cardDatabase-view-users-decklist' decklist.profile.user.username %}">{{ decklist.profile.user.username }}</a>
             </div>
             <div class="decklist-decklist-type">Format: {{decklist.deck_format.name}} </div>
-            {% if decklist.shareMode == "tournament" %}
+            <input id="deck-id" hidden value="{{decklist.pk}}"/>
+            {% if decklist.deck_lock or deckTournamentLocked %}
                 <p class="disabled-edit">
-                    <b>Edit is disabled when Deck is in tournament share mode!</b>
+                    <p>Deck locked. Edit disabled!</p>
+                    {% if deckTournamentLocked %}
+                        <p>Deck is submitted to a tournament!</p>
+                    {% endif %}
                 </p>
-                <div class="last-edit">
-                    <div> Last modified: </div><div class="localized-dt" data-localizable-dt="{% datetime_to_timestamp decklist.last_modified %}"></div>
-                </div>
             {% endif %}
+            <div class="last-edit">
+                    <div> Last modified: </div> <div class="localized-dt" data-localizable-dt="{% datetime_to_timestamp decklist.last_modified %}"></div>
+                </div>
             {% for zone in zones %}
                 <div class="deck-zone">
                     <div class="deck-zone-title">
@@ -133,26 +137,45 @@
             <img id="banned_icon" class="banned-icon hide-restrictions" src="{% static 'img/banned-icon.svg' %}">
         </div>
         <div id="deck-options">
-            {% if decklist.shareMode == "tournament" %}
+            <br>
+            {% if decklist.deck_lock %}
                 <b>
-                    <p>Edit is disabled when Deck is in tournament share mode!</p>
+                    <p>Deck locked. Edit disabled!</p>
                 </b>
             {% endif %}
-            {% if request.user == decklist.profile.user and decklist.shareCode != '' %}
-                <input type="hidden" id="share-link" value="{{ decklist.shareCode }}">
-                <button type="button" id="copy-share">Copy share link</button>
-                <button type="button" id="delete-share">Delete share link</button>
-                <br>
-            {% endif %}
-
-            {% if request.user == decklist.profile.user and decklist.shareCode == '' %}
-                <button type="button" id="create-share">Create share link</button>
-                <button type="button" id="create-tournament-share">Create tournament share link</button>
-                <br>
-            {% endif %}
+            
             {% if request.user == decklist.profile.user %}
                 {% csrf_token %}
-                {% if decklist.shareMode != "tournament" %}
+                
+                {% if decklist.shareCode != '' %}
+                    <label for="share-link">Share Link</label>
+                    <input class="form-control" readonly id="share-link" value="{{ absoluteShareLink }}">
+                    <input hidden id="share-code" value="{{ decklist.shareCode }}">
+                    <br>
+                    {% if not deckShareUserManaged %}
+                        <span>Deck is used in Tournament, Share Link cannot be deleted!</span>
+                    {% endif %}
+                    <br>
+                    <button type="button" id="copy-share">Copy share link</button>
+                    {% if deckShareUserManaged %}
+                        <button type="button" data-url="{% url 'cardDatabase-delete-share-code' decklist.pk %}" id="delete-share">Delete share link</button>
+                    {% endif %}
+                    
+                {% endif %}
+
+                {% if decklist.shareCode == '' and not decklist.public  %}
+                    <button type="button" data-url="{% url 'cardDatabase-save-share-code' decklist.pk %}" id="create-share">Create share link</button>
+                {% endif %}
+                
+                {% if not decklist.deck_lock and not deckTournamentLocked and not tournamentDeck %}
+                    <button type="button" data-url="{% url 'cardDatabase-user-lock-decklist' decklist.pk %}" id="toggle-lock-decklist">Lock Decklist</button>
+                {% elif deckLockUserManaged and not deckTournamentLocked and not tournamentDeck %}
+                    <button type="button" data-url="{% url 'cardDatabase-user-unlock-decklist' decklist.pk %}" id="toggle-lock-decklist">Unlock Decklist</button>
+                {% endif %}
+                
+                <br>
+
+                {% if not decklist.deck_lock and not deckTournamentLocked %}
                     <a href="{% get_edit_decklist_url decklist.pk request.user_agent %}">
                         <button type="button" id="edit-decklist">Edit Decklist</button>
                     </a>

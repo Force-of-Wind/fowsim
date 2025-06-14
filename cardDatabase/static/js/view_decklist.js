@@ -107,59 +107,85 @@ $(function(){
             deleteShareLink();
         });
         $('#copy-share').click(function(e){
-            let url = `${window.location.href}${$('#share-link').val()}/`;
-            navigator.clipboard.writeText(url);
-            alert("Copied link. " + url);
-        })
+            var copyText = document.getElementById("share-link");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+        });
     }
     else if($('#create-share').length > 0){
         $('#create-share').click(function(e){
-            createShareLink('private');
-        });
-
-        $('#create-tournament-share').click(function(e){
-            createShareLink('tournament');
+            createShareLink();
         });
     }
 
-    function createShareLink(mode){
+    if ($('#toggle-lock-decklist').length > 0) {
+        $('#toggle-lock-decklist').click(function (e) {
+            changeDeckListLock()
+        });
+        
+    }
+
+    function createShareLink(){
         $.ajaxSetup({
             headers: {'X-CSRFToken': getCookie('csrftoken')}
         });
+        let deckId = document.getElementById('deck-id').value;
+        let url = $('#create-share').data('url');
+        
         $.ajax({
             type: 'POST',
-            url: `/create_share_code/${window.location.pathname.split('/')[2]}/`,
-            data: JSON.stringify({
-                mode: mode
-            }),
-            success: function (data) {
-                let url = `${window.location.href}${data.code}/`;
-                alert(url);
-
-                window.location.assign(window.location.href);
+            url: url,
+            data:{},
+            success: function () {
+                window.location.reload();
             },
             error: function () {
                 console.error('Error creating share link!');
             },
             contentType: 'application/json',
-        })
+        });
     }
 
     function deleteShareLink(){
         $.ajaxSetup({
             headers: {'X-CSRFToken': getCookie('csrftoken')}
         });
+        let deckId = document.getElementById('deck-id').value;
+        let url = $('#delete-share').data('url');
+
         $.ajax({
             type: 'POST',
-            url: `/delete_share_code/${window.location.pathname.split('/')[2]}/`,
+            url: url,
+            data:{},
             success: function () {
-                window.location.assign(window.location.href);
+                window.location.reload();
             },
             error: function () {
                 console.error('Error deleting share link!');
             },
             contentType: 'application/json',
-        })
+        });
+    }
+
+    function changeDeckListLock(){
+        $.ajaxSetup({
+            headers: {'X-CSRFToken': getCookie('csrftoken')}
+        });
+        let url = $('#toggle-lock-decklist').data('url');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data:{},
+            success: function () {
+                window.location.reload();
+            },
+            error: function () {
+                console.error('Error lock/unlocking Decklist!');
+            },
+            contentType: 'application/json',
+        });
     }
 
     function getCookie(c_name)

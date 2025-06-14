@@ -1,0 +1,19 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load card_database_tags static %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/desktop_only.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div>
+        <p>
+            {% block error_message %}Registration cannot be removed by User! <br> Please contact the organizer.{% endblock %}
+        </p>
+        <p>
+            <button type="button"><a href="/">Home</a></button>
+        </p>
+        <img src="{% get_random_chibi 'sad' %}">
+    </div>
+{% endblock %}

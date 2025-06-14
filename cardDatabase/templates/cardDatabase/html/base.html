@@ -43,7 +43,6 @@
                     {% endblock %}
                 {% endif %}
                 {% block css %}
-                    <link rel="stylesheet" href="{% static 'css/bootstrap/mdb.css' %}">
                     <link rel="stylesheet" href="{% static 'css/base.css' %}">
                     <link rel="stylesheet" href="{% static 'css/darkmode/dark_mode_toggle.css' %}">
                 {% endblock %}
@@ -67,7 +66,7 @@
             <div id="header">
                 <div class="header-content">
                     <div class="site-header-logo">
-                        <a href="{% url 'cardDatabase-search' %}">
+                        <a href="{% url 'cardDatabase-home' %}">
                             <div id="site-title">{% block header-title %}Force of Wind{% endblock %}</div>
                             <img id="site-icon" src="{% static 'img/wind.png'%}">
                         </a>
@@ -84,7 +83,6 @@
                         <div class="fow-dropdown-content">
                             <a href="{% url 'cardDatabase-search' %}">Card Database</a>
                             <a href="{% url 'cardDatabase-decklist-search' %}">Deck search</a>
-                            <a href="{% url 'cardDatabase-metrics' %}">Metrics</a>
                             {% get_spoiler_link %}
                             <a href="{% url 'cardDatabase-user-decklists' %}">My Decklists</a>
                             {% if request.user.is_authenticated %}
@@ -101,7 +99,6 @@
                                     <div id="login">Login</div>
                                 </a>
                             {% endif %}
-                            <a href="{% url 'cardDatabase-pack-select' %}">Pack Sim</a>
                             {% block darkmode_toggle %}
                                 <div class="darkmode-toggle-wrapper">
                                     <span class="darkmode-toggle-label">Light/Dark</span>    

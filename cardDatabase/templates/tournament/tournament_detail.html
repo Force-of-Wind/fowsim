@@ -1,0 +1,125 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/tournament/tournament_detail.css' %}">
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script  src="{% static 'js/date_localizer.js' %}"></script>
+    <script  src="{% static 'js/tournament/tournament_detail.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="mb-4">
+        <h1 class="mb-3">{{ tournament.title }}</h1>
+        <p>
+            <strong>Tournament style:</strong> {% if tournament.is_online %}Online{% else %}In Person{% endif %}<br>
+            <strong>Format:</strong> {{ tournament.format }}<br>
+            <strong>Level:</strong> {{ tournament.level.title }} - {{ tournament.level.code }}<br>
+            {% if tournament.phase == 'created' or tournament.phase == 'registration' %}
+                <strong>Start Time:</strong> <span id="startTime" class="local-date-time" data-epoch="{% datetime_to_timestamp tournament.start_datetime %}"></span><br>
+                <strong>Starts In:</strong> <span class="countdown" id="countdown">Loading...</span><br>
+                <strong>Registration Deadline:</strong> <span class="local-date-time" data-epoch="{% datetime_to_timestamp tournament.registration_deadline %}"></span><br>
+                {% if tournament.deck_edit_deadline is not None %}
+                    <strong>Deck Lock for Edit:</strong> <span class="local-date-time" data-epoch="{% datetime_to_timestamp tournament.deck_edit_deadline %}"></span><br>
+                {% endif %}
+            {% endif %}
+            <strong>Phase:</strong> {{ tournament.phase }} <br>
+        </p>
+
+        <div>
+            {% for field in tournament.meta_data %}
+                {% include 'tournament/field_renderer.html' with edit=false field=field %}
+            {% endfor %}
+        </div>
+
+        {% if request.user.is_authenticated %}
+            <div class="mt-3">
+                {% if registrationOpen and currentPlayer is None %}
+                    <a href="{% url 'cardDatabase-player-register-tournament' tournament_id=tournament.pk %}" class="btn btn-primary mr-2">Register for Tournament</a>
+                {% endif %}
+                {% if isStaff %}
+                    <a href="{% url 'cardDatabase-admin-tournament' tournament_id=tournament.pk %}" class="btn btn-secondary">Admin UI</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    <hr>
+    {% if currentPlayer is not None %}
+        <h4>Player Registration</h4>
+        <strong>Current Registration Status:</strong> {{currentPlayer.registration_status}} </br>
+        {% if tournament.phase == 'registration' %}
+            <a href="{% url 'cardDatabase-tournament-change-decklist' tournament_id=tournament.pk %}" class="mt-3 mb-3 btn btn-primary">Change Decklist</a>
+            <a href="{% url 'cardDatabase-tournament-delete-registration' tournament_id=tournament.pk %}" class="mt-3 mb-3 btn btn-danger">Delete Registration</a>
+        {% endif %}
+        <h5 class="mt-3 mb-3">Current Deck:</h5>
+        <div class="col-md-4 mt-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <img class="card-img" src="{{ currentPlayer.deck.get_front_card_of_deck.card.card_image.url }}"></img>
+                    <h5 class="card-title">{{ currentPlayer.deck.name }}</h5>
+                    {% colours_to_imgs currentPlayer.deck.get_colours %}
+                    <div class="mb-2"><strong>Last Update:</strong> <span class="local-date-time" data-epoch="{% datetime_to_timestamp currentPlayer.deck.last_modified %}"></span></div>
+                    <a href="{% url 'cardDatabase-view-decklist' currentPlayer.deck.pk %}" target="_blank" class="btn btn-sm btn-info" target="_blank">View Decklist</a>
+                </div>
+            </div>
+        </div>
+        <hr>
+    {% endif %}
+    <h4 class="mb-3">Players</h4>
+    {% if playerCount > 0 %}
+        {% if not tournament.reveal_decklists and isStaff %}
+            <br>
+            <span class="badge badge-light mb-2">Only staff can see Decklists right now!</span>
+            <br>
+        {% endif %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Standing</th>
+                        <th>Username</th>
+                        <th>Dropped</th>
+                        {% if tournament.reveal_decklists or isStaff %}
+                            <th>Decklist</th>
+                            <th>Rulers</th>
+                            <th>Will Attributes</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                        <tr>
+                            <td>{{ player.standing }}</td>
+                            <td>{{ player.profile.user.username }}</td>
+                            <td>{% if player.dropped_out %}Yes{% else %}No{% endif %}</td>
+                            {% if tournament.reveal_decklists or isStaff %}
+                                <td><a href="{% url 'cardDatabase-view-decklist-share' decklist_id=player.deck.pk share_parameter=player.deck.shareCode %}" class="btn btn-sm btn-outline-primary">View</a></td>
+                                {% if player.deck.get_deck_rulers %}
+                                    <td>
+                                        {% for ruler in player.deck.get_deck_rulers %}
+                                            <a href="{% url 'cardDatabase-view-card' ruler.card.card_id %}" target="_blank">
+                                                <img class="card-ruler-img" src="{{ ruler.card.card_image.url }}"/>
+                                            </a>
+                                        {% endfor %}
+                                    </td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}                            
+                                <td>{% colours_to_imgs player.deck.get_colours %}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No players yet registered for this tournament!</p>
+    {% endif %}
+    
+  </div>
+{% endblock %}

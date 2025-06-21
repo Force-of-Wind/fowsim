@@ -81,10 +81,10 @@ def post(request, tournament_id):
         decklist.deck_lock = CONS.MODE_TOURNAMENT
 
     decklist.save()
-    
-    TournamentPlayer.objects.update(
-        last_registration_updated_by = request.user.profile,
-        deck = decklist
-    )
+
+    player.last_registration_updated_by = request.user.profile
+    player.deck = decklist
+
+    player.save()
 
     return HttpResponseRedirect(reverse('cardDatabase-detail-tournament', kwargs={'tournament_id': tournament_id}))

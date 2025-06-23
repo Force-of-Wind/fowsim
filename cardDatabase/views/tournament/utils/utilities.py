@@ -1,3 +1,5 @@
+import copy
+
 def check_value_is_meta_data(name, default_meta_data_fields):
     for field in default_meta_data_fields:
         if field['name'] == name:
@@ -5,7 +7,8 @@ def check_value_is_meta_data(name, default_meta_data_fields):
     return False
 
 def map_meta_data(name, value, default_meta_data_fields):
-    for field in default_meta_data_fields:
+    default_fields = copy.deepcopy(default_meta_data_fields)
+    for field in default_fields:
         if field['name'] == name:
             field['value'] = value
             return field

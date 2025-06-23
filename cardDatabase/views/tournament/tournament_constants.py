@@ -54,7 +54,8 @@ ONLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA = [
         'required': True,
         'type': FIELD_TYPE_TEXT,
         'maxlength': 200,
-        'class': 'form-control'
+        'class': 'form-control',
+        'value': ''
     },
     {
         'name': 'lastname',
@@ -62,7 +63,8 @@ ONLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA = [
         'required': True,
         'type': FIELD_TYPE_TEXT,
         'maxlength': 200,
-        'class': 'form-control'
+        'class': 'form-control',
+        'value': ''
     },
     {
         'name': 'email',
@@ -70,7 +72,8 @@ ONLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA = [
         'required': True,
         'type': FIELD_TYPE_EMAIL,
         'maxlength': 200,
-        'class': 'form-control'
+        'class': 'form-control',
+        'value': ''
     },
     {
         'name': 'username',
@@ -78,7 +81,8 @@ ONLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA = [
         'required': True,
         'type': FIELD_TYPE_TEXT,
         'maxlength': 200,
-        'class': 'form-control'
+        'class': 'form-control',
+        'value': ''
     },
     {
         'name': 'additional',
@@ -86,7 +90,8 @@ ONLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA = [
         'required': False,
         'type': FIELD_TYPE_TEXTAREA,
         'maxlength': 500,
-        'class': 'form-control'
+        'class': 'form-control',
+        'value': ''
     }
 ]
 
@@ -97,7 +102,8 @@ OFFLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA = [
         'required': True,
         'type': FIELD_TYPE_TEXT,
         'maxlength': 200,
-        'class': 'form-control'
+        'class': 'form-control',
+        'value': ''
     },
     {
         'name': 'lastname',
@@ -105,7 +111,8 @@ OFFLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA = [
         'required': True,
         'type': FIELD_TYPE_TEXT,
         'maxlength': 200,
-        'class': 'form-control'
+        'class': 'form-control',
+        'value': ''
     },
     {
         'name': 'email',
@@ -113,7 +120,8 @@ OFFLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA = [
         'required': True,
         'type': FIELD_TYPE_EMAIL,
         'maxlength': 200,
-        'class': 'form-control'
+        'class': 'form-control',
+        'value': ''
     },
     {
         'name': 'birth-year',
@@ -121,7 +129,8 @@ OFFLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA = [
         'required': True,
         'type': FIELD_TYPE_YEAR,
         'maxlength': 4,
-        'class': 'form-control'
+        'class': 'form-control',
+        'value': ''
     },
     {
         'name': 'additional',
@@ -129,6 +138,7 @@ OFFLINE_TOURNAMENT_DEFAULT_PLAYER_META_DATA = [
         'required': False,
         'type': FIELD_TYPE_TEXTAREA,
         'maxlength': 500,
-        'class': 'form-control'
+        'class': 'form-control',
+        'value': ''
     }
 ]

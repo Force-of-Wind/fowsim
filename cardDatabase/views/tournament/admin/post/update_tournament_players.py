@@ -7,6 +7,8 @@ from django.views.decorators.http import require_POST
 
 from cardDatabase.models.Tournament import Tournament, TournamentPlayer, TournamentStaff
 
+from fowsim.decorators import tournament_admin
+
 @login_required
 @require_POST
 def post(request, tournament_id):

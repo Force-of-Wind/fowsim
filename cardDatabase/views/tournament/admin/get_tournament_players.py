@@ -44,6 +44,14 @@ def map_tournament_player(players):
             else:
                 additional_info_fields.append(field)
 
+        ruler_names = []
+        if not player.deck.get_deck_rulers:
+            continue
+        rulers = player.deck.get_deck_rulers.order_by('card__name')
+        for ruler in rulers:
+            ruler_names.append(ruler.card.name)
+        ruler_combo_name = ' + '.join(ruler_names)
+            
 
         playerObj = {
             "id": player.pk,
@@ -57,6 +65,7 @@ def map_tournament_player(players):
             "username": player.profile.user.username,
             "decklistId": player.deck.pk,
             "decklistShareCode": player.deck.shareCode,
+            "ruler": ruler_combo_name
         }
         mappedPlayers.append(playerObj)
         

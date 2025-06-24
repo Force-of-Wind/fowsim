@@ -30,3 +30,9 @@
 .hidden {
     display:none;
 }
+
+.export-btn-group{
+    display: flex;
+    flex-direction: row;
+    gap:9px;
+}

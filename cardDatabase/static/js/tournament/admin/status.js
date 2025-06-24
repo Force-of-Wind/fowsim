@@ -50,7 +50,7 @@ function advanceStatus() {
 
         document.getElementById('nextStatus').value = nextStatus;
     } else {
-        alert('The tournament is already completed!');
+        alertify.error('The tournament is already completed!');
     }
 }
 
@@ -76,10 +76,12 @@ $(document).ready(function() {
                 $('#confirmModal').modal('hide');
 
                 disableButtons(nextStatus);
+
+                alertify.success('Successfully moved to next tournament phase');
             },
             error: function(error) {
                 console.error('Error updating status:', error);
-                alert('There was an error updating the status. Please try again later.');
+                alertify.error('There was an error updating the status. Please try again later.');
             }
         });
     });
@@ -101,7 +103,7 @@ $(document).ready(function() {
             },
             error: function(error) {
                 console.error('Error updating decklist reveal status:', error);
-                alert('There was an error updating the decklist reveal status. Please try again later.');
+                alertify.error('There was an error updating the decklist reveal status. Please try again later.');
             }
         });
     }
@@ -119,7 +121,7 @@ $(document).ready(function() {
             },
             error: function(error) {
                 console.error('Error resetting phase:', error);
-                alert('There was an error resetting the tournaments phase. Please try again later.');
+                alertify.error('There was an error resetting the tournaments phase. Please try again later.');
             }
         });
     }
@@ -140,8 +142,8 @@ $(document).ready(function() {
                 window.location.reload();
             },
             error: function(error) {
-                console.error('Error resetting phase:', error);
-                alert('There was an error resetting the tournaments phase. Please try again later.');
+                console.error('Error locking decklists:', error);
+                alertify.error('There was an error locking the tournaments decklists. Please try again later.');
             }
         });
     }

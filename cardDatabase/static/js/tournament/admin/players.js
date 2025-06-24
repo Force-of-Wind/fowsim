@@ -19,9 +19,11 @@ function fetchPlayersFromAPI() {
         success: function (response) {
             players = response;
             fetchPlayersHTMLFromAPI();
+            setupRulersForStats(players);
+            drawStatsForRulers();
         },
         error: function (error) {
-            alert('Error fetching players.');
+            alertify.error('Error fetching players!');
             console.error(error);
         }
     });
@@ -40,13 +42,18 @@ function fetchPlayersHTMLFromAPI() {
             renderPlayers(html);
         },
         error: function (error) {
-            alert('Error fetching players.');
+            alertify.error('Error fetching players!');
             console.error(error);
         }
     });
 }
 
 function savePlayersToAPI() {
+    if(players.length < 1){
+        alertify.error('No players to save!');
+        return;
+    }
+        
     $.ajax({
         url: `/api/tournament/${getTournamentId()}/players/update/`,
         type: 'POST',
@@ -56,10 +63,10 @@ function savePlayersToAPI() {
             'X-CSRFToken': getCSRFToken(),
         },
         success: function (response) {
-            alert('Players saved successfully!');
+            alertify.success(`Players saved successfully!`);
         },
         error: function (error) {
-            alert('Error saving players.');
+            alertify.error('Error saving players');
             console.error(error);
         }
     });
@@ -135,7 +142,7 @@ function removePlayerFromTournament() {
             fetchPlayersFromAPI();
         },
         error: function (error) {
-            alert('Error saving players.');
+            alertify.error('Error removing player!');
             console.error(error);
         }
     });
@@ -156,7 +163,22 @@ function updateNotes(id, newNotes) {
     player.notes = newNotes;
 }
 
+function setupRulersForStats(players) 
+{ 
+    if(players.length < 1){
+        window.rulers = [];
+        return;
+    }
 
+    rulers = {}
+    allRulers = players.map(e => e.ruler);
+
+    for (const ruler of allRulers) {
+        rulers[ruler] = (rulers[ruler] || 0) + 1;
+    }
+
+    window.rulers = rulers;
+}
 
 $(document).ready(function () {
     $('#remove-player-btn').on('click', removePlayerFromTournament);

@@ -42,15 +42,23 @@ function getRandomHexColorForDarkLightMode() {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
-$(document).ready(function () {
+function drawStatsForRulers() {
+    if(rulerBreakdownChart)
+        rulerBreakdownChart.destroy();
+    
+    $('#ruler-export-img-btn').prop('disabled', true);
+    $('#ruler-export-btn').prop('disabled', true);
+    
+
     if (!window.rulers || Object.keys(window.rulers).length < 1) {
         console.error('Cannot load stats.')
+        alertify.error('Error loading stats.');
         return;
     }
 
     const inwardLabelPlugin = {
-        id: 'inwardLabels',
-        afterDatasetsDraw(chart) {
+            id: 'inwardLabels',
+            afterDatasetsDraw(chart) {
             const ctx = chart.ctx;
             const meta = chart.getDatasetMeta(0);
             const dataset = chart.data.datasets[0];
@@ -137,9 +145,6 @@ $(document).ready(function () {
 
     $('#ruler-breakdown-textarea').text(textExport);
 
-    if($('#ruler-export-btn').hasClass('d-none'))
-        $('#ruler-export-btn').removeClass('d-none');
-
     rulerBreakdownChart = new Chart(rulerBreakdownCanvas,
     {
         type: 'pie',
@@ -161,4 +166,24 @@ $(document).ready(function () {
             }]
         }
     });
-})
+
+    $('#ruler-export-btn').prop('disabled', false);
+    $('#ruler-export-img-btn').prop('disabled', false);
+}
+
+function exportRulerBreakdownAsImage(){
+    if (!window.rulers || Object.keys(window.rulers).length < 1) {
+        console.error('Cannot export stats.')
+        alertify.error('Error export stats.');
+        return;
+    }
+
+    const canvas = document.getElementById("ruler-breakdown-canvas");
+    const dataURL = canvas.toDataURL("image/png");
+
+    // Create a download link
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "ruler-breakdown.png";
+    link.click();
+}

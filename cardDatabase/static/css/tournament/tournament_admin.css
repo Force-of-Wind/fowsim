@@ -26,3 +26,7 @@
 .canvas-wrapper{
     max-height: 90vh;
 }
+
+.hidden {
+    display:none;
+}

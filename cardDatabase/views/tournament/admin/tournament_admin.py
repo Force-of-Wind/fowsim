@@ -10,6 +10,7 @@ from cardDatabase.models.Tournament import TournamentStaff, TournamentPlayer, St
 @tournament_reader
 def get(request, tournament_id):
     tournament = request.tournament
+    staff_account = request.staff_account
     
     deck_edit_locked = tournament.deck_edit_locked
 

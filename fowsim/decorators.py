@@ -99,6 +99,8 @@ def check_tournament_staff_permissions(permission):
 
             request.tournament = tournament  # Attach for use in view
 
+            request.staff_account = staff_account  # Attach for use in view
+
             return function(request, *args, **kwargs)
 
         return wrap

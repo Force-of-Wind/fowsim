@@ -1,0 +1,58 @@
+{% for player in players %}
+    <div id="container-{{player.id}}" class="col-md-4 mb-3">
+        <div id="card-{{player.id}}" class="card{% if player.dropped %} border-danger{% endif %}">
+            <div class="card-body">
+                <h5 class="card-title">{{player.firstname|escape}} {{player.lastname|escape}}</h5>
+                <h6 class="card-subtitle text-muted">@{{player.username}}</h6>
+                <input type="hidden" class="player-id" value="{{player.id}}">
+                <p class="mt-2">
+                    <strong>Standing:</strong> 
+                    <input type="number" class="form-control form-control-sm d-inline w-25" 
+                        value="{{player.standing}}" {% if not staff.can_write %}disabled{% endif %} onchange="updateStanding({{player.id}}, this.value)">
+                    <br>
+                    <strong>Status:</strong> 
+                    <select class="form-control form-control-sm d-inline w-50" {% if not staff.can_write %}disabled{% endif %} onchange="updateStatus({{player.id}}, this.value)">
+                        <option value="requested" {% if player.status == 'requested' %}selected{% endif %}>Requested</option>
+                        <option value="accepted"  {% if player.status == 'accepted' %}selected{% endif %}>Accepted</option>
+                        <option value="completed" {% if player.status == 'completed' %}selected{% endif %}>Completed</option>
+                    </select>
+                    <br>
+                    <strong>Notes:</strong>
+                    <textarea class="form-control form-control-sm" rows="3" {% if not staff.can_write %}disabled{% endif %} onchange="updateNotes({{player.id}}, this.value)">{{player.notes|escape}}</textarea>
+                </p>
+                <a href="#collapse-{{player.id}}" class="btn btn-outline-primary flex-center mt-1 mb-2" data-toggle="collapse" data-target="#collapse-{{player.id}}" aria-expanded="true" aria-controls="collapse-{{player.id}}">
+                    Details
+                </a>
+                <div id="accordion-{{player.id}}">
+                    <div id="collapse-{{player.id}}" class="collapse" data-parent="#accordion-{{player.id}}">
+                        {% for field in player.additionalInfoFields %}
+                            <strong>{{field.label}}:</strong><span class="text-wrapper"> {{field.value|escape}}</span><br>
+                        {% endfor %}
+                    </div>
+                </div>
+                <a href="{% url 'cardDatabase-view-decklist-share' player.decklistId player.decklistShareCode %}" class="btn btn-sm btn-info" target="_blank">View Decklist</a>
+                <div id="drop-control-fields-{{player.id}}">
+                    <div id="drop-{{player.id}}" class="{% if player.dropped %}hidden{% endif %}">
+                        <button class="btn btn-sm btn-danger {% if not staff.can_write %}disabled{% endif %} float-right" onclick="dropPlayer({{player.id}})">
+                            Drop Player
+                        </button>
+                    </div>
+                    <div id="undrop-{{player.id}}" class="{% if not player.dropped %}hidden{% endif %}">
+                        <span class="text-danger">Dropped Out</span>
+                        <button class="btn btn-sm btn-primary {% if not staff.can_write %}disabled{% endif %} float-right" onclick="undropPlayer({{player.id}})">
+                            Un-Drop Player
+                        </button>
+                    </div>
+                </div>
+                {% if staff.can_delete %}
+                    <div class="mt-5">
+                        <button class="btn btn-sm btn-danger float-right mt-3" onclick="removePlayer({{player.id}})" data-toggle="modal" data-target="#playerRemoveModal">
+                            Remove Player
+                        </button>
+                    </div>
+                    
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}

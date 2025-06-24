@@ -18,7 +18,26 @@ function fetchPlayersFromAPI() {
         },
         success: function (response) {
             players = response;
-            renderPlayers();
+            fetchPlayersHTMLFromAPI();
+        },
+        error: function (error) {
+            alert('Error fetching players.');
+            console.error(error);
+        }
+    });
+}
+
+function fetchPlayersHTMLFromAPI() {
+    $.ajax({
+        url: `/api/tournament/${getTournamentId()}/render-players/`,
+        type: 'GET',
+        dataType: 'html',
+        headers: {
+            'X-CSRFToken': getCSRFToken(),
+        },
+        success: function (response) {
+            html = response;
+            renderPlayers(html);
         },
         error: function (error) {
             alert('Error fetching players.');
@@ -46,106 +65,54 @@ function savePlayersToAPI() {
     });
 }
 
-function renderPlayers() {
-    let html = "";
-
-    if (players.length < 1) {
-        html = `<h3 class="ml-3"><b>No players registered!</b></h3>`;
-        document.getElementById("savePlayersBtn").setAttribute('disabled', true);
-        return;
-    }
-
-    players.forEach((player, index) => {
-        let baseUrl = $('#decklist_detail_url_base').val();
-        firstName = escapeHtml(player.userData.filter(e => e.name == 'firstname')[0].value);
-        lastName = escapeHtml(player.userData.filter(e => e.name == 'lastname')[0].value);
-
-        additionalInfoFields =  player.userData.filter(e => e.name != 'firstname' && e.name != 'lastname');
-
-        infoFieldsHtml = "";
-
-        additionalInfoFields.forEach(e => {
-            infoFieldsHtml += `<strong>${e.label}:</strong><span class="text-wrapper"> ${escapeHtml(e.value)}</span><br>`
-        });
-
-        shareLink = baseUrl.replace('0', player.decklistId).replace('changeMe', player.decklistShareCode);
-        const card = `
-            <div class="col-md-4 mb-3">
-                <div class="card ${player.dropped ? 'border-danger' : ''}">
-                    <div class="card-body">
-                        <h5 class="card-title">${firstName} ${lastName}</h5>
-                        <h6 class="card-subtitle text-muted">@${player.username}</h6>
-                        <input type="hidden" class="player-id" value="${player.id}">
-                        <p class="mt-2">
-                            <strong>Standing:</strong> 
-                            <input type="number" class="form-control form-control-sm d-inline w-25" 
-                                value="${player.standing}" ${window.can_write ? '' : 'disabled'} onchange="updateStanding(${index}, this.value)">
-                            <br>
-                            <strong>Status:</strong> 
-                            <select class="form-control form-control-sm d-inline w-50" ${window.can_write ? '' : 'disabled'}
-                                    onchange="updateStatus(${index}, this.value)">
-                                <option value="requested" ${player.status === 'requested' ? 'selected' : ''}>Requested</option>
-                                <option value="accepted"  ${player.status === 'accepted' ? 'selected' : ''}>Accepted</option>
-                                <option value="completed" ${player.status === 'completed' ? 'selected' : ''}>Completed</option>
-                            </select>
-                            <br>
-                            ${player.dropped ? '<span class="text-danger">Dropped Out</span>' : ''}
-                            <br>
-                            <strong>Notes:</strong>
-                            <textarea class="form-control form-control-sm" rows="3" ${window.can_write ? '' : 'disabled'} onchange="updateNotes(${index}, this.value)">${player.notes}</textarea>
-                        </p>
-                        <a href="#collapse-${player.id}" class="btn btn-outline-primary flex-center mt-1 mb-2" data-toggle="collapse" data-target="#collapse-${player.id}" aria-expanded="true" aria-controls="collapse-${player.id}">
-                                Details
-                            </a>
-                            <div id="accordion-${player.id}">
-                                <div id="collapse-${player.id}" class="collapse" data-parent="#accordion-${player.id}">
-                                    ${infoFieldsHtml}
-                                </div>
-                            </div>
-                        <a href="${shareLink}" class="btn btn-sm btn-info" target="_blank">View Decklist</a>
-                        ${player.dropped ?
-                            `<button class="btn btn-sm btn-primary ${window.can_write ? '' : 'disabled'} float-right" onclick="undropPlayer(${index})">
-                                Un-Drop Player
-                            </button>`:
-                            `<button class="btn btn-sm btn-danger ${window.can_write ? '' : 'disabled'} float-right" onclick="dropPlayer(${index})">
-                                Drop Player
-                            </button>`
-                        }
-                        
-                        ${window.can_delete ?
-                            `<br><button class="btn btn-sm btn-danger float-right mt-3" onclick="removePlayer(${index})" data-toggle="modal" data-target="#playerRemoveModal">
-                            Remove Player
-                        </button>` : ''}
-                    </div>
-                </div>
-            </div>
-        `;
-        html += card;
-    });
-
+function renderPlayers(html) {
     $('#playerList').html(html);
 }
 
-function dropPlayer(index) {
-    players[index].dropped = true;
-    renderPlayers();
+function getPlayerById(id){
+    return players.filter(e => e.id == id)[0];
 }
 
-function undropPlayer(index) {
-    players[index].dropped = false;
-    renderPlayers();
+function dropPlayer(id) {
+    player = getPlayerById(id);
+    player.dropped = true;
+    changeDropStatus(player, true);
 }
 
-function escapeHtml(string) {
-  return $('<div>').text(string).html();
+function undropPlayer(id) {
+    player = getPlayerById(id);
+    player.dropped = false;
+    changeDropStatus(player, false);
 }
 
-function removePlayer(index) {
-    let player =  players[index];
-    firstName = player.userData.filter(e => e.name == 'firstname')[0].value;
-    lastName = player.userData.filter(e => e.name == 'lastname')[0].value;
+function changeDropStatus(player, dropStatus) { 
+    if(dropStatus){
+        if(!$(`#card-${player.id}`).hasClass('border-danger'))
+            $(`#card-${player.id}`).addClass('border-danger');
+
+        if(!$(`#drop-${player.id}`).hasClass('hidden'))
+            $(`#drop-${player.id}`).addClass('hidden');
+        
+        if($(`#undrop-${player.id}`).hasClass('hidden'))
+            $(`#undrop-${player.id}`).removeClass('hidden');
+        
+    }
+    else{
+        if($(`#card-${player.id}`).hasClass('border-danger'))
+            $(`#card-${player.id}`).removeClass('border-danger');
+
+        if(!$(`#undrop-${player.id}`).hasClass('hidden'))
+            $(`#undrop-${player.id}`).addClass('hidden');
+        
+        if($(`#drop-${player.id}`).hasClass('hidden'))
+            $(`#drop-${player.id}`).removeClass('hidden');
+    }
+}
+
+function removePlayer(id) {
+    let player =  getPlayerById(id);
     
-    let name = `${firstName} ${lastName} - ${player.username}`
+    let name = `${player.firstname} ${player.lastname} - ${player.username}`
     $('#remove-player-name').text(name);
     $('#remove-player-id').val(player.id);
 }
@@ -174,16 +141,19 @@ function removePlayerFromTournament() {
     });
 }
 
-function updateStatus(index, newStatus) {
-    players[index].status = newStatus;
+function updateStatus(id, newStatus) {
+    player = getPlayerById(id);
+    player.status = newStatus;
 }
 
-function updateStanding(index, newStanding) {
-    players[index].standing = parseInt(newStanding) || 0;
+function updateStanding(id, newStanding) {
+    player = getPlayerById(id);
+    player.standing = parseInt(newStanding) || 0;
 }
 
-function updateNotes(index, newNotes) {
-    players[index].notes = newNotes;
+function updateNotes(id, newNotes) {
+    player = getPlayerById(id);
+    player.notes = newNotes;
 }
 
 

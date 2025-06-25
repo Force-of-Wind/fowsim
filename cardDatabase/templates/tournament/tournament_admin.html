@@ -127,7 +127,13 @@
         </button>
     
         <button id="savePlayersBtn" class="btn btn-success mb-3" {% if not staffAccount.role.can_write %} disabled {% endif %} onclick="savePlayersToAPI()">Save Players</button>
-        <input id="decklist_detail_url_base" hidden value="{% url 'cardDatabase-view-decklist-share' decklist_id=0 share_parameter='changeMe' %}"/>
+        <button class="btn btn-info mb-3" onclick="exportPlayersToCSV()">
+            <i class="fa-solid fa-file-arrow-down"></i> Download Players CSV
+        </button>
+        <div class="player-view-button mt-3 mb-3">
+            <button id="player-as-boxes-btn" class="btn btn-info"><i class="fa-solid fa-cubes"></i></button>
+            <button id="player-as-table-btn" class="btn btn-outline-info"><i class="fa-solid fa-table-list"></i></button>
+        </div>
         <div class="row" id="playerList">
             
         </div>

@@ -36,3 +36,7 @@
     flex-direction: row;
     gap:9px;
 }
+
+.border-danger td {
+  border: 2px solid #dc3545;
+}

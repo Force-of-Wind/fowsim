@@ -8,7 +8,7 @@
                 <p class="mt-2">
                     <strong>Standing:</strong> 
                     <input type="number" class="form-control form-control-sm d-inline w-25" 
-                        value="{{player.standing}}" {% if not staff.can_write %}disabled{% endif %} onchange="updateStanding({{player.id}}, this.value)">
+                        value="{{player.standing}}" {% if not staff.can_write %}disabled{% endif %} onchange="updateStanding({{player.id}}, this.value)"></input>
                     <br>
                     <strong>Status:</strong> 
                     <select class="form-control form-control-sm d-inline w-50" {% if not staff.can_write %}disabled{% endif %} onchange="updateStatus({{player.id}}, this.value)">

@@ -21,6 +21,16 @@ def getHtml(request, tournament_id):
     
     players = map_tournament_player(tournament.players.order_by('standing').all())
 
+
+    asTable = request.GET.get('asTable', False)
+
+    if(asTable):
+        return render(request, 'tournament/admin/player_table_renderer.html', context={
+            'tournament': tournament,
+            'players':players,
+            'staff': staff_account.role
+        })
+
     return render(request, 'tournament/admin/player_renderer.html', context={
         'tournament': tournament,
         'players':players,

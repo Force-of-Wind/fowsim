@@ -1,0 +1,69 @@
+<table class="table table-bordered table-striped">
+    <thead class="thead-light">
+        <tr>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Standing</th>
+            <th>Status</th>
+            <th>Details</th>
+            <th>Decklist</th>
+            <th>Drop</th>
+            {% if staff.can_delete %}
+                <th>Remove</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for player in players %}
+            <tr id="card-{{player.id}}" class="{% if player.dropped %} border-danger{% endif %}">
+                <input type="hidden" class="player-id" value="{{player.id}}">
+                <td>{{player.firstname|escape}} {{player.lastname|escape}}</td>
+                <td>@{{player.username}}</td>
+                <td><input name="standing" type="number" class="form-control form-control-sm d-inline w-50" 
+                        value="{{player.standing}}" {% if not staff.can_write %}disabled{% endif %} onchange="updateStanding({{player.id}}, this.value)">
+                </td>
+                <td>
+                    <select class="form-control form-control-sm d-inline w-300" {% if not staff.can_write %}disabled{% endif %} onchange="updateStatus({{player.id}}, this.value)">
+                        <option value="requested" {% if player.status == 'requested' %}selected{% endif %}>Requested</option>
+                        <option value="accepted"  {% if player.status == 'accepted' %}selected{% endif %}>Accepted</option>
+                        <option value="completed" {% if player.status == 'completed' %}selected{% endif %}>Completed</option>
+                    </select>
+                </td>
+                <td>
+                    <a href="#collapse-{{player.id}}" class="btn btn-outline-primary flex-center mt-1 mb-2" data-toggle="collapse" data-target="#collapse-{{player.id}}" aria-expanded="true" aria-controls="collapse-{{player.id}}">
+                        Details
+                    </a>
+                    <div id="accordion-{{player.id}}">
+                        <div id="collapse-{{player.id}}" class="collapse" data-parent="#accordion-{{player.id}}">
+                            {% for field in player.additionalInfoFields %}
+                                <strong>{{field.label}}:</strong><span class="text-wrapper"> {{field.value|escape}}</span><br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </td>
+                <td><a href="{% url 'cardDatabase-view-decklist-share' player.decklistId player.decklistShareCode %}" class="btn btn-sm btn-info" target="_blank">View Decklist</a></td>
+                <td>
+                    <div id="drop-control-fields-{{player.id}}">
+                        <div id="drop-{{player.id}}" class="{% if player.dropped %}hidden{% endif %}">
+                            <button class="btn btn-sm btn-danger {% if not staff.can_write %}disabled{% endif %}" onclick="dropPlayer({{player.id}})">
+                                Drop Player
+                            </button>
+                        </div>
+                        <div id="undrop-{{player.id}}" class="{% if not player.dropped %}hidden{% endif %}">
+                            <button class="btn btn-sm btn-primary {% if not staff.can_write %}disabled{% endif %}" onclick="undropPlayer({{player.id}})">
+                                Un-Drop Player
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                {% if staff.can_delete %}
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="removePlayer({{player.id}})" data-toggle="modal" data-target="#playerRemoveModal">
+                            Remove Player
+                        </button>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

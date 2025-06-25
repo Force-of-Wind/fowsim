@@ -1,4 +1,6 @@
 let players = [];
+let showAsTable = false;
+let showAsBoxes = false;
 
 function getTournamentId() {
     return document.getElementById("tournamentId").value;
@@ -30,8 +32,11 @@ function fetchPlayersFromAPI() {
 }
 
 function fetchPlayersHTMLFromAPI() {
+    let queryParam = '';
+    if(!showAsBoxes && showAsTable)
+        queryParam = '?asTable=true'
     $.ajax({
-        url: `/api/tournament/${getTournamentId()}/render-players/`,
+        url: `/api/tournament/${getTournamentId()}/render-players/${queryParam}`,
         type: 'GET',
         dataType: 'html',
         headers: {
@@ -73,6 +78,19 @@ function savePlayersToAPI() {
 }
 
 function renderPlayers(html) {
+    if(showAsBoxes && !showAsTable){
+        if($('#playerList').hasClass('table-responsive')){
+            $('#playerList').removeClass('table-responsive');
+            $('#playerList').removeClass('row');
+        }
+    }
+    else if(!showAsBoxes && showAsTable){
+        if($('#playerList').hasClass('row')){
+            $('#playerList').removeClass('row');
+            $('#playerList').removeClass('table-responsive');
+        }
+    }
+
     $('#playerList').html(html);
 }
 
@@ -180,8 +198,71 @@ function setupRulersForStats(players)
     window.rulers = rulers;
 }
 
+function showPlayersAsBoxes(){
+    if(showAsBoxes && !showAsTable)
+        return;
+
+    showAsBoxes = true;
+    showAsTable = false;
+
+    updateButtonClass('#player-as-table-btn', '#player-as-boxes-btn');
+
+    fetchPlayersFromAPI();
+}
+
+function showPlayersAsTable(){
+    if(showAsTable && !showAsBoxes)
+        return;
+
+    showAsTable = true;
+    showAsBoxes = false;
+
+    updateButtonClass('#player-as-boxes-btn', '#player-as-table-btn');
+
+    fetchPlayersFromAPI();
+}
+
+function updateButtonClass(outlineBtn, normalBtn) { 
+    if($(outlineBtn).hasClass('btn-info')){
+        $(outlineBtn).removeClass('btn-info');
+        $(outlineBtn).addClass('btn-outline-info');
+    }
+
+    if($(normalBtn).hasClass('btn-outline-info')){
+        $(normalBtn).removeClass('btn-outline-info');
+        $(normalBtn).addClass('btn-info');
+    }
+}
+
+function exportPlayersToCSV(){
+    if(!players){
+        return;
+    }
+
+    let header = Object.keys(players[0]);
+
+    let data = players.map(e => Object.values(e));
+
+    let finalData = [];
+
+    data.forEach(row => finalData.push(row.map(col => mapComplexData(col))))
+
+    window.CsvGenerator.setHeaders(header);
+    window.CsvGenerator.setData(finalData);
+    window.CsvGenerator.download("players.csv");
+}
+
+function mapComplexData(column) { 
+    if(typeof column !== "object")
+        return column;
+
+    return column.map(x => `${x.name}=${x.value}`).join(' ')
+}
+
 $(document).ready(function () {
     $('#remove-player-btn').on('click', removePlayerFromTournament);
+    $('#player-as-boxes-btn').on('click', showPlayersAsBoxes);
+    $('#player-as-table-btn').on('click', showPlayersAsTable);
 });
 
 // Render the player list on page load

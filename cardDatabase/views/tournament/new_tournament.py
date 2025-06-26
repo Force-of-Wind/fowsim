@@ -1,7 +1,3 @@
-import json
-import re
-import datetime
-
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -9,7 +5,7 @@ from django.urls import reverse
 
 from cardDatabase.models.Tournament import TournamentLevel
 from cardDatabase.models.Banlist import Format
-from . import tournament_constants as TOURNAMENTCONS
+from cardDatabase.views.tournament import tournament_constants as TOURNAMENTCONS
 
 @login_required
 def get(request, error = False):

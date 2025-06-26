@@ -40,14 +40,18 @@ def post(request):
         deck_edit_deadline = start_date_time
         
 
-    if any_empty(title, meta_data, format_id, level_id, start_date_time, registration_deadline, deck_edit_deadline):
+    if any_empty(title, meta_data, level_id, start_date_time, registration_deadline, deck_edit_deadline):
         return HttpResponseRedirect(reverse('cardDatabase-new-tournament',  kwargs={'error': True}))
+    
+    format = None
+    if format_id:
+        format = Format.objects.get(pk=format_id)
 
     tournament = Tournament.objects.create(
         title=title,
         meta_data = meta_data,
         is_online = is_online,
-        format = Format.objects.get(pk=format_id),
+        format = format,
         level = TournamentLevel.objects.get(pk=level_id),
         start_datetime = start_date_time,
         registration_deadline = registration_deadline,

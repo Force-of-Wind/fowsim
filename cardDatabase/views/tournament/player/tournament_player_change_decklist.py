@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
+from django.views.decorators.http import require_POST
 from datetime import datetime
 
 from cardDatabase.models.Tournament import Tournament, TournamentPlayer
@@ -38,8 +39,9 @@ def get(request, tournament_id):
         "available_decks": available_decks
     })
 
+@require_POST
 def post(request, tournament_id):
-    if not request.method == "POST":  # TODO: use @require_POSTgi
+    if not request.method == "POST":
         raise Http404
     
     tournament = get_object_or_404(Tournament, pk=tournament_id)

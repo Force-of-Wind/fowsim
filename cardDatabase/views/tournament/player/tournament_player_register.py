@@ -10,7 +10,7 @@ from cardDatabase.models.DeckList import DeckList
 from fowsim import constants as CONS
 from cardDatabase.views.tournament import tournament_constants as TOURNAMENTCONS
 
-from ..utils.utilities import check_value_is_meta_data, map_meta_data
+from cardDatabase.views.tournament.utils.utilities import check_value_is_meta_data, map_meta_data
 
 import uuid
 

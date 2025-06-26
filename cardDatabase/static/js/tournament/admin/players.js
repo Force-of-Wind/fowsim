@@ -1,4 +1,6 @@
 let players = [];
+let showAsTable = false;
+let showAsBoxes = false;
 
 function getTournamentId() {
     return document.getElementById("tournamentId").value;
@@ -18,16 +20,45 @@ function fetchPlayersFromAPI() {
         },
         success: function (response) {
             players = response;
-            renderPlayers();
+            fetchPlayersHTMLFromAPI();
+            setupRulersForStats(players);
+            drawStatsForRulers();
         },
         error: function (error) {
-            alert('Error fetching players.');
+            alertify.error('Error fetching players!');
+            console.error(error);
+        }
+    });
+}
+
+function fetchPlayersHTMLFromAPI() {
+    let queryParam = '';
+    if(!showAsBoxes && showAsTable)
+        queryParam = '?asTable=true'
+    $.ajax({
+        url: `/api/tournament/${getTournamentId()}/render-players/${queryParam}`,
+        type: 'GET',
+        dataType: 'html',
+        headers: {
+            'X-CSRFToken': getCSRFToken(),
+        },
+        success: function (response) {
+            html = response;
+            renderPlayers(html);
+        },
+        error: function (error) {
+            alertify.error('Error fetching players!');
             console.error(error);
         }
     });
 }
 
 function savePlayersToAPI() {
+    if(players.length < 1){
+        alertify.error('No players to save!');
+        return;
+    }
+        
     $.ajax({
         url: `/api/tournament/${getTournamentId()}/players/update/`,
         type: 'POST',
@@ -37,115 +68,76 @@ function savePlayersToAPI() {
             'X-CSRFToken': getCSRFToken(),
         },
         success: function (response) {
-            alert('Players saved successfully!');
+            alertify.success(`Players saved successfully!`);
         },
         error: function (error) {
-            alert('Error saving players.');
+            alertify.error('Error saving players');
             console.error(error);
         }
     });
 }
 
-function renderPlayers() {
-    let html = "";
-
-    if (players.length < 1) {
-        html = `<h3 class="ml-3"><b>No players registered!</b></h3>`;
-        document.getElementById("savePlayersBtn").setAttribute('disabled', true);
-        return;
+function renderPlayers(html) {
+    if(showAsBoxes && !showAsTable){
+        if($('#playerList').hasClass('table-responsive')){
+            $('#playerList').removeClass('table-responsive');
+            $('#playerList').removeClass('row');
+        }
     }
-
-    players.forEach((player, index) => {
-        let baseUrl = $('#decklist_detail_url_base').val();
-        firstName = escapeHtml(player.userData.filter(e => e.name == 'firstname')[0].value);
-        lastName = escapeHtml(player.userData.filter(e => e.name == 'lastname')[0].value);
-
-        additionalInfoFields =  player.userData.filter(e => e.name != 'firstname' && e.name != 'lastname');
-
-        infoFieldsHtml = "";
-
-        additionalInfoFields.forEach(e => {
-            infoFieldsHtml += `<strong>${e.label}:</strong><span class="text-wrapper"> ${escapeHtml(e.value)}</span><br>`
-        });
-
-        shareLink = baseUrl.replace('0', player.decklistId).replace('changeMe', player.decklistShareCode);
-        const card = `
-            <div class="col-md-4 mb-3">
-                <div class="card ${player.dropped ? 'border-danger' : ''}">
-                    <div class="card-body">
-                        <h5 class="card-title">${firstName} ${lastName}</h5>
-                        <h6 class="card-subtitle text-muted">@${player.username}</h6>
-                        <input type="hidden" class="player-id" value="${player.id}">
-                        <p class="mt-2">
-                            <strong>Standing:</strong> 
-                            <input type="number" class="form-control form-control-sm d-inline w-25" 
-                                value="${player.standing}" ${window.can_write ? '' : 'disabled'} onchange="updateStanding(${index}, this.value)">
-                            <br>
-                            <strong>Status:</strong> 
-                            <select class="form-control form-control-sm d-inline w-50" ${window.can_write ? '' : 'disabled'}
-                                    onchange="updateStatus(${index}, this.value)">
-                                <option value="requested" ${player.status === 'requested' ? 'selected' : ''}>Requested</option>
-                                <option value="accepted"  ${player.status === 'accepted' ? 'selected' : ''}>Accepted</option>
-                                <option value="completed" ${player.status === 'completed' ? 'selected' : ''}>Completed</option>
-                            </select>
-                            <br>
-                            ${player.dropped ? '<span class="text-danger">Dropped Out</span>' : ''}
-                            <br>
-                            <strong>Notes:</strong>
-                            <textarea class="form-control form-control-sm" rows="3" ${window.can_write ? '' : 'disabled'} onchange="updateNotes(${index}, this.value)">${player.notes}</textarea>
-                        </p>
-                        <a href="#collapse-${player.id}" class="btn btn-outline-primary flex-center mt-1 mb-2" data-toggle="collapse" data-target="#collapse-${player.id}" aria-expanded="true" aria-controls="collapse-${player.id}">
-                                Details
-                            </a>
-                            <div id="accordion-${player.id}">
-                                <div id="collapse-${player.id}" class="collapse" data-parent="#accordion-${player.id}">
-                                    ${infoFieldsHtml}
-                                </div>
-                            </div>
-                        <a href="${shareLink}" class="btn btn-sm btn-info" target="_blank">View Decklist</a>
-                        ${player.dropped ?
-                            `<button class="btn btn-sm btn-primary ${window.can_write ? '' : 'disabled'} float-right" onclick="undropPlayer(${index})">
-                                Un-Drop Player
-                            </button>`:
-                            `<button class="btn btn-sm btn-danger ${window.can_write ? '' : 'disabled'} float-right" onclick="dropPlayer(${index})">
-                                Drop Player
-                            </button>`
-                        }
-                        
-                        ${window.can_delete ?
-                            `<br><button class="btn btn-sm btn-danger float-right mt-3" onclick="removePlayer(${index})" data-toggle="modal" data-target="#playerRemoveModal">
-                            Remove Player
-                        </button>` : ''}
-                    </div>
-                </div>
-            </div>
-        `;
-        html += card;
-    });
+    else if(!showAsBoxes && showAsTable){
+        if($('#playerList').hasClass('row')){
+            $('#playerList').removeClass('row');
+            $('#playerList').removeClass('table-responsive');
+        }
+    }
 
     $('#playerList').html(html);
 }
 
-function dropPlayer(index) {
-    players[index].dropped = true;
-    renderPlayers();
+function getPlayerById(id){
+    return players.filter(e => e.id == id)[0];
 }
 
-function undropPlayer(index) {
-    players[index].dropped = false;
-    renderPlayers();
+function dropPlayer(id) {
+    player = getPlayerById(id);
+    player.dropped = true;
+    changeDropStatus(player, true);
 }
 
-function escapeHtml(string) {
-  return $('<div>').text(string).html();
+function undropPlayer(id) {
+    player = getPlayerById(id);
+    player.dropped = false;
+    changeDropStatus(player, false);
 }
 
-function removePlayer(index) {
-    let player =  players[index];
-    firstName = player.userData.filter(e => e.name == 'firstname')[0].value;
-    lastName = player.userData.filter(e => e.name == 'lastname')[0].value;
+function changeDropStatus(player, dropStatus) { 
+    if(dropStatus){
+        if(!$(`#card-${player.id}`).hasClass('border-danger'))
+            $(`#card-${player.id}`).addClass('border-danger');
+
+        if(!$(`#drop-${player.id}`).hasClass('hidden'))
+            $(`#drop-${player.id}`).addClass('hidden');
+        
+        if($(`#undrop-${player.id}`).hasClass('hidden'))
+            $(`#undrop-${player.id}`).removeClass('hidden');
+        
+    }
+    else{
+        if($(`#card-${player.id}`).hasClass('border-danger'))
+            $(`#card-${player.id}`).removeClass('border-danger');
+
+        if(!$(`#undrop-${player.id}`).hasClass('hidden'))
+            $(`#undrop-${player.id}`).addClass('hidden');
+        
+        if($(`#drop-${player.id}`).hasClass('hidden'))
+            $(`#drop-${player.id}`).removeClass('hidden');
+    }
+}
+
+function removePlayer(id) {
+    let player =  getPlayerById(id);
     
-    let name = `${firstName} ${lastName} - ${player.username}`
+    let name = `${player.firstname} ${player.lastname} - ${player.username}`
     $('#remove-player-name').text(name);
     $('#remove-player-id').val(player.id);
 }
@@ -168,28 +160,140 @@ function removePlayerFromTournament() {
             fetchPlayersFromAPI();
         },
         error: function (error) {
-            alert('Error saving players.');
+            alertify.error('Error removing player!');
             console.error(error);
         }
     });
 }
 
-function updateStatus(index, newStatus) {
-    players[index].status = newStatus;
+function updateStatus(id, newStatus) {
+    player = getPlayerById(id);
+    player.status = newStatus;
 }
 
-function updateStanding(index, newStanding) {
-    players[index].standing = parseInt(newStanding) || 0;
+function updateStanding(id, newStanding) {
+    player = getPlayerById(id);
+    player.standing = parseInt(newStanding) || 0;
 }
 
-function updateNotes(index, newNotes) {
-    players[index].notes = newNotes;
+function updateNotes(id, newNotes) {
+    player = getPlayerById(id);
+    player.notes = newNotes;
 }
 
+function setupRulersForStats(players) 
+{ 
+    if(players.length < 1){
+        window.rulers = [];
+        return;
+    }
 
+    rulers = {}
+    allRulers = players.map(e => e.ruler);
+
+    for (const ruler of allRulers) {
+        rulers[ruler] = (rulers[ruler] || 0) + 1;
+    }
+
+    window.rulers = rulers;
+}
+
+function showPlayersAsBoxes(){
+    if(showAsBoxes && !showAsTable)
+        return;
+
+    showAsBoxes = true;
+    showAsTable = false;
+
+    updateButtonClass('#player-as-table-btn', '#player-as-boxes-btn');
+
+    fetchPlayersFromAPI();
+}
+
+function showPlayersAsTable(){
+    if(showAsTable && !showAsBoxes)
+        return;
+
+    showAsTable = true;
+    showAsBoxes = false;
+
+    updateButtonClass('#player-as-boxes-btn', '#player-as-table-btn');
+
+    fetchPlayersFromAPI();
+}
+
+function updateButtonClass(outlineBtn, normalBtn) { 
+    if($(outlineBtn).hasClass('btn-info')){
+        $(outlineBtn).removeClass('btn-info');
+        $(outlineBtn).addClass('btn-outline-info');
+    }
+
+    if($(normalBtn).hasClass('btn-outline-info')){
+        $(normalBtn).removeClass('btn-outline-info');
+        $(normalBtn).addClass('btn-info');
+    }
+}
+
+function exportPlayersToCSV(){
+    if(!players){
+        return;
+    }
+
+    let header = Object.keys(players[0]);
+
+    let data = players.map(e => Object.values(e));
+
+    let finalData = [];
+
+    let headerToRemove = [];
+
+    for (let i = 0; i < data.length; i++) {
+        row = data[i];
+        let rowData = [];
+        let extraFields = [];
+        for (let x = 0; x < row.length; x++) {
+            col = row[x];
+            if(typeof col !== "object"){
+                rowData.push(col);
+            }
+            else if(Object.values(col).length > 0){
+                if(!headerToRemove.includes(header.at(x)))
+                    headerToRemove.push(header.at(x));
+                let detailData = Object.values(col);
+                for (let z = 0; z < detailData.length; z++) {
+                    detailField = detailData[z];
+                    if(detailField?.name && detailField?.value){
+                        extraFields.push(detailField.value);
+                        if(!header.includes(detailField.name))
+                            header.push(detailField.name);
+                    }
+                }
+            }
+        }
+        rowData.push(...extraFields);
+        finalData.push(rowData);
+    }
+
+    console.log(headerToRemove);
+
+    header = header.filter(e => !headerToRemove.includes(e));
+
+    window.CsvGenerator.setHeaders(header);
+    window.CsvGenerator.setData(finalData);
+    window.CsvGenerator.download("players.csv");
+}
+
+function mapComplexData(column, header, data) { 
+    if(typeof column !== "object")
+        return column;
+
+    return column.map(x => `${x.name}=${x.value}`).join(' ')
+}
 
 $(document).ready(function () {
     $('#remove-player-btn').on('click', removePlayerFromTournament);
+    $('#player-as-boxes-btn').on('click', showPlayersAsBoxes);
+    $('#player-as-table-btn').on('click', showPlayersAsTable);
 });
 
 // Render the player list on page load

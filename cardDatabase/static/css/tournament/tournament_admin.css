@@ -26,3 +26,17 @@
 .canvas-wrapper{
     max-height: 90vh;
 }
+
+.hidden {
+    display:none;
+}
+
+.export-btn-group{
+    display: flex;
+    flex-direction: row;
+    gap:9px;
+}
+
+.border-danger td {
+  border: 2px solid #dc3545;
+}

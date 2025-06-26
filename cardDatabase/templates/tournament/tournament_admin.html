@@ -3,6 +3,7 @@
 
 {% block css %}
     {{ block.super }}
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="{% static 'css/tournament/tournament_admin.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -126,7 +127,13 @@
         </button>
     
         <button id="savePlayersBtn" class="btn btn-success mb-3" {% if not staffAccount.role.can_write %} disabled {% endif %} onclick="savePlayersToAPI()">Save Players</button>
-        <input id="decklist_detail_url_base" hidden value="{% url 'cardDatabase-view-decklist-share' decklist_id=0 share_parameter='changeMe' %}"/>
+        <button class="btn btn-info mb-3" onclick="exportPlayersToCSV()">
+            <i class="fa-solid fa-file-arrow-down"></i> Download Players CSV
+        </button>
+        <div class="player-view-button mt-3 mb-3">
+            <button id="player-as-boxes-btn" title="Show as boxes" class="btn btn-info"><i class="fa-solid fa-cubes"></i></button>
+            <button id="player-as-table-btn" title="Show as table" class="btn btn-outline-info"><i class="fa-solid fa-table-list"></i></button>
+        </div>
         <div class="row" id="playerList">
             
         </div>
@@ -158,24 +165,13 @@
     <div id='ruler-breakdown' {% if request.user_agent.is_mobile or request.user_agent.is_tablet %} style="position: relative; width:99vw" {% endif %}>
         <canvas id="ruler-breakdown-canvas" {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %} class="canvas-wrapper" {% endif %}></canvas>
     </div>
-    <button id="ruler-export-btn" data-toggle="modal" data-target="#rulerModal" class="d-none btn btn-primary mb-5">Export Breakdown</button>
-    <div class="modal fade" id="rulerModal" tabindex="-1" role="dialog" aria-labelledby="rulerModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="rulerModalLabel">Ruler Data</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <textarea id="ruler-breakdown-textarea" readonly class="form-control"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
+    <div class="export-btn-group mt-3">
+        <button id="ruler-export-btn" onclick="exportRulerBreakdown()" class="btn btn-primary mb-5" disabled>
+            <i class="fa-solid fa-file-arrow-down"></i> Export Breakdown
+        </button>
+        <button id="ruler-export-img-btn" onclick="exportRulerBreakdownAsImage()" class="btn btn-primary mb-5" disabled>
+            Export Breakdown as Image
+        </button>
     </div>
     <br>
     
@@ -246,6 +242,8 @@
 
 {% block js %}
     {{ block.super }}
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script>
         window.rulers = {% dict_to_json rulerExport %};
         window.can_write = {% if staffAccount.role.can_write %} true{% else %}false{% endif %};
@@ -256,9 +254,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
+    <script src="{% static 'js/tournament/admin/base.js' %}"></script>
+    <script src="{% static 'js/tournament/admin/stats.js' %}"></script>
     <script src="{% static 'js/tournament/admin/players.js' %}"></script>
     <script src="{% static 'js/tournament/admin/status.js' %}"></script>
-    <script src="{% static 'js/tournament/admin/stats.js' %}"></script>
     {% if staffAccount.role.can_delete %}
         <script src="{% static 'js/tournament/admin/staff.js' %}"></script>
     {% endif %}

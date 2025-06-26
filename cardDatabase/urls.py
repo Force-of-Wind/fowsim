@@ -71,6 +71,7 @@ urlpatterns = [
     path('tournament_remove_invalid/', tournament_remove_invalid.get, name='cardDatabase-tournament-remove-invalid'),
     path('tournament_delete/<int:tournament_id>/', delete_tournament.get, name='cardDatabase-delete-tournament'),
     path('api/tournament/<int:tournament_id>/players/', get_tournament_players.get, name='cardDatabase-get-tournament-players'),
+    path('api/tournament/<int:tournament_id>/render-players/', get_tournament_players.getHtml, name='cardDatabase-render-tournament-players'),
     path('tournament/<int:tournament_id>/delete/registration', delete_tournament_registration.get, name='cardDatabase-tournament-delete-registration'),
     path('tournament/<int:tournament_id>/deck/change', tournament_player_change_decklist.get, name='cardDatabase-tournament-change-decklist'),
     path('tournament/create/unauthorized', tournament_create_unauthorized.get, name='cardDatabase-tournament-create-unauthorized'),

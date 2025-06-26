@@ -10,8 +10,7 @@ def get(decklist):
     for deck_card in decklist.cards.all():
         other_faces = deck_card.card.other_sides
         other_face_list = []
-        if other_faces is not None:  # TODO: unneeded check
-            for face in other_faces:
+        for face in other_faces:
                 oracle_text = ""
                 delimiter = "\n"
                 for ability in face.abilities.order_by('position').all():
@@ -37,6 +36,7 @@ def get(decklist):
                     'oracleText': oracle_text
                 }
                 other_face_list.append(card)
+            
         oracle_text = ""
         delimiter = "\n"
         for ability in deck_card.card.abilities.order_by('position').all():

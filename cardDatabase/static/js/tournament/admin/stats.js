@@ -1,4 +1,6 @@
 let rulerBreakdownChart;
+let rulerHeader = ['quantity', 'ruler'];
+let rulerData = [];
 
 function getRandomHexColorForDarkLightMode() {
     // Hue: any (0-360)
@@ -48,6 +50,8 @@ function drawStatsForRulers() {
     
     $('#ruler-export-img-btn').prop('disabled', true);
     $('#ruler-export-btn').prop('disabled', true);
+
+    rulerData = [];
     
 
     if (!window.rulers || Object.keys(window.rulers).length < 1) {
@@ -141,7 +145,7 @@ function drawStatsForRulers() {
         return a[1] - b[1];
     });
 
-    sortedRulerBreakdown.forEach(e => textExport += `${e[1]};${e[0].replaceAll('\n', ' + ')};\n`);
+    sortedRulerBreakdown.forEach(e => rulerData.push([e[1], e[0].replaceAll('\n', ' + ')]));
 
     $('#ruler-breakdown-textarea').text(textExport);
 
@@ -186,4 +190,11 @@ function exportRulerBreakdownAsImage(){
     link.href = dataURL;
     link.download = "ruler-breakdown.png";
     link.click();
+}
+
+function exportRulerBreakdown() 
+{ 
+    window.CsvGenerator.setHeaders(rulerHeader);
+    window.CsvGenerator.setData(rulerData);
+    window.CsvGenerator.download("ruler-breakdown-export.csv");
 }

@@ -166,26 +166,12 @@
         <canvas id="ruler-breakdown-canvas" {% if not request.user_agent.is_mobile and not request.user_agent.is_tablet %} class="canvas-wrapper" {% endif %}></canvas>
     </div>
     <div class="export-btn-group mt-3">
-        <button id="ruler-export-btn" data-toggle="modal" data-target="#rulerModal" class="btn btn-primary mb-5" disabled>Export Breakdown</button>
-        <button id="ruler-export-img-btn" onclick="exportRulerBreakdownAsImage()" class="btn btn-primary mb-5" disabled>Export Breakdown as Image</button>
-    </div>
-    <div class="modal fade" id="rulerModal" tabindex="-1" role="dialog" aria-labelledby="rulerModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="rulerModalLabel">Ruler Data</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <textarea id="ruler-breakdown-textarea" readonly class="form-control"></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
+        <button id="ruler-export-btn" onclick="exportRulerBreakdown()" class="btn btn-primary mb-5" disabled>
+            <i class="fa-solid fa-file-arrow-down"></i> Export Breakdown
+        </button>
+        <button id="ruler-export-img-btn" onclick="exportRulerBreakdownAsImage()" class="btn btn-primary mb-5" disabled>
+            Export Breakdown as Image
+        </button>
     </div>
     <br>
     

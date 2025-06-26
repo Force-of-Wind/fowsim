@@ -245,14 +245,45 @@ function exportPlayersToCSV(){
 
     let finalData = [];
 
-    data.forEach(row => finalData.push(row.map(col => mapComplexData(col))))
+    let headerToRemove = [];
+
+    for (let i = 0; i < data.length; i++) {
+        row = data[i];
+        let rowData = [];
+        let extraFields = [];
+        for (let x = 0; x < row.length; x++) {
+            col = row[x];
+            if(typeof col !== "object"){
+                rowData.push(col);
+            }
+            else if(Object.values(col).length > 0){
+                if(!headerToRemove.includes(header.at(x)))
+                    headerToRemove.push(header.at(x));
+                let detailData = Object.values(col);
+                for (let z = 0; z < detailData.length; z++) {
+                    detailField = detailData[z];
+                    if(detailField?.name && detailField?.value){
+                        extraFields.push(detailField.value);
+                        if(!header.includes(detailField.name))
+                            header.push(detailField.name);
+                    }
+                }
+            }
+        }
+        rowData.push(...extraFields);
+        finalData.push(rowData);
+    }
+
+    console.log(headerToRemove);
+
+    header = header.filter(e => !headerToRemove.includes(e));
 
     window.CsvGenerator.setHeaders(header);
     window.CsvGenerator.setData(finalData);
     window.CsvGenerator.download("players.csv");
 }
 
-function mapComplexData(column) { 
+function mapComplexData(column, header, data) { 
     if(typeof column !== "object")
         return column;
 

@@ -14,10 +14,6 @@
             <input id="onlyMissingCards" type="checkbox" checked="checked" title="Only missing cards">
             <label for="onlyMissingCards">Only missing cards</label>
         </div>
-        
-    </div>
-    <div>
-        {{ added_ids }}
     </div>
     <form id="add_card" method="post" enctype="multipart/form-data">
         {% csrf_token %}

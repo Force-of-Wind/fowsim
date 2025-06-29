@@ -7,12 +7,17 @@
     <div class="import-wrapper">
         <h3>Upload Json</h3>
         <input id="upload" class="upload-json-input" type="file" accept=".json, .js, .txt" name="files" size=30>
-        <select id="importCardSelect" class="import-card-select hidden new-cards-only"></select>
+        <select id="importCardSelect" class="import-card-select hidden new-cards-only missing-cards-only"></select>
         <div>
             <input id="onlyNewCards" type="checkbox" checked="checked" title="Only new cards">
             <label for="onlyNewCards">Only new cards</label>
+            <input id="onlyMissingCards" type="checkbox" checked="checked" title="Only missing cards">
+            <label for="onlyMissingCards">Only missing cards</label>
         </div>
         
+    </div>
+    <div>
+        {{ added_ids }}
     </div>
     <form id="add_card" method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -29,4 +34,5 @@
 {% block js %}
     {{ block.super }}
     <script type="text/javascript" src="{% static 'js/add_card.js' %}"></script>
+    {{ added_ids|json_script:"added_ids"}}
 {% endblock %}

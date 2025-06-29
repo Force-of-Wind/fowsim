@@ -30,3 +30,7 @@ label {
 .new-cards-only .old-card {
     display:none;
 }
+
+.missing-cards-only .existing-card {
+    display:none;
+}

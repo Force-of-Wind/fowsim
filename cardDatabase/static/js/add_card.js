@@ -1,4 +1,5 @@
 let cards = [];
+let currentIds = [];
 
 function handleFileSelect(evt) {
     let fl_files = evt.target.files;
@@ -38,6 +39,7 @@ function collectCards(json) {
     cacheJson(json);
     cards = [];
     newCards = [];
+    missingCards = [];
     try{
         json.fow.clusters.forEach(cluster => {
             cluster.sets.forEach(set => {
@@ -45,6 +47,8 @@ function collectCards(json) {
                     cards[card.id] = card;
                     if (card.wind_new)
                         newCards[card.id] = card.id;
+                    if (currentIds.includes(card.id))
+                        missingCards[card.id] = card.id;
                 })
             });
         });
@@ -61,18 +65,21 @@ function collectCards(json) {
     }
         
 
-    buildSelect(Object.keys(cards), newCards);
+    buildSelect(Object.keys(cards), newCards, missingCards);
 }
 
-function buildSelect(cardIds, newCards){
+function buildSelect(cardIds, newCards, missingCards){
     $('#importCardSelect').empty();
     $('#importCardSelect').append(`<option selected disabled>---</option>`);
+    console.log(missingCards["MC09-002"]);
     
     let options = cardIds.forEach(cardId => {
         let clss = newCards[cardId] ? 'new-card' : 'old-card';
+        let clss2 = missingCards[cardId] ? 'existing-card' : 'missing-card';
+        console.log(clss2);
         let hideOldCards = $('#onlyNewCards').is(':checked');
             
-        $('#importCardSelect').append(`<option class="${clss}" value="${cardId}">${cardId}</option>`);
+        $('#importCardSelect').append(`<option class="${clss} ${clss2}" value="${cardId}">${cardId}</option>`);
     });
 
     $('#importCardSelect').off('change');
@@ -160,6 +167,17 @@ $( document ).ready(function() {
             $('#importCardSelect').addClass('all-cards');
         }
     });
+    $('#onlyMissingCards').change(function() {
+        if(this.checked) {
+            $('#importCardSelect').removeClass('all-loaded-cards');
+            $('#importCardSelect').addClass('missing-cards-only');
+        }
+        else {
+            $('#importCardSelect').removeClass('missing-cards-only');
+            $('#importCardSelect').addClass('all-loaded-cards');
+        }
+    });
+    currentIds = JSON.parse(document.getElementById('added_ids').textContent);
     let cachedJson = getCachedJson();
     if (cachedJson)
         collectCards(cachedJson);

@@ -1,28 +1,23 @@
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.dateparse import parse_datetime
 from django.views.decorators.http import require_POST
 
-from ....models.Tournament import Tournament, TournamentLevel, TournamentStaff
-from ....models.Banlist import Format
-from .. import tournament_constants as TOURNAMENTCONS
+from fowsim.decorators import tournament_admin
 
-from ..utils.utilities import check_value_is_meta_data, map_meta_data, any_empty
+from cardDatabase.models.Tournament import TournamentLevel
+from cardDatabase.models.Banlist import Format
+from cardDatabase.views.tournament import tournament_constants as TOURNAMENTCONS
+
+from cardDatabase.views.tournament.utils.utilities import check_value_is_meta_data, map_meta_data, any_empty
 
 @login_required
 @require_POST
+@tournament_admin
 def post(request, tournament_id):
-    tournament = get_object_or_404(Tournament, pk=tournament_id)
-    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    tournament = request.tournament
     
-    if staff_account is None or not staff_account.role.can_write:
-        return HttpResponse('Not authorized', 401)
-        
-    
-    if not request.method == "POST":
-        raise Http404
     data = dict(request.POST)
     meta_data = []
     for fieldName, _ in data.items():
@@ -48,12 +43,16 @@ def post(request, tournament_id):
         deck_edit_deadline = start_date_time
         
 
-    if any_empty(title, meta_data, format_id, level_id, start_date_time, registration_deadline, deck_edit_deadline):
+    if any_empty(title, meta_data, level_id, start_date_time, registration_deadline, deck_edit_deadline):
         return HttpResponseRedirect(reverse('cardDatabase-error-edit-tournament',  kwargs={'tournament_id': tournament_id}))
+    
+    format = None
+    if format_id:
+        format = Format.objects.get(pk=format_id)
 
     tournament.title=title
     tournament.is_online = is_online
-    tournament.format = Format.objects.get(pk=format_id)
+    tournament.format = format
     tournament.level = TournamentLevel.objects.get(pk=level_id)
     tournament.start_datetime = start_date_time
     tournament.registration_deadline = registration_deadline

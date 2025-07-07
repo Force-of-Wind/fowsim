@@ -1,33 +1,82 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
-from cardDatabase.models.Tournament import Tournament, TournamentStaff
-
+from fowsim.decorators import tournament_reader
 
 @login_required
+@tournament_reader
 def get(request, tournament_id):
-    tournament = get_object_or_404(Tournament, pk=tournament_id)
-
-    staff_account = TournamentStaff.objects.filter(tournament = tournament, profile = request.user.profile).first()
+    tournament = request.tournament
     
-    if staff_account is None or not staff_account.role.can_read:
-        return JsonResponse({'error': 'Not authorized'}, status=401)
-    
-    players = []
+    players = map_tournament_player(tournament.players.order_by('standing').all())
 
-    for player in tournament.players.order_by('standing').all():
+    return JsonResponse(players, safe=False)
+
+@login_required
+@tournament_reader
+def getHtml(request, tournament_id):
+    tournament = request.tournament
+    staff_account = request.staff_account
+    
+    players = map_tournament_player(tournament.players.order_by('standing').all())
+
+
+    asTable = request.GET.get('asTable', False)
+
+    if(asTable):
+        return render(request, 'tournament/admin/player_table_renderer.html', context={
+            'tournament': tournament,
+            'players':players,
+            'staff': staff_account.role
+        })
+
+    return render(request, 'tournament/admin/player_renderer.html', context={
+        'tournament': tournament,
+        'players':players,
+        'staff': staff_account.role
+    })
+
+def map_tournament_player(players):
+    mappedPlayers = []
+
+    for player in players:
+        first_name = ''
+        last_name = ''
+
+        additional_info_fields = []
+
+        for field in player.user_data:
+            if field['name'] == 'firstname':
+                first_name = field['value']
+            elif field['name'] == 'lastname':
+                last_name = field['value']
+            else:
+                additional_info_fields.append(field)
+
+        ruler_names = []
+        if not player.deck.get_deck_rulers:
+            continue
+        rulers = player.deck.get_deck_rulers.order_by('card__name')
+        for ruler in rulers:
+            ruler_names.append(ruler.card.name)
+        ruler_combo_name = ' + '.join(ruler_names)
+            
+
         playerObj = {
             "id": player.pk,
+            "firstname": first_name,
+            "lastname": last_name,
+            "additionalInfoFields": additional_info_fields,
             "dropped": player.dropped_out,
-            "userData": player.user_data,
             "notes": player.notes,
             "standing": player.standing,
             "status": player.registration_status,
             "username": player.profile.user.username,
             "decklistId": player.deck.pk,
             "decklistShareCode": player.deck.shareCode,
+            "ruler": ruler_combo_name
         }
-        players.append(playerObj)
-
-    return JsonResponse(players, safe=False)
+        mappedPlayers.append(playerObj)
+        
+    return mappedPlayers

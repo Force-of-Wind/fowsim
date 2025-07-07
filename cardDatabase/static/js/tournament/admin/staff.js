@@ -43,6 +43,7 @@ function searchForStaff(e) {
             'X-CSRFToken': getCSRFToken(),
         },
         success: function (response) {
+            alertify.success('Added Staff');
             window.location.reload();
         },
         error: function (error) {
@@ -61,6 +62,7 @@ function removeStaff(e) {
             'X-CSRFToken': getCSRFToken(),
         },
         success: function (response) {
+            alertify.success('Removed Staff');
             window.location.reload();
         },
         error: function (error) {

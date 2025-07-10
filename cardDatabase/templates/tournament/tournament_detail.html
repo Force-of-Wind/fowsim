@@ -3,7 +3,8 @@
 
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'css/tournament/tournament_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tournament/tournament_detail.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block js %}
@@ -15,6 +16,7 @@
 {% block body %}
 <div class="container mt-5">
     <div class="mb-4">
+        <a class="btn btn-outline-primary" href="{% url 'cardDatabase-tournament-list' %}"><i class="fa-solid fa-chevron-left"></i> Back to Overview</a>
         <h1 class="mb-3">{{ tournament.title }}</h1>
         <p>
             <strong>Tournament style:</strong> {% if tournament.is_online %}Online{% else %}In Person{% endif %}<br>

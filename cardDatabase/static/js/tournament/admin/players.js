@@ -81,13 +81,13 @@ function renderPlayers(html) {
     if(showAsBoxes && !showAsTable){
         if($('#playerList').hasClass('table-responsive')){
             $('#playerList').removeClass('table-responsive');
-            $('#playerList').removeClass('row');
+            $('#playerList').addClass('row');
         }
     }
     else if(!showAsBoxes && showAsTable){
         if($('#playerList').hasClass('row')){
             $('#playerList').removeClass('row');
-            $('#playerList').removeClass('table-responsive');
+            $('#playerList').addClass('table-responsive');
         }
     }
 
@@ -273,8 +273,6 @@ function exportPlayersToCSV(){
         rowData.push(...extraFields);
         finalData.push(rowData);
     }
-
-    console.log(headerToRemove);
 
     header = header.filter(e => !headerToRemove.includes(e));
 

@@ -67,8 +67,19 @@ function initExporter() {
 	window.CsvGenerator = CsvGenerator;
 }
 
+function initCopy(){
+	$('#copy-detail').click(function(e){
+		var copyText = document.getElementById("detail-link");
+		copyText.select();
+		copyText.setSelectionRange(0, 99999);
+		navigator.clipboard.writeText(copyText.value);
+		alertify.success(`Copied link to clipboard!`);
+	});
+}
+
 
 $(document).ready(function () {
 	setupAlertify();
 	initExporter();
+	initCopy();
 });

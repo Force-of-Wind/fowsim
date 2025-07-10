@@ -11,7 +11,7 @@ from .views.admin import add_card, test_error
 from .views.bot import reddit_bot
 from .views.post import save_decklist, create_share_code, delete_share_code, create_deck_lock, delete_deck_lock
 
-from .views.tournament import delete_tournament, show_tournaments, new_tournament, edit_tournament, \
+from .views.tournament import delete_tournament, show_tournaments, new_tournament, copy_tournament, edit_tournament, \
     tournament_detail, tournament_decklist, delete_tournament_registration, tournament_remove_invalid, \
     tournament_create_unauthorized
 from .views.tournament.post import create_tournament, update_tournament
@@ -62,6 +62,7 @@ urlpatterns = [
     # TOURNAMENT
     path('tournaments/', show_tournaments.get, name='cardDatabase-tournament-list'),
     path('tournament/new/', new_tournament.get, name='cardDatabase-new-tournament'),
+    path('tournament/<int:tournament_id>/copy/', copy_tournament.get, name='cardDatabase-copy-tournament'),
     path('tournament/<int:tournament_id>/edit/', edit_tournament.get, name='cardDatabase-edit-tournament'),
     path('tournament/<int:tournament_id>/edit/error/', edit_tournament.error, name='cardDatabase-error-edit-tournament'),
     path('tournament/<int:tournament_id>/detail/', tournament_detail.get, name='cardDatabase-detail-tournament'),

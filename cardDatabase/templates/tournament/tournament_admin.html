@@ -11,6 +11,7 @@
 
 {% block body %}
     <div class="container mt-5">
+        <a class="btn btn-outline-primary" href="{% url 'cardDatabase-detail-tournament' tournament_id=tournament.pk%}"><i class="fa-solid fa-chevron-left"></i> Back to Detail</a>
         <h1>Tournament Management</h1>
 
         <input type="hidden" id="status" value="{{ tournament.phase }}">
@@ -116,6 +117,12 @@
                 </div>
             {% endif %}
         </div>
+        <div class="mt-5">
+            <input class="form-control col-lg-5" readonly id="detail-link" value="{{ absoluteDetailLink }}">
+        </div>
+        <div class="mt-2">
+            <button class="btn btn-primary" type="button" id="copy-detail">Copy detail link</button>
+        </div>
     </div>
     
     <div class="container mt-5">
@@ -174,9 +181,11 @@
         </button>
     </div>
     <br>
-    
 
     {% if staffAccount.role.can_delete %}
+        <hr>
+            <h2>Copy Tournament</h2>
+            <a class="btn btn-outline-primary mt-2" href="{% url 'cardDatabase-copy-tournament' tournament_id=tournament.pk%}"><i class="fa-solid fa-plus"></i> Create new tournament with template</a>
         <hr>
         <div class="container">
             <h2>Staff Control</h2>

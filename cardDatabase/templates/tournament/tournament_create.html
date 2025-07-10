@@ -23,12 +23,12 @@
                 <div class="row">
                     <div class="form-group">
                         <label for="title">Title*</label>
-                        <input id="title" required maxlength="200" type="text" name="title" class="form-control"/>
+                        <input id="title" required maxlength="200" type="text" name="title" class="form-control" {% if tournament and tournament.title %} value="{{tournament.title}}" {% endif %} />
                     </div>                    
                 </div>
                 <div class="row">
                     <div>
-                        <input type="checkbox" id="is_online" name="is_online"/>
+                        <input type="checkbox" id="is_online" name="is_online" {% if tournament and tournament.is_online %} checked {% endif %}/>
                         <label for="is_online">Is Online Tournament</label>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                         <select id="format" name="format" class="form-control">
                             <option value="">No Format restriction</option>
                             {% for format in formats %}
-                                <option value="{{format.pk}}">{{format.name}}</option>
+                                <option value="{{format.pk}}" {% if tournament and tournament.format.pk == format.pk %} selected {% endif %} >{{format.name}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -58,7 +58,7 @@
                         <label for="level">Tournament Level</label>
                         <select id="level" name="level" class="form-control" required>
                             {% for level in levels %}
-                                <option value="{{level.pk}}" data-hint="{{level.hint}}">{{level.title}}</option>
+                                <option value="{{level.pk}}" data-hint="{{level.hint}}" {% if tournament and tournament.level.pk == level.pk %} selected {% endif %}>{{level.title}}</option>
                             {% endfor %}
                         </select>
                     </div>

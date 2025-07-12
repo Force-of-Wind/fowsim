@@ -78,12 +78,10 @@ function collectCards(json) {
 function buildSelect(cardIds, newCards, missingCards){
     $('#importCardSelect').empty();
     $('#importCardSelect').append(`<option selected disabled>---</option>`);
-    console.log(missingCards["MC09-002"]);
     
     let options = cardIds.forEach(cardId => {
         let clss = newCards[cardId] ? 'new-card' : 'old-card';
         let clss2 = missingCards[cardId] ? 'existing-card' : 'missing-card';
-        console.log(clss2);
         let hideOldCards = $('#onlyNewCards').is(':checked');
             
         $('#importCardSelect').append(`<option class="${clss} ${clss2}" value="${cardId}">${cardId}</option>`);

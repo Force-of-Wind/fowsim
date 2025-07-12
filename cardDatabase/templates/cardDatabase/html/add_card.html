@@ -1,25 +1,151 @@
 {% extends 'cardDatabase/html/base.html' %}
-
+{% load static card_database_tags %}
 {% load static %}
 
 <html lang="en">
 {% block body %}
-    <div class="import-wrapper">
-        <h3>Upload Json</h3>
-        <input id="upload" class="upload-json-input" type="file" accept=".json, .js, .txt" name="files" size=30>
-        <select id="importCardSelect" class="import-card-select hidden new-cards-only missing-cards-only"></select>
-        <div>
-            <input id="onlyNewCards" type="checkbox" checked="checked" title="Only new cards">
-            <label for="onlyNewCards">Only new cards</label>
-            <input id="onlyMissingCards" type="checkbox" checked="checked" title="Only missing cards">
-            <label for="onlyMissingCards">Only missing cards</label>
+    <div class="container-fluid">
+        <div class="import-wrapper pb-2">
+           <div class="card text-center">
+                <div class="card-header bg-secondary text-white">
+                    Upload JSON
+                </div>
+                <div class="card-body">
+                    <input id="upload" class="upload-json-input" type="file" accept=".json, .js, .txt" name="files" size=30>
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="card-header">
+                    Cards
+                </div>
+                <div class="card-body">
+                    <select id="importCardSelect" class="import-card-select hidden new-cards-only missing-cards-only"></select>
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="card-header">
+                    Options
+                </div>
+                <div class="card-body">
+                    <div class="form-check">
+                        <input class="form-check-input" id="onlyNewCards" type="checkbox" checked="checked" title="Only new cards">
+                        <label class="form-check-label" for="onlyNewCards">Only new cards</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" id="onlyMissingCards" type="checkbox" checked="checked" title="Only missing cards">
+                        <label class="form-check-label" for="onlyMissingCards" title="The set(s) must be defined as a Spoiler set for this to work!" style="text-decoration: dotted underline;text-underline-offset: 2px;">Only missing cards</label>
+                    </div>
+                </div>
+            </div>
         </div>
+        <form id="add_card" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-4 col-lg-3">
+                    <div class="form-group">
+                        <label for="id__card_image">Image:</label>
+                        {{ add_card_form|field_:'_card_image' }}
+                    </div>
+                    <div class="card-container">
+                        <div class="card-left-half">
+                            <img class="card-img" id="importCardPreview">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-lg-9">
+                    <div class="form-group">
+                        {{ add_card_form.name.errors }}
+                        <label for="{{ add_card_form.name.id_for_label }}">Name:</label>
+                        {{ add_card_form.name }}
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            {{ add_card_form.card_id.errors }}
+                            <label for="{{ add_card_form.card_id.id_for_label }}">Card ID:</label>
+                            {{ add_card_form.card_id }}
+                        </div>
+                        <div class="form-group col">
+                            {{ add_card_form.cost.errors }}
+                            <label for="{{ add_card_form.cost.id_for_label }}">Cost:</label>
+                            {{ add_card_form.cost }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            {{ add_card_form.rarity.errors }}
+                            <label for="{{ add_card_form.rarity.id_for_label }}">Rarity:</label>
+                            {{ add_card_form.rarity }}
+                        </div>
+                        <div class="form-group col">
+                            {{ add_card_form.divinity.errors }}
+                            <label for="{{ add_card_form.divinity.id_for_label }}">Divinity:</label>
+                            {{ add_card_form.divinity }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            {{ add_card_form.ATK.errors }}
+                            <label for="{{ add_card_form.ATK.id_for_label }}">ATK:</label>
+                            {{ add_card_form.ATK }}
+                        </div>
+                        <div class="form-group col">
+                            {{ add_card_form.DEF.errors }}
+                            <label for="{{ add_card_form.DEF.id_for_label }}">DEF:</label>
+                            {{ add_card_form.DEF }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            {{ add_card_form.types.errors }}
+                            <label for="{{ add_card_form.types.id_for_label }}">Type:</label>
+                            {% comment %}
+                                {% for ty in add_card_form.types %}
+                                    <div class="form-check">
+                                        {{ ty }}
+                                    </div>
+                                {% endfor %}
+                            {% endcomment %}
+                            {{ add_card_form.types }}
+                        </div>
+                        <div class="form-group col">
+                            {{ add_card_form.colours.errors }}
+                            <label for="{{ add_card_form.colours.id_for_label }}">Colours:</label>
+                            {% comment %}
+                                {% for cl in add_card_form.colours %}
+                                    <div class="form-check">
+                                        {{ cl }}
+                                    </div>
+                                {% endfor %}
+                            {% endcomment %}
+                            {{ add_card_form.colours }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ add_card_form.races.errors }}
+                        <label for="{{ add_card_form.races.id_for_label }}">Races:</label>
+                        {{ add_card_form.races }}
+                    </div>
+                    <div class="form-group">
+                        {{ add_card_form.ability_texts.errors }}
+                        <label for="{{ add_card_form.ability_texts.id_for_label }}">Ability Texts:</label>
+                        {{ add_card_form.ability_texts }}
+                    </div>
+                    <div class="form-group">
+                        {{ add_card_form.flavour.errors }}
+                        <label for="{{ add_card_form.flavour.id_for_label }}">Flavour Text:</label>
+                        {{ add_card_form.flavour }}
+                    </div>
+                    {% comment %}
+                        <!-- This is kept here just in case we need it again later -->
+                        {{ add_card_form.as_p }}
+                    {% endcomment %}
+                </div>
+            </div>
+            <div class="form-row">
+                <input type="submit" value="Add card" class="btn btn-primary btn-lg btn-block">
+            </div>
+        </form>
     </div>
-    <form id="add_card" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ add_card_form.as_p }}
-        <input type="submit" value="Add card">
-    </form>
 {% endblock %}
 
 {% block css %}

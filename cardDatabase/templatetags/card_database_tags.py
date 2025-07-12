@@ -9,6 +9,7 @@ from django.utils.html import escape
 from django.templatetags.static import static
 from django.urls import reverse
 from django.db.models import Sum, Q
+from django.forms import BoundField
 
 from cardDatabase.management.commands.importjson import remove_punctuation
 from cardDatabase.views.utils.search_context import searchable_set_and_name
@@ -80,6 +81,20 @@ def attribute_to_img_src(attr):
 @register.simple_tag
 def datetime_to_timestamp(datetime):
     return datetime.timestamp()
+
+@register.filter(name="field_")
+def field_(self, name):
+    """
+    Get a form field starting with _.
+    Taken near directly from Djano > forms.
+    Returns a BoundField with the given name.
+    """
+    try:
+        field = self.fields[name]
+    except KeyError:
+        raise KeyError(
+            "Key %r not found in '%s'" % (name, self.__class__.__name__))
+    return BoundField(self, field, name)
 
 
 def make_bubble_html(text):

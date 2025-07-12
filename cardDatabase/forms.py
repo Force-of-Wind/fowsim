@@ -89,6 +89,8 @@ class DecklistSearchForm(forms.Form):
 
 
 class AddCardForm(forms.ModelForm):
+    # If a field is added/removed, add_card.html must be updated accordingly
+
     races = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Each race must be separated by a single newline'}))
     ability_texts = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Each ability must be separated by TWO newlines at the end. Single newlines will be counted as part of 1 ability.'}))
 
@@ -103,6 +105,12 @@ class AddCardForm(forms.ModelForm):
             'card_image': forms.ClearableFileInput(attrs={'required': True}),
             'colours': forms.CheckboxSelectMultiple()
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            if not isinstance(visible.field.widget, forms.widgets.CheckboxSelectMultiple) and not isinstance(visible.field.widget, forms.widgets.ClearableFileInput):
+                visible.field.widget.attrs['class'] = 'form-control'
 
     @classmethod
     def split_abilities(cls, ability_text):

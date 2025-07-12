@@ -25,6 +25,13 @@ function handleFileSelect(evt) {
     }
 }
 
+function handleImagePreview(evt) {
+    let fl_files = evt.target.files;
+    let fl_file = fl_files[0];
+
+    $('#importCardPreview').prop('src', URL.createObjectURL(fl_file));
+}
+
 function cacheJson(json) {
     localStorage.setItem("cardsJson", JSON.stringify(json));
 }
@@ -157,6 +164,7 @@ function autofillFields(cardId){
 
 $( document ).ready(function() {
     $('#upload').on('change', handleFileSelect);
+    $('#id__card_image').on('change', handleImagePreview);
     $('#onlyNewCards').change(function() {
         if(this.checked) {
             $('#importCardSelect').removeClass('all-cards');

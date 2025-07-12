@@ -47,3 +47,11 @@ label {
 .card .card-header {
     font-weight:bold;
 }
+
+#add_card li {
+    list-style: none;
+}
+
+#id_types {
+    column-count: 2;
+}

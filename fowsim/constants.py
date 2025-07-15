@@ -1091,7 +1091,7 @@ SEARCH_SETS_INCLUDE = {
     ],
     'DRC': [
         'E1 Buy a Box',
-        'MC08',
+        'MC09',
         'E1 Prerelease Party'
     ]
 }

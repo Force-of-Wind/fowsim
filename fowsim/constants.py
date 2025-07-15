@@ -390,6 +390,14 @@ SET_DATA = {
                 {'code': 'MP02', 'name': 'Masterpiece Collection 02 "Fates Reunited!"'}
             ]
         },
+        {
+            'name': 'Evil',
+            'sets': [
+                {'code': 'ESD1', 'name': 'Valgott Deck'},
+                {'code': 'ESD2', 'name': 'Metelda Deck'},
+                {'code': 'DRC', 'name': 'Descent into the Raven\'s Catacombs'},
+            ]
+        },
     ]
 }
 
@@ -771,6 +779,10 @@ SETS_IN_ORDER = [
     'T4 Buy a Box',
     'T4 Prerelease Party',
     'MC08',
+    'ESD1',
+    'ESD2',
+    'DRC',
+    'MC09',
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -1076,6 +1088,11 @@ SEARCH_SETS_INCLUDE = {
         'MC08',
         'T4 Prerelease Party'
     ],
+    'DRC': [
+        'E1 Buy a Box',
+        'MC08',
+        'E1 Prerelease Party'
+    ]
 }
 
 KEYWORDS_CHOICES = [

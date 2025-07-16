@@ -452,7 +452,7 @@ DATABASE_CARD_TYPE_GROUPS = [
             'Ruler',
             'J-Ruler',
             'Order',
-            'Sub-ruler',
+            'Sub-Ruler',
             'Basic Ruler',
             'Basic J-Ruler',
         ]

@@ -39,7 +39,7 @@ class Set(models.Model):
 
     name = models.CharField(max_length=200, null=False, blank=False)
     code = models.CharField(max_length=200, null=False, blank=False)
-    parent_code = models.CharField(max_length=200, null=True)
+    parent_code = models.CharField(max_length=200, null=True, blank=True)
     cluster = models.ForeignKey('Cluster', on_delete=models.CASCADE)
 
 
@@ -108,6 +108,7 @@ class Card(AbstractModel):
     _card_image = models.ImageField(default=None, blank=True, null=True, upload_to='cards')
     cost = models.CharField(max_length=200, null=True, blank=True)
     divinity = models.CharField(max_length=200, null=True, blank=True)
+    will_power = models.CharField(max_length=200, null=True, blank=True)
     flavour = models.TextField(null=True, blank=True)
     races = models.ManyToManyField('Race', related_name='races', blank=True)
     rarity = models.CharField(max_length=200, null=False, blank=True, choices=CONS.RARITY_CHOICE_VALUES)

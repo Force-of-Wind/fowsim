@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.urls import reverse
 
 from fowsim.decorators import tournament_reader
 
@@ -41,6 +42,10 @@ def get(request, tournament_id):
         tournament_staff = TournamentStaff.objects.filter(tournament = tournament)
         staff_roles = StaffRole.objects.filter(can_delete=False)
 
+    relative_detail_link = reverse('cardDatabase-detail-tournament', kwargs={'tournament_id': tournament.pk})
+    absolute_detail_link = request.build_absolute_uri(relative_detail_link)
+        
+
     return render(request, 'tournament/tournament_admin.html', context={
         'tournament': tournament,
         'staffAccount' : staff_account,
@@ -48,5 +53,6 @@ def get(request, tournament_id):
         'staffRoles': staff_roles,
         'deckEditLocked': deck_edit_locked,
         'overEditDeadline': over_edit_deadline,
-        'rulerExport': ruler_export
+        'rulerExport': ruler_export,
+        'absoluteDetailLink': absolute_detail_link
     })

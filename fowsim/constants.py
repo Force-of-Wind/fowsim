@@ -444,6 +444,7 @@ DATABASE_CARD_TYPE_GROUPS = [
             'Spell:Chant',
             'Spell:Chant-Instant',
             'Spell:Chant-Standby',
+            'Warden',
         ]
     },
     {

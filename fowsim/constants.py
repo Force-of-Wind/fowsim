@@ -95,7 +95,7 @@ CARD_TYPE_VALUES = [
     'Resonator',
     'Sub-ruler',
     'Extension Rule',
-    'Warden'
+    'Warden',
     'Darkness Magic Stone',
     'Fire Magic Stone',
     'Light Magic Stone',

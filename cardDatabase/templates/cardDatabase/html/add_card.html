@@ -71,15 +71,20 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col">
+                        <div class="form-group col-6">
                             {{ add_card_form.rarity.errors }}
                             <label for="{{ add_card_form.rarity.id_for_label }}">Rarity:</label>
                             {{ add_card_form.rarity }}
                         </div>
-                        <div class="form-group col">
+                        <div class="form-group col-3">
                             {{ add_card_form.divinity.errors }}
                             <label for="{{ add_card_form.divinity.id_for_label }}">Divinity:</label>
                             {{ add_card_form.divinity }}
+                        </div>
+                        <div class="form-group col-3">
+                            {{ add_card_form.will_power.errors }}
+                            <label for="{{ add_card_form.will_power.id_for_label }}">Willpower:</label>
+                            {{ add_card_form.will_power }}
                         </div>
                     </div>
                     <div class="form-row">

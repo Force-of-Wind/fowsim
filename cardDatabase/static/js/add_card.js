@@ -135,6 +135,7 @@ function autofillFields(cardId){
     changeValueOfInput('#add_card input[name="card_id"]', card.id);
     changeValueOfInput('#add_card input[name="cost"]', card.cost);
     changeValueOfInput('#add_card input[name="divinity"]', card.divinity);
+    changeValueOfInput('#add_card input[name="will_power"]', card.willpower);
     changeValueOfInput('#add_card textarea[name="flavour"]', card.flavour);
     changeValueOfInput('#add_card select[name="rarity"]', card.rarity);
     changeValueOfInput('#add_card input[name="ATK"]', card.ATK ?? "");

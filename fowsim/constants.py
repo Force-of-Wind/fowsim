@@ -90,7 +90,7 @@ CARD_TYPE_VALUES = [
     'True Magic Stone',
     'Ruler',
     'Basic J-Ruler',
-    'J-Ruler'
+    'J-Ruler',
     'Spell:Chant-Standby',
     'Resonator',
     'Sub-ruler',
@@ -436,6 +436,8 @@ DATABASE_CARD_TYPE_GROUPS = [
             'Addition:J/Resonator',
             'Addition:Ruler/J-Ruler',
             'Chant',
+            'Chant/Rune',
+            'Chant/Master Rune',
             'Regalia',
             'Regalia (Shift)',
             'Resonator',

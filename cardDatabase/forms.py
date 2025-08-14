@@ -112,8 +112,8 @@ class AddCardForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for visible in self.visible_fields():
             if isinstance(visible.field.widget, forms.widgets.CheckboxSelectMultiple) and visible.field.label == 'Types':
-                ttt = list(chain(*[t["types"] for t in CONS.DATABASE_CARD_TYPE_GROUPS]))
-                visible.field.widget.choices = sorted(chain(visible.field.widget.choices), key=lambda ty: ttt.index(self.clean_typename(ty[1])))
+                types_list = list(chain(*[t["types"] for t in CONS.DATABASE_CARD_TYPE_GROUPS]))
+                visible.field.widget.choices = sorted(chain(visible.field.widget.choices), key=lambda _type: types_list.index(self.clean_typename(_type[1])))
             if not isinstance(visible.field.widget, forms.widgets.CheckboxSelectMultiple) and not isinstance(visible.field.widget, forms.widgets.ClearableFileInput):
                 visible.field.widget.attrs['class'] = 'form-control'
 

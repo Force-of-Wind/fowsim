@@ -189,3 +189,14 @@ $( document ).ready(function() {
     if (cachedJson)
         collectCards(cachedJson);
 });
+
+onpageshow = (event) => {
+    if ($('#onlyNewCards').is(':checked') == false) {
+        $('#importCardSelect').removeClass('new-cards-only');
+        $('#importCardSelect').addClass('all-cards');
+    }
+    if ($('#onlyMissingCards').is(':checked') == false) {
+        $('#importCardSelect').removeClass('missing-cards-only');
+        $('#importCardSelect').addClass('all-loaded-cards');
+    }
+};

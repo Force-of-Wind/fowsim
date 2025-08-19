@@ -95,6 +95,14 @@ class CustomUserAdmin(UserAdmin):
         )
         return format_html(f'<a href="{profile_url}">Profile</a>')
 
+class TournamentPlayerAdmin(admin.ModelAdmin):
+    def get_readonly_fields(self, request, obj=None):
+        #  Make all fields read only to stop timeouts
+        if obj:
+            return [f.name for f in self.model._meta.fields]
+        return self.readonly_fields
+
+admin.site.register(TournamentPlayer, TournamentPlayerAdmin)
 #  Replace django UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
@@ -131,7 +139,6 @@ admin.site.register(PickPeriod)
 admin.site.register(Type)
 admin.site.register(CardArtist, ArtistAdmin)
 admin.site.register(Tournament)
-admin.site.register(TournamentPlayer)
 admin.site.register(TournamentStaff)
 admin.site.register(StaffRole)
 admin.site.register(TournamentLevel)

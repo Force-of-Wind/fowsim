@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_user_agents',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -91,6 +92,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'fowsim.urls'
@@ -248,3 +250,7 @@ else:
 
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": "cardDatabase.middleware.show_debug_toolbar",
+}

@@ -9,6 +9,7 @@ class Profile(models.Model):
     site_admin = models.BooleanField(null=False, blank=False, default=False)
     is_judge = models.BooleanField(null=False, blank=False, default=False)
     can_create_tournament = models.BooleanField(null=False, blank=False, default=True)
+    see_debug_toolbar = models.BooleanField(null=False, blank=False, default=False)
 
     def __str__(self):
         return self.user.username

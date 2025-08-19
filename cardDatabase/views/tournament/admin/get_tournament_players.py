@@ -55,12 +55,13 @@ def map_tournament_player(players):
                 additional_info_fields.append(field)
 
         ruler_names = []
-        if not player.deck.get_deck_rulers:
-            continue
-        rulers = player.deck.get_deck_rulers.order_by('card__name')
-        for ruler in rulers:
-            ruler_names.append(ruler.card.name)
-        ruler_combo_name = ' + '.join(ruler_names)
+        ruler_combo_name = 'Unknown'
+        if player.deck.get_deck_rulers:
+            rulers = player.deck.get_deck_rulers.order_by('card__name')
+            for ruler in rulers:
+                ruler_names.append(ruler.card.name)
+            ruler_combo_name = ' + '.join(ruler_names)
+        
             
 
         playerObj = {

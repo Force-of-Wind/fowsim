@@ -784,7 +784,9 @@ SETS_IN_ORDER = [
     'ESD1',
     'ESD2',
     'DRC',
-    'MC09',
+    'DRC Pre-release Party',
+    'DRC Buy a Box',
+    'MC09'
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -859,18 +861,19 @@ SEARCH_SETS_INCLUDE = {
         'D1 Buy a Box',
         'D2 Buy a Box',
         'D3 Buy a Box',
-	'H1 Buy a Box',
+    	'H1 Buy a Box',
         'H2 Buy a Box',
         'H3 Buy a Box',
         'H4 Buy a Box',
         'H5 Buy a Box',
-	'H6 Buy a Box',
+	    'H6 Buy a Box',
         'MP01-ACV',
         'T1 Buy a Box',
         'T2 Buy a Box',
         'T3 Buy a Box',
         'MP02-BAB',
-        'T4 Buy a Box'
+        'T4 Buy a Box',
+        'DRC Buy a Box'
     ],
     'Pre':[
         'L1 Prerelease Party',
@@ -896,7 +899,7 @@ SEARCH_SETS_INCLUDE = {
         'D1 Prerelease Party',
         'D2 Prerelease Party',
         'D3 Prerelease Party',
-	'H1 Prerelease Party',
+	    'H1 Prerelease Party',
         'H2 Prerelease Party',
         'H3 Prerelease Party',
         'H4 Prerelease Party',
@@ -906,7 +909,8 @@ SEARCH_SETS_INCLUDE = {
         'T1 Prerelease Party',
         'T2 Prerelease Party',
         'T3 Prerelease Party',
-        'T4 Prerelease Party'
+        'T4 Prerelease Party',
+        'DRC Pre-release Party'
     ],
     'World': [
         'World2015',
@@ -1091,9 +1095,9 @@ SEARCH_SETS_INCLUDE = {
         'T4 Prerelease Party'
     ],
     'DRC': [
-        'E1 Buy a Box',
-        'MC09',
-        'E1 Prerelease Party'
+        'DRC Buy a Box',
+        'DRC Pre-release Party'
+        'MC09'
     ]
 }
 

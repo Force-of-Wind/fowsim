@@ -784,7 +784,7 @@ SETS_IN_ORDER = [
     'ESD1',
     'ESD2',
     'DRC',
-    'DRC Pre-release Party',
+    'DRC Prerelease Party',
     'DRC Buy a Box',
     'MC09'
 ]
@@ -910,7 +910,7 @@ SEARCH_SETS_INCLUDE = {
         'T2 Prerelease Party',
         'T3 Prerelease Party',
         'T4 Prerelease Party',
-        'DRC Pre-release Party'
+        'DRC Prerelease Party'
     ],
     'World': [
         'World2015',
@@ -1096,7 +1096,7 @@ SEARCH_SETS_INCLUDE = {
     ],
     'DRC': [
         'DRC Buy a Box',
-        'DRC Pre-release Party'
+        'DRC Prerelease Party'
         'MC09'
     ]
 }

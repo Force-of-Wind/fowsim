@@ -397,6 +397,7 @@ SET_DATA = {
                 {'code': 'ESD1', 'name': 'Valgott Deck'},
                 {'code': 'ESD2', 'name': 'Metelda Deck'},
                 {'code': 'DRC', 'name': 'Descent into the Raven\'s Catacombs'},
+                {'code': 'ATD', 'name': 'Antechamber of the Ten Dimensions'},
             ]
         },
     ]
@@ -786,7 +787,9 @@ SETS_IN_ORDER = [
     'DRC',
     'DRC Prerelease Party',
     'DRC Buy a Box',
-    'MC09'
+    'DRC Video',
+    'MC09',
+    'ATD'
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -1096,7 +1099,8 @@ SEARCH_SETS_INCLUDE = {
     ],
     'DRC': [
         'DRC Buy a Box',
-        'DRC Prerelease Party'
+        'DRC Prerelease Party',
+        'DRC Video',
         'MC09'
     ]
 }

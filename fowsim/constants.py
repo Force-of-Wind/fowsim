@@ -397,7 +397,7 @@ SET_DATA = {
                 {'code': 'ESD1', 'name': 'Valgott Deck'},
                 {'code': 'ESD2', 'name': 'Metelda Deck'},
                 {'code': 'DRC', 'name': 'Descent into the Raven\'s Catacombs'},
-                {'code': 'ATD', 'name': 'Antechamber of the Ten Dimensions'},
+                {'code': 'ATD', 'name': 'Antechamber of the Ten Dimensions'}
             ]
         },
     ]

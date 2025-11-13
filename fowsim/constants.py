@@ -397,6 +397,7 @@ SET_DATA = {
                 {'code': 'ESD1', 'name': 'Valgott Deck'},
                 {'code': 'ESD2', 'name': 'Metelda Deck'},
                 {'code': 'DRC', 'name': 'Descent into the Raven\'s Catacombs'},
+                {'code': 'JRV', 'name': 'Journey to Ravidra'},
             ]
         },
     ]
@@ -785,6 +786,10 @@ SETS_IN_ORDER = [
     'ESD2',
     'DRC',
     'MC09',
+    'JRV',
+    'JRV Prerelease Party',
+    'JRV Buy a Box',
+
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -870,7 +875,8 @@ SEARCH_SETS_INCLUDE = {
         'T2 Buy a Box',
         'T3 Buy a Box',
         'MP02-BAB',
-        'T4 Buy a Box'
+        'T4 Buy a Box',
+        'JRV Buy a Box',
     ],
     'Pre':[
         'L1 Prerelease Party',
@@ -906,7 +912,8 @@ SEARCH_SETS_INCLUDE = {
         'T1 Prerelease Party',
         'T2 Prerelease Party',
         'T3 Prerelease Party',
-        'T4 Prerelease Party'
+        'T4 Prerelease Party',
+        'JRV Prerelease Party',
     ],
     'World': [
         'World2015',
@@ -1094,6 +1101,10 @@ SEARCH_SETS_INCLUDE = {
         'E1 Buy a Box',
         'MC09',
         'E1 Prerelease Party'
+    ],
+    'JRV': [
+        'JRV Buy a Box',
+        'JRV Prerelease Party',
     ]
 }
 

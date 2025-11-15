@@ -11,6 +11,8 @@ from cardDatabase.models.Banlist import Format
 from cardDatabase.models.Tournament import TournamentLevel
 from cardDatabase.management.commands.importjson import remove_punctuation
 
+from itertools import chain
+
 def get_formats():
     format_values = Format.objects.values('name')
     format_map = map(lambda x : (x['name'], x['name']), format_values)
@@ -89,12 +91,14 @@ class DecklistSearchForm(forms.Form):
 
 
 class AddCardForm(forms.ModelForm):
+    # If a field is added/removed, add_card.html must be updated accordingly
+
     races = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Each race must be separated by a single newline'}))
     ability_texts = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Each ability must be separated by TWO newlines at the end. Single newlines will be counted as part of 1 ability.'}))
 
     class Meta:
         model = Card
-        fields = ['name', 'card_id', '_card_image', 'cost', 'divinity', 'flavour',
+        fields = ['name', 'card_id', '_card_image', 'cost', 'divinity', 'will_power', 'flavour',
                   'rarity', 'ATK', 'DEF', 'types', 'colours']
         widgets = {
             'types': forms.CheckboxSelectMultiple(),
@@ -103,6 +107,18 @@ class AddCardForm(forms.ModelForm):
             'card_image': forms.ClearableFileInput(attrs={'required': True}),
             'colours': forms.CheckboxSelectMultiple()
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            if isinstance(visible.field.widget, forms.widgets.CheckboxSelectMultiple) and visible.field.label == 'Types':
+                types_list = list(chain(*[t["types"] for t in CONS.DATABASE_CARD_TYPE_GROUPS]))
+                visible.field.widget.choices = sorted(chain(visible.field.widget.choices), key=lambda _type: types_list.index(self.clean_typename(_type[1])))
+            if not isinstance(visible.field.widget, forms.widgets.CheckboxSelectMultiple) and not isinstance(visible.field.widget, forms.widgets.ClearableFileInput):
+                visible.field.widget.attrs['class'] = 'form-control'
+
+    def clean_typename(self, name):
+        return name.replace(': ', ':').title()
 
     @classmethod
     def split_abilities(cls, ability_text):

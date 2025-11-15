@@ -86,6 +86,16 @@
                 </div>
             </div>
         {% endif %}
+        {% if not card.will_power == None %}
+            <div class="card-text-info">
+                <div class="card-text-info-title">
+                    Will Power:
+                </div>
+                <div class="card-text-info-text">
+                    {{ card.will_power }}
+                </div>
+            </div>
+        {% endif %}
         {% if card.ability_texts.all %}
             <div class="card-text-info ability-text">
                 <div class="card-text-info-title">

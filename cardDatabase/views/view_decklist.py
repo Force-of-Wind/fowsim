@@ -27,12 +27,12 @@ def get(request, decklist_id, share_parameter=''):
     '''
     deck_card_names = list(cards.values_list('card__name', flat=True))
 
-    if decklist.deck_format != CONS.PARADOX_FORMAT:
+    if decklist.deck_format.name != CONS.PARADOX_FORMAT:
         banned_cards = BannedCard.objects.filter(format=decklist.deck_format)
         combination_bans = CombinationBannedCards.objects.filter(format=decklist.deck_format)
     else:
         query = Q(format=decklist.deck_format)
-        query |= Q(format=CONS.WANDERER_FORMAT)
+        query |= Q(format__name=CONS.WANDERER_FORMAT)
         banned_cards = BannedCard.objects.filter(query)
         combination_bans = CombinationBannedCards.objects.filter(query)
 
@@ -40,7 +40,7 @@ def get(request, decklist_id, share_parameter=''):
     for banned_card in banned_cards:
         if banned_card.card.name in deck_card_names:
             ban_warnings.append({
-                'format': banned_card.format.name,
+                'format': decklist.deck_format.name,
                 'card': banned_card.card.name,
                 'card_img_url': banned_card.card.card_image.url,
                 'view_card_url': reverse('cardDatabase-view-card', kwargs={'card_id': banned_card.card.card_id})
@@ -53,7 +53,7 @@ def get(request, decklist_id, share_parameter=''):
         overlap = set(combination_banned_card_names) & set(deck_card_names)
         if len(overlap) > 1:
             combination_ban_warning = {
-                'format': combination_ban.format.name,
+                'format': decklist.deck_format.name,
                 'cards': [],
             }
             for card in combination_banned_cards:

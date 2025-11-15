@@ -90,7 +90,7 @@ CARD_TYPE_VALUES = [
     'True Magic Stone',
     'Ruler',
     'Basic J-Ruler',
-    'J-Ruler'
+    'J-Ruler',
     'Spell:Chant-Standby',
     'Resonator',
     'Sub-ruler',
@@ -398,6 +398,7 @@ SET_DATA = {
                 {'code': 'ESD2', 'name': 'Metelda Deck'},
                 {'code': 'DRC', 'name': 'Descent into the Raven\'s Catacombs'},
                 {'code': 'JRV', 'name': 'Journey to Ravidra'},
+                {'code': 'ATD', 'name': 'Antechamber of the Ten Dimensions'}
             ]
         },
     ]
@@ -437,6 +438,8 @@ DATABASE_CARD_TYPE_GROUPS = [
             'Addition:J/Resonator',
             'Addition:Ruler/J-Ruler',
             'Chant',
+            'Chant/Rune',
+            'Chant/Master Rune',
             'Regalia',
             'Regalia (Shift)',
             'Resonator',
@@ -454,7 +457,7 @@ DATABASE_CARD_TYPE_GROUPS = [
             'Ruler',
             'J-Ruler',
             'Order',
-            'Sub-ruler',
+            'Sub-Ruler',
             'Basic Ruler',
             'Basic J-Ruler',
         ]
@@ -785,11 +788,14 @@ SETS_IN_ORDER = [
     'ESD1',
     'ESD2',
     'DRC',
+    'DRC Prerelease Party',
+    'DRC Buy a Box',
+    'DRC Video',
     'MC09',
     'JRV',
     'JRV Prerelease Party',
     'JRV Buy a Box',
-
+    'ATD'
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -864,12 +870,12 @@ SEARCH_SETS_INCLUDE = {
         'D1 Buy a Box',
         'D2 Buy a Box',
         'D3 Buy a Box',
-	'H1 Buy a Box',
+    	'H1 Buy a Box',
         'H2 Buy a Box',
         'H3 Buy a Box',
         'H4 Buy a Box',
         'H5 Buy a Box',
-	'H6 Buy a Box',
+	    'H6 Buy a Box',
         'MP01-ACV',
         'T1 Buy a Box',
         'T2 Buy a Box',
@@ -877,6 +883,7 @@ SEARCH_SETS_INCLUDE = {
         'MP02-BAB',
         'T4 Buy a Box',
         'JRV Buy a Box',
+        'DRC Buy a Box'
     ],
     'Pre':[
         'L1 Prerelease Party',
@@ -902,7 +909,7 @@ SEARCH_SETS_INCLUDE = {
         'D1 Prerelease Party',
         'D2 Prerelease Party',
         'D3 Prerelease Party',
-	'H1 Prerelease Party',
+	    'H1 Prerelease Party',
         'H2 Prerelease Party',
         'H3 Prerelease Party',
         'H4 Prerelease Party',
@@ -914,6 +921,7 @@ SEARCH_SETS_INCLUDE = {
         'T3 Prerelease Party',
         'T4 Prerelease Party',
         'JRV Prerelease Party',
+        'DRC Prerelease Party'
     ],
     'World': [
         'World2015',
@@ -1105,6 +1113,10 @@ SEARCH_SETS_INCLUDE = {
     'JRV': [
         'JRV Buy a Box',
         'JRV Prerelease Party',
+        'DRC Buy a Box',
+        'DRC Prerelease Party',
+        'DRC Video',
+        'MC09'
     ]
 }
 

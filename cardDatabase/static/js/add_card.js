@@ -1,4 +1,5 @@
 let cards = [];
+let currentIds = [];
 
 function handleFileSelect(evt) {
     let fl_files = evt.target.files;
@@ -24,6 +25,13 @@ function handleFileSelect(evt) {
     }
 }
 
+function handleImagePreview(evt) {
+    let fl_files = evt.target.files;
+    let fl_file = fl_files[0];
+
+    $('#importCardPreview').prop('src', URL.createObjectURL(fl_file));
+}
+
 function cacheJson(json) {
     localStorage.setItem("cardsJson", JSON.stringify(json));
 }
@@ -38,6 +46,7 @@ function collectCards(json) {
     cacheJson(json);
     cards = [];
     newCards = [];
+    missingCards = [];
     try{
         json.fow.clusters.forEach(cluster => {
             cluster.sets.forEach(set => {
@@ -45,6 +54,8 @@ function collectCards(json) {
                     cards[card.id] = card;
                     if (card.wind_new)
                         newCards[card.id] = card.id;
+                    if (currentIds.includes(card.id))
+                        missingCards[card.id] = card.id;
                 })
             });
         });
@@ -61,18 +72,19 @@ function collectCards(json) {
     }
         
 
-    buildSelect(Object.keys(cards), newCards);
+    buildSelect(Object.keys(cards), newCards, missingCards);
 }
 
-function buildSelect(cardIds, newCards){
+function buildSelect(cardIds, newCards, missingCards){
     $('#importCardSelect').empty();
     $('#importCardSelect').append(`<option selected disabled>---</option>`);
     
     let options = cardIds.forEach(cardId => {
         let clss = newCards[cardId] ? 'new-card' : 'old-card';
+        let clss2 = missingCards[cardId] ? 'existing-card' : 'missing-card';
         let hideOldCards = $('#onlyNewCards').is(':checked');
             
-        $('#importCardSelect').append(`<option class="${clss}" value="${cardId}">${cardId}</option>`);
+        $('#importCardSelect').append(`<option class="${clss} ${clss2}" value="${cardId}">${cardId}</option>`);
     });
 
     $('#importCardSelect').off('change');
@@ -123,6 +135,7 @@ function autofillFields(cardId){
     changeValueOfInput('#add_card input[name="card_id"]', card.id);
     changeValueOfInput('#add_card input[name="cost"]', card.cost);
     changeValueOfInput('#add_card input[name="divinity"]', card.divinity);
+    changeValueOfInput('#add_card input[name="will_power"]', card.willpower);
     changeValueOfInput('#add_card textarea[name="flavour"]', card.flavour);
     changeValueOfInput('#add_card select[name="rarity"]', card.rarity);
     changeValueOfInput('#add_card input[name="ATK"]', card.ATK ?? "");
@@ -150,6 +163,7 @@ function autofillFields(cardId){
 
 $( document ).ready(function() {
     $('#upload').on('change', handleFileSelect);
+    $('#id__card_image').on('change', handleImagePreview);
     $('#onlyNewCards').change(function() {
         if(this.checked) {
             $('#importCardSelect').removeClass('all-cards');
@@ -160,7 +174,29 @@ $( document ).ready(function() {
             $('#importCardSelect').addClass('all-cards');
         }
     });
+    $('#onlyMissingCards').change(function() {
+        if(this.checked) {
+            $('#importCardSelect').removeClass('all-loaded-cards');
+            $('#importCardSelect').addClass('missing-cards-only');
+        }
+        else {
+            $('#importCardSelect').removeClass('missing-cards-only');
+            $('#importCardSelect').addClass('all-loaded-cards');
+        }
+    });
+    currentIds = JSON.parse(document.getElementById('added_ids').textContent);
     let cachedJson = getCachedJson();
     if (cachedJson)
         collectCards(cachedJson);
 });
+
+onpageshow = (event) => {
+    if ($('#onlyNewCards').is(':checked') == false) {
+        $('#importCardSelect').removeClass('new-cards-only');
+        $('#importCardSelect').addClass('all-cards');
+    }
+    if ($('#onlyMissingCards').is(':checked') == false) {
+        $('#importCardSelect').removeClass('missing-cards-only');
+        $('#importCardSelect').addClass('all-loaded-cards');
+    }
+};

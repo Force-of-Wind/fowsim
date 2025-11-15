@@ -7,6 +7,10 @@ label {
     margin-bottom: 0 !important;
 }
 
+:not(li, .form-check) > label {
+    font-weight:bold;
+}
+
 #base-body{
     padding-bottom: 50px;
 }
@@ -17,6 +21,7 @@ label {
     margin-bottom: 12px;
     gap:10px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .import-wrapper .import-card-select {
@@ -29,4 +34,24 @@ label {
 
 .new-cards-only .old-card {
     display:none;
+}
+
+.missing-cards-only .existing-card {
+    display:none;
+}
+
+.card {
+    flex: 1 1 auto;
+}
+
+.card .card-header {
+    font-weight:bold;
+}
+
+#add_card li {
+    list-style: none;
+}
+
+#id_types {
+    column-count: 2;
 }

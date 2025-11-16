@@ -1108,15 +1108,15 @@ SEARCH_SETS_INCLUDE = {
     'DRC': [
         'E1 Buy a Box',
         'MC09',
-        'E1 Prerelease Party'
-    ],
-    'JRV': [
-        'JRV Buy a Box',
-        'JRV Prerelease Party',
+        'E1 Prerelease Party',
         'DRC Buy a Box',
         'DRC Prerelease Party',
         'DRC Video',
         'MC09'
+    ],
+    'JRV': [
+        'JRV Buy a Box',
+        'JRV Prerelease Party'
     ]
 }
 

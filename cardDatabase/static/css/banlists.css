@@ -1,0 +1,81 @@
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 15px;
+    background: #ddd;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.tab.active {
+    background: #4a6cf7;
+    color: white;
+}
+
+.format-section {
+    display: none;
+}
+
+.format-section.active {
+    display: block;
+}
+
+.cards-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.card-item {
+    width: 150px;
+    text-align: center;
+}
+
+.card-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Combination pair */
+.combo-wrapper {
+    position: relative;
+    width: 160px;
+    height: 230px;
+}
+
+.combo-wrapper img {
+    position: absolute;
+    width: 140px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.combo-wrapper img:nth-child(1) {
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.combo-wrapper img:nth-child(2) {
+    left: 20px;
+    top: 20px;
+    z-index: 2;
+}
+
+.combo-label {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+h2 {
+    margin-top: 30px;
+}

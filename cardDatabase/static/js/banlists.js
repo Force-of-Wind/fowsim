@@ -1,0 +1,21 @@
+$(function(){
+    function switchTab(formatName) {
+        // Hide all sections
+        $('.format-section').removeClass('active');
+        // Show selected section
+        $(`#section-${formatName}`).addClass('active');
+
+        // Update tab UI
+        $('.tab').removeClass('active');
+        $(`#tab-${formatName}`).addClass('active');
+    }
+
+    // Tab switch handlers
+    $('.tab').on('click', function () {
+        let formatName = $(this).data('format-name');
+        switchTab(formatName);
+    });
+
+    // Auto-click the first tab
+    $('.tab').first().trigger('click');
+})

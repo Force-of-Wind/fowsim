@@ -1,0 +1,62 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+{% block subtitle %} - Banlists{% endblock %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/banlists.css' %}">
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/banlists_mobile.css' %}">
+    {% endif %}
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/banlists.js' %}" type="text/javascript"></script>
+{% endblock %}
+{% block body %}
+    {{ block.super }}
+
+    <!-- ─────────────── Tabs ─────────────── -->
+    <div class="tabs">
+        {% for format_name in banned_cards.keys %}
+            <div class="tab" data-format-name="{{ format_name }}">
+                {{ format_name }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- ─────────────── Format Sections ─────────────── -->
+
+    {% for format_name, banned in banned_cards.items %}
+    <div class="format-section" id="section-{{ format_name }}">
+
+        <h2>Banned Cards</h2>
+        <div class="cards-grid">
+            {% for banned_obj in banned %}
+                <div class="card-item">
+                    <img src="{{ banned_obj.card.card_image.url }}" alt="{{ banned_obj.card.name }}">
+                    <div>{{ banned_obj.card.name }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h2>Combination Bans</h2>
+        <div class="cards-grid">
+            {% for combo in combination_banned_cards %}
+                <div class="card-item">
+                    <div class="combo-wrapper">
+                        {% for card in combo.cards.all %}
+                            <img src="{{ card.card_image.url }}" alt="{{ card.name }}">
+                        {% endfor %}
+                    </div>
+                    <div class="combo-label">
+                        {% for card in combo.cards.all %}
+                            {{ card.name }}{% if not forloop.last %} + {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    {% endfor %}
+{% endblock %}

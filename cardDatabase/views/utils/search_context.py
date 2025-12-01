@@ -285,8 +285,9 @@ def get_atk_def_query(value, comparator, field_name):
 
 def get_keywords_query(data):
     keywords_query = Q()
-    for keyword in data:
-        keywords_query |= Q(ability_texts__text__icontains=keyword)
+    for search_string in data:
+        for keyword in search_string.split(","):
+            keywords_query |= Q(ability_texts__text__icontains=keyword)
     return keywords_query
 
 def get_solo_mode_query(solo_mode):

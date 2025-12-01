@@ -18,7 +18,7 @@
     <!-- ─────────────── Tabs ─────────────── -->
     <div class="tabs">
         {% for format_name in seen_formats %}
-            <div class="tab" data-format-name="{{ format_name }}">
+            <div class="tab" id="tab-{{ format_name }}" data-format-name="{{ format_name }}">
                 {{ format_name }}
             </div>
         {% endfor %}
@@ -32,10 +32,12 @@
             <h2>Banned Cards</h2>
             <div class="cards-grid">
                 {% for banned_obj in banned %}
-                    <div class="card-item">
-                        <img src="{{ banned_obj.card.card_image.url }}" alt="{{ banned_obj.card.name }}">
-                        <div>{{ banned_obj.card.name }}</div>
-                    </div>
+                    <a href="{% url 'cardDatabase-view-card' banned_obj.card.card_id %}">
+                        <div class="card-item">
+                            <img src="{{ banned_obj.card.card_image.url }}" alt="{{ banned_obj.card.name }}">
+                            <div>{{ banned_obj.card.name }}</div>
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
         </div>

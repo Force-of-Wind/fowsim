@@ -3,6 +3,7 @@ $(function(){
         // Hide all sections
         $('.format-section').removeClass('active');
         // Show selected section
+        
         $(`#section-${formatName}-bans`).addClass('active');
         $(`#section-${formatName}-combination-bans`).addClass('active');
 

@@ -9,13 +9,31 @@
     padding: 10px 15px;
     background: #ddd;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0; /* rounded top corners */
     font-weight: bold;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.tab:hover {
+    background: #c0c0c0; /* slightly darker on hover */
 }
 
 .tab.active {
-    background: #4a6cf7;
+    background: #918c81;
     color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* subtle shadow */
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #dc0800; /* accent underline */
+    border-radius: 2px;
 }
 
 .format-section {

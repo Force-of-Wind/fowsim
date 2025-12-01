@@ -72,7 +72,7 @@
     height: 230px;
 }
 
-.combo-wrapper img {
+.combo-wrapper a {
     position: absolute;
     width: 140px;
     height: auto;
@@ -82,19 +82,19 @@
 }
 
 /* Base positions */
-.combo-wrapper img:nth-child(1) {
+.combo-wrapper a:nth-child(1) {
     left: 0;
     top: 0;
     z-index: 1;
 }
 
-.combo-wrapper img:nth-child(2) {
+.combo-wrapper a:nth-child(2) {
     left: 20px;
     top: 20px;
     z-index: 2;
 }
 
-.combo-wrapper img:hover {
+.combo-wrapper a:hover {
     z-index: 10;
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0,0,0,0.4);

@@ -49,7 +49,7 @@ def get(request):
 
     ctx["banned_cards"] = banned_cards_by_format
     ctx["combination_banned_cards"] = combination_banned_cards_by_format
-    ctx["seen_formats"] = seen_combination_banned_cards_by_format.keys() | seen_banned_cards_by_format.keys()
+    ctx["seen_formats"] = sorted(seen_combination_banned_cards_by_format.keys() | seen_banned_cards_by_format.keys())
 
     print(ctx["combination_banned_cards"])
 

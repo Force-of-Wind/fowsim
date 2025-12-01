@@ -51,12 +51,21 @@
                 <div class="card-item">
                     <div class="combo-wrapper">
                         {% for card in combination_ban.cards.all %}
-                            <img src="{{ card.card_image.url }}" alt="{{ card.name }}">
+                            {# Mobile doesnt want links on the hover section otherwise they can't hover without redirecting #}
+                            {% if request.user_agent.is_mobile %}
+                                <img src="{{ card.card_image.url }}" alt="{{ card.name }}">
+                            {% else %}
+                                <a href="{% url 'cardDatabase-view-card' card.card_id %}">
+                                    <img src="{{ card.card_image.url }}" alt="{{ card.name }}">
+                                </a>
+                            {% endif %}
                         {% endfor %}
                     </div>
                     <div class="combo-label">
                         {% for card in combination_ban.cards.all %}
-                            {{ card.name }}{% if not forloop.last %} + {% endif %}
+                            <a href="{% url 'cardDatabase-view-card' card.card_id %}">
+                                {{ card.name }}{% if not forloop.last %} + {% endif %}
+                            </a>
                         {% endfor %}
                     </div>
                 </div>

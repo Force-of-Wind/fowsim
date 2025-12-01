@@ -17,7 +17,7 @@
 
     <!-- ─────────────── Tabs ─────────────── -->
     <div class="tabs">
-        {% for format_name in banned_cards.keys %}
+        {% for format_name in seen_formats %}
             <div class="tab" data-format-name="{{ format_name }}">
                 {{ format_name }}
             </div>
@@ -27,36 +27,40 @@
     <!-- ─────────────── Format Sections ─────────────── -->
 
     {% for format_name, banned in banned_cards.items %}
-    <div class="format-section" id="section-{{ format_name }}">
+        <div class="format-section" id="section-{{ format_name }}-bans">
 
-        <h2>Banned Cards</h2>
-        <div class="cards-grid">
-            {% for banned_obj in banned %}
-                <div class="card-item">
-                    <img src="{{ banned_obj.card.card_image.url }}" alt="{{ banned_obj.card.name }}">
-                    <div>{{ banned_obj.card.name }}</div>
-                </div>
-            {% endfor %}
-        </div>
-
-        <h2>Combination Bans</h2>
-        <div class="cards-grid">
-            {% for combo in combination_banned_cards %}
-                <div class="card-item">
-                    <div class="combo-wrapper">
-                        {% for card in combo.cards.all %}
-                            <img src="{{ card.card_image.url }}" alt="{{ card.name }}">
-                        {% endfor %}
+            <h2>Banned Cards</h2>
+            <div class="cards-grid">
+                {% for banned_obj in banned %}
+                    <div class="card-item">
+                        <img src="{{ banned_obj.card.card_image.url }}" alt="{{ banned_obj.card.name }}">
+                        <div>{{ banned_obj.card.name }}</div>
                     </div>
-                    <div class="combo-label">
-                        {% for card in combo.cards.all %}
-                            {{ card.name }}{% if not forloop.last %} + {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
-
-    </div>
     {% endfor %}
+
+    {% for format_name, combination_bans in combination_banned_cards.items %}
+        <div class="format-section" id="section-{{ format_name }}-combination-bans">
+            <h2>Combination Bans</h2>
+            {% for combination_ban in combination_bans %}
+                <div class="cards-grid">
+                    <div class="card-item">
+                        <div class="combo-wrapper">
+                            {% for card in combination_ban.cards.all %}
+                                <img src="{{ card.card_image.url }}" alt="{{ card.name }}">
+                            {% endfor %}
+                        </div>
+                        <div class="combo-label">
+                            {% for card in combination_ban.cards.all %}
+                                {{ card.name }}{% if not forloop.last %} + {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
 {% endblock %}

@@ -56,8 +56,10 @@
     height: auto;
     border-radius: 6px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: z-index 0.1s ease;
 }
 
+/* Base positions */
 .combo-wrapper img:nth-child(1) {
     left: 0;
     top: 0;
@@ -70,12 +72,11 @@
     z-index: 2;
 }
 
-.combo-label {
-    margin-top: 5px;
-    font-size: 14px;
-    font-weight: bold;
+.combo-wrapper img:hover {
+    z-index: 10;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
 }
-
 h2 {
     margin-top: 30px;
 }

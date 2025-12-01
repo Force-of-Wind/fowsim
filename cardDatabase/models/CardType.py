@@ -10,6 +10,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.templatetags.static import static
+from django.utils.functional import cached_property
 
 from cardDatabase.models.Effects import Effect
 from cardDatabase.models.Rulings import Ruling
@@ -208,7 +209,7 @@ class Card(AbstractModel):
     def reprints(self):
         return Card.objects.filter(name=self.name).filter(~Q(id=self.id))
     
-    @property
+    @cached_property
     def card_image(self):
         try:
             temp_img = CardImageWrapper(url=self._card_image.url)

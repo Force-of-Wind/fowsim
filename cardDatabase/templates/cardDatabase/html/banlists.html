@@ -44,23 +44,22 @@
     {% for format_name, combination_bans in combination_banned_cards.items %}
         <div class="format-section" id="section-{{ format_name }}-combination-bans">
             <h2>Combination Bans</h2>
-            {% for combination_ban in combination_bans %}
-                <div class="cards-grid">
-                    <div class="card-item">
-                        <div class="combo-wrapper">
-                            {% for card in combination_ban.cards.all %}
-                                <img src="{{ card.card_image.url }}" alt="{{ card.name }}">
-                            {% endfor %}
-                        </div>
-                        <div class="combo-label">
-                            {% for card in combination_ban.cards.all %}
-                                {{ card.name }}{% if not forloop.last %} + {% endif %}
-                            {% endfor %}
-                        </div>
+            <div class="cards-grid">  <!-- ONE grid for the whole format -->
+                {% for combination_ban in combination_bans %}
+                <div class="card-item">
+                    <div class="combo-wrapper">
+                        {% for card in combination_ban.cards.all %}
+                            <img src="{{ card.card_image.url }}" alt="{{ card.name }}">
+                        {% endfor %}
+                    </div>
+                    <div class="combo-label">
+                        {% for card in combination_ban.cards.all %}
+                            {{ card.name }}{% if not forloop.last %} + {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
     {% endfor %}
-    </div>
 {% endblock %}

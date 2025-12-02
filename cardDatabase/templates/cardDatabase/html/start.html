@@ -63,6 +63,7 @@
                 {% if spoiler_url %}
                     <a href="{% get_spoiler_url %}" class="btn btn-info btn-sm">Spoilers</a>
                 {% endif %}
+              <a href="{% url 'cardDatabase-banlists' %}" class="btn btn-info btn-sm">Banlists</a>
               <a href="{% url 'cardDatabase-pack-select' %}" class="btn btn-info btn-sm">Pack Simulator</a>
               <a href="{% url 'cardDatabase-metrics' %}" class="btn btn-info btn-sm">Metrics</a>
             </div>

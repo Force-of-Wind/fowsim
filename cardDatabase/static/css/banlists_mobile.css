@@ -1,0 +1,26 @@
+/* Base positions */
+.combo-wrapper img {
+    position: absolute;
+    width: 140px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: z-index 0.1s ease;
+}
+.combo-wrapper img:nth-child(1) {
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.combo-wrapper img:nth-child(2) {
+    left: 20px;
+    top: 20px;
+    z-index: 2;
+}
+
+.combo-wrapper img:hover {
+    z-index: 10;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}

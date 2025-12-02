@@ -1,0 +1,76 @@
+{% extends 'cardDatabase/html/base.html' %}
+{% load static card_database_tags %}
+{% block subtitle %} - Banlists{% endblock %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/banlists.css' %}">
+    {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+        <link rel="stylesheet" href="{% static 'css/banlists_mobile.css' %}">
+    {% endif %}
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/banlists.js' %}" type="text/javascript"></script>
+{% endblock %}
+{% block body %}
+    {{ block.super }}
+
+    <!-- ─────────────── Tabs ─────────────── -->
+    <div class="tabs">
+        {% for format_name in seen_formats %}
+            <div class="tab" id="tab-{{ format_name }}" data-format-name="{{ format_name }}">
+                {{ format_name }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- ─────────────── Format Sections ─────────────── -->
+
+    {% for format_name, banned in banned_cards.items %}
+        <div class="format-section" id="section-{{ format_name }}-bans">
+
+            <h2>Banned Cards</h2>
+            <div class="cards-grid">
+                {% for banned_obj in banned %}
+                    <a href="{% url 'cardDatabase-view-card' banned_obj.card.card_id %}">
+                        <div class="card-item">
+                            <img src="{{ banned_obj.card.card_image.url }}" alt="{{ banned_obj.card.name }}">
+                            <div>{{ banned_obj.card.name }}</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
+    {% for format_name, combination_bans in combination_banned_cards.items %}
+        <div class="format-section" id="section-{{ format_name }}-combination-bans">
+            <h2>Combination Bans</h2>
+            <div class="cards-grid">  <!-- ONE grid for the whole format -->
+                {% for combination_ban in combination_bans %}
+                <div class="card-item">
+                    <div class="combo-wrapper">
+                        {% for card in combination_ban.cards.all %}
+                            {# Mobile doesnt want links on the hover section otherwise they can't hover without redirecting #}
+                            {% if request.user_agent.is_mobile %}
+                                <img src="{{ card.card_image.url }}" alt="{{ card.name }}">
+                            {% else %}
+                                <a href="{% url 'cardDatabase-view-card' card.card_id %}">
+                                    <img src="{{ card.card_image.url }}" alt="{{ card.name }}">
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="combo-label">
+                        {% for card in combination_ban.cards.all %}
+                            <a href="{% url 'cardDatabase-view-card' card.card_id %}">
+                                {{ card.name }}{% if not forloop.last %} + {% endif %}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -6,7 +6,7 @@ from .forms import UserLoginForm
 from .views import start, search, search_for_decklist, deprecated_decklist_url, create_decklist, edit_decklist, \
     edit_decklist_mobile, view_decklist, view_user_public, delete_decklist, logout, user_preferences, register, \
     desktop_only, mobile_only, copy_decklist, private_decklist, locked_decklist, metrics, pack_opening, pack_select, \
-    pack_history, export_decklist, export_decklist_share, view_card
+    pack_history, export_decklist, export_decklist_share, view_card, banlists
 from .views.admin import add_card, test_error
 from .views.bot import reddit_bot
 from .views.post import save_decklist, create_share_code, delete_share_code, create_deck_lock, delete_deck_lock
@@ -21,11 +21,14 @@ from .views.tournament.admin.post import decklist_reveal_status, remove_tourname
     lock_deck_edit, update_tournament_phase, update_tournament_players, staff_add, staff_remove
 
 urlpatterns = [
+    #  Database / Cards
     path('', start.get, name='cardDatabase-home'),
     path('search/', search.get, name='cardDatabase-search'),
-    path('decklist_search/', search_for_decklist.get, name='cardDatabase-decklist-search'),
     path('card/<str:card_id>/', view_card.get, name='cardDatabase-view-card'),
     path('add_card/', add_card.get, name='cardDatabase-add-card'),
+
+    #  Decklists
+    path('decklist_search/', search_for_decklist.get, name='cardDatabase-decklist-search'),
     path('decklists/', deprecated_decklist_url.get, name='cardDatabase-user-decklists'),
     path('create_decklist/<str:format>/', create_decklist.get, name='cardDatabase-create-decklist'),
     path('edit_decklist/<int:decklist_id>/', edit_decklist.get, name='cardDatabase-edit-decklist'),
@@ -40,6 +43,8 @@ urlpatterns = [
     path('view_decklist/<int:decklist_id>/<str:share_parameter>/', view_decklist.get, name='cardDatabase-view-decklist-share'),
     path('decklist/view/<str:username>', view_user_public.get, name='cardDatabase-view-users-decklist'),
     path('delete_decklist/<int:decklist_id>/', delete_decklist.get, name='cardDatabase-delete-decklist'),
+
+    #  Miscellaneous
     path('test_error/', test_error.get, name='cardDatabase-test-error'),
     path('logout/', logout.get, name='cardDatabase-logout'),
     path('preferences/', user_preferences.get, name='cardDatabase-user-preferences'),
@@ -58,6 +63,7 @@ urlpatterns = [
     path('pack_history/', pack_history.get, name='cardDatabase-pack-history'),
     path('api/deck/<int:decklist_id>/', export_decklist.get, name='cardDatabase-export-decklist'),
     path('api/deck/<int:decklist_id>/<str:share_parameter>', export_decklist_share.get, name='cardDatabase-export-decklist-share'),
+    path('banlists/', banlists.get, name='cardDatabase-banlists'),
 
     # TOURNAMENT
     path('tournaments/', show_tournaments.get, name='cardDatabase-tournament-list'),

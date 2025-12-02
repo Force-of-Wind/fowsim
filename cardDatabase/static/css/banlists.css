@@ -1,0 +1,106 @@
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.tab {
+    padding: 10px 15px;
+    background: #ddd;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0; /* rounded top corners */
+    font-weight: bold;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.tab:hover {
+    background: #c0c0c0; /* slightly darker on hover */
+}
+
+.tab.active {
+    background: #918c81;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* subtle shadow */
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #dc0800; /* accent underline */
+    border-radius: 2px;
+}
+
+.format-section {
+    display: none;
+}
+
+.format-section.active {
+    display: block;
+}
+
+.cards-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.card-item {
+    width: 150px;
+    text-align: center;
+}
+
+.card-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Combination pair */
+.combo-wrapper {
+    position: relative;
+    width: 160px;
+    height: 230px;
+}
+
+.combo-wrapper a {
+    position: absolute;
+    width: 140px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: z-index 0.1s ease;
+}
+
+/* Base positions */
+.combo-wrapper a:nth-child(1) {
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.combo-wrapper a:nth-child(2) {
+    left: 20px;
+    top: 20px;
+    z-index: 2;
+}
+
+.combo-wrapper a:hover {
+    z-index: 10;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+h2 {
+    width: max-content;
+    margin: 30px auto;
+}

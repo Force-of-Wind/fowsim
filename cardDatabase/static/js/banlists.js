@@ -19,5 +19,5 @@ $(function(){
     });
 
     // Auto-click the first tab
-    $('#tab-Wanderer').first().trigger('click');
+    $('#tab-wanderer').first().trigger('click');
 })

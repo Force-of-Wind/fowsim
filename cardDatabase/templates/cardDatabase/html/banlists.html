@@ -18,7 +18,7 @@
     <!-- ─────────────── Tabs ─────────────── -->
     <div class="tabs">
         {% for format_name in seen_formats %}
-            <div class="tab" id="tab-{{ format_name }}" data-format-name="{{ format_name }}">
+            <div class="tab" id="tab-{{ format_name|slugify }}" data-format-name="{{ format_name|slugify }}">
                 {{ format_name }}
             </div>
         {% endfor %}
@@ -27,7 +27,7 @@
     <!-- ─────────────── Format Sections ─────────────── -->
 
     {% for format_name, banned in banned_cards.items %}
-        <div class="format-section" id="section-{{ format_name }}-bans">
+        <div class="format-section" id="section-{{ format_name|slugify }}-bans">
 
             <h2>Banned Cards</h2>
             <div class="cards-grid">
@@ -44,7 +44,7 @@
     {% endfor %}
 
     {% for format_name, combination_bans in combination_banned_cards.items %}
-        <div class="format-section" id="section-{{ format_name }}-combination-bans">
+        <div class="format-section" id="section-{{ format_name|slugify }}-combination-bans">
             <h2>Combination Bans</h2>
             <div class="cards-grid">  <!-- ONE grid for the whole format -->
                 {% for combination_ban in combination_bans %}

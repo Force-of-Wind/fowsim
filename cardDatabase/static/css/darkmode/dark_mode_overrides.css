@@ -391,3 +391,12 @@ body.hasHover #user-decklists tr:not(:first-child):hover{
     color: #c5c4c4 !important;
 }
 /* /tournaments */
+
+/* Banlists */
+#banlists-page .tab{
+    color: #2f2c2c;
+}
+
+body #banlists-page{
+    color: white;
+}

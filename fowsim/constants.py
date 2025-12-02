@@ -41,7 +41,7 @@ RARITY_NORMAL = 'Normal'
 RARITY_SECRET_RARE = 'Secret Rare'
 RARITY_ASCENDED_RULER = 'Ascended Ruler'
 RARITY_ASCENDED_J_RULER = 'Ascended J-ruler'
-RARITY_SUB_RULER_RARE = 'Sub-ruler'
+RARITY_SUB_RULER_RARE = 'Sub-Ruler'
 
 RARITY_COMMON_VALUE = 'C'
 RARITY_UNCOMMON_VALUE = 'U'
@@ -93,7 +93,7 @@ CARD_TYPE_VALUES = [
     'J-Ruler',
     'Spell:Chant-Standby',
     'Resonator',
-    'Sub-ruler',
+    'Sub-Ruler',
     'Extension Rule',
     'Warden',
     'Darkness Magic Stone',

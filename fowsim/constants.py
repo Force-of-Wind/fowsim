@@ -527,6 +527,9 @@ DIVINITY_CHOICES = [
     (6, 6),
     (7, 7),
     (8, 8),
+    (9, 9),
+    (10, 10),
+    (11, 11),
     (INFINITY_STRING, mark_safe('&infin;'))
 ]
 

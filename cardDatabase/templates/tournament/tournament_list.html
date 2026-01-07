@@ -139,6 +139,9 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if tournaments.has_other_pages %}
+                    <div id="other-pages-bottom" class="pagination"></div>
+                {% endif %}
             {% else %}
                 <div class="no-tournaments">
                     <div class="no-tournaments-text flex-center">

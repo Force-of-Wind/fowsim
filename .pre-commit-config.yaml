@@ -15,3 +15,13 @@ repos:
       - id: check-added-large-files
         args: ['--maxkb=1000']
       - id: check-merge-conflict
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: python -m pytest cardDatabase/tests/ -x -q --tb=line --ignore=cardDatabase/tests/test_performance.py
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true

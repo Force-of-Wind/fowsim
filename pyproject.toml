@@ -1,10 +1,10 @@
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "fowsim.settings"
+DJANGO_SETTINGS_MODULE = "fowsim.test_settings"
 python_files = ["test_*.py", "*_test.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 testpaths = ["cardDatabase/tests"]
-addopts = "-v --tb=short"
+addopts = "-v --tb=short --no-migrations"
 
 [tool.ruff]
 line-length = 120

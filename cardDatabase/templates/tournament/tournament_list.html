@@ -4,12 +4,14 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/bootstrap/mdb.css' %}">
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
     <link rel="stylesheet" href="{% static 'css/tournament/tournament_list.css' %}">
 {% endblock %}
 
 {% block js %}
     {{ block.super }}
     <script  src="{% static 'js/bootstrap/bootstrap.js' %}"></script>
+    <script  src="{% static 'js/tournament/tournament_list.js' %}"></script>
     <script  src="{% static 'js/date_localizer.js' %}"></script>
 {% endblock %}
 
@@ -137,6 +139,9 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if tournaments.has_other_pages %}
+                    <div id="other-pages-bottom" class="pagination"></div>
+                {% endif %}
             {% else %}
                 <div class="no-tournaments">
                     <div class="no-tournaments-text flex-center">

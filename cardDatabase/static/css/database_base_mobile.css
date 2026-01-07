@@ -38,7 +38,7 @@
     max-width: calc(100% - 40px);
 }
 
-.overflow-costs {
+.overflow-costs, .overflow-divinity {
     width: 80vw;
     overflow: auto;
     white-space: nowrap;

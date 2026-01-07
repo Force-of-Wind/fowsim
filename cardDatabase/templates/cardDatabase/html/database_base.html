@@ -261,6 +261,7 @@
                         <div class="search-field-title field-title">
                             Divinity:
                         </div>
+                        <div class="overflow-divinity">
                         {% for value, display in advanced_form.divinity.field.choices %}
                             <input type="checkbox" class="hidden-checkbox fow-checkbox" name="divinity" id="id_divinity_{{ forloop.counter0 }}"
                                    value="{{ value }}" {% if value|slugify in advanced_form_data.divinity %}checked{% endif %}>
@@ -270,6 +271,7 @@
                                 </div>
                             </label>
                         {% endfor %}
+                        </div>
                     </div>
                     <div class="atk-def-stats fieldWrapper">
                         <div class="atk-inputs">

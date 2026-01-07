@@ -163,6 +163,229 @@ Custom commands in `cardDatabase/management/commands/`:
 - **Metrics** - Popularity tracking for cards/attributes over time
 - **Profile** - Extended user info (admin/judge flags)
 
+## Domain Knowledge
+
+### Force of Will Card Game Concepts
+
+**Card Attributes (Colors):**
+- Fire (R), Water (U), Wind (G), Light (W), Darkness (B), Void (V)
+- Cards can be multi-color or mono-color
+- Attribute codes match MTG conventions (R=Red/Fire, U=Blue/Water, etc.)
+
+**Card Types:**
+- **Resonators** - Creatures that attack/defend
+- **Chants** - Spells (instant-speed via `Spell:Chant-Instant`)
+- **Additions** - Enchantments attached to resonators, fields, or rulers
+- **Regalia** - Artifacts/equipment
+- **Rulers/J-Rulers** - Leader cards (Rulers flip to J-Rulers via Judgment)
+- **Magic Stones** - Resource cards (like lands in MTG)
+- **Runes/Master Runes** - Special spell type
+- **Sub-Rulers** - Secondary ruler cards
+
+**Deck Zones:**
+- `Ruler Area` - Ruler and J-Ruler
+- `Main Deck` - 40-60 cards (resonators, chants, additions, regalia)
+- `Magic Stone Deck` - 10-20 magic stones
+- `Side Deck` - 0-15 cards for sideboarding
+
+**Card Identifiers:**
+- Format: Usually `SET-NUMBER` (e.g., `EDL-064`, `TSW-109`). Some exceptions such as Pre release and Buy a Box promos.
+- J-Ruler sides append `J` (e.g., `TSW-109J`)
+- Special characters: `^` (double-sided), `*` (alternative), `J^` (colossal)
+
+**Rarities:** Common (C), Uncommon (U), Rare (R), Super Rare (SR), Ruler (RR), J-Ruler (JR), Marvel Rare (MR), Secret Rare (SEC)
+
+**Sets & Clusters:**
+- Cards are grouped into Sets (e.g., `EDL` = "Epic of the Dragon Lord")
+- Sets belong to Clusters (e.g., Saga, Hero, Trinity, Duel)
+- See `fowsim/constants.py` → `SET_DATA` for full hierarchy
+
+**Banlists:**
+- Cards can be banned outright or as combinations
+- `CombinationBannedCards` - Two cards banned together (can't use both)
+- Bans are format-specific (Wanderer, ABC, etc.)
+
+### Tournament System
+
+**Tournament Phases:** `created` → `registration` → `swiss` → `tops` → `completed`
+
+**Player States:** `requested` → `accepted` → `completed`
+
+**Staff Roles:** Hierarchical permissions via `StaffRole` model
+- `can_read` - View tournament data
+- `can_write` - Modify tournament data
+- `can_delete` - Full control (owner)
+
+**Deck Locking:** Decks can be locked for tournament use (`MODE_TOURNAMENT`)
+
+---
+
+## Common Workflows
+
+### Adding a New View
+
+1. Create file in `cardDatabase/views/` (e.g., `my_feature.py`)
+2. Define view function(s) with request parameter
+3. Use decorators as needed (`@login_required`, `@desktop_only`, etc.)
+4. Add URL pattern in `cardDatabase/urls.py`
+5. Create template in `cardDatabase/templates/cardDatabase/html/`
+6. Add static files as needed (see below)
+
+```python
+# cardDatabase/views/my_feature.py
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def my_view(request):
+    ctx = {"data": some_data}
+    return render(request, "cardDatabase/html/my_feature.html", context=ctx)
+```
+
+**Static Files Convention:**
+- CSS: `cardDatabase/static/css/my_feature.css` (desktop)
+- JS: `cardDatabase/static/js/my_feature.js` (desktop)
+- Mobile variants (if needed):
+  - `cardDatabase/static/css/my_feature_mobile.css`
+  - `cardDatabase/static/js/my_feature_mobile.js`
+- Plain filename = desktop; `_mobile` suffix = mobile
+
+**JavaScript Convention:**
+- Use jQuery for DOM manipulation (not vanilla JS)
+- Use `$('#id')` instead of `document.getElementById('id')`
+- Use `$('.class')` instead of `document.querySelectorAll('.class')`
+
+**Template Inheritance:**
+- `base.html` - Root template (header, nav, jQuery, Bootstrap, dark mode)
+- `database_base.html` - Extends base, adds card search section at top
+
+Extend the appropriate base:
+```html
+{# For pages WITH search section #}
+{% extends 'cardDatabase/html/database_base.html' %}
+
+{# For pages WITHOUT search section #}
+{% extends 'cardDatabase/html/base.html' %}
+```
+
+**Template Blocks:**
+- `{% block css %}` - Desktop CSS (call `{{ block.super }}` to keep base styles)
+- `{% block mobilecss %}` - Mobile CSS (auto-wrapped in device check)
+- `{% block js %}` - JavaScript
+- `{% block body %}` - Main content
+
+**Mobile Detection in Templates:**
+```html
+{% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+    {# Mobile-specific content #}
+{% endif %}
+```
+
+**JavaScript Global:**
+- `FOWDB_IS_MOBILE` - Boolean set by base template for JS mobile detection
+
+### Adding a New Model
+
+1. Create file in `cardDatabase/models/` (e.g., `MyModel.py`)
+2. Define model with Meta class and `__str__`
+3. Export in `cardDatabase/models/__init__.py`
+4. Run `python manage.py makemigrations && python manage.py migrate`
+
+```python
+# cardDatabase/models/MyModel.py
+from django.db import models
+
+class MyModel(models.Model):
+    class Meta:
+        app_label = "cardDatabase"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.name
+
+    name = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+```
+
+### Adding Card Search Functionality
+
+Card search uses `cardDatabase/views/utils/search_context.py`:
+- `get_search_form_ctx()` - Base context with form choices
+- `basic_search(form)` - Simple name/text search
+- `advanced_search(form)` - Multi-field filtering
+
+Query optimization patterns:
+```python
+# Prefetch related data for card lists
+cards = Card.objects.filter(...).prefetch_related(
+    "colours", "types", "races", "ability_texts"
+).select_related(...)
+```
+
+### Tournament Staff Permissions
+
+Use decorators from `fowsim/decorators.py`:
+
+```python
+from fowsim.decorators import tournament_owner, tournament_admin, tournament_reader
+
+@tournament_reader  # Can view
+def view_tournament(request, tournament_id):
+    # request.tournament and request.staff_account are auto-attached
+    ...
+
+@tournament_admin  # Can modify
+def edit_tournament(request, tournament_id):
+    ...
+
+@tournament_owner  # Full control
+def delete_tournament(request, tournament_id):
+    ...
+```
+
+---
+
+## Architecture Decisions
+
+### Why views are split into separate files
+- Easier to find and maintain feature-specific code
+- Prevents massive views.py files
+- Each file handles one cohesive feature
+
+### Why constants.py is so large
+- Single source of truth for all game data
+- Prevents inconsistencies across codebase
+- Easy to update when game rules change
+- Contains: card types, rarities, sets, keywords, tournament phases
+
+### Why models use separate files
+- Each domain concept is isolated
+- Easier to understand relationships
+- Import via `__init__.py` for clean API
+
+### Areas to be careful with
+
+**Search Performance:**
+- Text search can be slow on large datasets
+- Recent commit improved this - check `search_context.py` for optimized patterns
+- Use database indexes for frequently filtered fields
+
+**Card Images:**
+- Stored in `media/cards/` locally, S3 in production
+- Images are optional (`blank=True, null=True`)
+- Use `card.card_image` property (handles fallbacks)
+
+**Tournament State:**
+- Phase transitions should be validated
+- Player registration states are important
+- Deck locking prevents edits during tournament
+
+**Constants Imports:**
+- Always import as `from fowsim import constants as CONS`
+- Don't duplicate constant values
+
+---
+
 ## Pull Request Guidelines
 
 Per CONTRIBUTORS.md:

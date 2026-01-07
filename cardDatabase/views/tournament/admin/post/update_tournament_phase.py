@@ -8,18 +8,19 @@ from cardDatabase.models.Tournament import TournamentPlayer
 from fowsim import constants as CONS
 from fowsim.decorators import tournament_admin
 
+
 @login_required
 @require_POST
 @tournament_admin
 def post(request, tournament_id):
-    updated_state = request.POST.get('status')
+    updated_state = request.POST.get("status")
     tournament = request.tournament
-    
+
     if updated_state is None:
-        return JsonResponse({'error': 'Payload incorrect'}, status=400)
-    
+        return JsonResponse({"error": "Payload incorrect"}, status=400)
+
     previous_phase = tournament.phase
-    
+
     tournament.phase = updated_state
     tournament.save()
 

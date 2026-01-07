@@ -12,19 +12,19 @@ def apply_text_search(cards, text, search_fields, exactness_option):
     if not text:
         return cards
 
-    words = [w for w in text.split(' ') if w]
+    words = [w for w in text.split(" ") if w]
     if not words:
         return cards
 
-    if 'name' in search_fields:
-        search_fields = search_fields + ['name_without_punctuation']
+    if "name" in search_fields:
+        search_fields = search_fields + ["name_without_punctuation"]
 
     if exactness_option == CONS.TEXT_CONTAINS_AT_LEAST_ONE:
         q = Q()
         for word in words:
             word_query = Q()
             for search_field in search_fields:
-                word_query |= Q(**{search_field + '__icontains': word})
+                word_query |= Q(**{search_field + "__icontains": word})
             q |= word_query
         output = cards.filter(q)
 
@@ -35,14 +35,14 @@ def apply_text_search(cards, text, search_fields, exactness_option):
         for word in words:
             word_query = Q()
             for search_field in search_fields:
-                word_query |= Q(**{search_field + '__icontains': word})
+                word_query |= Q(**{search_field + "__icontains": word})
             combined_q &= word_query
         output = cards.filter(combined_q)
 
     elif exactness_option == CONS.TEXT_EXACT:
         q = Q()
         for search_field in search_fields:
-            q |= Q(**{search_field + '__icontains': text})
+            q |= Q(**{search_field + "__icontains": text})
         output = cards.filter(q)
 
     else:
@@ -54,103 +54,114 @@ def apply_text_search(cards, text, search_fields, exactness_option):
 def basic_search(basic_form):
     cards = []
     if basic_form.is_valid():
-        search_text = basic_form.cleaned_data['generic_text']
+        search_text = basic_form.cleaned_data["generic_text"]
         set_query = Q()
-        format_string = basic_form.cleaned_data['format']
+        format_string = basic_form.cleaned_data["format"]
         if format_string:
             format = Format.objects.get(name=format_string)
             if format.sets.count() > 0:
-                set_query = get_set_query(list(format.sets.values_list('code', flat=True).distinct()), True)
+                set_query = get_set_query(list(format.sets.values_list("code", flat=True).distinct()), True)
 
         cards = Card.objects.filter(set_query).exclude(get_unsupported_sets_query()).distinct()
-        cards = apply_text_search(cards, search_text, ['name', 'ability_texts__text'], CONS.TEXT_CONTAINS_ALL)
+        cards = apply_text_search(cards, search_text, ["name", "ability_texts__text"], CONS.TEXT_CONTAINS_ALL)
     cards = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
-    return {'cards': cards}
+    return {"cards": cards}
 
 
 def advanced_search(advanced_form):
     ctx = {}
     cards = []
     if advanced_form.is_valid():
-        ctx['advanced_form_data'] = advanced_form.cleaned_data
+        ctx["advanced_form_data"] = advanced_form.cleaned_data
 
         attr_query, attr_annotation, attr_extra_queries, attr_exclusions = get_attr_query(
-            advanced_form.cleaned_data['colours'], advanced_form.cleaned_data['colour_match'],
-            advanced_form.cleaned_data['colour_combination'])
-        race_query = get_race_query(advanced_form.cleaned_data['race'])
-        set_query = get_set_query(advanced_form.cleaned_data['sets'])
+            advanced_form.cleaned_data["colours"],
+            advanced_form.cleaned_data["colour_match"],
+            advanced_form.cleaned_data["colour_combination"],
+        )
+        race_query = get_race_query(advanced_form.cleaned_data["race"])
+        set_query = get_set_query(advanced_form.cleaned_data["sets"])
 
-        format_string = advanced_form.cleaned_data['format']
+        format_string = advanced_form.cleaned_data["format"]
         if format_string:
             format = Format.objects.get(name=format_string)
             if format.sets.count() > 0:
-                set_query = get_set_query(list(format.sets.values_list('code', flat=True).distinct()), True)
-                ctx['advanced_form_data']['sets'] = []
+                set_query = get_set_query(list(format.sets.values_list("code", flat=True).distinct()), True)
+                ctx["advanced_form_data"]["sets"] = []
 
-        card_type_query = get_card_type_query(advanced_form.cleaned_data['card_type'])
-        rarity_query = get_rarity_query(advanced_form.cleaned_data['rarity'])
-        divinity_query = get_divinity_query(advanced_form.cleaned_data['divinity'])
-        atk_query = get_atk_def_query(advanced_form.cleaned_data['atk_value'],
-                                      advanced_form.cleaned_data['atk_comparator'], 'ATK')
-        def_query = get_atk_def_query(advanced_form.cleaned_data['def_value'],
-                                      advanced_form.cleaned_data['def_comparator'], 'DEF')
-        keywords_query = get_keywords_query(advanced_form.cleaned_data['keywords'])
-        solo_mode_query = get_solo_mode_query(advanced_form.cleaned_data['solo_mode'])
+        card_type_query = get_card_type_query(advanced_form.cleaned_data["card_type"])
+        rarity_query = get_rarity_query(advanced_form.cleaned_data["rarity"])
+        divinity_query = get_divinity_query(advanced_form.cleaned_data["divinity"])
+        atk_query = get_atk_def_query(
+            advanced_form.cleaned_data["atk_value"], advanced_form.cleaned_data["atk_comparator"], "ATK"
+        )
+        def_query = get_atk_def_query(
+            advanced_form.cleaned_data["def_value"], advanced_form.cleaned_data["def_comparator"], "DEF"
+        )
+        keywords_query = get_keywords_query(advanced_form.cleaned_data["keywords"])
+        solo_mode_query = get_solo_mode_query(advanced_form.cleaned_data["solo_mode"])
 
-        cards = (Card.objects.
-                 annotate(**attr_annotation).filter(attr_query).exclude(attr_exclusions).
-                 filter(race_query).
-                 filter(set_query).
-                 filter(card_type_query).
-                 filter(rarity_query).
-                 filter(divinity_query).
-                 filter(atk_query).
-                 filter(def_query).
-                 filter(keywords_query).
-                 filter(solo_mode_query).
-                 exclude(get_unsupported_sets_query()).
-                 distinct())
+        cards = (
+            Card.objects.annotate(**attr_annotation)
+            .filter(attr_query)
+            .exclude(attr_exclusions)
+            .filter(race_query)
+            .filter(set_query)
+            .filter(card_type_query)
+            .filter(rarity_query)
+            .filter(divinity_query)
+            .filter(atk_query)
+            .filter(def_query)
+            .filter(keywords_query)
+            .filter(solo_mode_query)
+            .exclude(get_unsupported_sets_query())
+            .distinct()
+        )
 
         for q in attr_extra_queries:
             cards = cards.filter(q)
 
-        cards = apply_text_search(cards, advanced_form.cleaned_data['generic_text'],
-                                  advanced_form.cleaned_data['text_search_fields'],
-                                  advanced_form.cleaned_data['text_exactness'])
+        cards = apply_text_search(
+            cards,
+            advanced_form.cleaned_data["generic_text"],
+            advanced_form.cleaned_data["text_search_fields"],
+            advanced_form.cleaned_data["text_exactness"],
+        )
 
-        cost_filters = advanced_form.cleaned_data['cost']
+        cost_filters = advanced_form.cleaned_data["cost"]
         if len(cost_filters) > 0:
             # Don't need DB query to do total cost, remove all that don't match if any were chosen
-            if 'X' in cost_filters:
-                cards = [x for x in cards
-                         if str(x.total_cost) in cost_filters
-                         or x.cost and '{X}' in x.cost]
+            if "X" in cost_filters:
+                cards = [x for x in cards if str(x.total_cost) in cost_filters or x.cost and "{X}" in x.cost]
             else:
                 cards = [x for x in cards if str(x.total_cost) in cost_filters]
 
-        cards = sort_cards(cards, advanced_form.cleaned_data['sort_by'],
-                           advanced_form.cleaned_data['reverse_sort'] or False,
-                           advanced_form.cleaned_data['pick_period'] or None)
-    return ctx | {'cards': cards}
+        cards = sort_cards(
+            cards,
+            advanced_form.cleaned_data["sort_by"],
+            advanced_form.cleaned_data["reverse_sort"] or False,
+            advanced_form.cleaned_data["pick_period"] or None,
+        )
+    return ctx | {"cards": cards}
 
 
 def get_search_form_ctx():
     try:
-        race_values = Race.objects.values('name')
-        races_list = list(map(lambda x: x['name'], race_values))  # Remove blank string
+        race_values = Race.objects.values("name")
+        races_list = list(map(lambda x: x["name"], race_values))  # Remove blank string
         races_list.sort()
-        races_list.remove('')
+        races_list.remove("")
 
-        format_list = Format.objects.annotate(num_sets=Count('sets')).filter(num_sets__gt=0).values('name')
+        format_list = Format.objects.annotate(num_sets=Count("sets")).filter(num_sets__gt=0).values("name")
     except Exception:
         races_list = []
         format_list = []
 
     return {
-        'races_list': list(races_list),
-        'format_list': list(format_list),
-        'card_types_list': CONS.DATABASE_CARD_TYPE_GROUPS,
-        'sets_json': CONS.SET_DATA
+        "races_list": list(races_list),
+        "format_list": list(format_list),
+        "card_types_list": CONS.DATABASE_CARD_TYPE_GROUPS,
+        "sets_json": CONS.SET_DATA,
     }
 
 
@@ -214,9 +225,9 @@ def get_set_query(data, strict_search=False):
             for also_included_set in CONS.SEARCH_SETS_INCLUDE[fow_set]:
                 # No trailing '-' because the '-' is included in CONS
                 set_query |= Q(card_id__istartswith=also_included_set)
-        set_query |= Q(card_id__istartswith=fow_set + '-')
+        set_query |= Q(card_id__istartswith=fow_set + "-")
 
-        #Search for sets directly when in strict_search mode (promos like BAB wont show otherwise)
+        # Search for sets directly when in strict_search mode (promos like BAB wont show otherwise)
         if strict_search:
             set_query |= Q(card_id=fow_set)
     return set_query
@@ -225,14 +236,14 @@ def get_set_query(data, strict_search=False):
 def get_simple_set_query(data):
     set_query = Q()
     for fow_set in data:
-        set_query |= Q(card_id__istartswith=fow_set + '-')
+        set_query |= Q(card_id__istartswith=fow_set + "-")
     return set_query
 
 
 def get_not_set_query(data):
     set_query = ~Q()
     for fow_set in data:
-        set_query &= ~Q(card_id__istartswith=fow_set + '-')
+        set_query &= ~Q(card_id__istartswith=fow_set + "-")
     return set_query
 
 
@@ -240,7 +251,7 @@ def get_attr_query(data, colour_match, colour_combination):
     extra_queries = []
     attr_query = Q()
     attr_exclusions = Q()
-    attr_annotation = {'colour_combination_count': Count('colours__db_representation', distinct=True)}
+    attr_annotation = {"colour_combination_count": Count("colours__db_representation", distinct=True)}
     annotation_filter = Q()
     if colour_match == CONS.DATABASE_COLOUR_MATCH_ANY or not colour_match:
         for card_attr in data:
@@ -284,7 +295,7 @@ def get_divinity_query(data):
 
 def get_atk_def_query(value, comparator, field_name):
     if value is not None and comparator:
-        return Q(**{f'{field_name}__{comparator}': value})
+        return Q(**{f"{field_name}__{comparator}": value})
     return Q()
 
 
@@ -295,20 +306,22 @@ def get_keywords_query(data):
             keywords_query |= Q(ability_texts__text__icontains=keyword)
     return keywords_query
 
+
 def get_solo_mode_query(solo_mode):
     solo_mode_query = Q()
     if solo_mode:
         solo_mode_query = Q(ability_styles__identifier=CONS.SOLO_MODE_STYLE)
     return solo_mode_query
 
+
 def get_set_number_sort_value(set_number):
     #  Need to sort them backwards since it gets reversed to show most recent first
     #  Just make them a negative integer of itself (removing characters)
     if set_number:
-        num = re.sub('[^0-9]', '', set_number)  # Remove non-numeric
+        num = re.sub("[^0-9]", "", set_number)  # Remove non-numeric
         if num.isnumeric():
             return -1 * int(num)
-    return float('-inf')
+    return float("-inf")
 
 
 def get_deck_format_query(data):
@@ -320,33 +333,45 @@ def get_deck_format_query(data):
 
 def sort_cards(cards, sort_by, is_reversed, pick_time_period=None):
     if sort_by == CONS.DATABASE_SORT_BY_MOST_RECENT or not sort_by:
-        return sorted(cards, key=lambda item:
-        (CONS.SETS_IN_ORDER.index(item.set_code) if item.set_code in CONS.SETS_IN_ORDER else 999999,
-         get_set_number_sort_value(item.set_number)),
-                      reverse=not is_reversed)  # (last set comes first, flip the reversed flag
+        return sorted(
+            cards,
+            key=lambda item: (
+                CONS.SETS_IN_ORDER.index(item.set_code) if item.set_code in CONS.SETS_IN_ORDER else 999999,
+                get_set_number_sort_value(item.set_number),
+            ),
+            reverse=not is_reversed,
+        )  # (last set comes first, flip the reversed flag
     elif sort_by == CONS.DATABASE_SORT_BY_TOTAL_COST:
-        return sorted(cards, key=lambda item:
-        (item.total_cost,
-         -CONS.SETS_IN_ORDER.index(item.set_code) if item.set_code in CONS.SETS_IN_ORDER else 999999,
-         get_set_number_sort_value(item.set_number)),
-                      reverse=is_reversed)
+        return sorted(
+            cards,
+            key=lambda item: (
+                item.total_cost,
+                -CONS.SETS_IN_ORDER.index(item.set_code) if item.set_code in CONS.SETS_IN_ORDER else 999999,
+                get_set_number_sort_value(item.set_number),
+            ),
+            reverse=is_reversed,
+        )
     elif sort_by == CONS.DATABASE_SORT_BY_ALPHABETICAL:
-        return sorted(cards, key=lambda item:
-        (item.name,
-         CONS.SETS_IN_ORDER.index(item.set_code) if item.set_code in CONS.SETS_IN_ORDER else 999999,
-         get_set_number_sort_value(item.set_number)),
-                      reverse=is_reversed)
+        return sorted(
+            cards,
+            key=lambda item: (
+                item.name,
+                CONS.SETS_IN_ORDER.index(item.set_code) if item.set_code in CONS.SETS_IN_ORDER else 999999,
+                get_set_number_sort_value(item.set_number),
+            ),
+            reverse=is_reversed,
+        )
     elif sort_by == CONS.DATABASE_SORT_BY_POPULARITY:
         if pick_time_period is None:
             pick_time_period = CONS.PICK_PERIOD_NINETY_DAYS
         all_time = pick_time_period == str(CONS.PICK_PERIOD_ALL_TIME)
         pick_period = PickPeriod.objects.get(days=pick_time_period, all_time=all_time)
-        return (cards
-                .prefetch_related('popularities')
-                .filter(Q(popularities__isnull=True) | Q(popularities__period=pick_period))
-                .order_by(F('popularities__percentage').desc(nulls_last=True))
-                )
-    raise Exception('Attempting to sort card by invalid selection')
+        return (
+            cards.prefetch_related("popularities")
+            .filter(Q(popularities__isnull=True) | Q(popularities__period=pick_period))
+            .order_by(F("popularities__percentage").desc(nulls_last=True))
+        )
+    raise Exception("Attempting to sort card by invalid selection")
 
 
 def get_unsupported_sets_query():
@@ -369,8 +394,8 @@ def get_form_from_params(form_class, request):
     # Grab what query params from request.GET match the expected form values and put them into the dictionary input_data
     # Then instantiate the form using those values
     input_data = {}
-    for form_field_name in form_class.__dict__['declared_fields']:
-        if type(form_class.__dict__['declared_fields'][form_field_name]) == MultipleChoiceField:
+    for form_field_name in form_class.__dict__["declared_fields"]:
+        if type(form_class.__dict__["declared_fields"][form_field_name]) == MultipleChoiceField:
             query_param_value = request.GET.getlist(form_field_name, None)
         else:
             query_param_value = request.GET.get(form_field_name, None)
@@ -382,13 +407,13 @@ def get_form_from_params(form_class, request):
 def decklist_search(decklist_form):
     decklists = []
     if decklist_form.is_valid():
-        search_text = decklist_form.cleaned_data['contains_card']
-        text_exactness = decklist_form.cleaned_data['text_exactness']
-        deck_format_filter = get_deck_format_query(decklist_form.cleaned_data['deck_format'])
+        search_text = decklist_form.cleaned_data["contains_card"]
+        text_exactness = decklist_form.cleaned_data["text_exactness"]
+        deck_format_filter = get_deck_format_query(decklist_form.cleaned_data["deck_format"])
         decklists = DeckList.objects.exclude(get_unsupported_decklists_query()).distinct()
         decklists = decklists.filter(deck_format_filter)
-        decklists = apply_deckcard_cardname_search(decklists, search_text, ['name'], text_exactness)
-        decklists = decklists.order_by('-last_modified')
+        decklists = apply_deckcard_cardname_search(decklists, search_text, ["name"], text_exactness)
+        decklists = decklists.order_by("-last_modified")
 
     return decklists
 
@@ -400,16 +425,16 @@ def apply_deckcard_cardname_search(decklists, text, search_fields, exactness_opt
     exactness_option = exactness_option or CONS.TEXT_CONTAINS_ALL
 
     output = []
-    words = text.split(' ')
-    if 'name' in search_fields:
-        search_fields.append('name_without_punctuation')
+    words = text.split(" ")
+    if "name" in search_fields:
+        search_fields.append("name_without_punctuation")
 
     if exactness_option == CONS.TEXT_CONTAINS_AT_LEAST_ONE:
         q = Q()
         for word in words:
             word_query = Q()
             for search_field in search_fields:
-                word_query |= Q(**{'cards__card__' + search_field + '__icontains': word})
+                word_query |= Q(**{"cards__card__" + search_field + "__icontains": word})
             q |= word_query
         output = decklists.filter(q)
 
@@ -419,14 +444,14 @@ def apply_deckcard_cardname_search(decklists, text, search_fields, exactness_opt
         for word in words:
             word_query = Q()
             for search_field in search_fields:
-                word_query |= Q(**{'cards__card__' + search_field + '__icontains': word})
+                word_query |= Q(**{"cards__card__" + search_field + "__icontains": word})
 
             output = output.filter(word_query)
 
     elif exactness_option == CONS.TEXT_EXACT:
         q = Q()
         for search_field in search_fields:
-            q |= Q(**{'cards__card__' + search_field + '__icontains': text})
+            q |= Q(**{"cards__card__" + search_field + "__icontains": text})
 
         output = decklists.filter(q)
 
@@ -434,10 +459,10 @@ def apply_deckcard_cardname_search(decklists, text, search_fields, exactness_opt
 
 
 def full_set_code_to_name(set_code):
-    for cluster in CONS.SET_DATA['clusters']:
-        for fow_set in cluster['sets']:
-            if fow_set['code'] == set_code:
-                return fow_set['name']
+    for cluster in CONS.SET_DATA["clusters"]:
+        for fow_set in cluster["sets"]:
+            if fow_set["code"] == set_code:
+                return fow_set["name"]
 
 
 def searchable_set_and_name(set_code):

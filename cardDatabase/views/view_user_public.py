@@ -11,17 +11,18 @@ def get(request, username=None):
         try:
             if request.user.username == username:
                 #  Dont filter by is_public
-                ctx['decklists'] = DeckList.objects.filter(profile=request.user.profile).order_by('-last_modified')
-                ctx['is_owner'] = True
+                ctx["decklists"] = DeckList.objects.filter(profile=request.user.profile).order_by("-last_modified")
+                ctx["is_owner"] = True
             else:
-                ctx['decklists'] = DeckList.objects.filter(
-                    profile=User.objects.get(username=username).profile, public=True).order_by('-last_modified')
-                ctx['is_owner'] = False
+                ctx["decklists"] = DeckList.objects.filter(
+                    profile=User.objects.get(username=username).profile, public=True
+                ).order_by("-last_modified")
+                ctx["is_owner"] = False
         except User.DoesNotExist:
             raise Http404
 
-        ctx['formats'] = Format.objects.all()
+        ctx["formats"] = Format.objects.all()
 
-        return render(request, 'cardDatabase/html/user_decklists.html', context=ctx)
+        return render(request, "cardDatabase/html/user_decklists.html", context=ctx)
     else:
         raise Http404

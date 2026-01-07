@@ -13,6 +13,7 @@ from cardDatabase.models.Rulings import Ruling, Restriction, RestrictionAction, 
 from cardDatabase.models.Metrics import *
 from cardDatabase.models.Tournament import *
 
+
 class AbilityTextInline(admin.TabularInline):
     model = CardAbility
     extra = 1
@@ -23,42 +24,42 @@ class CardsWithAbilityTextInline(admin.TabularInline):
 
 
 class CardAdmin(admin.ModelAdmin):
-    list_display = ('name', 'card_id', )
-    search_fields = ['name', 'name_without_punctuation', 'ability_texts__text', 'card_id']
+    list_display = (
+        "name",
+        "card_id",
+    )
+    search_fields = ["name", "name_without_punctuation", "ability_texts__text", "card_id"]
     inlines = [AbilityTextInline]
-    autocomplete_fields = ['races', 'artists']
+    autocomplete_fields = ["races", "artists"]
 
     class Media:
-        css = {
-            'all': ('css/admin/card_admin_fixes.css',)
-        }
+        css = {"all": ("css/admin/card_admin_fixes.css",)}
 
     def get_form(self, request, obj=None, **kwargs):
         if obj:
-            self.exclude = ('ability_texts',)
+            self.exclude = ("ability_texts",)
         return super().get_form(request, obj=obj, **kwargs)
 
 
 class AbilityTextAdmin(admin.ModelAdmin):
-    list_display = ('text',)
+    list_display = ("text",)
     inlines = [CardsWithAbilityTextInline]
-    search_fields = ['text']
+    search_fields = ["text"]
 
 
 class BannedCardAdmin(admin.ModelAdmin):
-    search_fields = ['card__name', 'card__name_withoout_punctuation']
-    autocomplete_fields = ['card']
-
+    search_fields = ["card__name", "card__name_withoout_punctuation"]
+    autocomplete_fields = ["card"]
 
 
 class CombinationBannedCardsAdmin(admin.ModelAdmin):
-    search_fields = ['cards__name', 'cards__name_without_punctuation', 'cards']
-    autocomplete_fields = ['cards']
+    search_fields = ["cards__name", "cards__name_without_punctuation", "cards"]
+    autocomplete_fields = ["cards"]
 
 
 class RulingAdmin(admin.ModelAdmin):
-    search_fields = ['card__name', 'card__name_without_punctuation', 'text']
-    fields = ['card', 'text', 'company_confirmed']
+    search_fields = ["card__name", "card__name_without_punctuation", "text"]
+    fields = ["card", "text", "company_confirmed"]
 
     def save_model(self, request, obj, form, change):
         if not change:
@@ -66,34 +67,35 @@ class RulingAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'card':
-            kwargs['queryset'] = Card.objects.all().order_by('name')
+        if db_field.name == "card":
+            kwargs["queryset"] = Card.objects.all().order_by("name")
         return super(RulingAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class RaceAdmin(admin.ModelAdmin):
-    search_fields = ['name']
+    search_fields = ["name"]
+
 
 class ArtistAdmin(admin.ModelAdmin):
-    search_fields = ['name']
+    search_fields = ["name"]
+
 
 class SetAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'code']
+    search_fields = ["name", "code"]
+
 
 class FormatAdmin(admin.ModelAdmin):
-    autocomplete_fields = ['sets']
-    search_fields = ['sets__name', 'sets__code', 'sets']
+    autocomplete_fields = ["sets"]
+    search_fields = ["sets__name", "sets__code", "sets"]
+
 
 class CustomUserAdmin(UserAdmin):
-    list_display = UserAdmin.list_display + ('profile_link',)
+    list_display = UserAdmin.list_display + ("profile_link",)
 
     def profile_link(self, obj):
-        profile_url = "/admin/%s/%s/%d" % (
-            'cardDatabase',
-            'profile',
-            obj.profile.pk
-        )
+        profile_url = "/admin/%s/%s/%d" % ("cardDatabase", "profile", obj.profile.pk)
         return format_html(f'<a href="{profile_url}">Profile</a>')
+
 
 class TournamentPlayerAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
@@ -101,6 +103,7 @@ class TournamentPlayerAdmin(admin.ModelAdmin):
         if obj:
             return [f.name for f in self.model._meta.fields]
         return self.readonly_fields
+
 
 admin.site.register(TournamentPlayer, TournamentPlayerAdmin)
 #  Replace django UserAdmin

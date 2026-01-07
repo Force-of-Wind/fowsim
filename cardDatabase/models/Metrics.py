@@ -6,15 +6,15 @@ class PickPeriod(models.Model):
     all_time = models.BooleanField(blank=False, null=False, default=False)
 
     def __str__(self):
-        return str(self.days) + ' Days' if self.days else 'All Time'
+        return str(self.days) + " Days" if self.days else "All Time"
 
     @property
     def cssId(self):
-        return self.days or 'All-Time'
+        return self.days or "All-Time"
 
 
 class MostPickedCardPickRate(models.Model):
-    card = models.ForeignKey('Card', on_delete=models.CASCADE, related_name='popularities')
+    card = models.ForeignKey("Card", on_delete=models.CASCADE, related_name="popularities")
     percentage = models.IntegerField(null=False, blank=False)
     period = models.ForeignKey(PickPeriod, on_delete=models.CASCADE)
 
@@ -23,7 +23,7 @@ class MostPickedCardPickRate(models.Model):
 
 
 class AttributePickRate(models.Model):
-    card_attr = models.ForeignKey('CardColour', on_delete=models.CASCADE)
+    card_attr = models.ForeignKey("CardColour", on_delete=models.CASCADE)
     percentage = models.IntegerField(null=False, blank=False)
     period = models.ForeignKey(PickPeriod, on_delete=models.CASCADE)
 
@@ -32,7 +32,7 @@ class AttributePickRate(models.Model):
 
 
 class CardTypePickRate(models.Model):
-    card_type = models.ForeignKey('Type', on_delete=models.CASCADE)
+    card_type = models.ForeignKey("Type", on_delete=models.CASCADE)
     period = models.ForeignKey(PickPeriod, on_delete=models.CASCADE)
     percentage = models.IntegerField(null=False, blank=False)
 

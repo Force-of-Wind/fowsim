@@ -4,7 +4,7 @@ from cardDatabase.models.CardType import Card, CardAbility
 
 
 class Command(BaseCommand):
-    help = 'Migrates data from ability_texts to ability_text using through model'
+    help = "Migrates data from ability_texts to ability_text using through model"
 
     def handle(self, *args, **options):
         for card in Card.objects.all():

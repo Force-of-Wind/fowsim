@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class CardDatabaseConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'cardDatabase'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "cardDatabase"

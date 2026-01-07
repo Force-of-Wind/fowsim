@@ -5,7 +5,7 @@ from fowsim import constants as CONS
 
 
 class Command(BaseCommand):
-    help = 'Creates all Keyword objects in the database if they dont already exist'
+    help = "Creates all Keyword objects in the database if they dont already exist"
 
     def handle(self, *args, **options):
         for search_string, name in CONS.KEYWORDS_CHOICES:

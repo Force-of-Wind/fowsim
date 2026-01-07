@@ -2,8 +2,12 @@ from django.shortcuts import get_object_or_404, render
 
 from cardDatabase.forms import SearchForm, AdvancedSearchForm
 from cardDatabase.models import Card, DeckList
-from cardDatabase.views.utils.search_context import get_search_form_ctx, searchable_set_and_name, sort_cards, \
-    get_set_query
+from cardDatabase.views.utils.search_context import (
+    get_search_form_ctx,
+    searchable_set_and_name,
+    sort_cards,
+    get_set_query,
+)
 from fowsim import constants as CONS
 
 import datetime
@@ -13,28 +17,35 @@ def get(request, card_id=None):
     card = get_object_or_404(Card, card_id=card_id)
     referred_by = Card.objects.filter(ability_texts__text__contains=f'"{card.name}"')
     ctx = get_search_form_ctx()
-    ctx['card'] = card
-    ctx['referred_by'] = referred_by
-    ctx['basic_form'] = SearchForm()
-    ctx['advanced_form'] = AdvancedSearchForm()
+    ctx["card"] = card
+    ctx["referred_by"] = referred_by
+    ctx["basic_form"] = SearchForm()
+    ctx["advanced_form"] = AdvancedSearchForm()
     set_code, set_name = searchable_set_and_name(card.set_code)
-    ctx['set_name'] = set_name
-    ctx['set_code'] = set_code
+    ctx["set_name"] = set_name
+    ctx["set_code"] = set_code
 
     prev_card, next_card = get_next_prev_cards(card_id, set_code)
-    ctx['prev_card'] = prev_card
-    ctx['next_card'] = next_card
+    ctx["prev_card"] = prev_card
+    ctx["next_card"] = next_card
 
     one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
-    ctx['recent_decklists'] = DeckList.objects.filter(public=True, cards__card__in=([card] + list(card.other_sides)),
-                                                      last_modified__gt=one_month_ago).distinct().order_by(
-        '-last_modified')
-    if not ctx['recent_decklists'].count():
+    ctx["recent_decklists"] = (
+        DeckList.objects.filter(
+            public=True, cards__card__in=([card] + list(card.other_sides)), last_modified__gt=one_month_ago
+        )
+        .distinct()
+        .order_by("-last_modified")
+    )
+    if not ctx["recent_decklists"].count():
         # There are no recent ones, just grab the up to the 4 most recent ones instead
-        ctx['recent_decklists'] = DeckList.objects.filter(public=True, cards__card__in=(
-                    [card] + list(card.other_sides))).distinct().order_by('-last_modified')[:4]
+        ctx["recent_decklists"] = (
+            DeckList.objects.filter(public=True, cards__card__in=([card] + list(card.other_sides)))
+            .distinct()
+            .order_by("-last_modified")[:4]
+        )
 
-    return render(request, 'cardDatabase/html/view_card.html', context=ctx)
+    return render(request, "cardDatabase/html/view_card.html", context=ctx)
 
 
 def get_next_prev_cards(card_id, set_code):

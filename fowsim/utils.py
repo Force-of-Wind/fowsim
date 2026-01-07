@@ -33,7 +33,7 @@ class AbstractModel(models.Model):
         # Finds all subclasses of the class extending AbstractModel for a choices dropdown
         query_filter = None
         for cls in cls.get_subclasses(cls):
-            app_label, model = cls._meta.label_lower.split('.')
+            app_label, model = cls._meta.label_lower.split(".")
             current_filter = models.Q(app_label=app_label, model=model)
 
             if query_filter is None:

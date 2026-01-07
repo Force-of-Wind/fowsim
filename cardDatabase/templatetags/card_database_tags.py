@@ -20,45 +20,45 @@ from cardDatabase.models.Spoilers import SpoilerSeason
 register = template.Library()
 
 WILL_TYPE_TO_FILENAMES = {
-    CONS.ATTRIBUTE_FIRE_CODE: 'fire.png',
-    CONS.ATTRIBUTE_DARKNESS_CODE: 'darkness.png',
-    CONS.ATTRIBUTE_LIGHT_CODE: 'light.png',
-    CONS.ATTRIBUTE_WATER_CODE: 'water.png',
-    CONS.ATTRIBUTE_WIND_CODE: 'wind.png',
-    CONS.ATTRIBUTE_VOID_CODE: 'void.png',
-    CONS.WILL_MOON_CODE: 'moon.png',
-    CONS.WILL_TIME_CODE: 'time.png',
-    '0': '0.png',
-    '1': '1.png',
-    '2': '2.png',
-    '3': '3.png',
-    '4': '4.png',
-    '5': '5.png',
-    '6': '6.png',
-    '7': '7.png',
-    '8': '8.png',
-    '9': '9.png',
-    '10': '10.png',
-    '11': '11.png',
-    '12': '12.png',
-    '13': '13.png',
-    '14': '14.png',
-    '15': '15.png',
-    '16': '16.png',
-    '17': '17.png',
-    '18': '18.png',
-    '19': '19.png',
-    '20': '20.png',
-    'X': 'X.png',
-    'Y': 'Y.png',
-    'Z': 'Z.png',
+    CONS.ATTRIBUTE_FIRE_CODE: "fire.png",
+    CONS.ATTRIBUTE_DARKNESS_CODE: "darkness.png",
+    CONS.ATTRIBUTE_LIGHT_CODE: "light.png",
+    CONS.ATTRIBUTE_WATER_CODE: "water.png",
+    CONS.ATTRIBUTE_WIND_CODE: "wind.png",
+    CONS.ATTRIBUTE_VOID_CODE: "void.png",
+    CONS.WILL_MOON_CODE: "moon.png",
+    CONS.WILL_TIME_CODE: "time.png",
+    "0": "0.png",
+    "1": "1.png",
+    "2": "2.png",
+    "3": "3.png",
+    "4": "4.png",
+    "5": "5.png",
+    "6": "6.png",
+    "7": "7.png",
+    "8": "8.png",
+    "9": "9.png",
+    "10": "10.png",
+    "11": "11.png",
+    "12": "12.png",
+    "13": "13.png",
+    "14": "14.png",
+    "15": "15.png",
+    "16": "16.png",
+    "17": "17.png",
+    "18": "18.png",
+    "19": "19.png",
+    "20": "20.png",
+    "X": "X.png",
+    "Y": "Y.png",
+    "Z": "Z.png",
 }
 
 
 @register.simple_tag
 def format_cost_text(text):
     for attr in WILL_TYPE_TO_FILENAMES:
-        text = text.replace('{%s}' % attr, attribute_to_img_html(attr))
+        text = text.replace("{%s}" % attr, attribute_to_img_html(attr))
 
     return mark_safe(text)
 
@@ -75,12 +75,13 @@ def attribute_to_img_html(attr):
 
 @register.simple_tag
 def attribute_to_img_src(attr):
-    return mark_safe(static('img/costs/' + WILL_TYPE_TO_FILENAMES[str(attr)]))
+    return mark_safe(static("img/costs/" + WILL_TYPE_TO_FILENAMES[str(attr)]))
 
 
 @register.simple_tag
 def datetime_to_timestamp(datetime):
     return datetime.timestamp()
+
 
 @register.filter(name="field_")
 def field_(self, name):
@@ -92,8 +93,7 @@ def field_(self, name):
     try:
         field = self.fields[name]
     except KeyError:
-        raise KeyError(
-            "Key %r not found in '%s'" % (name, self.__class__.__name__))
+        raise KeyError("Key %r not found in '%s'" % (name, self.__class__.__name__))
     return BoundField(self, field, name)
 
 
@@ -103,30 +103,30 @@ def make_bubble_html(text):
 
 
 def make_bubbles(text):
-    matches = re.findall(r'\[[^\]]*\]', text)
+    matches = re.findall(r"\[[^\]]*\]", text)
     for match in matches:
-        if '/' not in match:  # Skip any ATK/DEF
+        if "/" not in match:  # Skip any ATK/DEF
             text = text.replace(match, make_bubble_html(match))
     return text
 
 
 def add_rest_icon(text):
-    rest_url = static('img/rest.png')
-    return text.replace('{Rest}', f'<img class="ability-rest-icon" src="{rest_url}" alt="{{Rest}}">')
+    rest_url = static("img/rest.png")
+    return text.replace("{Rest}", f'<img class="ability-rest-icon" src="{rest_url}" alt="{{Rest}}">')
 
 
 def escape_tags(text):
-    text = text.replace('<', '&lt;')
-    text = text.replace('>', '&gt;')
+    text = text.replace("<", "&lt;")
+    text = text.replace(">", "&gt;")
     return text
 
 
 def replace_newlines(text):
-    return text.replace('\n', '<br />')
+    return text.replace("\n", "<br />")
 
 
 def replace_angled_brackets(text):
-    matches = re.findall(r'&lt;&lt;[\w]+&gt;&gt;', text)
+    matches = re.findall(r"&lt;&lt;[\w]+&gt;&gt;", text)
     for match in matches:
         text = text.replace(match, f'<b>‹‹{match[len("&lt;&lt;"):-len("&gt;&gt;")]}››</b>')
 
@@ -147,19 +147,19 @@ def format_ability_text(text):
 
 @register.simple_tag
 def card_id_to_url(card_id):
-    return reverse('cardDatabase-view-card', kwargs={'card_id': card_id})
+    return reverse("cardDatabase-view-card", kwargs={"card_id": card_id})
 
 
 @register.simple_tag
 def referenced_card_img_html(card):
     other_sides = card.other_sides
     if other_sides:
-        output = ''
+        output = ""
         output += '<div class="multi-hovered-img">'
         output += f'<img class="hover-card-img" src="{card.card_image.url}"/>'
         for other_card in other_sides:
             output += f'<img class="hover-card-img" src="{other_card.card_image.url}"/>'
-        output += '</div>'
+        output += "</div>"
     else:
         output = f'<img class="hover-card-img" src="{card.card_image.url}"/>'
     return mark_safe(output)
@@ -175,8 +175,9 @@ def add_card_reference_links(ability_text):
             except Card.MultipleObjectsReturned:
                 card = Card.objects.filter(name=match).first()
             card_url = card_id_to_url(card.card_id)
-            ability_text = ability_text.replace(match,
-                                                f'<a class="referenced-card" href="{card_url}">{card.name}{referenced_card_img_html(card)}</a>')
+            ability_text = ability_text.replace(
+                match, f'<a class="referenced-card" href="{card_url}">{card.name}{referenced_card_img_html(card)}</a>'
+            )
         except Card.DoesNotExist:
             pass
     return ability_text
@@ -188,55 +189,56 @@ def advanced_form_is_in_data(form_values, value, default_value, success_value):
         return default_value
     elif form_values and value in form_values:
         return success_value
-    return ''
+    return ""
+
 
 @register.simple_tag
 def text_exactness_is_in_data(form_values, value):
-    default_value = ''
+    default_value = ""
     if value == CONS.TEXT_CONTAINS_ALL:
-        default_value = 'checked'
-    return advanced_form_is_in_data(form_values, value, default_value, 'checked')
+        default_value = "checked"
+    return advanced_form_is_in_data(form_values, value, default_value, "checked")
 
 
 @register.simple_tag
 def text_search_fields_is_in_data(form_values, value):
-    default_value = ''
-    if value in ['name', 'races__name', 'ability_texts__text']:
-        default_value = 'checked'
-    return advanced_form_is_in_data(form_values, value, default_value, 'checked')
+    default_value = ""
+    if value in ["name", "races__name", "ability_texts__text"]:
+        default_value = "checked"
+    return advanced_form_is_in_data(form_values, value, default_value, "checked")
 
 
 @register.simple_tag
 def colour_match_is_in_data(form_values, value):
-    default_value = ''
+    default_value = ""
     if value in [CONS.DATABASE_COLOUR_MATCH_ANY]:
-        default_value = 'checked'
-    return advanced_form_is_in_data(form_values, value, default_value, 'checked')
+        default_value = "checked"
+    return advanced_form_is_in_data(form_values, value, default_value, "checked")
 
 
 @register.simple_tag
 def sort_by_is_in_data(form_values, value):
-    default_value = ''
+    default_value = ""
     if value in [CONS.DATABASE_SORT_BY_MOST_RECENT]:
-        default_value = 'checked'
-    return advanced_form_is_in_data(form_values, value, default_value, 'checked')
+        default_value = "checked"
+    return advanced_form_is_in_data(form_values, value, default_value, "checked")
 
 
 @register.simple_tag
 def pick_period_is_in_data(form_value, value):
-    default_value = ''
+    default_value = ""
     if value in [str(CONS.PICK_PERIOD_NINETY_DAYS)]:
-        default_value = 'checked'
+        default_value = "checked"
     if not form_value:
         return default_value
     elif value == form_value:
-        return 'checked'
-    return ''
+        return "checked"
+    return ""
 
 
 @register.simple_tag
 def get_random_chibi(category):
-    return static(f'img/chibis/{category}/{random.choice(CONS.CHIBI_NAMES)}.png')
+    return static(f"img/chibis/{category}/{random.choice(CONS.CHIBI_NAMES)}.png")
 
 
 @register.filter
@@ -246,7 +248,7 @@ def card_referenced_by(card):
 
 @register.simple_tag
 def format_id_text(text):
-    return text.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, '*')
+    return text.replace(CONS.DOUBLE_SIDED_CARD_CHARACTER, "*")
 
 
 @register.simple_tag
@@ -262,12 +264,12 @@ def map_tags(card):
     if len(output) > 0:
         return mark_safe(json.dumps(ast.literal_eval(str(output))))
     else:
-        return ''
+        return ""
 
 
 @register.simple_tag
 def has_tags(card):
-    if len(card.card.tag.all()) > 0 and card.zone.zone.name != 'Side Deck':
+    if len(card.card.tag.all()) > 0 and card.zone.zone.name != "Side Deck":
         return True
     else:
         return False
@@ -282,7 +284,7 @@ def cards_to_json(cards):
             "zone": card.zone.zone.name,
             "cost": card.card.cost,
             "img": card.card.card_image.url,
-            "quantity": card.quantity
+            "quantity": card.quantity,
         }
         output_cards.append(simple_card)
     return dict_to_json(output_cards)
@@ -290,7 +292,7 @@ def cards_to_json(cards):
 
 @register.simple_tag
 def colours_to_imgs(colours):
-    output = ''
+    output = ""
     for colour in colours:
         output += attribute_to_img_html(colour)
     return mark_safe(output)
@@ -298,7 +300,7 @@ def colours_to_imgs(colours):
 
 @register.simple_tag
 def decklist_card_count(decklist):
-    return decklist.cards.aggregate(Sum('quantity'))['quantity__sum'] or 0
+    return decklist.cards.aggregate(Sum("quantity"))["quantity__sum"] or 0
 
 
 @register.simple_tag
@@ -309,55 +311,57 @@ def untap_list(cards):
     stone_deck = []
     face_down = []
     for card in cards:
-        if card.zone.zone.name == 'Main Deck':
+        if card.zone.zone.name == "Main Deck":
             main.append(card)
-        elif card.zone.zone.name == 'Side Deck':
+        elif card.zone.zone.name == "Side Deck":
             sideboard.append(card)
-        elif card.zone.zone.name == 'Magic Stone Deck':
+        elif card.zone.zone.name == "Magic Stone Deck":
             stone_deck.append(card)
-        elif card.zone.zone.name == 'Ruler':
+        elif card.zone.zone.name == "Ruler":
             starting_area.append(card)
-        elif ('stranger' in card.zone.zone.name.lower() or
-              'rune' in card.zone.zone.name.lower() or
-              'extra' in card.zone.zone.name.lower()):
+        elif (
+            "stranger" in card.zone.zone.name.lower()
+            or "rune" in card.zone.zone.name.lower()
+            or "extra" in card.zone.zone.name.lower()
+        ):
             face_down.append(card)
 
-    output = ''
+    output = ""
     if len(main) > 0:
-        output += '//deck-1\n'
+        output += "//deck-1\n"
         for card in main:
-            output += f'{str(card.quantity)} {card.card.name}\n'
-        output += '\n'
+            output += f"{str(card.quantity)} {card.card.name}\n"
+        output += "\n"
 
     if len(starting_area) > 0:
-        output += '//play-1\n'
+        output += "//play-1\n"
         for card in starting_area:
-            output += f'{str(card.quantity)} {card.card.name}\n'
-        output += '\n'
+            output += f"{str(card.quantity)} {card.card.name}\n"
+        output += "\n"
 
     if len(sideboard) > 0:
-        output += '//sideboard-1\n'
+        output += "//sideboard-1\n"
         for card in sideboard:
-            output += f'{str(card.quantity)} {card.card.name}\n'
-        output += '\n'
+            output += f"{str(card.quantity)} {card.card.name}\n"
+        output += "\n"
 
     if len(stone_deck) > 0:
-        output += '//deck-2\n'
+        output += "//deck-2\n"
         for card in stone_deck:
-            output += f'{str(card.quantity)} {card.card.name}\n'
-        output += '\n'
+            output += f"{str(card.quantity)} {card.card.name}\n"
+        output += "\n"
 
     if len(face_down) > 0:
-        output += '//pile-facedown\n'
+        output += "//pile-facedown\n"
         for card in face_down:
-            output += f'{str(card.quantity)} {card.card.name}\n'
-        output += '\n'
+            output += f"{str(card.quantity)} {card.card.name}\n"
+        output += "\n"
     return output
 
 
 @register.simple_tag
 def decklist_preview_img_url(decklist):
-    ruler_cards = decklist.cards.filter(zone__zone__name='Ruler')
+    ruler_cards = decklist.cards.filter(zone__zone__name="Ruler")
     if ruler_cards.exists():
         return mark_safe(ruler_cards.first().card.card_image.url)
     else:
@@ -371,28 +375,29 @@ def base_site_icon():
 
 @register.simple_tag
 def get_spoiler_link():
-    spoiler_sets = list(SpoilerSeason.objects.filter(is_active=True).values_list('set_code', flat=True))
+    spoiler_sets = list(SpoilerSeason.objects.filter(is_active=True).values_list("set_code", flat=True))
 
     if len(spoiler_sets) == 0:
-        return ''
+        return ""
 
-    url = reverse('cardDatabase-search') + f'?spoiler_season={(",".join(spoiler_sets))}'
+    url = reverse("cardDatabase-search") + f'?spoiler_season={(",".join(spoiler_sets))}'
     return mark_safe(f'<a href="{url}">Spoilers</a>')
+
 
 @register.simple_tag
 def get_spoiler_url():
-    spoiler_sets = list(SpoilerSeason.objects.filter(is_active=True).values_list('set_code', flat=True))
+    spoiler_sets = list(SpoilerSeason.objects.filter(is_active=True).values_list("set_code", flat=True))
 
     if len(spoiler_sets) == 0:
-        return ''
+        return ""
 
-    url = reverse('cardDatabase-search') + f'?spoiler_season={(",".join(spoiler_sets))}'
+    url = reverse("cardDatabase-search") + f'?spoiler_season={(",".join(spoiler_sets))}'
     return url
 
 
 @register.simple_tag
 def order_card_abilities(card):
-    return card.abilities.all().order_by('position')
+    return card.abilities.all().order_by("position")
 
 
 @register.simple_tag
@@ -408,7 +413,7 @@ def aggregate_abilties_by_style_in_order(abilities):
             current_style = ability.special_style.identifier
             current_style_name = ability.special_style.name
         else:
-            current_style = 'normal'
+            current_style = "normal"
             current_style_name = current_style
 
         if current_style == last_style:
@@ -432,9 +437,9 @@ def aggregate_abilties_by_style_in_order(abilities):
 @register.simple_tag
 def get_edit_decklist_url(decklist_pk, user_agent):
     if user_agent.is_mobile or user_agent.is_tablet:
-        return reverse('cardDatabase-edit-decklist-mobile', kwargs={'decklist_id': decklist_pk})
+        return reverse("cardDatabase-edit-decklist-mobile", kwargs={"decklist_id": decklist_pk})
     else:
-        return reverse('cardDatabase-edit-decklist', kwargs={'decklist_id': decklist_pk})
+        return reverse("cardDatabase-edit-decklist", kwargs={"decklist_id": decklist_pk})
 
 
 @register.simple_tag
@@ -444,7 +449,7 @@ def get_card_img_urls(card):
     if other_sides:
         for other_side in other_sides:
             output.append(other_side.card_image.url)
-    return str(output).replace('\'', '"')
+    return str(output).replace("'", '"')
 
 
 @register.simple_tag
@@ -455,29 +460,33 @@ def embed_text_with_card_urls(text):
     """
     output = []
     #  Either "\n" or text in "[[ ]]"
-    matches = re.findall(r'(\[\[.*?\]\])|(\n)', text)
+    matches = re.findall(r"(\[\[.*?\]\])|(\n)", text)
     for match in matches:
         match = match[0] or match[1]
-        if match == '\n':
+        if match == "\n":
             splits = text.split(match, 1)
             output.append(splits[0])
-            output.append(mark_safe('<br />'))
+            output.append(mark_safe("<br />"))
             text = splits[1]
         else:
             match = match[2:-2]  # Cut off "[[ ]]"
             card = Card.objects.filter(
-                Q(name__iexact=match) | Q(name_without_punctuation__iexact=remove_punctuation(match))).first()
+                Q(name__iexact=match) | Q(name_without_punctuation__iexact=remove_punctuation(match))
+            ).first()
 
             # Card not found
             if not card:
                 continue
 
-            view_card_url = reverse('cardDatabase-view-card', kwargs={"card_id": card.card_id})
+            view_card_url = reverse("cardDatabase-view-card", kwargs={"card_id": card.card_id})
             # Consume the string split by split so we can mark safe only the sections with imgs to avoid html injection
             splits = text.split(match, 1)
             output.append(splits[0][:-2])
-            output.append(mark_safe(
-                f'<a class="referenced-card" href="{view_card_url}">{card.name}{referenced_card_img_html(card)}</a>'))
+            output.append(
+                mark_safe(
+                    f'<a class="referenced-card" href="{view_card_url}">{card.name}{referenced_card_img_html(card)}</a>'
+                )
+            )
             text = splits[1][2:]
     else:
         output.append(text)
@@ -492,4 +501,4 @@ def set_code_to_name(set_code):
 
 @register.simple_tag
 def trucateText(text, trucateAt=40):
-    return (text[:trucateAt] + '...') if len(text) > trucateAt else text
+    return (text[:trucateAt] + "...") if len(text) > trucateAt else text

@@ -20,4 +20,4 @@ def post(request, decklist_id=None):
     decklist.shareCode = uuid.uuid4().hex
     decklist.save()
 
-    return JsonResponse({'code': decklist.shareCode})
+    return JsonResponse({"code": decklist.shareCode})

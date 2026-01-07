@@ -12,10 +12,12 @@ def apply_text_search(cards, text, search_fields, exactness_option):
     if not text:
         return cards
 
-    output = []
-    words = text.split(' ')
+    words = [w for w in text.split(' ') if w]
+    if not words:
+        return cards
+
     if 'name' in search_fields:
-        search_fields.append('name_without_punctuation')
+        search_fields = search_fields + ['name_without_punctuation']
 
     if exactness_option == CONS.TEXT_CONTAINS_AT_LEAST_ONE:
         q = Q()
@@ -27,21 +29,24 @@ def apply_text_search(cards, text, search_fields, exactness_option):
         output = cards.filter(q)
 
     elif exactness_option == CONS.TEXT_CONTAINS_ALL:
-        # Use db because there's not many terms and this is more efficient
-        output = cards
+        # Build a single combined Q object instead of chaining .filter() calls
+        # Chaining filters on related fields creates multiple JOINs which is slow
+        combined_q = Q()
         for word in words:
             word_query = Q()
             for search_field in search_fields:
                 word_query |= Q(**{search_field + '__icontains': word})
-
-            output = output.filter(word_query)
+            combined_q &= word_query
+        output = cards.filter(combined_q)
 
     elif exactness_option == CONS.TEXT_EXACT:
         q = Q()
         for search_field in search_fields:
             q |= Q(**{search_field + '__icontains': text})
-
         output = cards.filter(q)
+
+    else:
+        return cards
 
     return output
 

@@ -37,3 +37,8 @@
 .L5 {
     border:1px solid magenta;
 }
+
+
+.tournament .mh-80 {
+    min-height: 80%;
+}

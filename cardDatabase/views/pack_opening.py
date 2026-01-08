@@ -87,7 +87,9 @@ def get(request, setcode=None):
         if not slot in config:
             rarity_query = get_rarity_query([slot])
             card_pool = card_pool.filter(rarity_query).filter(set_query)
-            pool_count = card_pool.count() - 1
+            pool_count = card_pool.count()
+            if pool_count == 0:
+                continue
             pull = random.randrange(0, pool_count)
             card = card_pool[pull]
             pulls.append({"card": card, "slot": slot.lower()})
@@ -137,9 +139,9 @@ def get(request, setcode=None):
                             set_query = get_not_set_query(set_overrides)
 
             card_pool = card_pool.filter(set_query)
-            pool_count = card_pool.count() - 1
-            # if pool_count < 1:
-            #     return HttpResponse(str(json.dumps(pulledSlot)))
+            pool_count = card_pool.count()
+            if pool_count == 0:
+                continue
             pull = random.randrange(0, pool_count)
             card = card_pool[pull]
             pulls.append({"card": card, "slot": slot.lower()})
@@ -157,13 +159,12 @@ def read_file(path):
 
 
 def weightSamples(pairs):
-    rand = random.randrange(1, 100)
     segments = []
     for pair in pairs:
         for _ in range(pair["chance"]):
             segments.append(pair)
 
-    return segments[rand]
+    return random.choice(segments)
 
 
 def build_duplicate_filter(pull_history, slot):
@@ -175,5 +176,4 @@ def build_duplicate_filter(pull_history, slot):
 
 
 def get_random_array_entry(array):
-    rand = random.randrange(1, len(array))
-    return array[rand]
+    return random.choice(array)

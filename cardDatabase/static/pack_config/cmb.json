@@ -132,14 +132,10 @@
         },
         {
             "chance": 11,
-            "rarity": "SR",
             "conditions": [
                 {
                     "equals": true,
-                    "races": [
-                        "Armament",
-                        "High Armament"
-                    ]
+                    "type": "Sub-Ruler"
                 }
             ]
         },

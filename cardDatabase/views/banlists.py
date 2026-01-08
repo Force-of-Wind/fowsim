@@ -29,23 +29,18 @@ def get(request):
             banned_cards_by_format[format_name].append(banned_card)
             seen_banned_cards_by_format[format_name].add(card_name)
 
-    for combination_banned_card in CombinationBannedCards.objects.select_related(
-        "format"
-    ).prefetch_related("cards"):
+    for combination_banned_card in CombinationBannedCards.objects.select_related("format").prefetch_related("cards"):
         format_name = combination_banned_card.format.name
-        
+
         #  Setup data structuyres if they don't exist
         if format_name not in combination_banned_cards_by_format:
             combination_banned_cards_by_format[combination_banned_card.format.name] = []
-            seen_combination_banned_cards_by_format[
-                combination_banned_card.format.name
-            ] = set()
+            seen_combination_banned_cards_by_format[combination_banned_card.format.name] = set()
 
         #  Add combinations
-        card_names = tuple(sorted(combination_banned_card.cards.values_list('name', flat=True)))
+        card_names = tuple(sorted(combination_banned_card.cards.values_list("name", flat=True)))
         if card_names not in seen_combination_banned_cards_by_format[format_name]:
             combination_banned_cards_by_format[format_name].append(combination_banned_card)
-        
 
     ctx["banned_cards"] = banned_cards_by_format
     ctx["combination_banned_cards"] = combination_banned_cards_by_format

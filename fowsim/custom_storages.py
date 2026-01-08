@@ -14,6 +14,7 @@ class MediaStorage(S3Boto3Storage):
     def get_valid_name(self, name: str) -> str:
         return name
 
+
 class LocalMediaStorage(FileSystemStorage):
     def get_valid_name(self, name: str) -> str:
         return name

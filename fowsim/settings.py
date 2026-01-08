@@ -24,28 +24,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('PRODUCTION'):
-    print('Running in PRODUCTION mode...')
+if os.environ.get("PRODUCTION"):
+    print("Running in PRODUCTION mode...")
     DEBUG = False
 else:
-    print('Running in DEBUG mode...')
+    print("Running in DEBUG mode...")
     DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
-AWS_STORAGE_BUCKET_NAME = 'fowsim'
-AWS_S3_REGION_NAME = 'us-east-2'
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+AWS_STORAGE_BUCKET_NAME = "fowsim"
+AWS_S3_REGION_NAME = "us-east-2"
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
 AWS_DEFAULT_ACL = None
 
-MEDIAFILES_LOCATION = 'media'
-STATICFILES_LOCATION = 'static'
+MEDIAFILES_LOCATION = "media"
+STATICFILES_LOCATION = "static"
 STORAGES = dict()
 
 if DEBUG:
@@ -57,7 +57,7 @@ if DEBUG:
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }
-    STATIC_ROOT = os.path.join(BASE_DIR, 'cardDatabase/static/')
+    STATIC_ROOT = os.path.join(BASE_DIR, "cardDatabase/static/")
 else:
     STORAGES = {
         "default": {
@@ -71,58 +71,58 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
-    'game',
-    'cardDatabase',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django_user_agents',
-    'debug_toolbar',
+    "game",
+    "cardDatabase",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django_user_agents",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_user_agents.middleware.UserAgentMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_user_agents.middleware.UserAgentMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-ROOT_URLCONF = 'fowsim.urls'
+ROOT_URLCONF = "fowsim.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'fowsim.wsgi.application'
+WSGI_APPLICATION = "fowsim.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if os.environ.get('DATABASE_URL'):
-    db_url_re = re.compile(r'postgres:\/\/(\S+):(\S+)@(\S+):(\d+)\/(\S+)')
-    re_result:list = re.findall(db_url_re, os.environ.get('DATABASE_URL'))
-    match:tuple = re_result[0]
+if os.environ.get("DATABASE_URL"):
+    db_url_re = re.compile(r"postgres:\/\/(\S+):(\S+)@(\S+):(\d+)\/(\S+)")
+    re_result: list = re.findall(db_url_re, os.environ.get("DATABASE_URL"))
+    match: tuple = re_result[0]
 
     db_user = match[0]
     db_pass = match[1]
@@ -130,20 +130,20 @@ if os.environ.get('DATABASE_URL'):
     db_port = match[3]
     db_name = match[4]
 else:
-    db_user = os.environ.get('DB_USER')
-    db_pass = os.environ.get('DB_PASS')
-    db_host = os.environ.get('DB_HOST')
-    db_port = os.environ.get('DB_PORT')
-    db_name = os.environ.get('DB_NAME')
+    db_user = os.environ.get("DB_USER")
+    db_pass = os.environ.get("DB_PASS")
+    db_host = os.environ.get("DB_HOST")
+    db_port = os.environ.get("DB_PORT")
+    db_name = os.environ.get("DB_NAME")
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': db_user,
-        'NAME': db_name,
-        'PASSWORD': db_pass,
-        'HOST': db_host,
-        'PORT': db_port
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": db_user,
+        "NAME": db_name,
+        "PASSWORD": db_pass,
+        "HOST": db_host,
+        "PORT": db_port,
     }
 }
 
@@ -152,16 +152,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -169,9 +169,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -183,70 +183,70 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+STATIC_URL = "/static/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-ADMIN_SITE_HEADER = 'Force of Wind'
-ADMIN_SITE_TITLE = 'Force of Wind Admin'
-ADMIN_INDEX_TITLE = 'Welcome to the Force of Wind Admin'
+ADMIN_SITE_HEADER = "Force of Wind"
+ADMIN_SITE_TITLE = "Force of Wind Admin"
+ADMIN_INDEX_TITLE = "Welcome to the Force of Wind Admin"
 
-ASGI_APPLICATION = 'fowsim.asgi.application'
+ASGI_APPLICATION = "fowsim.asgi.application"
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [(os.environ.get('REDIS_HOST'), os.environ.get('REDIS_PORT'))],
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(os.environ.get("REDIS_HOST"), os.environ.get("REDIS_PORT"))],
         },
     },
 }
 
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
+LOGIN_URL = "login"
+LOGOUT_URL = "logout"
 
-if os.environ.get('PRODUCTION') and os.environ.get('ADMINS'):
-    ADMINS = [(x.strip(), x.strip()) for x in os.environ.get('ADMINS').split(',')]
+if os.environ.get("PRODUCTION") and os.environ.get("ADMINS"):
+    ADMINS = [(x.strip(), x.strip()) for x in os.environ.get("ADMINS").split(",")]
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
         },
     },
-    'root': {
-        'handlers': [],
-        'level': 'WARNING',
+    "root": {
+        "handlers": [],
+        "level": "WARNING",
     },
 }
 
-USER_AGENTS_CACHE = 'default'
+USER_AGENTS_CACHE = "default"
 
 EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'forceofwindonline@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "forceofwindonline@gmail.com"
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")
 EMAIL_PORT = 587
 
-LOGIN_REDIRECT_URL = 'cardDatabase-user-decklists'
-LOGOUT_REDIRECT_URL = 'cardDatabase-search'
+LOGIN_REDIRECT_URL = "cardDatabase-user-decklists"
+LOGOUT_REDIRECT_URL = "cardDatabase-search"
 
 SESSION_COOKIE_AGE = 63072000
 
-DEFAULT_EXCEPTION_REPORTER = 'fowsim.log.AddRequestBodyExceptionReporter'
+DEFAULT_EXCEPTION_REPORTER = "fowsim.log.AddRequestBodyExceptionReporter"
 
 if DEBUG:
-    REDDIT_BOT_API_KEY = 'botkey'
+    REDDIT_BOT_API_KEY = "botkey"
 else:
-    REDDIT_BOT_API_KEY = os.environ.get('REDDIT_BOT_API_KEY')
+    REDDIT_BOT_API_KEY = os.environ.get("REDDIT_BOT_API_KEY")
 
 if not DEBUG:
     SECURE_SSL_REDIRECT = True

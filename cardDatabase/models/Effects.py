@@ -29,7 +29,8 @@ class OneTimeEffect(Effect):
     class Meta:
         abstract = False
 
-    event_type_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,
-                                        limit_choices_to=GameEvent.get_type_choices)
+    event_type_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, limit_choices_to=GameEvent.get_type_choices
+    )
     event_type_id = models.PositiveIntegerField()
-    event_type = GenericForeignKey('event_type_type', 'event_type_id')
+    event_type = GenericForeignKey("event_type_type", "event_type_id")

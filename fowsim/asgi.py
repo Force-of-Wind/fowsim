@@ -15,13 +15,11 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 
 import game.routing
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fowsim.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fowsim.settings")
 
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    "websocket": AuthMiddlewareStack(
-        URLRouter(
-            game.routing.websocket_urlpatterns
-        )
-    ),
-})
+application = ProtocolTypeRouter(
+    {
+        "http": get_asgi_application(),
+        "websocket": AuthMiddlewareStack(URLRouter(game.routing.websocket_urlpatterns)),
+    }
+)

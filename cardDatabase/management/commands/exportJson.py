@@ -12,21 +12,15 @@ from cardDatabase.forms import AdvancedSearchForm
 
 
 class Command(BaseCommand):
-    help = 'exports database data to a json file equivalent to what is used in importjson'
+    help = "exports database data to a json file equivalent to what is used in importjson"
 
     def handle(self, *args, **options):
-        output = {'fow': {
-            'clusters': []
-        }}
-        for cluster in CONS.SET_DATA['clusters']:
-            cluster_data = {"name": cluster['name'], "sets": []}
-            for set in cluster['sets']:
-                code = set['code']
-                set_data = {
-                                'name': set['name'],
-                                'code': code,
-                                'cards': []
-                            }
+        output = {"fow": {"clusters": []}}
+        for cluster in CONS.SET_DATA["clusters"]:
+            cluster_data = {"name": cluster["name"], "sets": []}
+            for set in cluster["sets"]:
+                code = set["code"]
+                set_data = {"name": set["name"], "code": code, "cards": []}
                 set_query = get_set_query([code])
                 cards = sort_cards(Card.objects.filter(set_query).distinct(), CONS.DATABASE_SORT_BY_MOST_RECENT, False)
 
@@ -43,24 +37,24 @@ class Command(BaseCommand):
                         "abilities": [],
                         "divinity": card.divinity or "",
                         "flavour": card.flavour or "",
-                        "artists":[],
-                        "rarity": card.rarity
+                        "artists": [],
+                        "rarity": card.rarity,
                     }
                     for type in card.types.all():
-                        card_data['type'].append(type.name)
+                        card_data["type"].append(type.name)
 
                     for race in card.races.all():
-                        card_data['race'].append(race.name)
+                        card_data["race"].append(race.name)
 
                     for colour in card.colours.all():
-                        card_data['colour'].append(colour.db_representation)
+                        card_data["colour"].append(colour.db_representation)
 
                     for ability in card.ability_texts.all():
-                        card_data['abilities'].append(ability.text)
+                        card_data["abilities"].append(ability.text)
 
-                    set_data['cards'].append(card_data)
-                cluster_data['sets'].append(set_data)
-            output['fow']['clusters'].append(cluster_data)
+                    set_data["cards"].append(card_data)
+                cluster_data["sets"].append(set_data)
+            output["fow"]["clusters"].append(cluster_data)
 
-            with open('exportedCards.json', 'w') as fp:
+            with open("exportedCards.json", "w") as fp:
                 json.dump(output, fp)

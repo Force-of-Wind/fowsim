@@ -5,4 +5,4 @@ from django.http import HttpResponseRedirect
 
 @login_required
 def get(request):
-    return HttpResponseRedirect(reverse('cardDatabase-view-users-decklist', kwargs={'username': request.user.username}))
+    return HttpResponseRedirect(reverse("cardDatabase-view-users-decklist", kwargs={"username": request.user.username}))

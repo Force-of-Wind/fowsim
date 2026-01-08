@@ -5,4 +5,4 @@ from django.urls import reverse
 
 def get(request):
     django_logout(request)
-    return HttpResponseRedirect(reverse('cardDatabase-search'))
+    return HttpResponseRedirect(reverse("cardDatabase-search"))

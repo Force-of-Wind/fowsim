@@ -5,7 +5,7 @@ from fowsim.constants import PICK_PERIOD_DAYS
 
 
 class Command(BaseCommand):
-    help = 'Imports the relevant Metrics.PickPeriod objects to the database'
+    help = "Imports the relevant Metrics.PickPeriod objects to the database"
 
     def handle(self, *args, **options):
         for num_of_days in PICK_PERIOD_DAYS:

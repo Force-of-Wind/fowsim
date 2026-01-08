@@ -13,10 +13,10 @@ from fowsim import constants as CONS
 def post(request, decklist_id=None):
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
-    if decklist.deck_lock != '' and decklist.deck_lock is not None:
-        return HttpResponse('Deck lock already set!', status=400)
-    
+    if decklist.deck_lock != "" and decklist.deck_lock is not None:
+        return HttpResponse("Deck lock already set!", status=400)
+
     decklist.deck_lock = CONS.MODE_PRIVATE
     decklist.save()
 
-    return JsonResponse({'decklist_pk': decklist.pk})
+    return JsonResponse({"decklist_pk": decklist.pk})

@@ -19,7 +19,7 @@ def get(request, decklist_id=None):
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
 
     if decklist.deck_lock == CONS.MODE_TOURNAMENT:
-        return HttpResponseRedirect(reverse('cardDatabase-tournament-decklist'))
+        return HttpResponseRedirect(reverse("cardDatabase-tournament-decklist"))
 
     tournament_player = TournamentPlayer.objects.filter(profile=request.user.profile, deck=decklist).first()
 
@@ -28,19 +28,22 @@ def get(request, decklist_id=None):
         deck_edit_locked = tournament.deck_edit_locked
 
         over_edit_deadline = True
-        if tournament.deck_edit_deadline is None or tournament.deck_edit_deadline.timestamp() > timezone.now().timestamp():
+        if (
+            tournament.deck_edit_deadline is None
+            or tournament.deck_edit_deadline.timestamp() > timezone.now().timestamp()
+        ):
             over_edit_deadline = False
 
         if deck_edit_locked or over_edit_deadline:
-            return HttpResponseRedirect(reverse('cardDatabase-tournament-decklist'))
-    
+            return HttpResponseRedirect(reverse("cardDatabase-tournament-decklist"))
 
     ctx = get_search_form_ctx()
-    ctx['basic_form'] = SearchForm()
-    ctx['advanced_form'] = AdvancedSearchForm()
-    ctx['zones'] = UserDeckListZone.objects.filter(decklist__pk=decklist.pk). \
-        order_by('-zone__show_by_default', 'position')
-    ctx['decklist_cards'] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
-    ctx['decklist'] = decklist
-    ctx['deck_formats'] = Format.objects.all()
-    return render(request, 'cardDatabase/html/edit_decklist.html', context=ctx)
+    ctx["basic_form"] = SearchForm()
+    ctx["advanced_form"] = AdvancedSearchForm()
+    ctx["zones"] = UserDeckListZone.objects.filter(decklist__pk=decklist.pk).order_by(
+        "-zone__show_by_default", "position"
+    )
+    ctx["decklist_cards"] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
+    ctx["decklist"] = decklist
+    ctx["deck_formats"] = Format.objects.all()
+    return render(request, "cardDatabase/html/edit_decklist.html", context=ctx)

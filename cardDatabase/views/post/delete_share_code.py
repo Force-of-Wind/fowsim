@@ -11,8 +11,8 @@ from cardDatabase.models import DeckList
 def post(request, decklist_id=None):
     # Check user matches the decklist
     decklist = get_object_or_404(DeckList, pk=decklist_id, profile__user=request.user)
-    decklist.shareMode = ''
-    decklist.shareCode = ''
+    decklist.shareMode = ""
+    decklist.shareCode = ""
     decklist.save()
 
-    return JsonResponse({'decklist_pk': decklist.pk})
+    return JsonResponse({"decklist_pk": decklist.pk})

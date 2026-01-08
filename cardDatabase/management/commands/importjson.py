@@ -12,28 +12,28 @@ from cardDatabase.models.DeckList import DeckListZone
 def strip_attributes(text):
     # Magic stone have types 'Fire Magic Stone', etc. Remove that, then strip whitespace
     for attribute in CONS.ATTRIBUTE_NAMES:
-        text = text.replace(attribute, '')
+        text = text.replace(attribute, "")
     return text.strip()
 
 
 PUNCTUATION_REPLACEMENTS = {
-    'ӧ': 'o',
-    'ö': 'o',  # There are actually two different ones, not a mistake. One is cyrillic, one is latin.
+    "ӧ": "o",
+    "ö": "o",  # There are actually two different ones, not a mistake. One is cyrillic, one is latin.
 }
 
 
 def remove_punctuation(name):
-    matches = re.findall('[^a-zA-Z0-9 ]', name)
+    matches = re.findall("[^a-zA-Z0-9 ]", name)
     for match in matches:
         if match in PUNCTUATION_REPLACEMENTS:
             name = name.replace(match, PUNCTUATION_REPLACEMENTS[match])
         else:
-            name = name.replace(match, '')
+            name = name.replace(match, "")
     return name
 
 
 NAME_ERRORS = {
-    'ӧ': 'ö'  # Not the same
+    "ӧ": "ö"  # Not the same
 }
 
 
@@ -57,41 +57,43 @@ def setup_db():
 
 
 class Command(BaseCommand):
-    help = 'imports cardDatabase/static/cards.json to the database'
+    help = "imports cardDatabase/static/cards.json to the database"
 
     def handle(self, *args, **options):
-        with open('cardDatabase/static/cards.json', encoding='utf-8') as json_file:
+        with open("cardDatabase/static/cards.json", encoding="utf-8") as json_file:
             setup_db()
             data = json.load(json_file)
-            for cluster in data['fow']['clusters']:
-                sets = cluster['sets']
+            for cluster in data["fow"]["clusters"]:
+                sets = cluster["sets"]
                 for fow_set in sets:
-                    cards = fow_set['cards']
+                    cards = fow_set["cards"]
                     for card in cards:
                         for unused_set in CONS.UNSEARCHED_DATABASE_SETS:  # Mostly just old Valhalla
-                            if card['id'].startswith(unused_set):
+                            if card["id"].startswith(unused_set):
                                 break
                         else:
                             # In a used set
-                            card_types = card['type']
-                            card_races = card['race']
-                            card_abilities = card['abilities']
-                            card_colours = card['colour']
+                            card_types = card["type"]
+                            card_races = card["race"]
+                            card_abilities = card["abilities"]
+                            card_colours = card["colour"]
                             card, created = Card.objects.get_or_create(
-                                name=replace_name_errors(card['name']),
-                                name_without_punctuation=remove_punctuation(card['name']),
-                                card_id=card['id'].replace('*', CONS.DOUBLE_SIDED_CARD_CHARACTER),
-                                cost=card['cost'] or None,
-                                divinity=str(card['divinity']).replace("∞", CONS.INFINITY_STRING) or None,
-                                flavour=card['flavour'] or None,
-                                rarity=card['rarity'],
-                                ATK=card['ATK'] or None,
-                                DEF=card['DEF'] or None,
+                                name=replace_name_errors(card["name"]),
+                                name_without_punctuation=remove_punctuation(card["name"]),
+                                card_id=card["id"].replace("*", CONS.DOUBLE_SIDED_CARD_CHARACTER),
+                                cost=card["cost"] or None,
+                                divinity=str(card["divinity"]).replace("∞", CONS.INFINITY_STRING) or None,
+                                flavour=card["flavour"] or None,
+                                rarity=card["rarity"],
+                                ATK=card["ATK"] or None,
+                                DEF=card["DEF"] or None,
                             )
                             position = 1
                             for card_ability in card_abilities:
                                 ability_text, created = AbilityText.objects.get_or_create(text=card_ability.strip())
-                                CardAbility.objects.get_or_create(ability_text=ability_text, card=card, position=position)
+                                CardAbility.objects.get_or_create(
+                                    ability_text=ability_text, card=card, position=position
+                                )
                                 position += 1
                             for card_race in card_races:
                                 race, created = Race.objects.get_or_create(name=card_race.strip())
@@ -100,9 +102,11 @@ class Command(BaseCommand):
                                 type_obj, created = Type.objects.get_or_create(name=card_type.strip())
                                 card.types.add(type_obj)
                             for card_colour in card_colours:
-                                colour_obj, created = CardColour.objects.get_or_create(db_representation=card_colour.strip(), name=get_colour_name(card_colour.strip()))
+                                colour_obj, created = CardColour.objects.get_or_create(
+                                    db_representation=card_colour.strip(), name=get_colour_name(card_colour.strip())
+                                )
                                 card.colours.add(colour_obj)
 
                             card.save()
-        call_command('assign_existing_card_images')
-        call_command('importBanlist')
+        call_command("assign_existing_card_images")
+        call_command("importBanlist")

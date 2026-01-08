@@ -4,5 +4,5 @@ db.sqlite3
 venv
 .env
 media
-.claude/
-.vscode/
+.vscode
+.claude

@@ -41,9 +41,7 @@ def get(request, decklist_id=None):
     ctx = get_search_form_ctx()
     ctx["basic_form"] = SearchForm()
     ctx["advanced_form"] = AdvancedSearchForm()
-    ctx["zones"] = UserDeckListZone.objects.filter(decklist__pk=decklist.pk).order_by(
-        "-zone__show_by_default", "position"
-    )
+    ctx["zones"] = UserDeckListZone.objects.filter(decklist__pk=decklist.pk).order_by("position")
     ctx["decklist_cards"] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
     ctx["decklist"] = decklist
     ctx["deck_formats"] = Format.objects.all()

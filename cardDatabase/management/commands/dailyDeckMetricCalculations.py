@@ -78,7 +78,8 @@ class Command(BaseCommand):
 
                 total_costs = [0] * 17
                 for card in deck_cards:
-                    total_costs[card.card.total_cost] += card.quantity
+                    cost = min(card.card.total_cost, 16)
+                    total_costs[cost] += card.quantity
 
                 for i in range(0, 17):
                     CardTotalCostPickRate.objects.create(

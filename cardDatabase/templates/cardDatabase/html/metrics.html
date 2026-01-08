@@ -65,7 +65,7 @@
                         {% if cost.period == period %}
                             <div class="pick-data">
                                 <div class="pick-name cost-name">
-                                    <img src="{% attribute_to_img_src cost.total_cost %}" class="cost-icon"> -
+                                    <img src="{% attribute_to_img_src cost.total_cost %}" class="cost-icon">{% if cost.total_cost == 16 %}+{% endif %} -
                                 </div>
                                 <div class="pick-percentage">{{ cost.percentage }}%</div>
                             </div>

@@ -140,6 +140,7 @@ function autofillFields(cardId){
     changeValueOfInput('#add_card select[name="rarity"]', card.rarity);
     changeValueOfInput('#add_card input[name="ATK"]', card.ATK ?? "");
     changeValueOfInput('#add_card input[name="DEF"]', card.DEF ?? "");
+    changeValueOfInput('#add_card input[name="artist"]', card.artist ?? "");
 
     //itterate to reset non chosen options
     $('#id_types input[type="checkbox"]').each((_, checkbox) => {

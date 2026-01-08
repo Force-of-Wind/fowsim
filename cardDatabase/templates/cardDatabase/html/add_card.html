@@ -98,6 +98,11 @@
                             <label for="{{ add_card_form.DEF.id_for_label }}">DEF:</label>
                             {{ add_card_form.DEF }}
                         </div>
+                        <div class="form-group col">
+                            {{ add_card_form.artist.errors }}
+                            <label for="{{ add_card_form.artist.id_for_label }}">Artist:</label>
+                            {{ add_card_form.artist }}
+                        </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col">

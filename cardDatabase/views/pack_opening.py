@@ -159,13 +159,12 @@ def read_file(path):
 
 
 def weightSamples(pairs):
-    rand = random.randrange(1, 100)
     segments = []
     for pair in pairs:
         for _ in range(pair["chance"]):
             segments.append(pair)
 
-    return segments[rand]
+    return random.choice(segments)
 
 
 def build_duplicate_filter(pull_history, slot):
@@ -177,5 +176,4 @@ def build_duplicate_filter(pull_history, slot):
 
 
 def get_random_array_entry(array):
-    rand = random.randrange(1, len(array))
-    return array[rand]
+    return random.choice(array)

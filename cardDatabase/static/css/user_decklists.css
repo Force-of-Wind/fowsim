@@ -1,87 +1,350 @@
-.my-decklists{
-    width: max-content;
-    margin: 0 auto;
-    font-size: 24px;
+/* User Decklists Page Styles */
+
+/* Header Section */
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--card-background, #ffffff);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.decklist-container{
-    margin: 0 100px 100px 100px;
+.header-section h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
 }
 
-.new-decklist{
-    padding-left: 100px;
-    padding-bottom: 50px;
+#create-deck {
+    white-space: nowrap;
 }
 
-#user-decklists{
-    width: calc(100% - 200px);
+/* Search and Filter Form */
+.search-filter-section {
+    background: var(--card-background, #ffffff);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.cost-img{
-    height: 19px;
+.search-filter-section .fieldWrapper {
+    margin-bottom: 1rem;
 }
 
-.cost-img:not(:last-child){
-    padding-right: 5px;
+.search-filter-section label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
 }
 
-#user-decklists th{
-    font-weight: bold;
+.search-card-name input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-
-.deck-actions > div{
-    display: inline-block;
+.text-exactness label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 1rem;
+    cursor: pointer;
+    font-weight: normal;
 }
 
-.edit-icon{
-    height: 23px;
+.text-exactness input[type="radio"] {
+    margin-right: 0.5rem;
 }
 
-.share-icon{
-    height: 19px;
+.sort-options {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.delete-icon, .view-icon{
-    height: 21px;
+.sort-options select {
+    flex: 0 0 auto;
+    width: 200px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-.deck-actions > div:hover{
-    -webkit-filter: opacity(.5) drop-shadow(0 0 0 red);
-    filter: opacity(.5) drop-shadow(0 0 0 red);
+.reverse-sort-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-weight: normal;
     cursor: pointer;
 }
 
-.deck-actions > div:not(:first-child){
-    padding-left: 10px;
+.form-submit-button {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
-#user-decklists tr:nth-child(even){
-    background-color: #a9a9a924;
+/* Decklist Grid */
+.decklist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-/* Exclude from mobile to prevent it from applying when navigating back, add hasHover on load */
-body.hasHover #user-decklists tr:not(:first-child):hover{
-    background-color: #a9a9a98c;
+.decklist-card {
+    background: var(--card-background, #ffffff);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.public-icon, .private-icon{
-    height: 18px;
+body.hasHover .decklist-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.private-icon{
-    filter: opacity(0.5) drop-shadow(0 0 0 red);
+.decklist-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: #f0f0f0;
+    position: relative;
 }
 
-.format-modal-body{
+.decklist-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+[type="radio"]:not(:checked), [type="radio"]:checked{
+    position: relative;
+    pointer-events: all;
+    opacity: 1;
+}
+
+.no-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #999;
+    font-weight: 500;
+}
+
+.decklist-info {
+    padding: 1rem;
+}
+
+.decklist-name {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.decklist-name a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.decklist-name a:hover {
+    text-decoration: underline;
+}
+
+.decklist-colors {
+    margin-bottom: 0.5rem;
+    min-height: 24px;
+}
+
+.decklist-colors .cost-img {
+    height: 19px;
+}
+
+.decklist-colors .cost-img:not(:last-child) {
+    padding-right: 5px;
+}
+
+.decklist-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.decklist-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.public-status {
+    font-weight: 600;
+}
+
+.public-status i {
+    font-size: 1rem;
+}
+
+/* Action Buttons */
+.decklist-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.decklist-actions .btn {
+    flex: 1;
+    min-width: 70px;
+}
+
+/* Results Header */
+.results-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.results-count {
+    font-weight: 600;
+    color: #666;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+}
+
+.empty-state img {
+    max-width: 200px;
+    margin-bottom: 1rem;
+}
+
+.empty-state p {
+    font-size: 1.25rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+/* Pagination */
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 0.25rem;
+    margin: 0;
+}
+
+.page-item {
+    display: block;
+}
+
+.page-link {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    background: white;
+    transition: background 0.2s;
+}
+
+body.hasHover .page-link:hover {
+    background: #f0f0f0;
+}
+
+.page-item.active .page-link {
+    background: var(--primary-color, #007bff);
+    color: white;
+    border-color: var(--primary-color, #007bff);
+}
+
+/* Format Modal */
+.format-modal-body {
     gap: 15px;
     display: flex;
     flex-direction: column;
 }
 
-.format-tile{
-    border: 1px solid;
+.format-tile {
+    border: 1px solid #ddd;
     padding: 20px;
     border-radius: 8px;
     cursor: pointer;
+    transition: background 0.2s;
+}
+
+body.hasHover .format-tile:hover {
+    background: #f0f0f0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header-section {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .header-section h1 {
+        font-size: 1.5rem;
+    }
+
+    .search-filter-section {
+        padding: 1rem;
+    }
+
+    .sort-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sort-options select {
+        width: 100%;
+    }
+
+    .form-submit-button {
+        flex-direction: column;
+    }
+
+    .form-submit-button .btn {
+        width: 100%;
+    }
+
+    .decklist-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pagination-wrapper {
+        overflow-x: auto;
+    }
 }

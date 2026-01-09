@@ -307,8 +307,25 @@ a.closebtn{
 
 /* deck overview */
 
+:root {
+    --card-background: #191d21;
+}
+
+.no-image {
+    background: #303134;
+}
+
+.decklist-meta {
+    color: white;
+}
+
+.results-count{
+    color:white;
+}
+
 #decklist-container{
     border-left: 1px solid rgb(156, 155, 155);
+    
 }
 
 #user-decklists {

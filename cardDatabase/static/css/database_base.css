@@ -135,6 +135,10 @@ input:checked + .selected-backgrounds{
     opacity: 0.4;
 }
 
+.select-characteristics input:not(:checked) + .selected-backgrounds{
+    opacity: 0.4;
+}
+
 .cost-select label, .divinity-select label{
     width: 35px;
     background-color: #d5d5d5;

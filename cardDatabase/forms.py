@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.db import ProgrammingError
 
 from fowsim import constants as CONS
-from cardDatabase.models.CardType import Card, Race, AbilityText, CardAbility
+from cardDatabase.models.CardType import Card, Race, AbilityText, CardAbility, CardArtist
 from cardDatabase.models.Ability import Keyword
 from cardDatabase.models.Banlist import Format
 from cardDatabase.models.Tournament import TournamentLevel
@@ -47,6 +47,15 @@ def get_races():
         return []
 
     return list(race_map)
+
+
+def get_artists():
+    try:
+        artist_values = CardArtist.objects.values("name")
+        artist_map = map(lambda x: (x["name"], x["name"]), artist_values)
+    except:
+        return []
+    return list(artist_map)
 
 
 def get_keywords_choices():
@@ -99,6 +108,7 @@ class AdvancedSearchForm(forms.Form):
     def_comparator = forms.ChoiceField(required=False, choices=CONS.ATK_DEF_COMPARATOR_CHOICES)
     format = forms.ChoiceField(required=False, choices=get_formats())
     keywords = forms.MultipleChoiceField(label="Keyword(s):", choices=get_keywords_choices(), required=False)
+    artist = forms.MultipleChoiceField(label="Artist(s):", choices=get_artists(), required=False)
 
 
 class DecklistSearchForm(forms.Form):
@@ -114,6 +124,9 @@ class AddCardForm(forms.ModelForm):
 
     races = forms.CharField(
         required=False, widget=forms.Textarea(attrs={"placeholder": "Each race must be separated by a single newline"})
+    )
+    artists = forms.CharField(
+        required=False, widget=forms.Textarea(attrs={"placeholder": "Each artist must be separated by a single newline"})
     )
     ability_texts = forms.CharField(
         required=False,
@@ -201,6 +214,13 @@ class AddCardForm(forms.ModelForm):
         races_to_add = self.cleaned_data["races"].splitlines()
         for race_to_add in races_to_add:
             card_instance.races.add(Race.objects.get_or_create(name=race_to_add)[0])
+
+        artists_to_add = self.cleaned_data["artists"].splitlines()
+        for artist_to_add in artists_to_add:
+            artist_name = artist_to_add.strip()
+            if artist_name:
+                artist = CardArtist.objects.get_or_create(name=artist_name)[0]
+                card_instance.artists.add(artist)
 
         for colour_to_add in self.cleaned_data["colours"]:
             card_instance.colours.add(colour_to_add)

@@ -6,7 +6,7 @@ from cardDatabase.forms import AddCardForm
 from fowsim.decorators import site_admins
 from cardDatabase.views.utils.search_context import get_set_query
 
-from cardDatabase.models.CardType import Card
+from cardDatabase.models.CardType import Card, CardArtist
 from cardDatabase.models.Spoilers import SpoilerSeason
 
 
@@ -14,6 +14,11 @@ from cardDatabase.models.Spoilers import SpoilerSeason
 @site_admins
 def get(request):
     ctx = {}
+
+    # Get all existing artists sorted alphabetically
+    existing_artists = list(CardArtist.objects.values_list("name", flat=True).order_by("name"))
+    ctx |= {"existing_artists": existing_artists}
+
     if request.method == "GET":
         ctx |= {"add_card_form": AddCardForm(), "added_ids": []}
 

@@ -170,6 +170,18 @@
                 </div>
             </div>
         {% endif %}
+        {% if card.artists.all %}
+            <div class="card-text-info">
+                <div class="card-text-info-title">
+                    Artist{{ card.artists.all|length|pluralize }}:
+                </div>
+                <div class="card-text-info-text">
+                    {% for artist in card.artists.all %}
+                        <a href='/search?artist={{ artist.name }}&form_type=advanced-form'>{{ artist.name }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
         {% if referred_by %}
             <div id="referred-by" class="card-text-info">
                 <div class="referred-by-title">

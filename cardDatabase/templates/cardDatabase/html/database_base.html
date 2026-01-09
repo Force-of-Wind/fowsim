@@ -300,6 +300,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="fieldWrapper artist-select">
+                        <select class="mdb-select md-form" multiple form="advanced-form" name="artist" searchable="Search here...">
+                            {% for value in artists_list %}
+                                <option value="{{ value }}"
+                                    {% if value in advanced_form_data.artist %}selected{% endif %}>
+                                        {{ value }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <div class="form-submit-button">
                         <input type="submit" value="Search" name="advanced-form">
                     </div>

@@ -183,9 +183,17 @@ def get_race_query(data):
 
 
 def get_artist_query(data):
+    """
+    Search for cards by artist name, including cards by connected artists (pen names).
+    """
     artist_query = Q()
-    for artist in data:
-        artist_query |= Q(artists__name=artist)
+    for artist_name in data:
+        # Match cards by the selected artist name
+        artist_query |= Q(artists__name=artist_name)
+
+        # Also match cards by any connected artists (pen names)
+        # Query: Find all artists connected to the selected artist, then find cards by those artists
+        artist_query |= Q(artists__connected_artists__name=artist_name)
     return artist_query
 
 

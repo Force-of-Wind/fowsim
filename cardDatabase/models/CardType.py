@@ -100,6 +100,13 @@ class CardArtist(models.Model):
         return self.name
 
     name = models.CharField(max_length=200, null=False, blank=False)
+    connected_artists = models.ManyToManyField(
+        "self",
+        symmetrical=True,
+        blank=True,
+        related_name="related_artists",
+        help_text="Other artist names (pen names) that refer to the same person"
+    )
 
 
 class CardImageWrapper:

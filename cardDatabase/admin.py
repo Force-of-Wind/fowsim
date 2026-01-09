@@ -78,6 +78,13 @@ class RaceAdmin(admin.ModelAdmin):
 
 class ArtistAdmin(admin.ModelAdmin):
     search_fields = ["name"]
+    filter_horizontal = ["connected_artists"]
+    list_display = ["name", "get_connected_count"]
+
+    def get_connected_count(self, obj):
+        """Display the number of connected artists."""
+        return obj.connected_artists.count()
+    get_connected_count.short_description = "Pen Names"
 
 
 class SetAdmin(admin.ModelAdmin):

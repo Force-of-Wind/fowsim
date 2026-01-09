@@ -125,7 +125,9 @@ class AddCardForm(forms.ModelForm):
     races = forms.CharField(
         required=False, widget=forms.Textarea(attrs={"placeholder": "Each race must be separated by a single newline"})
     )
-    artist = forms.CharField(required=True, max_length=200, widget=forms.TextInput(attrs={"placeholder": "Artist name"}))
+    artists = forms.CharField(
+        required=False, widget=forms.Textarea(attrs={"placeholder": "Each artist must be separated by a single newline"})
+    )
     ability_texts = forms.CharField(
         required=False,
         widget=forms.Textarea(
@@ -213,10 +215,12 @@ class AddCardForm(forms.ModelForm):
         for race_to_add in races_to_add:
             card_instance.races.add(Race.objects.get_or_create(name=race_to_add)[0])
 
-        artist_name = self.cleaned_data["artist"].strip()
-        if artist_name:
-            artist = CardArtist.objects.get_or_create(name=artist_name)[0]
-            card_instance.artists.add(artist)
+        artists_to_add = self.cleaned_data["artists"].splitlines()
+        for artist_to_add in artists_to_add:
+            artist_name = artist_to_add.strip()
+            if artist_name:
+                artist = CardArtist.objects.get_or_create(name=artist_name)[0]
+                card_instance.artists.add(artist)
 
         for colour_to_add in self.cleaned_data["colours"]:
             card_instance.colours.add(colour_to_add)

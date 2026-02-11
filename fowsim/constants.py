@@ -258,13 +258,23 @@ SET_DATA = {
             ],
         },
         {
+            "name": "Extra Sets",
+            "sets": [
+                {"code": "VIN001", "name": 'Vingolf "Engage Knights"'},
+                {"code": "VIN002", "name": 'Vingolf "Valkyria Chronicles"'},
+                {"code": "VIN003", "name": 'Vingolf "Ruler All Stars"'},
+                {"code": "GITS2045", "name": "GHOST IN THE SHELL SAC_2045"},
+                {"code": "GITS2045SD", "name": "Starter Deck GHOST IN THE SHELL SAC_2045"},
+                {"code": "ATD", "name": "Antechamber of the Ten Dimensions"},
+            ],
+        },
+        {
             "name": "Grimm",
             "sets": [
                 {"code": "CMF", "name": "Crimson Moon's Fairy Tale"},
                 {"code": "TAT", "name": "The Castle of Heaven and The Two Towers"},
                 {"code": "MPR", "name": "The Moon Priestess Returns"},
                 {"code": "MOA", "name": "The Millennia of Ages"},
-                {"code": "VIN001", "name": 'Vingolf "Engage Knights"'},
             ],
         },
         {
@@ -275,7 +285,6 @@ SET_DATA = {
                 {"code": "TTW", "name": "The Twilight Wanderer"},
                 {"code": "TMS", "name": "The Moonlit Savior"},
                 {"code": "BFA", "name": "Battle for Attoractia"},
-                {"code": "VIN002", "name": 'Vingolf "Valkyria Chronicles"'},
             ],
         },
         {
@@ -288,7 +297,6 @@ SET_DATA = {
                 {"code": "SDL5", "name": "Vampiric Hunger"},
                 {"code": "CFC", "name": "Curse of the Frozen Casket"},
                 {"code": "LEL", "name": "Legacy Lost"},
-                {"code": "VIN003", "name": 'Vingolf "Ruler All Stars"'},
                 {"code": "RDE", "name": "Return of the Dragon Emperor"},
                 {"code": "ENW", "name": "Echoes of the New World"},
             ],
@@ -329,8 +337,6 @@ SET_DATA = {
                 {"code": "AO1", "name": "Alice Origin"},
                 {"code": "SDAO2", "name": "Valentina/Pricia"},
                 {"code": "AO2", "name": "Alice Origin II"},
-                {"code": "GITS2045", "name": "GHOST IN THE SHELL SAC_2045"},
-                {"code": "GITS2045SD", "name": "Starter Deck GHOST IN THE SHELL SAC_2045"},
                 {"code": "AO3", "name": "Alice Origin III"},
                 {"code": "PofA", "name": "Prologue of Attoractia"},
             ],
@@ -382,6 +388,7 @@ SET_DATA = {
             "sets": [
                 {"code": "MP01", "name": 'Masterpiece "Pilgrim Memories"'},
                 {"code": "MP02", "name": 'Masterpiece Collection 02 "Fates Reunited!"'},
+                {"code": "MP03", "name": 'Masterpiece Collection 03 "Dimensional Hope"'},
             ],
         },
         {
@@ -391,7 +398,6 @@ SET_DATA = {
                 {"code": "ESD2", "name": "Metelda Deck"},
                 {"code": "DRC", "name": "Descent into the Raven's Catacombs"},
                 {"code": "JRV", "name": "Journey to Ravidra"},
-                {"code": "ATD", "name": "Antechamber of the Ten Dimensions"},
             ],
         },
     ]
@@ -811,6 +817,8 @@ SETS_IN_ORDER = [
     "JRV Prerelease Party",
     "JRV Buy a Box",
     "ATD",
+    "MP03",
+    "MC10",
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -1052,6 +1060,9 @@ SEARCH_SETS_INCLUDE = {
         "MC09",
     ],
     "JRV": ["JRV Buy a Box", "JRV Prerelease Party"],
+    "MP03": [
+        "MC10",
+    ],
 }
 
 KEYWORDS_CHOICES = [

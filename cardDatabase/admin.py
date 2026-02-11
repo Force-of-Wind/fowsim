@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from cardDatabase.models.Ability import *
@@ -31,14 +32,28 @@ class CardAdmin(admin.ModelAdmin):
     search_fields = ["name", "name_without_punctuation", "ability_texts__text", "card_id"]
     inlines = [AbilityTextInline]
     autocomplete_fields = ["races", "artists"]
+    readonly_fields = ["card_image_preview"]
 
     class Media:
         css = {"all": ("css/admin/card_admin_fixes.css",)}
+        js = ['admin/js/jquery.init.js', "js/admin/card_admin.js"]
+
+    def card_image_preview(self, obj):
+        return mark_safe('<img src="{url}" />'.format(url = obj.card_image.url))
 
     def get_form(self, request, obj=None, **kwargs):
         if obj:
             self.exclude = ("ability_texts",)
         return super().get_form(request, obj=obj, **kwargs)
+    
+    def get_fields(self, request, obj):
+        fields = super().get_fields(request, obj)
+        try:
+            fields.remove("card_image_preview")
+            fields.insert(fields.index("_card_image") + 1, "card_image_preview")
+        except:
+            pass
+        return fields
 
 
 class AbilityTextAdmin(admin.ModelAdmin):

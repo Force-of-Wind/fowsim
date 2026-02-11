@@ -118,8 +118,7 @@ body.hasHover .decklist-card:hover {
     width: 100%;
     height: 200px;
     overflow: hidden;
-    background: #f0f0f0;
-    position: relative;
+    position: relative;    
 }
 
 .decklist-image img {
@@ -127,6 +126,7 @@ body.hasHover .decklist-card:hover {
     height: 100%;
     object-fit: cover;
     object-position: top;
+    border-radius: 14px 14px 0 0;
 }
 
 [type="radio"]:not(:checked), [type="radio"]:checked{
@@ -170,10 +170,6 @@ body.hasHover .decklist-card:hover {
 
 .decklist-colors .cost-img {
     height: 19px;
-}
-
-.decklist-colors .cost-img:not(:last-child) {
-    padding-right: 5px;
 }
 
 .decklist-meta {
@@ -337,6 +333,12 @@ body.hasHover .format-tile:hover {
 
     .decklist-grid {
         grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .decklist-grid > * {
+        max-width: 80vw;
+        width: 100%;
     }
 
     .results-header {

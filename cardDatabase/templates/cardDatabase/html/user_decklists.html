@@ -232,8 +232,13 @@
                                 <!-- Action Buttons (Owner Only) -->
                                 {% if is_owner %}
                                     <div class="decklist-actions">
-                                        <a href="{% url 'cardDatabase-edit-decklist' decklist.id %}"
-                                           class="btn btn-sm btn-primary">Edit</a>
+                                        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                                            <a href="{% url 'cardDatabase-edit-decklist-mobile' decklist.id %}"
+                                                class="btn btn-sm btn-primary">Edit</a>
+                                        {% else %}
+                                            <a href="{% url 'cardDatabase-edit-decklist' decklist.id %}"
+                                            class="btn btn-sm btn-primary">Edit</a>
+                                        {% endif %}
                                         <button class="btn btn-sm btn-danger delete-deck"
                                                 data-deck-id="{{ decklist.id }}"
                                                 data-deck-name="{{ decklist.name }}">Delete</button>

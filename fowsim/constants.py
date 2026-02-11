@@ -571,6 +571,20 @@ DATABASE_COLOUR_COMBINATION_CHOICES = [
     (DATABASE_COLOUR_COMBINATION_MONO, "Single color only"),
 ]
 
+# Decklist Sorting
+DECKLIST_SORT_BY_LAST_MODIFIED = "last_modified"
+DECKLIST_SORT_BY_NAME = "name"
+DECKLIST_SORT_BY_CARD_COUNT = "card_count"
+
+DECKLIST_SORT_BY_CHOICES = [
+    (DECKLIST_SORT_BY_LAST_MODIFIED, "Last Modified"),
+    (DECKLIST_SORT_BY_NAME, "Deck Name"),
+    (DECKLIST_SORT_BY_CARD_COUNT, "Card Count"),
+]
+
+# Decklist Pagination
+DECKLIST_PAGE_SIZE = 30
+
 SETS_IN_ORDER = [
     "PR",  # Promos
     "PR2015",

@@ -1,7 +1,7 @@
 from django.forms import MultipleChoiceField
 
 from cardDatabase.models import PickPeriod, DeckList, Format
-from cardDatabase.models.CardType import Race, Card
+from cardDatabase.models.CardType import Race, Card, CardArtist
 from fowsim import constants as CONS
 from django.db.models import Q, Count, F
 
@@ -80,6 +80,7 @@ def advanced_search(advanced_form):
             advanced_form.cleaned_data["colour_combination"],
         )
         race_query = get_race_query(advanced_form.cleaned_data["race"])
+        artist_query = get_artist_query(advanced_form.cleaned_data["artist"])
         set_query = get_set_query(advanced_form.cleaned_data["sets"])
 
         format_string = advanced_form.cleaned_data["format"]
@@ -106,6 +107,7 @@ def advanced_search(advanced_form):
             .filter(attr_query)
             .exclude(attr_exclusions)
             .filter(race_query)
+            .filter(artist_query)
             .filter(set_query)
             .filter(card_type_query)
             .filter(rarity_query)
@@ -152,13 +154,21 @@ def get_search_form_ctx():
         races_list.sort()
         races_list.remove("")
 
+        artist_values = CardArtist.objects.values("name")
+        artists_list = list(map(lambda x: x["name"], artist_values))
+        artists_list.sort()
+        if "" in artists_list:
+            artists_list.remove("")  # Remove blank string if exists
+
         format_list = Format.objects.annotate(num_sets=Count("sets")).filter(num_sets__gt=0).values("name")
     except Exception:
         races_list = []
+        artists_list = []
         format_list = []
 
     return {
         "races_list": list(races_list),
+        "artists_list": list(artists_list),
         "format_list": list(format_list),
         "card_types_list": CONS.DATABASE_CARD_TYPE_GROUPS,
         "sets_json": CONS.SET_DATA,
@@ -170,6 +180,21 @@ def get_race_query(data):
     for race in data:
         race_query |= Q(races__name=race)
     return race_query
+
+
+def get_artist_query(data):
+    """
+    Search for cards by artist name, including cards by connected artists (pen names).
+    """
+    artist_query = Q()
+    for artist_name in data:
+        # Match cards by the selected artist name
+        artist_query |= Q(artists__name=artist_name)
+
+        # Also match cards by any connected artists (pen names)
+        # Query: Find all artists connected to the selected artist, then find cards by those artists
+        artist_query |= Q(artists__connected_artists__name=artist_name)
+    return artist_query
 
 
 def get_not_card_race_query(data):

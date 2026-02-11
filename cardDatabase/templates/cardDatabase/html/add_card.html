@@ -140,6 +140,11 @@
                         <label for="{{ add_card_form.flavour.id_for_label }}">Flavour Text:</label>
                         {{ add_card_form.flavour }}
                     </div>
+                    <div class="form-group">
+                        {{ add_card_form.artists.errors }}
+                        <label for="{{ add_card_form.artists.id_for_label }}">Artists:</label>
+                        {{ add_card_form.artists }}
+                    </div>
                     {% comment %}
                         <!-- This is kept here just in case we need it again later -->
                         {{ add_card_form.as_p }}

@@ -180,11 +180,14 @@
                         <button type="button" id="edit-decklist">Edit Decklist</button>
                     </a>
                 {% endif %}
-            {% endif %}
-            <button type="button" id="untap-export">Export to Untap</button>
+            {% endif %}            
             <a href="{% url 'cardDatabase-copy-decklist' decklist.pk %}"><button type="button" id="copy-decklist">Import to My Decklists</button></a>
             <button type="button" id="copy-image">Copy as Image</button>
+            <br>
+            <button type="button" id="untap-export">Export to Untap</button>
+            <button type="button" id="tcga-export">Export to TCG Arena</button>
             <div id="untap-list"><textarea>{% untap_list cards %}</textarea></div>
+            <div id="tcga-list"><textarea>{% tcga_list cards %}</textarea></div>
             <br>
         </div>
         {% if cards %}

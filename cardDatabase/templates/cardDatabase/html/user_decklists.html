@@ -232,8 +232,13 @@
                                 <!-- Action Buttons (Owner Only) -->
                                 {% if is_owner %}
                                     <div class="decklist-actions">
-                                        <a href="{% url 'cardDatabase-edit-decklist' decklist.id %}"
-                                           class="btn btn-sm btn-primary">Edit</a>
+                                        {% if request.user_agent.is_mobile or request.user_agent.is_tablet %}
+                                            <a href="{% url 'cardDatabase-edit-decklist-mobile' decklist.id %}"
+                                                class="btn btn-sm btn-primary">Edit</a>
+                                        {% else %}
+                                            <a href="{% url 'cardDatabase-edit-decklist' decklist.id %}"
+                                            class="btn btn-sm btn-primary">Edit</a>
+                                        {% endif %}
                                         <button class="btn btn-sm btn-danger delete-deck"
                                                 data-deck-id="{{ decklist.id }}"
                                                 data-deck-name="{{ decklist.name }}">Delete</button>
@@ -253,13 +258,13 @@
                 <div class="empty-state">
                     {% if request.GET.form_type == "decklist-form" %}
                         <!-- No results found -->
-                        <img src="{% static 'img/chibi/' %}{% get_random_chibi 'sad' %}" alt="No results">
+                        <img src="{% get_random_chibi 'sad' %}" alt="No results">
                         <p>No decklists match your search criteria.</p>
                         <a href="{% url 'cardDatabase-view-users-decklist' viewed_user.username %}"
                            class="btn btn-primary">Clear Filters</a>
                     {% else %}
                         <!-- No decklists yet -->
-                        <img src="{% static 'img/chibi/' %}{% get_random_chibi 'greeting' %}" alt="Welcome">
+                        <img src="{% get_random_chibi 'greetings' %}">
                         <p>
                             {% if is_owner %}
                                 You don't have any decklists yet. Create one to get started!

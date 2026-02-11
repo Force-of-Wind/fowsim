@@ -101,6 +101,7 @@ def advanced_search(advanced_form):
         )
         keywords_query = get_keywords_query(advanced_form.cleaned_data["keywords"])
         solo_mode_query = get_solo_mode_query(advanced_form.cleaned_data["solo_mode"])
+        characteristics_query = get_characteristics_query(advanced_form.cleaned_data["characteristics"])
 
         cards = (
             Card.objects.annotate(**attr_annotation)
@@ -116,6 +117,7 @@ def advanced_search(advanced_form):
             .filter(def_query)
             .filter(keywords_query)
             .filter(solo_mode_query)
+            .filter(characteristics_query)
             .exclude(get_unsupported_sets_query())
             .distinct()
         )
@@ -309,6 +311,18 @@ def get_attr_query(data, colour_match, colour_combination):
         annotation_filter &= Q(colour_combination_count__gte=2)
 
     return attr_query & annotation_filter, attr_annotation, extra_queries, attr_exclusions
+
+
+def get_characteristics_query(data):
+    """
+    Search for cards that contain selected characteristics in their cost string.
+    Cost format: "{B}{G}{U}{W}{R}{V}{T}{M}{X}{1}" or similar
+    """
+    characteristics_query = Q()
+    for characteristic in data:
+        # Search for the characteristic wrapped in braces, e.g., "{M}" or "{T}"
+        characteristics_query |= Q(cost__icontains=f"{{{characteristic}}}")
+    return characteristics_query
 
 
 def get_divinity_query(data):

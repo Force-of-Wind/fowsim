@@ -84,6 +84,7 @@ class AdvancedSearchForm(forms.Form):
     reverse_sort = forms.BooleanField(label="Reverse sorting:", required=False)
     solo_mode = forms.BooleanField(label="Solo Mode:", required=False)
     colours = forms.MultipleChoiceField(label="Color(s):", choices=CONS.COLOUR_CHOICES, required=False)
+    characteristics = forms.MultipleChoiceField(label="Characteristic(s):", choices=CONS.CHARACTERISTIC_CHOICES, required=False)
     colour_match = forms.ChoiceField(
         label="Color(s) match:", choices=CONS.DATABASE_COLOUR_MATCH_CHOICES, required=False
     )

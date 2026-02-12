@@ -28,7 +28,7 @@ def get(request, username=None):
     decklist_form = get_form_from_params(DecklistSearchForm, request)
 
     # Start with base queryset
-    decklists = DeckList.objects.filter(profile=User.objects.get(username=username).profile)
+    decklists = DeckList.objects.filter(profile=User.objects.get(username=username).profile).distinct()
 
     # If not owner, only show public decklists
     if not is_owner:

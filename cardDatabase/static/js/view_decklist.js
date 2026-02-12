@@ -42,6 +42,15 @@ $(function(){
          this.select();
     });
 
+    $('#tcga-export').click(function(e){
+        $(this).hide();
+        $('#tcga-list').addClass('show-tcga');
+    });
+
+    $('#tcga-list textarea').focus(function(e){
+         this.select();
+    });
+
     $('.deck-zone-count').each(function(index){
         let cards = $(this).siblings('.deck-zone-card-container').find('.deck-card');
         $(this).html( `[${cards.length.toString()}]`);

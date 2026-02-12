@@ -155,6 +155,19 @@
     display: block;
 }
 
+#tcga-list textarea {
+    width: 100%;
+    min-height: 200px;
+}
+
+#tcga-list {
+    display: none;
+}
+
+#tcga-list.show-tcga {
+    display: block;
+}
+
 #deck-options button {
     margin-top: 10px;
 }

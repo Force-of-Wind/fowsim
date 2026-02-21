@@ -8,12 +8,6 @@ from fowsim import constants as CONS
 def get(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
-    players = TournamentPlayer.objects.filter(
-        tournament=tournament, registration_status=CONS.PLAYER_REGISTRATION_COMPLETED
-    ).order_by("standing")
-
-    player_counter = players.count()
-
     current_player = None
 
     staff_account = None
@@ -32,6 +26,18 @@ def get(request, tournament_id):
         and tournament.registration_deadline > timezone.now()
     ):
         registration_open = True
+
+    #Show all players during registration to make it more anticing for players to join
+    if registration_open:
+        players = TournamentPlayer.objects.filter(
+            tournament=tournament
+        ).order_by("standing")
+    else:
+        players = TournamentPlayer.objects.filter(
+            tournament=tournament, registration_status=CONS.PLAYER_REGISTRATION_COMPLETED
+        ).order_by("standing")
+
+    player_counter = players.count()
 
     return render(
         request,

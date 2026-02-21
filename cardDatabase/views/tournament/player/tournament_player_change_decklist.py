@@ -19,7 +19,9 @@ def get(request, tournament_id):
 
     player = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
 
-    if datetime.now().timestamp() > tournament.registration_deadline.timestamp() or tournament.registration_locked:
+    timestamp = datetime.now().timestamp()
+
+    if timestamp > tournament.deck_edit_deadline.timestamp() or tournament.deck_edit_locked or timestamp > tournament.start_datetime.timestamp():
         return render(request, "tournament/player/tournament_deck_change_denied.html")
 
     deck_filter = Q(profile=request.user.profile)
@@ -51,7 +53,9 @@ def post(request, tournament_id):
 
     player = TournamentPlayer.objects.filter(tournament=tournament, profile=request.user.profile).first()
 
-    if datetime.now().timestamp() > tournament.registration_deadline.timestamp() or tournament.registration_locked:
+    timestamp = datetime.now().timestamp()
+
+    if timestamp > tournament.deck_edit_deadline.timestamp() or tournament.deck_edit_locked or timestamp > tournament.start_datetime.timestamp():
         return render(request, "tournament/player/tournament_deck_change_denied.html")
 
     decklist_id = request.POST.get("decklist")

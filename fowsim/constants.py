@@ -438,8 +438,6 @@ DATABASE_CARD_TYPE_GROUPS = [
             "Addition:J/Resonator",
             "Addition:Ruler/J-Ruler",
             "Chant",
-            "Chant/Rune",
-            "Chant/Master Rune",
             "Regalia",
             "Regalia (Shift)",
             "Resonator",

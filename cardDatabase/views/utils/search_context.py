@@ -3,7 +3,7 @@ from django.forms import MultipleChoiceField
 from cardDatabase.models import PickPeriod, DeckList, Format
 from cardDatabase.models.CardType import Race, Card, CardArtist
 from fowsim import constants as CONS
-from django.db.models import Q, Count, F
+from django.db.models import Q, Count, Exists, F, OuterRef
 
 import re
 
@@ -29,15 +29,32 @@ def apply_text_search(cards, text, search_fields, exactness_option):
         output = cards.filter(q)
 
     elif exactness_option == CONS.TEXT_CONTAINS_ALL:
-        # Build a single combined Q object instead of chaining .filter() calls
-        # Chaining filters on related fields creates multiple JOINs which is slow
-        combined_q = Q()
+        # Use Exists subqueries for M2M fields instead of chaining .filter() which
+        # creates one JOIN per word. Subqueries avoid the multiplicative JOIN problem
+        # while still correctly matching words across different related objects.
+        local_fields = [f for f in search_fields if "__" not in f]
+        related_fields = [f for f in search_fields if "__" in f]
+
+        output = cards
         for word in words:
             word_query = Q()
-            for search_field in search_fields:
-                word_query |= Q(**{search_field + "__icontains": word})
-            combined_q &= word_query
-        output = cards.filter(combined_q)
+            # Local fields (name, name_without_punctuation) use simple Q lookups
+            for field in local_fields:
+                word_query |= Q(**{field + "__icontains": word})
+            # Related fields use Exists subqueries to avoid extra JOINs
+            for field in related_fields:
+                # e.g. "ability_texts__text" -> relation="ability_texts", lookup="text"
+                parts = field.split("__")
+                relation = parts[0]
+                lookup_field = "__".join(parts[1:])
+                related_model = Card._meta.get_field(relation).related_model
+                word_query |= Exists(
+                    related_model.objects.filter(
+                        cards=OuterRef("pk"),
+                        **{lookup_field + "__icontains": word},
+                    )
+                )
+            output = output.filter(word_query)
 
     elif exactness_option == CONS.TEXT_EXACT:
         q = Q()

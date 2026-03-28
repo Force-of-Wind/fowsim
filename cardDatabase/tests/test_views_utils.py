@@ -79,6 +79,108 @@ class TestApplyTextSearch:
         result = apply_text_search(queryset, "multi colour", ["name"], CONS.TEXT_CONTAINS_ALL)
         assert result.count() == 1
 
+    def test_contains_all_matches_across_different_ability_rows(self):
+        """Regression: words in TEXT_CONTAINS_ALL must match across different
+        AbilityText rows. The old combined-Q approach required both words in
+        the SAME AbilityText row (single JOIN), breaking cross-ability matching.
+        """
+        from cardDatabase.views.utils.search_context import apply_text_search
+        from cardDatabase.models.CardType import Card, AbilityText, CardAbility
+
+        card = Card.objects.create(
+            name="Cross Row Card",
+            name_without_punctuation="cross row card",
+            card_id="CRS-001",
+            rarity="R",
+        )
+        # Two separate AbilityText rows with different words
+        ab1 = AbilityText.objects.create(text="Flying")
+        ab2 = AbilityText.objects.create(text="Swiftness")
+        CardAbility.objects.create(card=card, ability_text=ab1, position=1)
+        CardAbility.objects.create(card=card, ability_text=ab2, position=2)
+
+        queryset = Card.objects.all()
+        # "Flying" is in one row, "Swiftness" in another -- must still match
+        result = apply_text_search(queryset, "Flying Swiftness", ["ability_texts__text"], CONS.TEXT_CONTAINS_ALL)
+        assert result.filter(pk=card.pk).exists(), (
+            "TEXT_CONTAINS_ALL should match words across different AbilityText rows"
+        )
+
+    def test_contains_all_mixed_fields_name_and_ability(self):
+        """TEXT_CONTAINS_ALL with mixed search_fields (name + ability_texts__text)."""
+        from cardDatabase.views.utils.search_context import apply_text_search
+        from cardDatabase.models.CardType import Card, AbilityText, CardAbility
+
+        card = Card.objects.create(
+            name="Blazing Phoenix",
+            name_without_punctuation="blazing phoenix",
+            card_id="MIX-001",
+            rarity="R",
+        )
+        ab = AbilityText.objects.create(text="Deal 500 damage")
+        CardAbility.objects.create(card=card, ability_text=ab, position=1)
+
+        queryset = Card.objects.all()
+        # "Blazing" matches name, "damage" matches ability text
+        result = apply_text_search(queryset, "Blazing damage", ["name", "ability_texts__text"], CONS.TEXT_CONTAINS_ALL)
+        assert result.filter(pk=card.pk).exists(), (
+            "Should match when one word is in name and another in ability text"
+        )
+
+    def test_contains_all_no_duplicates(self):
+        """TEXT_CONTAINS_ALL with Exists subqueries should not return duplicate cards."""
+        from cardDatabase.views.utils.search_context import apply_text_search
+        from cardDatabase.models.CardType import Card, AbilityText, CardAbility
+
+        card = Card.objects.create(
+            name="Duplicate Test Card",
+            name_without_punctuation="duplicate test card",
+            card_id="DUP-001",
+            rarity="R",
+        )
+        # Multiple ability texts that all contain the search word
+        for i in range(3):
+            ab = AbilityText.objects.create(text=f"ability variant {i}")
+            CardAbility.objects.create(card=card, ability_text=ab, position=i)
+
+        queryset = Card.objects.all()
+        result = apply_text_search(queryset, "ability", ["ability_texts__text"], CONS.TEXT_CONTAINS_ALL)
+        # Should not have duplicates
+        assert result.filter(pk=card.pk).count() == 1
+
+    def test_contains_all_uses_exists_subqueries_not_joins(self, settings):
+        """M2M text search must use EXISTS subqueries instead of JOINs.
+
+        A combined-Q approach uses JOINs (fast but wrong — requires all words
+        in the same row). A chained .filter() approach uses multiple JOINs
+        (correct but slow — one JOIN per word). The EXISTS approach is both
+        correct and fast — one query with EXISTS subqueries, no JOIN explosion.
+        """
+        from cardDatabase.views.utils.search_context import apply_text_search
+        from cardDatabase.models.CardType import Card
+        from django.db import connection
+        from django.test.utils import CaptureQueriesContext
+
+        settings.DEBUG = True
+        queryset = Card.objects.all()
+
+        with CaptureQueriesContext(connection) as ctx:
+            list(apply_text_search(
+                queryset, "word1 word2 word3", ["name", "ability_texts__text"], CONS.TEXT_CONTAINS_ALL
+            ))
+
+        # Must be a single query (not N queries from naive approaches)
+        assert len(ctx.captured_queries) == 1, (
+            f"Expected 1 query, got {len(ctx.captured_queries)}"
+        )
+
+        # Must use EXISTS subqueries for the M2M field, not JOINs
+        sql = ctx.captured_queries[0]["sql"]
+        assert "EXISTS" in sql, (
+            f"Expected EXISTS subqueries for M2M search to avoid JOIN explosion.\n"
+            f"Got SQL:\n{sql}"
+        )
+
     def test_invalid_exactness_returns_original(self, cards):
         from cardDatabase.views.utils.search_context import apply_text_search
         from cardDatabase.models.CardType import Card
@@ -431,6 +533,38 @@ class TestBasicSearch:
         form = SearchForm({"generic_text": "Dragon"})
         result = basic_search(form)
         assert "cards" in result
+
+    def test_basic_search_matches_words_across_different_abilities(self):
+        """Regression test: searching 'lumia produce' must find cards where
+        'lumia' appears in one ability and 'produce' in another.
+
+        This broke when apply_text_search was changed to combine all word
+        conditions into a single .filter() with Q objects, which required
+        both words to match the same AbilityText row.
+        """
+        from cardDatabase.views.utils.search_context import basic_search
+        from cardDatabase.models.CardType import Card, AbilityText, CardAbility
+        from cardDatabase.forms import SearchForm
+
+        card = Card.objects.create(
+            name="Awakened Magic Stone, the Earth",
+            name_without_punctuation="awakened magic stone the earth",
+            card_id="REG-001",
+            rarity="R",
+        )
+        ab1 = AbilityText.objects.create(text="If Lumia is your J-ruler, this card enters the field recovered.")
+        ab2 = AbilityText.objects.create(text="Produce one will of any attribute.")
+        CardAbility.objects.create(card=card, ability_text=ab1, position=1)
+        CardAbility.objects.create(card=card, ability_text=ab2, position=2)
+
+        form = SearchForm({"generic_text": "lumia produce"})
+        result = basic_search(form)
+
+        result_ids = [c.pk for c in result["cards"]]
+        assert card.pk in result_ids, (
+            "basic_search for 'lumia produce' must match a card where "
+            "'lumia' is in one ability and 'produce' is in a different ability"
+        )
 
 
 @pytest.mark.django_db

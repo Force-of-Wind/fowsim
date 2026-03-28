@@ -144,6 +144,8 @@ DATABASES = {
         "PASSWORD": db_pass,
         "HOST": db_host,
         "PORT": db_port,
+        "CONN_MAX_AGE": 600,
+        "CONN_HEALTH_CHECKS": True,
     }
 }
 

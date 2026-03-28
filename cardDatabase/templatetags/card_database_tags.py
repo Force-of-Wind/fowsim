@@ -358,6 +358,49 @@ def untap_list(cards):
         output += "\n"
     return output
 
+@register.simple_tag
+def tcga_list(cards):
+    main = []
+    sideboard = []
+    extra_deck = []
+    for card in cards:
+        if card.zone.zone.name == "Ruler":
+            main.append(card)
+        elif card.zone.zone.name == "Main Deck":
+            main.append(card)        
+        elif card.zone.zone.name == "Magic Stone Deck":
+            main.append(card)
+        elif card.zone.zone.name == "Side Deck":
+            sideboard.append(card)
+        
+        elif (
+            "stranger" in card.zone.zone.name.lower()
+            or "rune" in card.zone.zone.name.lower()
+            or "extra" in card.zone.zone.name.lower()
+            or "ex" in card.zone.zone.name.lower()
+        ):
+            extra_deck.append(card)
+
+    output = ""
+    if len(main) > 0:
+        output += "//maindeck\n"
+        for card in main:
+            output += f"{str(card.quantity)} {card.card.name}\n"
+        output += "\n"    
+
+    if len(extra_deck) > 0:
+        output += "//extra-deck\n"
+        for card in extra_deck:
+            output += f"{str(card.quantity)} {card.card.name}\n"
+        output += "\n"
+
+    if len(sideboard) > 0:
+        output += "//sideboard\n"
+        for card in sideboard:
+            output += f"{str(card.quantity)} {card.card.name}\n"
+        output += "\n"
+    return output
+
 
 @register.simple_tag
 def decklist_preview_img_url(decklist):

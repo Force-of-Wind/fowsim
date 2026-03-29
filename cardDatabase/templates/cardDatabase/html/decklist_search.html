@@ -51,7 +51,7 @@
                     {% for value, display in decklist_form.text_exactness.field.choices %}
                         <label for="id_text_exactness_fields_{{ forloop.counter0 }}">
                             <input type="checkbox" name="text_exactness" id="id_text_exactness_fields_{{ forloop.counter0 }}"
-                                value="{{ value }}" {% text_exactness_is_in_data decklists_form_data.text_exactness value %}>
+                                value="{{ value }}" {% text_exactness_is_in_data decklist_form_data.text_exactness value %}>
                             {{ display }}
                         </label>
                     {% endfor %}

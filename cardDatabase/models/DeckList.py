@@ -32,7 +32,7 @@ class DeckList(models.Model):
     @property
     def get_colours(self):
         colours = self.cards.all().values_list("card__colours__db_representation", flat=True).distinct()
-        colours = [x for x in colours if not x == CONS.ATTRIBUTE_VOID_CODE]
+        colours = [x for x in colours if x is not None and x != CONS.ATTRIBUTE_VOID_CODE]
         if len(colours) == 0:
             colours = [CONS.ATTRIBUTE_VOID_CODE]
         return colours

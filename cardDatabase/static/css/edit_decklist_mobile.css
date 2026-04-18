@@ -192,6 +192,7 @@
 
 .hover-card-img{
     display: none;
+    max-width: 400px;
 }
 
 .hover-card-img.show-hover{

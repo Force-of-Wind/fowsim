@@ -545,3 +545,8 @@ def set_code_to_name(set_code):
 @register.simple_tag
 def trucateText(text, trucateAt=40):
     return (text[:trucateAt] + "...") if len(text) > trucateAt else text
+
+
+@register.simple_tag
+def get_other_sides(other_sides_map, card_id):
+    return other_sides_map.get(card_id, [])

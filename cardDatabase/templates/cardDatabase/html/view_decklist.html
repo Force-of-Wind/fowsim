@@ -75,7 +75,8 @@
                                                 <div class="card-preview">
                                                     <div class="multi-hovered-img">
                                                         <img class="hover-card-img" src="{{ card.card.card_image.url }}">
-                                                        {% for other_side in card.card.other_sides %}
+                                                        {% get_other_sides other_sides_map card.card.id as card_other_sides %}
+                                                        {% for other_side in card_other_sides %}
                                                             <img class="hover-card-img" src="{{ other_side.card_image.url }}">
                                                         {% endfor %}
                                                     </div>

@@ -4,21 +4,71 @@ from django.urls import reverse
 from django.utils import timezone
 
 from cardDatabase.models import DeckList, BannedCard, CombinationBannedCards, TournamentPlayer
+from cardDatabase.models.CardType import Card
 from cardDatabase.models.DeckList import UserDeckListZone
 from cardDatabase.models.Rulings import Restriction, RestrictionException
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 
 from fowsim import constants as CONS
 
 
+def _build_other_sides_map(cards_qs):
+    """Batch-compute other_sides for all cards in the deck in a single query."""
+    other_sides_map = {}  # card.id -> list of Card objects
+    other_side_q = Q()
+    card_lookup = {}  # potential_card_id -> list of source card ids
+
+    for deck_card in cards_qs:
+        card = deck_card.card
+        shared_number = card.set_number
+        if not shared_number:
+            other_sides_map[card.id] = []
+            continue
+
+        self_other_side_char = ""
+        for to_remove in CONS.OTHER_SIDE_CHARACTERS:
+            if to_remove in shared_number:
+                shared_number = shared_number.replace(to_remove, "")
+                self_other_side_char = to_remove
+
+        shared_id = card.set_code + "-" + shared_number
+
+        potential_ids = []
+        if self_other_side_char:
+            potential_ids.append(shared_id)
+        for to_query in CONS.OTHER_SIDE_CHARACTERS:
+            if to_query != self_other_side_char:
+                potential_ids.append(shared_id + to_query)
+
+        for pid in potential_ids:
+            other_side_q |= Q(card_id=pid)
+            card_lookup.setdefault(pid, []).append(card.id)
+
+        other_sides_map[card.id] = []
+
+    if other_side_q:
+        for other_card in Card.objects.filter(other_side_q):
+            for source_id in card_lookup.get(other_card.card_id, []):
+                other_sides_map[source_id].append(other_card)
+
+    return other_sides_map
+
+
 def get(request, decklist_id, share_parameter=""):
-    decklist = get_object_or_404(DeckList, pk=decklist_id)
+    decklist = get_object_or_404(
+        DeckList.objects.select_related("profile__user", "deck_format"),
+        pk=decklist_id,
+    )
     if (not decklist.public and not request.user == decklist.profile.user and not request.user.is_superuser) and (
         share_parameter == "" or not decklist.shareCode == share_parameter
     ):
         return HttpResponseRedirect(reverse("cardDatabase-private-decklist"))
 
-    cards = decklist.cards.all()
+    cards = list(
+        decklist.cards.select_related(
+            "card", "zone__zone",
+        ).prefetch_related("card__tag").all()
+    )
     zones = (
         UserDeckListZone.objects.filter(decklist=decklist)
         .order_by("position")
@@ -26,20 +76,20 @@ def get(request, decklist_id, share_parameter=""):
         .distinct()
     )
 
-    """ 
+    """
     DeckListCard is not the same as Card so compare the pk's by using values_list to get Card objects from DeckListCard
     Also avoids duplicate named/reprinted cards needing multiple banlist entries
     """
-    deck_card_names = list(cards.values_list("card__name", flat=True))
+    deck_card_names = [c.card.name for c in cards]
 
     if decklist.deck_format.name != CONS.PARADOX_FORMAT:
-        banned_cards = BannedCard.objects.filter(format=decklist.deck_format)
-        combination_bans = CombinationBannedCards.objects.filter(format=decklist.deck_format)
+        banned_cards = BannedCard.objects.select_related("card").filter(format=decklist.deck_format)
+        combination_bans = CombinationBannedCards.objects.prefetch_related("cards").filter(format=decklist.deck_format)
     else:
         query = Q(format=decklist.deck_format)
         query |= Q(format__name=CONS.WANDERER_FORMAT)
-        banned_cards = BannedCard.objects.filter(query)
-        combination_bans = CombinationBannedCards.objects.filter(query)
+        banned_cards = BannedCard.objects.select_related("card").filter(query)
+        combination_bans = CombinationBannedCards.objects.prefetch_related("cards").filter(query)
 
     ban_warnings = []
     for banned_card in banned_cards:
@@ -56,7 +106,7 @@ def get(request, decklist_id, share_parameter=""):
     combination_ban_warnings = []
     for combination_ban in combination_bans:
         combination_banned_cards = combination_ban.cards.all()
-        combination_banned_card_names = combination_banned_cards.values_list("name", flat=True)
+        combination_banned_card_names = [c.name for c in combination_banned_cards]
         overlap = set(combination_banned_card_names) & set(deck_card_names)
         if len(overlap) > 1:
             combination_ban_warning = {
@@ -74,15 +124,21 @@ def get(request, decklist_id, share_parameter=""):
                     )
             combination_ban_warnings.append(combination_ban_warning)
 
-    restrictions = Restriction.objects.all()
+    restrictions = Restriction.objects.select_related(
+        "action", "tag", "restricted_tag",
+    ).prefetch_related(
+        Prefetch(
+            "restrictionexception_set",
+            queryset=RestrictionException.objects.select_related(
+                "exception_applying_card", "exception_action",
+            ).prefetch_related("exception_action__applying_to_cards"),
+        ),
+    ).all()
     deck_restrictions = []
     for restriction in restrictions:
-        exceptions = RestrictionException.objects.filter(restriction=restriction)
         deck_exceptions = []
-        for exception in exceptions:
-            cards_exception_applies_to = []
-            for card in exception.exception_action.applying_to_cards.all():
-                cards_exception_applies_to.append(card.id)
+        for exception in restriction.restrictionexception_set.all():
+            cards_exception_applies_to = [card.id for card in exception.exception_action.applying_to_cards.all()]
             deck_exceptions.append(
                 {
                     "exceptionApplyingCard": exception.exception_applying_card.id,
@@ -102,11 +158,12 @@ def get(request, decklist_id, share_parameter=""):
             }
         )
 
+    # Batch-compute other sides for all cards (avoids N+1 in template)
+    other_sides_map = _build_other_sides_map(cards)
+
     cardsData = []
     for card in cards:
-        tags = []
-        for tag in card.card.tag.all():
-            tags.append(tag.id)
+        tags = [tag.id for tag in card.card.tag.all()]
         cardsData.append({"quantity": card.quantity, "tags": tags, "id": card.card.id, "zone": card.zone.zone.name})
 
     absolute_share_link = None
@@ -129,7 +186,7 @@ def get(request, decklist_id, share_parameter=""):
     deck_tournament_locked = False
     tournament_player = None
     if request.user.is_authenticated:
-        tournament_player = TournamentPlayer.objects.filter(profile=request.user.profile, deck=decklist).first()
+        tournament_player = TournamentPlayer.objects.select_related("tournament").filter(profile=request.user.profile, deck=decklist).first()
 
     if tournament_player is not None:
         tournament = tournament_player.tournament
@@ -156,6 +213,7 @@ def get(request, decklist_id, share_parameter=""):
             "combination_ban_warnings": combination_ban_warnings,
             "deckRestrictions": deck_restrictions,
             "cardsData": cardsData,
+            "other_sides_map": other_sides_map,
             "absoluteShareLink": absolute_share_link,
             "deckLockUserManaged": deck_lock_user_managed,
             "deckShareUserManaged": deck_share_user_managed,

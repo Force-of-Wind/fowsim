@@ -146,6 +146,7 @@ DATABASES = {
         "PORT": db_port,
         "CONN_MAX_AGE": 600,
         "CONN_HEALTH_CHECKS": True,
+        "DISABLE_SERVER_SIDE_CURSORS": True,
     }
 }
 

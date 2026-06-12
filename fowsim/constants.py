@@ -399,6 +399,7 @@ SET_DATA = {
                 {"code": "ESD2", "name": "Metelda Deck"},
                 {"code": "DRC", "name": "Descent into the Raven's Catacombs"},
                 {"code": "JRV", "name": "Journey to Ravidra"},
+                {"code": "AVL", "name": "Attack on Velmardia"},
             ],
         },
     ]
@@ -828,6 +829,7 @@ SETS_IN_ORDER = [
     "MP03 Buy a Box 09",
     "MP03 Buy a Box 10",
     "MC10",
+    "AVL",
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -905,6 +907,7 @@ SEARCH_SETS_INCLUDE = {
         "MP03 Buy a Box 08",
         "MP03 Buy a Box 09",
         "MP03 Buy a Box 10",
+        "AVL Buy a Box",
     ],
     "Pre": [
         "L1 Prerelease Party",
@@ -943,6 +946,7 @@ SEARCH_SETS_INCLUDE = {
         "T4 Prerelease Party",
         "JRV Prerelease Party",
         "DRC Prerelease Party",
+        "AVL Prerelease Party",
     ],
     "World": [
         "World2015",
@@ -1091,6 +1095,10 @@ SEARCH_SETS_INCLUDE = {
         "MP03 Buy a Box 08",
         "MP03 Buy a Box 09",
         "MP03 Buy a Box 10",
+    ],
+    "AVL": [        
+        "AVL Buy a Box",
+        "AVL Prerelease Party",
     ],
 }
 

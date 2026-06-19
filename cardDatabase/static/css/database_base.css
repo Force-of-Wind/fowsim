@@ -175,7 +175,7 @@ input:checked + .selected-backgrounds{
     padding-right: 10px;
 }
 
-.divinity-select, .cost-select, .select-text-search-fields, .select-text-exactness, .atk-def-stats, .select-sort-by, .colour-combination{
+.divinity-select, .cost-select, .select-text-search-fields, .select-text-exactness, .atk-def-stats, .select-sort-by, .colour-combination .solo-mode-container{
     border-bottom: 1px solid rgb(0 0 0 / 16%);
     margin-bottom: 20px;
 }

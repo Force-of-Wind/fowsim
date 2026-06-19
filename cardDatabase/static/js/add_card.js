@@ -125,6 +125,23 @@ function arrayToText(array, seperator){
     return array.join(seperator);
 }
 
+// Split a card's abilities into the normal abilities and the Solo Mode abilities.
+// The [Solo Mode] marker and everything after it belongs to Solo Mode; the marker
+// itself is dropped since the dedicated textbox already implies the style.
+function splitSoloModeAbilities(abilities){
+    const marker = '[Solo Mode]';
+    for (let i = 0; i < abilities.length; i++){
+        if (abilities[i].includes(marker)){
+            let solo = abilities.slice(i + 1);
+            let remainder = abilities[i].replace(marker, '').trim();
+            if (remainder)
+                solo.unshift(remainder);
+            return { normal: abilities.slice(0, i), solo: solo };
+        }
+    }
+    return { normal: abilities, solo: [] };
+}
+
 function formatArtists(string, seperator = ' / '){
     return string.replaceAll(seperator, '\n');
 }
@@ -162,7 +179,9 @@ function autofillFields(cardId){
 
     changeValueOfInput('#add_card textarea[name="races"]', arrayToText(card.race, '\r\n'));
 
-    changeValueOfInput('#add_card textarea[name="ability_texts"]', arrayToText(card.abilities, '\r\n\r\n'));
+    let splitAbilities = splitSoloModeAbilities(card.abilities ?? []);
+    changeValueOfInput('#add_card textarea[name="ability_texts"]', arrayToText(splitAbilities.normal, '\r\n\r\n'));
+    changeValueOfInput('#add_card textarea[name="solo_mode_ability_texts"]', arrayToText(splitAbilities.solo, '\r\n\r\n'));
 }
 
 

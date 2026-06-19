@@ -830,6 +830,7 @@ SETS_IN_ORDER = [
     "MP03 Buy a Box 10",
     "MC10",
     "AVL",
+    "MC11",
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -1099,6 +1100,7 @@ SEARCH_SETS_INCLUDE = {
     "AVL": [        
         "AVL Buy a Box",
         "AVL Prerelease Party",
+        "MC11",
     ],
 }
 

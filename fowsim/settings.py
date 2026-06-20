@@ -144,7 +144,7 @@ DATABASES = {
         "PASSWORD": db_pass,
         "HOST": db_host,
         "PORT": db_port,
-        "CONN_MAX_AGE": 600,
+        "CONN_MAX_AGE": int(os.environ.get("CONN_MAX_AGE", "0")),
         "CONN_HEALTH_CHECKS": True,
         "DISABLE_SERVER_SIDE_CURSORS": True,
     }

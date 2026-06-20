@@ -2,8 +2,8 @@
 Back-fill grouping_key/display_name for all existing cards so the grouping-key-based
 reprints/bans/rulings lookups work immediately after this migration.
 
-At this point no card carries the Paradoxical type or modal fields yet (those are marked by
-the mark_paradoxical_cards / migrate_modal_cards commands afterwards), so every existing card's
+At this point no card carries the Paradoxical type or alternative fields yet (those are marked by
+the mark_paradoxical_cards / migrate_alternative_cards commands afterwards), so every existing card's
 canonical grouping_key/display_name is simply its name. The marking commands recompute the
 affected cards.
 """

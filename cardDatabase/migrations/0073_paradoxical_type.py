@@ -16,7 +16,7 @@ def remove_paradoxical_type(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("cardDatabase", "0072_card_display_name_card_grouping_key_card_modal_face_and_more"),
+        ("cardDatabase", "0072_card_display_name_card_grouping_key_card_alternative_face_and_more"),
     ]
 
     operations = [

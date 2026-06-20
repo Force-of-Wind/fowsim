@@ -1,5 +1,5 @@
 """
-Tests for the paradoxical / modal advanced-search filters and modal bottom-half exclusion.
+Tests for the paradoxical / alternative advanced-search filters and alternative bottom-half exclusion.
 """
 
 import pytest
@@ -25,15 +25,15 @@ def _make_card(name, card_id, colour, types=()):
 
 @pytest.fixture
 def search_world(card_colour, card_type, paradoxical_type):
-    """A normal card, a paradoxical card, and a linked modal pair."""
+    """A normal card, a paradoxical card, and a linked alternative pair."""
     normal = _make_card("Plain", "SCH-001", card_colour, [card_type])
     paradox = _make_card("Echo", "SCH-002", card_colour, [card_type, paradoxical_type])
     top = _make_card("Top Name", "SCH-003", card_colour, [card_type])
     bottom = _make_card("Bottom Name", "SCH-003" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
-    top.modal_face = top.MODAL_FACE_TOP
-    top.modal_partner = bottom
-    bottom.modal_face = bottom.MODAL_FACE_BOTTOM
-    bottom.modal_partner = top
+    top.alternative_face = top.ALTERNATIVE_FACE_TOP
+    top.alternative_partner = bottom
+    bottom.alternative_face = bottom.ALTERNATIVE_FACE_BOTTOM
+    bottom.alternative_partner = top
     top.save()
     bottom.save()
     top.recompute_grouping(save=True)
@@ -51,21 +51,21 @@ def _run_advanced_search(data):
 
 
 @pytest.mark.django_db
-class TestParadoxicalModalSearch:
+class TestParadoxicalAlternativeSearch:
     def test_paradoxical_filter(self, search_world):
         results = _run_advanced_search({"paradoxical": "on"})
         assert search_world["paradox"] in results
         assert search_world["normal"] not in results
         assert search_world["top"] not in results
 
-    def test_modal_filter(self, search_world):
-        results = _run_advanced_search({"modal": "on"})
+    def test_alternative_filter(self, search_world):
+        results = _run_advanced_search({"alternative": "on"})
         assert search_world["top"] in results
         # Bottom half is always excluded from results.
         assert search_world["bottom"] not in results
         assert search_world["normal"] not in results
 
-    def test_default_search_excludes_modal_bottom(self, search_world):
+    def test_default_search_excludes_alternative_bottom(self, search_world):
         results = _run_advanced_search({})
         assert search_world["normal"] in results
         assert search_world["paradox"] in results
@@ -88,7 +88,7 @@ class TestParadoxicalModalSearch:
     def test_query_helpers(self, search_world):
         from cardDatabase.views.utils.search_context import (
             get_paradoxical_query,
-            get_modal_query,
+            get_alternative_query,
         )
         from cardDatabase.models.CardType import Card
 
@@ -96,7 +96,7 @@ class TestParadoxicalModalSearch:
         assert search_world["paradox"] in paradoxical
         assert search_world["normal"] not in paradoxical
 
-        modal = list(Card.objects.filter(get_modal_query(True)).distinct())
-        assert search_world["top"] in modal
-        assert search_world["bottom"] in modal
-        assert search_world["normal"] not in modal
+        alternative = list(Card.objects.filter(get_alternative_query(True)).distinct())
+        assert search_world["top"] in alternative
+        assert search_world["bottom"] in alternative
+        assert search_world["normal"] not in alternative

@@ -6,7 +6,7 @@ from django.utils import timezone
 from cardDatabase.forms import SearchForm, AdvancedSearchForm
 from cardDatabase.models import DeckList, DeckListCard, Format, TournamentPlayer
 from cardDatabase.models.DeckList import UserDeckListZone
-from cardDatabase.views.utils.search_context import get_search_form_ctx, normalise_modal_bottom_halves
+from cardDatabase.views.utils.search_context import get_search_form_ctx, normalise_alternative_bottom_halves
 from fowsim.decorators import desktop_only
 
 from fowsim import constants as CONS
@@ -41,8 +41,8 @@ def get(request, decklist_id=None):
     ctx["basic_form"] = SearchForm()
     ctx["advanced_form"] = AdvancedSearchForm()
     ctx["zones"] = UserDeckListZone.objects.filter(decklist__pk=decklist.pk).order_by("position")
-    ctx["decklist_cards"] = normalise_modal_bottom_halves(
-        DeckListCard.objects.filter(decklist__pk=decklist.pk).select_related("card", "card__modal_partner")
+    ctx["decklist_cards"] = normalise_alternative_bottom_halves(
+        DeckListCard.objects.filter(decklist__pk=decklist.pk).select_related("card", "card__alternative_partner")
     )
     ctx["decklist"] = decklist
     ctx["deck_formats"] = Format.objects.all()

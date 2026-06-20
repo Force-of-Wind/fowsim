@@ -1,6 +1,6 @@
 """
-Deck round-trip tests: same-named normal+paradoxical and standalone+modal cards form
-distinct stacks, and legacy modal bottom-half references normalise to the top half on load.
+Deck round-trip tests: same-named normal+paradoxical and standalone+alternative cards form
+distinct stacks, and legacy alternative bottom-half references normalise to the top half on load.
 """
 
 import pytest
@@ -24,13 +24,13 @@ def _make_card(name, card_id, colour, types=()):
     return c
 
 
-def _linked_modal_pair(card_colour, card_type):
+def _linked_alternative_pair(card_colour, card_type):
     top = _make_card("Split", "MOD-001", card_colour, [card_type])
     bottom = _make_card("Rabbit", "MOD-001" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
-    top.modal_face = top.MODAL_FACE_TOP
-    top.modal_partner = bottom
-    bottom.modal_face = bottom.MODAL_FACE_BOTTOM
-    bottom.modal_partner = top
+    top.alternative_face = top.ALTERNATIVE_FACE_TOP
+    top.alternative_partner = bottom
+    bottom.alternative_face = bottom.ALTERNATIVE_FACE_BOTTOM
+    bottom.alternative_partner = top
     top.save()
     bottom.save()
     top.recompute_grouping(save=True)
@@ -49,20 +49,20 @@ class TestDeckRoundTrip:
         # Distinct grouping keys => the deck editor keys them into separate stacks.
         assert normal.grouping_key != paradox.grouping_key
 
-    def test_standalone_and_modal_are_distinct_stacks(self, card_colour, card_type):
+    def test_standalone_and_alternative_are_distinct_stacks(self, card_colour, card_type):
         standalone = _make_card("Split", "DR-010", card_colour, [card_type])
-        top, _ = _linked_modal_pair(card_colour, card_type)
+        top, _ = _linked_alternative_pair(card_colour, card_type)
 
         assert standalone.grouping_key != top.grouping_key
 
-    def test_modal_bottom_half_normalises_to_top_on_load(
+    def test_alternative_bottom_half_normalises_to_top_on_load(
         self, profile, format_obj, decklist_zone, card_colour, card_type
     ):
         from cardDatabase.models import DeckList
         from cardDatabase.models.DeckList import DeckListCard, UserDeckListZone
-        from cardDatabase.views.utils.search_context import normalise_modal_bottom_halves
+        from cardDatabase.views.utils.search_context import normalise_alternative_bottom_halves
 
-        top, bottom = _linked_modal_pair(card_colour, card_type)
+        top, bottom = _linked_alternative_pair(card_colour, card_type)
 
         decklist = DeckList.objects.create(
             profile=profile, name="Legacy Deck", public=True, deck_format=format_obj
@@ -73,8 +73,8 @@ class TestDeckRoundTrip:
             decklist=decklist, card=bottom, position=1, zone=user_zone, quantity=2
         )
 
-        normalised = normalise_modal_bottom_halves(
-            DeckListCard.objects.filter(decklist=decklist).select_related("card", "card__modal_partner")
+        normalised = normalise_alternative_bottom_halves(
+            DeckListCard.objects.filter(decklist=decklist).select_related("card", "card__alternative_partner")
         )
         assert len(normalised) == 1
         # Swapped to the top half representative.

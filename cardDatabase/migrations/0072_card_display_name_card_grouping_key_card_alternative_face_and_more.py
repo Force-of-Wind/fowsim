@@ -23,12 +23,12 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='card',
-            name='modal_face',
+            name='alternative_face',
             field=models.CharField(blank=True, max_length=8, null=True),
         ),
         migrations.AddField(
             model_name='card',
-            name='modal_partner',
+            name='alternative_partner',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='cardDatabase.card'),
         ),
         migrations.AlterField(

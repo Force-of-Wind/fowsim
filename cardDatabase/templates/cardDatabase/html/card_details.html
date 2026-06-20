@@ -215,13 +215,13 @@
                 {% endfor %}
             </div>
         {% endif %}
-        {% if card.is_modal and card.modal_partner %}
-            <div class="card-text-info modal-partner">
+        {% if card.is_alternative and card.alternative_partner %}
+            <div class="card-text-info alternative-partner">
                 <div class="card-text-info-title">
-                    Modal — other half:
+                    Alternative — other half:
                 </div>
                 <div class="card-text-info-text">
-                    <a href="{% url 'cardDatabase-view-card' card_id=card.modal_partner.card_id %}">{{ card.modal_partner.name }}</a>
+                    <a href="{% url 'cardDatabase-view-card' card_id=card.alternative_partner.card_id %}">{{ card.alternative_partner.name }}</a>
                 </div>
             </div>
         {% endif %}

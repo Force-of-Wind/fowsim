@@ -160,7 +160,7 @@ class TestCardModel:
 
 
 # =============================================================================
-# Paradoxical & Modal grouping tests
+# Paradoxical & Alternative grouping tests
 # =============================================================================
 
 
@@ -210,16 +210,16 @@ class TestGroupingKey:
         assert card.grouping_key == "Flux"
         assert card.display_name == "Flux"
 
-    def test_modal_grouping_and_display(self, card_colour, card_type):
+    def test_alternative_grouping_and_display(self, card_colour, card_type):
         from fowsim import constants as CONS
 
         top = _make_card("Split Heaven and Earth", "XXX-064", card_colour, [card_type])
         bottom = _make_card("Groundsplitting Rabbit", "XXX-064" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
 
-        top.modal_face = top.MODAL_FACE_TOP
-        top.modal_partner = bottom
-        bottom.modal_face = bottom.MODAL_FACE_BOTTOM
-        bottom.modal_partner = top
+        top.alternative_face = top.ALTERNATIVE_FACE_TOP
+        top.alternative_partner = bottom
+        bottom.alternative_face = bottom.ALTERNATIVE_FACE_BOTTOM
+        bottom.alternative_partner = top
         top.save()
         bottom.save()
         top.recompute_grouping(save=True)
@@ -241,19 +241,19 @@ class TestGroupingKey:
         assert paradox not in normal.reprints
         assert normal not in paradox.reprints
 
-    def test_modal_bottom_reprints_excludes_own_top(self, card_colour, card_type):
+    def test_alternative_bottom_reprints_excludes_own_top(self, card_colour, card_type):
         from fowsim import constants as CONS
 
-        # Two printings of the same modal card.
+        # Two printings of the same alternative card.
         top_a = _make_card("Front", "AAA-001", card_colour, [card_type])
         bottom_a = _make_card("Back", "AAA-001" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
         top_b = _make_card("Front", "BBB-001", card_colour, [card_type])
         bottom_b = _make_card("Back", "BBB-001" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
         for top, bottom in ((top_a, bottom_a), (top_b, bottom_b)):
-            top.modal_face = top.MODAL_FACE_TOP
-            top.modal_partner = bottom
-            bottom.modal_face = bottom.MODAL_FACE_BOTTOM
-            bottom.modal_partner = top
+            top.alternative_face = top.ALTERNATIVE_FACE_TOP
+            top.alternative_partner = bottom
+            bottom.alternative_face = bottom.ALTERNATIVE_FACE_BOTTOM
+            bottom.alternative_partner = top
             top.save()
             bottom.save()
             top.recompute_grouping(save=True)
@@ -267,16 +267,16 @@ class TestGroupingKey:
         assert top_b in reprints
         assert bottom_b not in reprints
 
-    def test_reprints_excludes_standalone_vs_modal_same_name(self, card_colour, card_type):
+    def test_reprints_excludes_standalone_vs_alternative_same_name(self, card_colour, card_type):
         from fowsim import constants as CONS
 
         standalone = _make_card("Split Heaven and Earth", "AAA-001", card_colour, [card_type])
         top = _make_card("Split Heaven and Earth", "XXX-064", card_colour, [card_type])
         bottom = _make_card("Groundsplitting Rabbit", "XXX-064" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
-        top.modal_face = top.MODAL_FACE_TOP
-        top.modal_partner = bottom
-        bottom.modal_face = bottom.MODAL_FACE_BOTTOM
-        bottom.modal_partner = top
+        top.alternative_face = top.ALTERNATIVE_FACE_TOP
+        top.alternative_partner = bottom
+        bottom.alternative_face = bottom.ALTERNATIVE_FACE_BOTTOM
+        bottom.alternative_partner = top
         top.save()
         bottom.save()
         top.recompute_grouping(save=True)
@@ -301,16 +301,16 @@ class TestGroupingKey:
         assert second not in first.paradoxical_counterparts
         assert not first.paradoxical_counterparts.exists()
 
-    def test_paradoxical_counterparts_ignores_modal_reprints(self, card_colour, card_type):
-        # A modal top with same-name standalone reprints must not list them as paradoxical.
+    def test_paradoxical_counterparts_ignores_alternative_reprints(self, card_colour, card_type):
+        # A alternative top with same-name standalone reprints must not list them as paradoxical.
         from fowsim import constants as CONS
 
         top = _make_card("Dual", "TST-250", card_colour, [card_type])
         bottom = _make_card("Dual Back", "TST-250" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
-        top.modal_face = top.MODAL_FACE_TOP
-        top.modal_partner = bottom
-        bottom.modal_face = bottom.MODAL_FACE_BOTTOM
-        bottom.modal_partner = top
+        top.alternative_face = top.ALTERNATIVE_FACE_TOP
+        top.alternative_partner = bottom
+        bottom.alternative_face = bottom.ALTERNATIVE_FACE_BOTTOM
+        bottom.alternative_partner = top
         top.save()
         bottom.save()
         top.recompute_grouping(save=True)

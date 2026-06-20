@@ -119,9 +119,9 @@ class Card(AbstractModel):
         abstract = False
         app_label = "cardDatabase"
 
-    # --- Modal (top/bottom halves of one physical card) ---
-    MODAL_FACE_TOP = CONS.MODAL_FACE_TOP
-    MODAL_FACE_BOTTOM = CONS.MODAL_FACE_BOTTOM
+    # --- Alternative (top/bottom halves of one physical card) ---
+    ALTERNATIVE_FACE_TOP = CONS.ALTERNATIVE_FACE_TOP
+    ALTERNATIVE_FACE_BOTTOM = CONS.ALTERNATIVE_FACE_BOTTOM
 
     name = models.CharField(max_length=200, null=False, blank=False)
     name_without_punctuation = models.CharField(max_length=200, null=False, blank=False)
@@ -142,10 +142,10 @@ class Card(AbstractModel):
     tag = models.ManyToManyField("Tag", related_name="cards", blank=True)
     artists = models.ManyToManyField("CardArtist", related_name="cards", blank=True)
 
-    # --- Modal (top/bottom halves of one physical card) ---
-    # null => not modal. Links the two halves together (top.modal_partner == bottom, and vice-versa).
-    modal_face = models.CharField(max_length=8, null=True, blank=True)
-    modal_partner = models.ForeignKey(
+    # --- Alternative (top/bottom halves of one physical card) ---
+    # null => not alternative. Links the two halves together (top.alternative_partner == bottom, and vice-versa).
+    alternative_face = models.CharField(max_length=8, null=True, blank=True)
+    alternative_partner = models.ForeignKey(
         "self", null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
     )
 
@@ -157,8 +157,8 @@ class Card(AbstractModel):
         return self.name
 
     @property
-    def is_modal(self):
-        return self.modal_face is not None
+    def is_alternative(self):
+        return self.alternative_face is not None
 
     @property
     def is_paradoxical(self):
@@ -168,33 +168,33 @@ class Card(AbstractModel):
         return self.types.filter(name=CONS.CARD_TYPE_PARADOXICAL).exists()
 
     @property
-    def modal_combined_name(self):
-        """top.name//bottom.name for a modal pair, computed from the top half."""
-        if not self.is_modal:
+    def alternative_combined_name(self):
+        """top.name//bottom.name for a alternative pair, computed from the top half."""
+        if not self.is_alternative:
             return self.name
-        top = self if self.modal_face == self.MODAL_FACE_TOP else self.modal_partner
-        bottom = top.modal_partner if top else None
+        top = self if self.alternative_face == self.ALTERNATIVE_FACE_TOP else self.alternative_partner
+        bottom = top.alternative_partner if top else None
         if top and bottom:
-            return f"{top.name}{CONS.MODAL_NAME_SEPARATOR}{bottom.name}"
+            return f"{top.name}{CONS.ALTERNATIVE_NAME_SEPARATOR}{bottom.name}"
         return self.name
 
     @property
-    def relative_modal_name(self):
+    def relative_alternative_name(self):
         """currentcard//otherHalf for display on this card's own detail page (presentation only)."""
-        if not self.is_modal or not self.modal_partner:
+        if not self.is_alternative or not self.alternative_partner:
             return self.name
-        return f"{self.name}{CONS.MODAL_NAME_SEPARATOR}{self.modal_partner.name}"
+        return f"{self.name}{CONS.ALTERNATIVE_NAME_SEPARATOR}{self.alternative_partner.name}"
 
     def compute_grouping_key(self):
-        if self.is_modal:
-            return self.modal_combined_name
+        if self.is_alternative:
+            return self.alternative_combined_name
         if self.is_paradoxical:
             return f"{self.name}{CONS.GROUPING_KEY_SEPARATOR}PARADOXICAL"
         return self.name
 
     def compute_display_name(self):
-        if self.is_modal:
-            return self.modal_combined_name
+        if self.is_alternative:
+            return self.alternative_combined_name
         if self.is_paradoxical:
             return f"{self.name}{CONS.PARADOXICAL_DISPLAY_SUFFIX}"
         return self.name
@@ -290,17 +290,17 @@ class Card(AbstractModel):
 
     @property
     def reprints(self):
-        # Same grouping_key = same gameplay identity. Exclude modal bottom halves so the Reprints
+        # Same grouping_key = same gameplay identity. Exclude alternative bottom halves so the Reprints
         # list shows the other printings (their top-half representatives), not the ^/* halves.
         reprints = (
             Card.objects.filter(grouping_key=self.grouping_key)
-            .exclude(modal_face=CONS.MODAL_FACE_BOTTOM)
+            .exclude(alternative_face=CONS.ALTERNATIVE_FACE_BOTTOM)
             .exclude(id=self.id)
         )
-        # On a modal bottom half's page, never list its own top half - that's the card it
+        # On a alternative bottom half's page, never list its own top half - that's the card it
         # belongs to, not a reprint of it.
-        if self.modal_partner_id:
-            reprints = reprints.exclude(id=self.modal_partner_id)
+        if self.alternative_partner_id:
+            reprints = reprints.exclude(id=self.alternative_partner_id)
         return reprints
 
     @property
@@ -308,7 +308,7 @@ class Card(AbstractModel):
         """
         The paradoxical <-> non-paradoxical counterpart(s) that share this card's printed name.
         Specifically targets the paradoxical marker so it does NOT pick up ordinary same-name
-        reprints or modal/standalone collisions (those are handled by reprints / other halves).
+        reprints or alternative/standalone collisions (those are handled by reprints / other halves).
         """
         paradoxical_key = f"{self.name}{CONS.GROUPING_KEY_SEPARATOR}PARADOXICAL"
         target_key = self.name if self.is_paradoxical else paradoxical_key
@@ -347,7 +347,7 @@ class CardColour(models.Model):
 @receiver(pre_save, sender=Card)
 def recompute_grouping_on_save(sender, instance, **kwargs):
     """
-    Recompute grouping_key/display_name from the modal fields and name on every save.
+    Recompute grouping_key/display_name from the alternative fields and name on every save.
     The `types` M2M (paradoxical marker) is set *after* save, so paradoxical recomputation
     happens in the m2m_changed handler below. Assign directly to the instance so the values
     persist as part of this same save (no extra query).

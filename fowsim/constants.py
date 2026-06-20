@@ -163,13 +163,13 @@ OTHER_SIDE_CHARACTERS = [  # Order is important for Card.other_sides
     ALTERNATIVE_SIDE_CHARACTER,
 ]
 
-# --- Paradoxical & Modal card grouping (see implementation-plan.md) ---
+# --- Paradoxical & Alternative card grouping (see implementation-plan.md) ---
 PARADOXICAL_DISPLAY_SUFFIX = " (Paradoxical)"
 # Non-printable separator (ASCII Unit Separator) so grouping_key can never collide with a real name.
 GROUPING_KEY_SEPARATOR = "\x1f"
-MODAL_NAME_SEPARATOR = "//"
-MODAL_FACE_TOP = "top"
-MODAL_FACE_BOTTOM = "bottom"
+ALTERNATIVE_NAME_SEPARATOR = "//"
+ALTERNATIVE_FACE_TOP = "top"
+ALTERNATIVE_FACE_BOTTOM = "bottom"
 
 # No longer used, refers to the query parameter on fowtcg.com when you search by a specific set.
 # It is in sorted order from oldest to newest though, can be reused later

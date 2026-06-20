@@ -1,5 +1,5 @@
 """
-Tests for the AddCardForm paradoxical/modal handling and the add-card page rendering.
+Tests for the AddCardForm paradoxical/alternative handling and the add-card page rendering.
 """
 
 import pytest
@@ -38,8 +38,8 @@ def _base_form_data(card_colour, types):
         "cost": "",
         "divinity": "",
         "will_power": "",
-        "modal_face": "",
-        "modal_partner": "",
+        "alternative_face": "",
+        "alternative_partner": "",
     }
 
 
@@ -62,7 +62,7 @@ class TestAddCardForm:
         assert card.grouping_key == f"Echo{CONS.GROUPING_KEY_SEPARATOR}PARADOXICAL"
         assert card.display_name == "Echo (Paradoxical)"
 
-    def test_modal_fields_link_both_halves(self, card_colour, card_type):
+    def test_alternative_fields_link_both_halves(self, card_colour, card_type):
         from cardDatabase.forms import AddCardForm
 
         bottom = _make_card(
@@ -72,8 +72,8 @@ class TestAddCardForm:
         data = _base_form_data(card_colour, [card_type])
         data["name"] = "Top"
         data["card_id"] = "ADD-010"
-        data["modal_face"] = CONS.MODAL_FACE_TOP
-        data["modal_partner"] = bottom.card_id
+        data["alternative_face"] = CONS.ALTERNATIVE_FACE_TOP
+        data["alternative_partner"] = bottom.card_id
 
         form = AddCardForm(data)
         assert form.is_valid(), form.errors
@@ -82,26 +82,26 @@ class TestAddCardForm:
         top.refresh_from_db()
         bottom.refresh_from_db()
 
-        assert top.modal_face == CONS.MODAL_FACE_TOP
-        assert top.modal_partner_id == bottom.id
-        assert bottom.modal_face == CONS.MODAL_FACE_BOTTOM
-        assert bottom.modal_partner_id == top.id
+        assert top.alternative_face == CONS.ALTERNATIVE_FACE_TOP
+        assert top.alternative_partner_id == bottom.id
+        assert bottom.alternative_face == CONS.ALTERNATIVE_FACE_BOTTOM
+        assert bottom.alternative_partner_id == top.id
 
         combined = "Top//Bottom"
         assert top.grouping_key == combined
         assert bottom.grouping_key == combined
 
-    def test_modal_face_without_partner_invalid(self, card_colour, card_type):
+    def test_alternative_face_without_partner_invalid(self, card_colour, card_type):
         from cardDatabase.forms import AddCardForm
 
         data = _base_form_data(card_colour, [card_type])
         data["name"] = "Lonely"
         data["card_id"] = "ADD-020"
-        data["modal_face"] = CONS.MODAL_FACE_TOP
+        data["alternative_face"] = CONS.ALTERNATIVE_FACE_TOP
 
         form = AddCardForm(data)
         assert not form.is_valid()
-        assert "modal_partner" in form.errors
+        assert "alternative_partner" in form.errors
 
     def test_form_renders_with_paradoxical_type(self, card_type, paradoxical_type):
         # AddCardForm.__init__ sorts the type checkboxes via DATABASE_CARD_TYPE_GROUPS.index().

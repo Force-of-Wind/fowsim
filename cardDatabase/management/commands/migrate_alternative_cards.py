@@ -1,27 +1,27 @@
 """
-One-off migration that extracts the *modal* card pairs out of the legacy ``^``/``*``
-two-sided pool and wires them up with explicit modal modelling (``modal_face`` /
-``modal_partner``).
+One-off migration that extracts the *alternative* card pairs out of the legacy ``^``/``*``
+two-sided pool and wires them up with explicit alternative modelling (``alternative_face`` /
+``alternative_partner``).
 
 `other_sides` is NOT removed or repurposed: genuine two-sided / transform cards share the
-same ``^``/``*`` pool, so modal pairs must be named explicitly (never inferred from card
+same ``^``/``*`` pool, so alternative pairs must be named explicitly (never inferred from card
 type). See implementation-plan.md §4.
 
 Usage:
     # Report every ^/* candidate pair for human review (no writes):
-    python manage.py migrate_modal_cards --report
+    python manage.py migrate_alternative_cards --report
 
-    # Dry-run marking a curated list of modal *top-half* base card_ids (no writes):
-    python manage.py migrate_modal_cards --modal-ids XXX-064 YYY-012
+    # Dry-run marking a curated list of alternative *top-half* base card_ids (no writes):
+    python manage.py migrate_alternative_cards --alternative-ids XXX-064 YYY-012
 
     # Same, but read the base ids from a committed fixture:
-    python manage.py migrate_modal_cards --modal-file cardDatabase/static/modal_cards.json
+    python manage.py migrate_alternative_cards --alternative-file cardDatabase/static/alternative_cards.json
 
     # Actually write the marks:
-    python manage.py migrate_modal_cards --modal-ids XXX-064 --commit
+    python manage.py migrate_alternative_cards --alternative-ids XXX-064 --commit
 
     # Recompute grouping_key/display_name for the whole table:
-    python manage.py migrate_modal_cards --backfill-all --commit
+    python manage.py migrate_alternative_cards --backfill-all --commit
 """
 
 import json
@@ -38,7 +38,7 @@ J_SUFFIXES = [CONS.J_SIDE_CHARACTER, CONS.COLOSSAL_SIDE_CHARACTER]  # "J", "J^"
 
 
 class Command(BaseCommand):
-    help = "Extracts curated modal card pairs from the legacy ^/* two-sided pool."
+    help = "Extracts curated alternative card pairs from the legacy ^/* two-sided pool."
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -47,16 +47,16 @@ class Command(BaseCommand):
             help="Enumerate every ^/* candidate pair for human review. No writes.",
         )
         parser.add_argument(
-            "--modal-ids",
+            "--alternative-ids",
             nargs="*",
             default=[],
             metavar="BASE_CARD_ID",
-            help="Explicit list of modal TOP-half base card_ids (e.g. XXX-064).",
+            help="Explicit list of alternative TOP-half base card_ids (e.g. XXX-064).",
         )
         parser.add_argument(
-            "--modal-file",
+            "--alternative-file",
             default=None,
-            help="Path to a JSON file containing a list of modal TOP-half base card_ids.",
+            help="Path to a JSON file containing a list of alternative TOP-half base card_ids.",
         )
         parser.add_argument(
             "--backfill-all",
@@ -78,27 +78,27 @@ class Command(BaseCommand):
             self.report_candidates()
             return
 
-        modal_ids = list(options["modal_ids"])
-        if options["modal_file"]:
-            with open(options["modal_file"], encoding="utf-8") as f:
-                modal_ids.extend(json.load(f))
+        alternative_ids = list(options["alternative_ids"])
+        if options["alternative_file"]:
+            with open(options["alternative_file"], encoding="utf-8") as f:
+                alternative_ids.extend(json.load(f))
 
-        if modal_ids:
-            self.mark_modal_pairs(modal_ids, commit)
+        if alternative_ids:
+            self.mark_alternative_pairs(alternative_ids, commit)
 
         if options["backfill_all"]:
             self.backfill_all(commit)
 
-        if not modal_ids and not options["backfill_all"]:
+        if not alternative_ids and not options["backfill_all"]:
             self.stdout.write(
-                "Nothing to do. Use --report, --modal-ids/--modal-file, or --backfill-all."
+                "Nothing to do. Use --report, --alternative-ids/--alternative-file, or --backfill-all."
             )
 
     # ------------------------------------------------------------------ #
     # 1. Enumerate candidates (report only)
     # ------------------------------------------------------------------ #
     def report_candidates(self):
-        self.stdout.write("Candidate ^/* pairs (review which are actually modal vs genuine two-sided):\n")
+        self.stdout.write("Candidate ^/* pairs (review which are actually alternative vs genuine two-sided):\n")
         count = 0
         for card in Card.objects.all().order_by("card_id"):
             number = card.set_number
@@ -122,10 +122,10 @@ class Command(BaseCommand):
         self.stdout.write(f"\n{count} candidate ^/* card(s) found.")
 
     # ------------------------------------------------------------------ #
-    # 2-5. Mark the curated modal pairs
+    # 2-5. Mark the curated alternative pairs
     # ------------------------------------------------------------------ #
-    def mark_modal_pairs(self, base_ids, commit):
-        self.stdout.write(f"Marking {len(base_ids)} modal pair(s):\n")
+    def mark_alternative_pairs(self, base_ids, commit):
+        self.stdout.write(f"Marking {len(base_ids)} alternative pair(s):\n")
         to_apply = []  # list of (top, bottom)
 
         for base_id in base_ids:
@@ -134,7 +134,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR(f"  ! {base_id}: no card with this card_id, skipping."))
                 continue
 
-            # Guard: refuse a card that has a J / J^ partner (ruler flip), not a modal half.
+            # Guard: refuse a card that has a J / J^ partner (ruler flip), not a alternative half.
             j_partner = next(
                 (Card.objects.filter(card_id=base_id + j).first() for j in J_SUFFIXES if Card.objects.filter(card_id=base_id + j).exists()),
                 None,
@@ -167,16 +167,16 @@ class Command(BaseCommand):
 
         with transaction.atomic():
             for top, bottom in to_apply:
-                top.modal_face = Card.MODAL_FACE_TOP
-                top.modal_partner = bottom
-                bottom.modal_face = Card.MODAL_FACE_BOTTOM
-                bottom.modal_partner = top
+                top.alternative_face = Card.ALTERNATIVE_FACE_TOP
+                top.alternative_partner = bottom
+                bottom.alternative_face = Card.ALTERNATIVE_FACE_BOTTOM
+                bottom.alternative_partner = top
                 top.save()
                 bottom.save()
                 # Both linked now - recompute so they share the canonical "top//bottom" key.
                 top.recompute_grouping(save=True)
                 bottom.recompute_grouping(save=True)
-        self.stdout.write(self.style.SUCCESS(f"\nMarked {len(to_apply)} modal pair(s)."))
+        self.stdout.write(self.style.SUCCESS(f"\nMarked {len(to_apply)} alternative pair(s)."))
 
     # ------------------------------------------------------------------ #
     # 6. Back-fill grouping_key/display_name for the whole table

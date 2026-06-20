@@ -84,7 +84,7 @@ class AdvancedSearchForm(forms.Form):
     reverse_sort = forms.BooleanField(label="Reverse sorting:", required=False)
     solo_mode = forms.BooleanField(label="Solo Mode:", required=False)
     paradoxical = forms.BooleanField(label="Paradoxical:", required=False)
-    modal = forms.BooleanField(label="Modal:", required=False)
+    alternative = forms.BooleanField(label="Alternative:", required=False)
     colours = forms.MultipleChoiceField(label="Color(s):", choices=CONS.COLOUR_CHOICES, required=False)
     characteristics = forms.MultipleChoiceField(label="Characteristic(s):", choices=CONS.CHARACTERISTIC_CHOICES, required=False)
     colour_match = forms.ChoiceField(
@@ -139,17 +139,17 @@ class AddCardForm(forms.ModelForm):
             }
         ),
     )
-    modal_face = forms.ChoiceField(
-        label="Modal face:",
+    alternative_face = forms.ChoiceField(
+        label="Alternative face:",
         required=False,
         choices=[
-            ("", "Not modal"),
-            (Card.MODAL_FACE_TOP, "Top half"),
-            (Card.MODAL_FACE_BOTTOM, "Bottom half"),
+            ("", "Not alternative"),
+            (Card.ALTERNATIVE_FACE_TOP, "Top half"),
+            (Card.ALTERNATIVE_FACE_BOTTOM, "Bottom half"),
         ],
     )
-    modal_partner = forms.CharField(
-        label="Modal partner card ID:",
+    alternative_partner = forms.CharField(
+        label="Alternative partner card ID:",
         required=False,
         help_text="card_id of the other half (e.g. the bottom half's XXX-064^)",
     )
@@ -212,23 +212,23 @@ class AddCardForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        modal_face = cleaned_data.get("modal_face")
-        modal_partner_id = (cleaned_data.get("modal_partner") or "").strip()
+        alternative_face = cleaned_data.get("alternative_face")
+        alternative_partner_id = (cleaned_data.get("alternative_partner") or "").strip()
 
-        if modal_face and not modal_partner_id:
-            self.add_error("modal_partner", "A modal card must reference its partner half's card_id.")
-        if modal_partner_id and not modal_face:
-            self.add_error("modal_face", "Select which face this card is to pair it with a partner.")
+        if alternative_face and not alternative_partner_id:
+            self.add_error("alternative_partner", "A alternative card must reference its partner half's card_id.")
+        if alternative_partner_id and not alternative_face:
+            self.add_error("alternative_face", "Select which face this card is to pair it with a partner.")
 
-        if modal_face and modal_partner_id:
-            partner = Card.objects.filter(card_id=modal_partner_id).first()
+        if alternative_face and alternative_partner_id:
+            partner = Card.objects.filter(card_id=alternative_partner_id).first()
             if partner is None:
                 self.add_error(
-                    "modal_partner",
-                    f"No card found with card_id '{modal_partner_id}'. Add the partner half first.",
+                    "alternative_partner",
+                    f"No card found with card_id '{alternative_partner_id}'. Add the partner half first.",
                 )
             else:
-                cleaned_data["_modal_partner_card"] = partner
+                cleaned_data["_alternative_partner_card"] = partner
         return cleaned_data
 
     @classmethod
@@ -248,22 +248,22 @@ class AddCardForm(forms.ModelForm):
         card_instance = super().save(commit=False)
         card_instance.name_without_punctuation = remove_punctuation(card_instance.name)
 
-        # Modal fields aren't in Meta.fields (modal_partner is resolved from a card_id, not a PK
+        # Alternative fields aren't in Meta.fields (alternative_partner is resolved from a card_id, not a PK
         # dropdown) so set them explicitly before saving.
-        modal_face = self.cleaned_data.get("modal_face") or None
-        partner = self.cleaned_data.get("_modal_partner_card")
-        card_instance.modal_face = modal_face
-        if modal_face and partner:
-            card_instance.modal_partner = partner
+        alternative_face = self.cleaned_data.get("alternative_face") or None
+        partner = self.cleaned_data.get("_alternative_partner_card")
+        card_instance.alternative_face = alternative_face
+        if alternative_face and partner:
+            card_instance.alternative_partner = partner
 
         # Save model before using it with manytomany relations
         card_instance.save()
 
         # Link both directions symmetrically so each half points at the other.
-        if modal_face and partner:
-            partner.modal_partner = card_instance
-            partner.modal_face = (
-                Card.MODAL_FACE_BOTTOM if modal_face == Card.MODAL_FACE_TOP else Card.MODAL_FACE_TOP
+        if alternative_face and partner:
+            partner.alternative_partner = card_instance
+            partner.alternative_face = (
+                Card.ALTERNATIVE_FACE_BOTTOM if alternative_face == Card.ALTERNATIVE_FACE_TOP else Card.ALTERNATIVE_FACE_TOP
             )
             partner.save()  # pre_save recomputes the partner's grouping_key/display_name
             # Now that both halves are linked, recompute this card too so both share the

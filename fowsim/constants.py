@@ -830,6 +830,8 @@ SETS_IN_ORDER = [
     "MP03 Buy a Box 10",
     "MC10",
     "AVL",
+    "AVL Buy a Box",
+    "AVL Prerelease Party",
     "MC11",
 ]
 

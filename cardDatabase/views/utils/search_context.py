@@ -17,7 +17,10 @@ def apply_text_search(cards, text, search_fields, exactness_option):
         return cards
 
     if "name" in search_fields:
-        search_fields = search_fields + ["name_without_punctuation"]
+        # display_name carries the combined "top//bottom" for modal cards, so searching the
+        # bottom half's name still surfaces the (searchable) top half. For normal cards
+        # display_name == name, so this is a no-op.
+        search_fields = search_fields + ["name_without_punctuation", "display_name"]
 
     if exactness_option == CONS.TEXT_CONTAINS_AT_LEAST_ONE:
         q = Q()
@@ -79,7 +82,12 @@ def basic_search(basic_form):
             if format.sets.count() > 0:
                 set_query = get_set_query(list(format.sets.values_list("code", flat=True).distinct()), True)
 
-        cards = Card.objects.filter(set_query).exclude(get_unsupported_sets_query()).distinct()
+        cards = (
+            Card.objects.filter(set_query)
+            .exclude(get_unsupported_sets_query())
+            .exclude(get_modal_bottom_exclusion_query())
+            .distinct()
+        )
         cards = apply_text_search(cards, search_text, ["name", "ability_texts__text"], CONS.TEXT_CONTAINS_ALL)
     cards = sort_cards(cards, CONS.DATABASE_SORT_BY_MOST_RECENT, False)
     return {"cards": cards}
@@ -118,6 +126,8 @@ def advanced_search(advanced_form):
         )
         keywords_query = get_keywords_query(advanced_form.cleaned_data["keywords"])
         solo_mode_query = get_solo_mode_query(advanced_form.cleaned_data["solo_mode"])
+        paradoxical_query = get_paradoxical_query(advanced_form.cleaned_data["paradoxical"])
+        modal_query = get_modal_query(advanced_form.cleaned_data["modal"])
         characteristics_query = get_characteristics_query(advanced_form.cleaned_data["characteristics"])
 
         cards = (
@@ -134,8 +144,11 @@ def advanced_search(advanced_form):
             .filter(def_query)
             .filter(keywords_query)
             .filter(solo_mode_query)
+            .filter(paradoxical_query)
+            .filter(modal_query)
             .filter(characteristics_query)
             .exclude(get_unsupported_sets_query())
+            .exclude(get_modal_bottom_exclusion_query())
             .distinct()
         )
 
@@ -368,6 +381,32 @@ def get_solo_mode_query(solo_mode):
     if solo_mode:
         solo_mode_query = Q(ability_styles__identifier=CONS.SOLO_MODE_STYLE)
     return solo_mode_query
+
+
+def get_paradoxical_query(paradoxical):
+    return Q(types__name=CONS.CARD_TYPE_PARADOXICAL) if paradoxical else Q()
+
+
+def get_modal_query(modal):
+    return Q(modal_face__isnull=False) if modal else Q()
+
+
+def get_modal_bottom_exclusion_query():
+    """Modal bottom halves are never independently addable - exclude them from search results."""
+    return Q(modal_face=Card.MODAL_FACE_BOTTOM)
+
+
+def normalise_modal_bottom_halves(decklist_cards):
+    """
+    Legacy decks may reference a modal bottom half. The top half is the deck representative,
+    so swap each DeckListCard's card to its top-half partner (in-memory only) for stable
+    stacking and correct image/label. Returns a list of the (possibly mutated) DeckListCards.
+    """
+    decklist_cards = list(decklist_cards)
+    for deck_card in decklist_cards:
+        if deck_card.card.modal_face == Card.MODAL_FACE_BOTTOM and deck_card.card.modal_partner is not None:
+            deck_card.card = deck_card.card.modal_partner
+    return decklist_cards
 
 
 def get_set_number_sort_value(set_number):

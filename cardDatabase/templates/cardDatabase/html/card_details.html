@@ -215,6 +215,30 @@
                 {% endfor %}
             </div>
         {% endif %}
+        {% if card.is_modal and card.modal_partner %}
+            <div class="card-text-info modal-partner">
+                <div class="card-text-info-title">
+                    Modal — other half:
+                </div>
+                <div class="card-text-info-text">
+                    <a href="{% url 'cardDatabase-view-card' card_id=card.modal_partner.card_id %}">{{ card.modal_partner.name }}</a>
+                </div>
+            </div>
+        {% endif %}
+        {% with paradoxical_versions=card.paradoxical_counterparts %}
+            {% if paradoxical_versions %}
+                <div class="card-text-info alternate-versions">
+                    <div class="card-text-info-title">
+                        {% if card.is_paradoxical %}Non-paradoxical version:{% else %}Paradoxical version:{% endif %}
+                    </div>
+                    {% for alternate in paradoxical_versions %}
+                        <div class="card-text-info-text">
+                            <a href="{% url 'cardDatabase-view-card' card_id=alternate.card_id %}">{{ alternate.display_name }} ({{ alternate.set_code }})</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
         {% with bans=card.bans combination_bans=card.combination_bans%}
             {% if bans or combination_bans %}
                 <div class="card-text-info">

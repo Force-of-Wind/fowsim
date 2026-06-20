@@ -102,8 +102,11 @@ CARD_TYPE_VALUES = [
     "Water Magic Stone",
     "Wind Magic Stone",
     "Void Magic Stone",
+    "Paradoxical",
 ]
 CARD_SUBTYPE_VALUES = ["J", "Resonator", "Field", "Chant-Instant", "Stranger", "Shift"]
+
+CARD_TYPE_PARADOXICAL = "Paradoxical"
 
 FIRE_NAME = "Fire"
 WATER_NAME = "Water"
@@ -159,6 +162,14 @@ OTHER_SIDE_CHARACTERS = [  # Order is important for Card.other_sides
     J_SIDE_CHARACTER,
     ALTERNATIVE_SIDE_CHARACTER,
 ]
+
+# --- Paradoxical & Modal card grouping (see implementation-plan.md) ---
+PARADOXICAL_DISPLAY_SUFFIX = " (Paradoxical)"
+# Non-printable separator (ASCII Unit Separator) so grouping_key can never collide with a real name.
+GROUPING_KEY_SEPARATOR = "\x1f"
+MODAL_NAME_SEPARATOR = "//"
+MODAL_FACE_TOP = "top"
+MODAL_FACE_BOTTOM = "bottom"
 
 # No longer used, refers to the query parameter on fowtcg.com when you search by a specific set.
 # It is in sorted order from oldest to newest though, can be reused later
@@ -448,6 +459,7 @@ DATABASE_CARD_TYPE_GROUPS = [
             "Spell:Chant-Instant",
             "Spell:Chant-Standby",
             "Warden",
+            "Paradoxical",
         ],
     },
     {

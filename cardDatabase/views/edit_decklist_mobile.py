@@ -8,7 +8,7 @@ from cardDatabase.models import DeckList, DeckListCard, Format, TournamentPlayer
 from cardDatabase.models.DeckList import UserDeckListZone
 from fowsim.decorators import mobile_only
 
-from cardDatabase.views.utils.search_context import get_search_form_ctx
+from cardDatabase.views.utils.search_context import get_search_form_ctx, normalise_modal_bottom_halves
 
 from fowsim import constants as CONS
 
@@ -42,7 +42,9 @@ def get(request, decklist_id=None):
     ctx["basic_form"] = SearchForm()
     ctx["advanced_form"] = AdvancedSearchForm()
     ctx["zones"] = UserDeckListZone.objects.filter(decklist__pk=decklist.pk).order_by("position")
-    ctx["decklist_cards"] = DeckListCard.objects.filter(decklist__pk=decklist.pk)
+    ctx["decklist_cards"] = normalise_modal_bottom_halves(
+        DeckListCard.objects.filter(decklist__pk=decklist.pk).select_related("card", "card__modal_partner")
+    )
     ctx["decklist"] = decklist
     ctx["deck_formats"] = Format.objects.all()
     return render(request, "cardDatabase/html/edit_decklist_mobile.html", context=ctx)

@@ -111,6 +111,16 @@ def card_types():
 
 
 @pytest.fixture
+def paradoxical_type():
+    """Create the Paradoxical card type."""
+    from cardDatabase.models.CardType import Type
+    from fowsim import constants as CONS
+
+    paradoxical_type, _ = Type.objects.get_or_create(name=CONS.CARD_TYPE_PARADOXICAL)
+    return paradoxical_type
+
+
+@pytest.fixture
 def race():
     """Create a race."""
     from cardDatabase.models.CardType import Race

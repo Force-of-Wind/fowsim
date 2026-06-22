@@ -1,0 +1,46 @@
+/* Venue location block (Location field + map picker) on the create/edit forms. */
+.location-section {
+    margin-top: 1rem;
+}
+.location-map-wrapper {
+    margin-top: 1rem;
+}
+
+.location-map-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.location-map-label .form-hint {
+    display: block;
+    font-weight: 400;
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
+
+.location-map {
+    height: 340px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    /* Keep map panes/controls below the site header and any modals. */
+    z-index: 0;
+}
+
+/* leaflet-geosearch bar readability. The site's dark mode forces a dark
+   background on input[type=text], which would otherwise leave the (dark) search
+   text unreadable. Pin a white field + dark text so it works in both themes. */
+.location-map .leaflet-control-geosearch form input {
+    background-color: #fff;
+    color: #1d1f23;
+}
+.location-map .leaflet-control-geosearch .results > * {
+    background-color: #fff;
+    color: #1d1f23;
+}
+.location-map .leaflet-control-geosearch .results > .active,
+.location-map .leaflet-control-geosearch .results > *:hover {
+    background-color: #f0f0f0;
+    color: #1d1f23;
+}

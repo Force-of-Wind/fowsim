@@ -4,12 +4,19 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/tournament/tournament_detail.css' %}" />
+    {% if mapLocation %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    {% endif %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block js %}
     {{ block.super }}
     <script  src="{% static 'js/date_localizer.js' %}"></script>
+    {% if mapLocation %}
+        <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script  src="{% static 'js/tournament/tournament_location_map.js' %}"></script>
+    {% endif %}
     <script  src="{% static 'js/tournament/tournament_detail.js' %}"></script>
 {% endblock %}
 
@@ -100,7 +107,7 @@
         <div class="card-body">
             <div class="info-grid">
                 {% for field in tournament.meta_data %}
-                    {% if field.value %}
+                    {% if field.value and field.type != 'coordinates' %}
                         <div class="info-item info-item--{{ field.type }}">
                             <div class="info-item-label">
                                 {% if field.name == 'location' %}<i class="fa-solid fa-location-dot"></i>
@@ -112,7 +119,11 @@
                             </div>
                             <div class="info-item-value">
                                 {% if field.type == 'link' %}
-                                    <a href="{{ field.value|escape }}" target="_blank" rel="noopener">{{ field.value|escape }} <i class="fa-solid fa-arrow-up-right-from-square fa-xs"></i></a>
+                                    {% if field.value|lower|slice:':7' == 'http://' or field.value|lower|slice:':8' == 'https://' %}
+                                        <a href="{{ field.value|escape }}" target="_blank" rel="noopener">{{ field.value|escape }} <i class="fa-solid fa-arrow-up-right-from-square fa-xs"></i></a>
+                                    {% else %}
+                                        {{ field.value|escape }}
+                                    {% endif %}
                                 {% elif field.type == 'textarea' %}
                                     <p class="long-text mb-0">{{ field.value|linebreaksbr }}</p>
                                 {% else %}
@@ -125,6 +136,29 @@
             </div>
         </div>
     </div>
+
+    {% if mapLocation %}
+    <div class="card detail-card mb-4">
+        <div class="card-header detail-card-header"><i class="fa-solid fa-map-location-dot"></i> Venue Map</div>
+        <div class="card-body">
+            <div id="tournament-map"
+                 class="tournament-map"
+                 data-lat="{{ mapLocation.lat }}"
+                 data-lng="{{ mapLocation.lng }}"
+                 data-label="{{ mapLocation.address }}"></div>
+            <div class="tournament-map-links">
+                <a class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener"
+                   href="https://www.openstreetmap.org/?mlat={{ mapLocation.lat }}&mlon={{ mapLocation.lng }}#map=16/{{ mapLocation.lat }}/{{ mapLocation.lng }}">
+                    <i class="fa-solid fa-map"></i> Open in OpenStreetMap
+                </a>
+                <a class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener"
+                   href="https://www.google.com/maps?q={{ mapLocation.lat }},{{ mapLocation.lng }}">
+                    <i class="fa-solid fa-diamond-turn-right"></i> Open in Google Maps
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
     {% if request.user.is_authenticated %}
         <div class="mb-4">

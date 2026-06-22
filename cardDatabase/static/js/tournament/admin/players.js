@@ -14,6 +14,9 @@ function getCSRFToken() {
    Fetching / rendering
    ========================================================= */
 function fetchPlayersFromAPI() {
+    // Reloading replaces the players array, which would discard any debounced
+    // note edits; persist them first.
+    flushPendingNotes();
     $.ajax({
         url: `/api/tournament/${getTournamentId()}/players/`,
         type: 'GET',
@@ -171,7 +174,21 @@ function updateNotes(id, newNotes) {
     player.notes = newNotes;
     // Debounce in case this is wired to keystrokes; harmless on blur-only.
     clearTimeout(notesSaveTimers[id]);
-    notesSaveTimers[id] = setTimeout(() => autosavePlayer(player), 600);
+    notesSaveTimers[id] = setTimeout(() => {
+        delete notesSaveTimers[id];
+        autosavePlayer(player);
+    }, 600);
+}
+
+// Persist any debounced note edits immediately. Called before the players list
+// is reloaded/replaced (refresh, view toggle, after a remove) and on page
+// unload, so notes typed just before navigating away are not lost.
+function flushPendingNotes() {
+    Object.keys(notesSaveTimers).forEach(id => {
+        clearTimeout(notesSaveTimers[id]);
+        delete notesSaveTimers[id];
+        autosavePlayer(getPlayerById(id));
+    });
 }
 
 function getPlayerById(id){
@@ -595,6 +612,9 @@ $(document).ready(function () {
     $('#player-as-table-btn').on('click', showPlayersAsTable);
     $('#import-standings-preview-btn').on('click', previewImportStandings);
     $('#import-standings-apply-btn').on('click', applyImportStandings);
+
+    // Best-effort: flush pending note edits if the page is closed/navigated away.
+    $(window).on('beforeunload', flushPendingNotes);
 });
 
 // Render the player list on page load

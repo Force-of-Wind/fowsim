@@ -4,14 +4,20 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-geosearch@3.11.0/dist/geosearch.css">
     <link rel="stylesheet" href="{% static 'css/tournament/tournament_edit.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tournament/tournament_location_picker.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block js %}
     {{ block.super }}
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
     <script  src="{% static 'js/tournament/tournament_create.js' %}"></script>
+    <script  src="{% static 'js/tournament/tournament_location_picker.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -42,11 +48,18 @@
                 <legend><i class="fa-solid fa-clipboard-list"></i> Event Details</legend>
                 <div class="form-grid">
                     {% for field in meta_data %}
-                        <div class="form-group {% if field.type == 'textarea' %}form-group--full{% endif %}">
+                        {% if field.type == 'coordinates' %}
                             {% include 'tournament/field_renderer.html' with edit=True field=field %}
-                        </div>
+                        {% elif field.name == 'location' %}
+                            {# Rendered with the map picker below #}
+                        {% else %}
+                            <div class="form-group {% if field.type == 'textarea' %}form-group--full{% endif %}">
+                                {% include 'tournament/field_renderer.html' with edit=True field=field %}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
+                {% include 'tournament/location_picker.html' %}
             </fieldset>
 
             <fieldset class="form-section">

@@ -36,6 +36,21 @@
 .tournament-hero.L4 { border-left-color: lightcoral; }
 .tournament-hero.L5 { border-left-color: magenta; }
 
+/* ---- Venue map ---- */
+.tournament-map {
+    height: 360px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    z-index: 0;
+}
+.tournament-map-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
 /* ---- Badges ---- */
 .tournament-meta-badge {
     background: rgba(128, 128, 128, 0.32);

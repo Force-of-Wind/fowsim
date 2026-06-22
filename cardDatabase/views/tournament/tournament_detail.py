@@ -5,6 +5,34 @@ from cardDatabase.models.Tournament import Tournament, TournamentPlayer, Tournam
 from fowsim import constants as CONS
 
 
+def _meta_value(meta_data, name):
+    for field in meta_data or []:
+        if field.get("name") == name:
+            return field.get("value")
+    return None
+
+
+def _build_map_location(tournament):
+    """Return {lat, lng, address} for in-person tournaments that have stored
+    coordinates, otherwise None. Legacy tournaments saved before the venue map
+    feature simply lack the coordinate fields and fall through to None, so they
+    keep rendering their plain-text location."""
+    if tournament.is_online:
+        return None
+    try:
+        lat = float(_meta_value(tournament.meta_data, "location_lat"))
+        lng = float(_meta_value(tournament.meta_data, "location_lng"))
+    except (TypeError, ValueError):
+        return None
+    return {
+        # Format as strings so locale number formatting never turns the decimal
+        # point into a comma in URLs / data attributes.
+        "lat": f"{lat:.6f}",
+        "lng": f"{lng:.6f}",
+        "address": _meta_value(tournament.meta_data, "location") or "",
+    }
+
+
 def get(request, tournament_id):
     tournament = get_object_or_404(Tournament, pk=tournament_id)
 
@@ -68,5 +96,6 @@ def get(request, tournament_id):
             "isStaff": is_staff,
             "registrationOpen": registration_open,
             "phaseSteps": phase_steps,
+            "mapLocation": _build_map_location(tournament),
         },
     )

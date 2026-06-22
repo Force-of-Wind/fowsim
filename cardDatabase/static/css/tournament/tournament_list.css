@@ -126,6 +126,7 @@
     color: #1d1f23;
     border: 1px solid rgba(0, 0, 0, 0.15);
 }
+.tournament-level-badge.L0 { background: #6c757d; color: #fff; }
 .tournament-level-badge.L1 { background: #ec6f9c; color: #fff; }
 .tournament-level-badge.L2 { background: #3d8bcd; color: #fff; }
 .tournament-level-badge.L3 { background: #4f9d57; color: #fff; }

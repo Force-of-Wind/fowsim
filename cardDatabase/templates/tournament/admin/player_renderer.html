@@ -4,6 +4,11 @@
             <div class="card-body">
                 <h5 class="card-title">{{player.firstname|escape}} {{player.lastname|escape}}</h5>
                 <h6 class="card-subtitle text-muted">@{{player.username}}</h6>
+                {% if staff.can_write and player.hasOtherNotes %}
+                    <div class="other-notes-flag mt-1" title="This player has notes recorded in other tournaments">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Has notes in other events
+                    </div>
+                {% endif %}
                 <input type="hidden" class="player-id" value="{{player.id}}">
                 <p class="mt-2">
                     <strong>Standing:</strong> 
@@ -31,6 +36,11 @@
                     </div>
                 </div>
                 <a href="{% url 'cardDatabase-view-decklist-share' player.decklistId player.decklistShareCode %}" class="btn btn-sm btn-info" target="_blank">View Decklist</a>
+                {% if staff.can_write and player.hasOtherNotes %}
+                    <button class="btn btn-sm btn-warning mt-1" onclick="loadOtherNotes({{player.id}})" data-toggle="modal" data-target="#otherNotesModal">
+                        <i class="fa-solid fa-clipboard-list"></i> Notes from other events
+                    </button>
+                {% endif %}
                 <div id="drop-control-fields-{{player.id}}">
                     <div id="drop-{{player.id}}" class="{% if player.dropped %}hidden{% endif %}">
                         <button class="btn btn-sm btn-danger {% if not staff.can_write %}disabled{% endif %} float-right" onclick="dropPlayer({{player.id}})">

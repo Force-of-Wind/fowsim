@@ -1,42 +1,274 @@
-.btn:disabled{
-    color:black !important;
+/* ---- Page ---- */
+.admin-page {
+    max-width: 1100px;
 }
-.warn-text{
+.admin-page-title {
+    font-weight: 700;
+    margin-bottom: 0;
+}
+.admin-page-subtitle {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0.6;
+    margin-bottom: 20px;
+}
+.admin-eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    opacity: 0.6;
+    display: block;
+}
+
+/* ---- Sections (cards) ---- */
+.admin-section {
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    border-radius: 12px;
+    margin-bottom: 22px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.admin-section-header {
+    font-weight: 600;
+    font-size: 1.05rem;
+    background: rgba(128, 128, 128, 0.1);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.admin-section-header i {
+    margin-right: 6px;
+    opacity: 0.8;
+}
+
+/* ---- Phase control ---- */
+.admin-section.phase-created { border-left: 6px solid #6c757d; }
+.admin-section.phase-registration { border-left: 6px solid #0d6efd; }
+.admin-section.phase-swiss { border-left: 6px solid #fd7e14; }
+.admin-section.phase-tops { border-left: 6px solid #6f42c1; }
+.admin-section.phase-completed { border-left: 6px solid #198754; }
+
+.phase-control {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+.phase-control-value {
+    font-weight: 800;
+    margin: 2px 0 0;
+}
+.phase-control-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+/* ---- Info grid ---- */
+.admin-info-grid {
+    display: grid;
+    grid-template-columns: minmax(140px, auto) 1fr;
+    gap: 8px 18px;
+    margin-bottom: 18px;
+}
+.admin-info-grid dt {
+    font-weight: 600;
+    opacity: 0.75;
+}
+.admin-info-grid dd {
+    margin: 0;
+}
+
+.admin-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.admin-share {
+    margin-top: 18px;
+}
+.admin-share-row {
+    display: flex;
+    gap: 10px;
+    max-width: 640px;
+}
+.admin-share-row .form-control {
+    flex: 1;
+}
+
+/* ---- Players toolbar ---- */
+.players-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.players-toolbar-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+.players-hint {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-bottom: 14px;
+}
+.admin-count-badge {
+    background: rgba(128, 128, 128, 0.3);
+    border: 1px solid rgba(128, 128, 128, 0.45);
+    color: inherit;
+    font-size: 0.85rem;
+}
+
+/* ---- Autosave indicator ---- */
+.autosave-indicator {
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-width: 90px;
+    text-align: right;
+    transition: opacity 0.3s ease;
+}
+.autosave-indicator.saving { color: #fd7e14; }
+.autosave-indicator.saved { color: #198754; }
+.autosave-indicator.error { color: #dc3545; }
+
+/* ---- Drag to reorder (table view) ---- */
+.drag-handle {
+    cursor: grab;
+    opacity: 0.55;
+}
+.drag-handle:hover { opacity: 1; }
+tr.standing-row.ui-sortable-helper {
+    display: table;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+tr.standing-placeholder td {
+    background: rgba(13, 110, 253, 0.12);
+    height: 44px;
+}
+tr.standing-row.row-saving td {
+    background: rgba(253, 126, 20, 0.10);
+}
+
+/* ---- Import standings ---- */
+.import-result {
+    font-size: 0.9rem;
+}
+.import-result-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.import-line {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+}
+.import-line-num {
+    font-weight: 700;
+    min-width: 28px;
+    opacity: 0.6;
+}
+.import-line--matched .import-line-result { color: #198754; }
+.import-line--unmatched .import-line-result { color: #dc3545; }
+.import-line--ambiguous .import-line-result { color: #fd7e14; }
+
+/* ---- Cross-tournament notes (judging) ---- */
+.other-notes-flag {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fd7e14;
+}
+.other-notes-flag i {
+    margin-right: 4px;
+}
+.other-note {
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    border-left: 4px solid #fd7e14;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+}
+.other-note-header {
+    margin-bottom: 4px;
+}
+.other-note-body {
+    white-space: pre-line;
+    word-break: break-word;
+    opacity: 0.9;
+}
+
+/* ---- Danger zone ---- */
+.admin-danger-zone {
+    border-color: rgba(220, 53, 69, 0.4);
+}
+.admin-danger-zone .admin-section-header {
+    background: rgba(220, 53, 69, 0.1);
+    border-bottom-color: rgba(220, 53, 69, 0.3);
+}
+
+/* ---- Preserved helpers (still used by renderers / JS) ---- */
+.btn:disabled {
+    color: black !important;
+}
+.warn-text {
     color: darkorange;
 }
-.btn-warning{
-    color:white;
+.btn-warning {
+    color: white;
 }
-.btn-warning:hover{
-    color:white;
+.btn-warning:hover {
+    color: white;
 }
-
-.search-group{
+.search-group {
     display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
-
-.search-input{
-    max-width: 200px;
+.search-input {
+    max-width: 220px;
 }
-
-.role-select{
-    max-width: 150px;
+.role-select {
+    max-width: 170px;
 }
-
-.canvas-wrapper{
+.canvas-wrapper {
     max-height: 90vh;
 }
-
 .hidden {
-    display:none;
+    display: none;
 }
-
-.export-btn-group{
+.export-btn-group {
     display: flex;
     flex-direction: row;
-    gap:9px;
+    gap: 9px;
+}
+.border-danger td {
+    border: 2px solid #dc3545;
 }
 
-.border-danger td {
-  border: 2px solid #dc3545;
+@media (max-width: 575px) {
+    .admin-info-grid {
+        grid-template-columns: 1fr;
+        gap: 2px 0;
+    }
+    .admin-info-grid dt {
+        margin-top: 8px;
+    }
+    .admin-share-row {
+        flex-direction: column;
+    }
 }

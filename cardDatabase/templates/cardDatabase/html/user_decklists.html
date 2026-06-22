@@ -89,6 +89,18 @@
                     </select>
                 </div>
 
+                <!-- Deck Type Filter -->
+                <div class="fieldWrapper deck-type-filter">
+                    <label for="deck_type">Deck Type:</label>
+                    <select name="deck_type" id="deck_type">
+                        {% for value, display in deck_type_choices %}
+                            <option value="{{ value }}" {% if value == selected_deck_type %}selected{% endif %}>
+                                {{ display }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
                 <!-- Sort Options -->
                 <div class="fieldWrapper sort-options">
                     <label for="sort_by">Sort by:</label>
@@ -181,7 +193,7 @@
                 <!-- Decklist Grid -->
                 <div class="decklist-grid">
                     {% for decklist in decklists %}
-                        <div class="decklist-card">
+                        <div class="decklist-card{% if decklist.is_tournament_deck %} is-tournament-deck{% endif %}">
                             <!-- Card Image -->
                             <div class="decklist-image">
                                 {% if decklist.get_front_card_of_deck %}
@@ -196,6 +208,11 @@
 
                             <!-- Decklist Info -->
                             <div class="decklist-info">
+                                {% if decklist.is_tournament_deck %}
+                                    <span class="tournament-deck-badge" title="This deck has been used in a tournament">
+                                        <i class="fa-solid fa-trophy"></i> Tournament Deck
+                                    </span>
+                                {% endif %}
                                 <h3 class="decklist-name">
                                     <a href="{% url 'cardDatabase-view-decklist' decklist.id %}">
                                         {% trucateText decklist.name %}

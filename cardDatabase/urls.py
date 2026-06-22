@@ -146,6 +146,11 @@ urlpatterns = [
         name="cardDatabase-render-tournament-players",
     ),
     path(
+        "api/tournament/<int:tournament_id>/players/<int:player_id>/other-notes/",
+        get_tournament_players.getOtherNotes,
+        name="cardDatabase-get-player-other-notes",
+    ),
+    path(
         "tournament/<int:tournament_id>/delete/registration",
         delete_tournament_registration.get,
         name="cardDatabase-tournament-delete-registration",

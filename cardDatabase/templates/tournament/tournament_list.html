@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap/mdb.css' %}">
     <link rel="stylesheet" href="{% static 'css/search.css' %}">
     <link rel="stylesheet" href="{% static 'css/tournament/tournament_list.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block js %}
@@ -118,24 +119,33 @@
                 <div class="row">
                     {% for tournament in tournaments %}
                         <div class="col-md-4 mb-4 tournament">
-                            <div class="card h-100 w-100 {{tournament.level.code}}">
-                            <div class="card-body mh-80">
-                                <h4 class="card-title tournament-title">{{ tournament.title }}</h4>
-                                <p class="card-text tournament-text">
-                                <strong>Format:</strong> {{ tournament.format }}<br>
-                                <strong>Level:</strong> {{ tournament.level.title }}<br>
-                                <strong>Tournament style:</strong> {% if tournament.is_online %}Online{% else %}In Person{% endif %}<br>
-                                {% if tournament.phase == 'created' or tournament.phase == 'registration'%}
-                                    <strong>Start Time:</strong> <span class="local-date-time" data-epoch="{% datetime_to_timestamp tournament.start_datetime %}"></span><br>
-                                    <strong>Registration Deadline:</strong> <span class="local-date-time" data-epoch="{% datetime_to_timestamp tournament.registration_deadline %}"></span><br>
-                                {% endif %}
-                                <strong>Phase:</strong> {{ tournament.phase }}
-                                </p>
+                            <a class="tournament-card-link" href="{% url 'cardDatabase-detail-tournament' tournament_id=tournament.pk %}">
+                            <div class="card tournament-card h-100 w-100 phase-{{tournament.phase}} {{tournament.level.code}}">
+                                <span class="tournament-card-accent"></span>
+                                <div class="card-body">
+                                    <div class="tournament-card-badges">
+                                        <span class="badge tournament-phase-badge phase-{{tournament.phase}}">{{ tournament.phase|title }}</span>
+                                        <span class="badge tournament-level-badge {{tournament.level.code}}">{{ tournament.level.title }}</span>
+                                    </div>
+                                    <h4 class="card-title tournament-title">{{ tournament.title }}</h4>
+                                    <ul class="tournament-card-meta">
+                                        <li><i class="fa-solid fa-layer-group"></i> {{ tournament.format|default:"No restriction" }}</li>
+                                        <li>
+                                            <i class="fa-solid {% if tournament.is_online %}fa-wifi{% else %}fa-location-dot{% endif %}"></i>
+                                            {% if tournament.is_online %}Online{% else %}In Person{% endif %}
+                                        </li>
+                                        <li><i class="fa-solid fa-users"></i> {% if tournament.player_count %}{{ tournament.player_count }} player{{ tournament.player_count|pluralize }}{% else %}No players yet{% endif %}</li>
+                                        {% if tournament.phase == 'created' or tournament.phase == 'registration'%}
+                                            <li><i class="fa-regular fa-clock"></i> <span class="local-date-time" data-epoch="{% datetime_to_timestamp tournament.start_datetime %}"></span></li>
+                                            <li><i class="fa-solid fa-hourglass-half"></i> Reg. ends <span class="local-date-time" data-epoch="{% datetime_to_timestamp tournament.registration_deadline %}"></span></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                <div class="card-footer tournament-card-footer">
+                                    <span class="btn btn-sm btn-primary btn-block">View Tournament <i class="fa-solid fa-chevron-right fa-xs"></i></span>
+                                </div>
                             </div>
-                            <div class="card-footer text-right">
-                                <a href="{% url 'cardDatabase-detail-tournament' tournament_id=tournament.pk %}" class="btn btn-sm btn-primary">View</a>
-                            </div>
-                            </div>
+                            </a>
                         </div>
                     {% endfor %}
                 </div>

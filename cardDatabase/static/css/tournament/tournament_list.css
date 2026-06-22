@@ -1,44 +1,133 @@
 .no-tournaments{
-    font-weight: bold;
-    width: max-content;
-    margin: 0 auto;
-}
-
-.no-tournaments{
     width: max-content;
     margin: 0 auto;
     padding-top: 30px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .new-tournament{
     padding-left: 100px;
 }
 
-.L0 {
-    
+/* ---- Tournament cards ---- */
+.tournament-card-link {
+    display: block;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+}
+.tournament-card-link:hover {
+    text-decoration: none;
+    color: inherit;
 }
 
-.L1 {
-    border:1px solid lightpink;
+.tournament-card {
+    position: relative;
+    border: 1px solid rgba(128, 128, 128, 0.22);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
-.L2 {
-    border:1px solid lightblue;
+.tournament-card-link:hover .tournament-card {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+    border-color: rgba(128, 128, 128, 0.4);
 }
 
-.L3{
-    border:1px solid lightgreen;
+/* top accent stripe, coloured per level */
+.tournament-card-accent {
+    display: block;
+    height: 5px;
+    width: 100%;
+    background: #adb5bd;
+}
+.tournament-card.L1 .tournament-card-accent { background: lightpink; }
+.tournament-card.L2 .tournament-card-accent { background: lightblue; }
+.tournament-card.L3 .tournament-card-accent { background: lightgreen; }
+.tournament-card.L4 .tournament-card-accent { background: lightcoral; }
+.tournament-card.L5 .tournament-card-accent { background: magenta; }
+
+.tournament-card .card-body {
+    padding: 18px 20px;
 }
 
-.L4 {
-    border:1px solid lightcoral;
+.tournament-card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
-.L5 {
-    border:1px solid magenta;
+.tournament-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    line-height: 1.25;
 }
 
-
-.tournament .mh-80 {
-    min-height: 80%;
+.tournament-card-meta {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
+
+.tournament-card-meta li {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.tournament-card-meta li i {
+    width: 16px;
+    text-align: center;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.tournament-card-footer {
+    background: transparent;
+    border-top: 1px solid rgba(128, 128, 128, 0.18);
+    padding: 12px 20px;
+}
+
+.tournament-card-footer .btn {
+    font-weight: 600;
+}
+
+/* ---- Phase badges ---- */
+.tournament-phase-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 5px 9px;
+    color: #fff;
+    text-transform: capitalize;
+    letter-spacing: 0.02em;
+}
+.tournament-phase-badge.phase-created { background-color: #6c757d; }
+.tournament-phase-badge.phase-registration { background-color: #0d6efd; }
+.tournament-phase-badge.phase-swiss { background-color: #fd7e14; }
+.tournament-phase-badge.phase-tops { background-color: #6f42c1; }
+.tournament-phase-badge.phase-completed { background-color: #198754; }
+
+/* ---- Level badges ---- */
+/* Solid, saturated colours with dark text so they stay readable in light mode
+   and bright (but not washed out) in dark mode. */
+.tournament-level-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 9px;
+    background: #ced4da;
+    color: #1d1f23;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+.tournament-level-badge.L1 { background: #ec6f9c; color: #fff; }
+.tournament-level-badge.L2 { background: #3d8bcd; color: #fff; }
+.tournament-level-badge.L3 { background: #4f9d57; color: #fff; }
+.tournament-level-badge.L4 { background: #d9534f; color: #fff; }
+.tournament-level-badge.L5 { background: #b32db3; color: #fff; }

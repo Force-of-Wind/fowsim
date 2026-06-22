@@ -39,6 +39,24 @@ def get(request, tournament_id):
 
     player_counter = players.count()
 
+    # Build an ordered list of phase steps so the template can render a progress
+    # stepper that highlights where the tournament currently is.
+    ordered_phases = [phase_value for phase_value, _ in CONS.TOURNAMENT_PHASES]
+    try:
+        current_phase_index = ordered_phases.index(tournament.phase)
+    except ValueError:
+        current_phase_index = -1
+
+    phase_steps = []
+    for index, phase_value in enumerate(ordered_phases):
+        if index < current_phase_index:
+            state = "done"
+        elif index == current_phase_index:
+            state = "active"
+        else:
+            state = "upcoming"
+        phase_steps.append({"label": phase_value, "state": state})
+
     return render(
         request,
         "tournament/tournament_detail.html",
@@ -49,5 +67,6 @@ def get(request, tournament_id):
             "currentPlayer": current_player,
             "isStaff": is_staff,
             "registrationOpen": registration_open,
+            "phaseSteps": phase_steps,
         },
     )

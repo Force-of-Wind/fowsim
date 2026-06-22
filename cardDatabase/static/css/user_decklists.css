@@ -78,6 +78,13 @@
     border-radius: 4px;
 }
 
+.deck-type-filter select {
+    width: 200px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
 .reverse-sort-label {
     display: flex;
     align-items: center;
@@ -99,6 +106,31 @@
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
+}
+
+/* Tournament deck marker */
+.tournament-deck-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #fff;
+    background: #fd7e14;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    margin-bottom: 0.5rem;
+}
+
+.tournament-deck-badge i {
+    font-size: 0.78rem;
+}
+
+/* Subtle accent on tournament deck cards so they stand out in the combined list */
+.decklist-card.is-tournament-deck {
+    border-top: 3px solid #fd7e14;
 }
 
 .decklist-card {
@@ -320,6 +352,10 @@ body.hasHover .format-tile:hover {
     }
 
     .sort-options select {
+        width: 100%;
+    }
+
+    .deck-type-filter select {
         width: 100%;
     }
 

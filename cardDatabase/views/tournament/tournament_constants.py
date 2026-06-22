@@ -3,6 +3,11 @@ FIELD_TYPE_LINK = "link"
 FIELD_TYPE_EMAIL = "email"
 FIELD_TYPE_TEXTAREA = "textarea"
 FIELD_TYPE_YEAR = "year"
+# Hidden coordinate fields populated by the in-person venue map picker.
+# Their presence in a tournament's saved meta_data is what marks it as
+# "map enabled" - legacy tournaments saved before these existed simply lack
+# them and keep rendering as plain text.
+FIELD_TYPE_COORD = "coordinates"
 
 TOURNAMENT_DEFAULT_META_DATA = [
     {
@@ -11,6 +16,22 @@ TOURNAMENT_DEFAULT_META_DATA = [
         "required": True,
         "type": FIELD_TYPE_TEXTAREA,
         "maxlength": 500,
+        "class": "form-control",
+    },
+    {
+        "name": "location_lat",
+        "label": "Latitude",
+        "required": False,
+        "type": FIELD_TYPE_COORD,
+        "maxlength": 32,
+        "class": "form-control",
+    },
+    {
+        "name": "location_lng",
+        "label": "Longitude",
+        "required": False,
+        "type": FIELD_TYPE_COORD,
+        "maxlength": 32,
         "class": "form-control",
     },
     {

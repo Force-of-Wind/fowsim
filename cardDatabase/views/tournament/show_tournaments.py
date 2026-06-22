@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from cardDatabase.forms import TournamentFilterForm
 from cardDatabase.models import Format
@@ -50,9 +50,11 @@ def tournament_search(tournament_form):
             tournaments_query &= Q(phase=tournament_form.cleaned_data["tournament_phase"])
         tournaments = Tournament.objects.distinct()
         tournaments = tournaments.filter(tournaments_query)
+        tournaments = tournaments.annotate(player_count=Count("players", distinct=True))
         tournaments = tournaments.order_by("-start_datetime")
     elif tournament_form is None:
         tournaments = Tournament.objects.distinct()
+        tournaments = tournaments.annotate(player_count=Count("players", distinct=True))
         tournaments = tournaments.order_by("-start_datetime")
 
     return tournaments

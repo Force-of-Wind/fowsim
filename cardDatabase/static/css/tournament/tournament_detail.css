@@ -1,12 +1,292 @@
+.tournament-detail {
+    max-width: 1000px;
+}
+
+/* ---- Hero header ---- */
+.tournament-hero {
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    border-left-width: 6px;
+    border-radius: 10px;
+    padding: 20px 24px;
+    background: rgba(128, 128, 128, 0.06);
+}
+
+.tournament-hero-title {
+    margin: 0;
+    font-weight: 700;
+}
+
+.tournament-hero-hint {
+    margin: 6px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.75;
+}
+
+.tournament-hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+/* Level accent colours reuse the list page palette via the level code class */
+.tournament-hero.L1 { border-left-color: lightpink; }
+.tournament-hero.L2 { border-left-color: lightblue; }
+.tournament-hero.L3 { border-left-color: lightgreen; }
+.tournament-hero.L4 { border-left-color: lightcoral; }
+.tournament-hero.L5 { border-left-color: magenta; }
+
+/* ---- Venue map ---- */
+.tournament-map {
+    height: 360px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    z-index: 0;
+}
+.tournament-map-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+/* ---- Badges ---- */
+.tournament-meta-badge {
+    background: rgba(128, 128, 128, 0.32);
+    color: inherit;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 6px 10px;
+}
+
+.tournament-phase-badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 10px;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.phase-created { background-color: #6c757d; }
+.phase-registration { background-color: #0d6efd; }
+.phase-swiss { background-color: #fd7e14; }
+.phase-tops { background-color: #6f42c1; }
+.phase-completed { background-color: #198754; }
+
+/* ---- Phase tracker ---- */
+.phase-tracker {
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    border-left: 6px solid #6c757d;
+    border-radius: 10px;
+    padding: 16px 20px;
+    background: rgba(128, 128, 128, 0.06);
+}
+
+.phase-tracker--created { border-left-color: #6c757d; }
+.phase-tracker--registration { border-left-color: #0d6efd; }
+.phase-tracker--swiss { border-left-color: #fd7e14; }
+.phase-tracker--tops { border-left-color: #6f42c1; }
+.phase-tracker--completed { border-left-color: #198754; }
+
+.phase-tracker-current {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.phase-tracker-label {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    opacity: 0.6;
+}
+
+.phase-tracker-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.phase-tracker--created .phase-tracker-value { color: #6c757d; }
+.phase-tracker--registration .phase-tracker-value { color: #0d6efd; }
+.phase-tracker--swiss .phase-tracker-value { color: #fd7e14; }
+.phase-tracker--tops .phase-tracker-value { color: #6f42c1; }
+.phase-tracker--completed .phase-tracker-value { color: #198754; }
+
+.phase-steps {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    counter-reset: phase;
+}
+
+.phase-step {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 90px;
+    text-align: center;
+    padding-top: 30px;
+    font-size: 0.82rem;
+    opacity: 0.55;
+}
+
+/* connector line between steps */
+.phase-step::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -50%;
+    width: 100%;
+    height: 3px;
+    background: rgba(128, 128, 128, 0.35);
+    z-index: 0;
+}
+
+.phase-step:first-child::before {
+    display: none;
+}
+
+.phase-step-dot {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(128, 128, 128, 0.45);
+    color: #fff;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.phase-step-label {
+    text-transform: capitalize;
+}
+
+/* done steps */
+.phase-step--done {
+    opacity: 1;
+}
+.phase-step--done .phase-step-dot {
+    background: #198754;
+}
+.phase-step--done::before {
+    background: #198754;
+}
+
+/* active step */
+.phase-step--active {
+    opacity: 1;
+    font-weight: 700;
+}
+.phase-step--active .phase-step-dot {
+    background: #0d6efd;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25);
+}
+.phase-step--active::before {
+    background: linear-gradient(90deg, #198754, #0d6efd);
+}
+
+/* ---- Detail cards ---- */
+.detail-card {
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    border-radius: 10px;
+}
+
+.detail-card-header {
+    font-weight: 600;
+    background: rgba(128, 128, 128, 0.1);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.detail-card-header i {
+    margin-right: 6px;
+    opacity: 0.8;
+}
+
+/* ---- Definition lists ---- */
+.detail-list {
+    display: grid;
+    grid-template-columns: minmax(120px, auto) 1fr;
+    gap: 8px 16px;
+    margin: 0;
+}
+
+.detail-list dt {
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.detail-list dd {
+    margin: 0;
+}
+
+/* ---- Event information grid ---- */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+/* Long text blocks (location, prizes, additional) span the full width */
+.info-item--textarea {
+    grid-column: 1 / -1;
+}
+
+.info-item-label {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.info-item-label i {
+    margin-right: 6px;
+    opacity: 0.75;
+}
+
+.info-item-value {
+    opacity: 0.9;
+}
+
+.info-item-value .long-text {
+    white-space: pre-line;
+    word-break: break-word;
+}
+
+.info-item-value a {
+    word-break: break-all;
+}
+
+/* ---- Existing detail bits ---- */
 .countdown {
     font-weight: bold;
     color: #dc3545;
 }
 
-.cost-img{
+.cost-img {
     width: 18px;
 }
-.card-ruler-img{
+
+.card-ruler-img {
     max-width: 50px;
     margin-left: 3px;
+}
+
+@media (max-width: 575px) {
+    .detail-list {
+        grid-template-columns: 1fr;
+        gap: 2px 0;
+    }
+    .detail-list dt {
+        margin-top: 8px;
+    }
 }

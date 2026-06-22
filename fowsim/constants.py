@@ -588,6 +588,17 @@ DECKLIST_SORT_BY_CHOICES = [
     (DECKLIST_SORT_BY_CARD_COUNT, "Card Count"),
 ]
 
+# Decklist tournament filter (My Decklists view)
+DECKLIST_DECK_TYPE_ALL = "all"
+DECKLIST_DECK_TYPE_TOURNAMENT = "tournament"
+DECKLIST_DECK_TYPE_NON_TOURNAMENT = "non_tournament"
+
+DECKLIST_DECK_TYPE_CHOICES = [
+    (DECKLIST_DECK_TYPE_ALL, "All decks"),
+    (DECKLIST_DECK_TYPE_TOURNAMENT, "Tournament decks only"),
+    (DECKLIST_DECK_TYPE_NON_TOURNAMENT, "Non-tournament decks only"),
+]
+
 # Decklist Pagination
 DECKLIST_PAGE_SIZE = 30
 
@@ -1336,6 +1347,10 @@ TOURNAMENT_PHASES = [
     [TOURNAMENT_PHASE_TOPS, TOURNAMENT_PHASE_TOPS],
     [TOURNAMENT_PHASE_COMPLETED, TOURNAMENT_PHASE_COMPLETED],
 ]
+
+# Tournaments that started more than this many days ago and are not yet completed
+# get auto-closed by the closeExpiredTournaments management command.
+TOURNAMENT_AUTO_CLOSE_DAYS = 30
 
 
 TOURNAMENT_PLAYER_REGISTRATION_STATES = [

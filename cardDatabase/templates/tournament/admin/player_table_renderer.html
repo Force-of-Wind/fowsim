@@ -1,6 +1,8 @@
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped standings-table">
     <thead class="thead-light">
         <tr>
+            {% if staff.can_write %}<th></th>{% endif %}
+            <th>#</th>
             <th>Name</th>
             <th>Username</th>
             <th>Standing</th>
@@ -15,11 +17,20 @@
     </thead>
     <tbody>
         {% for player in players %}
-            <tr id="card-{{player.id}}" class="{% if player.dropped %} border-danger{% endif %}">
+            <tr id="card-{{player.id}}" data-id="{{player.id}}" class="standing-row{% if player.dropped %} border-danger{% endif %}">
                 <input type="hidden" class="player-id" value="{{player.id}}">
-                <td>{{player.firstname|escape}} {{player.lastname|escape}}</td>
+                {% if staff.can_write %}
+                    <td class="drag-handle text-center" title="Drag to reorder standings"><i class="fa-solid fa-grip-vertical"></i></td>
+                {% endif %}
+                <td class="standing-display">{{player.standing}}</td>
+                <td>
+                    {{player.firstname|escape}} {{player.lastname|escape}}
+                    {% if staff.can_write and player.hasOtherNotes %}
+                        <br><span class="other-notes-flag" title="Has notes recorded in other tournaments"><i class="fa-solid fa-triangle-exclamation"></i> Notes elsewhere</span>
+                    {% endif %}
+                </td>
                 <td>@{{player.username}}</td>
-                <td><input name="standing" type="number" class="form-control form-control-sm d-inline w-50" 
+                <td><input name="standing" type="number" class="form-control form-control-sm d-inline w-50"
                         value="{{player.standing}}" {% if not staff.can_write %}disabled{% endif %} onchange="updateStanding({{player.id}}, this.value)">
                 </td>
                 <td>
@@ -40,6 +51,11 @@
                             {% endfor %}
                         </div>
                     </div>
+                    {% if staff.can_write and player.hasOtherNotes %}
+                        <button class="btn btn-sm btn-warning mt-1" onclick="loadOtherNotes({{player.id}})" data-toggle="modal" data-target="#otherNotesModal">
+                            <i class="fa-solid fa-clipboard-list"></i> Other-event notes
+                        </button>
+                    {% endif %}
                 </td>
                 <td><a href="{% url 'cardDatabase-view-decklist-share' player.decklistId player.decklistShareCode %}" class="btn btn-sm btn-info" target="_blank">View Decklist</a></td>
                 <td>

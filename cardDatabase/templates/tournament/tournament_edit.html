@@ -4,7 +4,10 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-geosearch@3.11.0/dist/geosearch.css">
     <link rel="stylesheet" href="{% static 'css/tournament/tournament_edit.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tournament/tournament_location_picker.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
@@ -12,41 +15,57 @@
     {{ block.super }}
     <script  src="{% static 'js/date_localizer.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-geosearch@3.11.0/dist/geosearch.umd.js"></script>
     <script  src="{% static 'js/tournament/tournament_create.js' %}"></script>
+    <script  src="{% static 'js/tournament/tournament_location_picker.js' %}"></script>
 {% endblock %}
 
 {% block body %}
-    <div class="content-wrapper">
-        <form id="create-tournament" method="post" class="edit-form" action="{% url 'cardDatabase-update-tournament' tournament_id=tournament.pk %}">
-            <h2>Edit Tournament</h2>
-            {% if error %}<span class="badge badge-danger">Error when saving tournament occured!</span>{% endif %}
+    <div class="content-wrapper mb-5">
+        <form id="create-tournament" method="post" class="edit-form tournament-form" action="{% url 'cardDatabase-update-tournament' tournament_id=tournament.pk %}">
+            <div class="tournament-form-header">
+                <h2 class="mb-1">Edit Tournament</h2>
+                <p class="tournament-form-subtitle">Fields marked with <span class="req-marker">*</span> are required.</p>
+                {% if error %}<span class="badge badge-danger">Error when saving tournament occured!</span>{% endif %}
+            </div>
             {% csrf_token %}
-            <div class="container">
-                <div class="row">
-                    <div class="form-group">
-                        <label for="title">Title*</label>
-                        <input id="title" required maxlength="200" type="text" name="title" class="form-control" value="{{tournament.title}}" />
-                    </div>                    
+
+            <fieldset class="form-section">
+                <legend><i class="fa-solid fa-pen"></i> Basics</legend>
+                <div class="form-group">
+                    <label for="title">Title<span class="req-marker">*</span></label>
+                    <input id="title" required maxlength="200" type="text" name="title" class="form-control" value="{{tournament.title}}" />
                 </div>
-                <div class="row">
-                    <div>
+                <div class="form-group">
+                    <label class="toggle-field" for="is_online">
                         <input type="checkbox" id="is_online" name="is_online" {% if tournament.is_online %} checked {% endif %} />
-                        <label for="is_online">Is Online Tournament</label>
-                    </div>
+                        <span>This is an online tournament</span>
+                    </label>
                 </div>
-                {% for field in meta_data %}
-                    {% if forloop.counter0|divisibleby:2 %}
-                        <div class="row row-gap">
-                    {% endif %}
-                    <div class='form-group'>
-                        {% include 'tournament/field_renderer.html' with edit=True field=field %}
-                    </div>
-                    {% if not forloop.counter0|divisibleby:2 or forloop.last %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                
-                <div class="row row-gap">
+            </fieldset>
+
+            <fieldset class="form-section">
+                <legend><i class="fa-solid fa-clipboard-list"></i> Event Details</legend>
+                <div class="form-grid">
+                    {% for field in meta_data %}
+                        {% if field.type == 'coordinates' %}
+                            {% include 'tournament/field_renderer.html' with edit=True field=field %}
+                        {% elif field.name == 'location' %}
+                            {# Rendered with the map picker below #}
+                        {% else %}
+                            <div class="form-group {% if field.type == 'textarea' %}form-group--full{% endif %}">
+                                {% include 'tournament/field_renderer.html' with edit=True field=field %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% include 'tournament/location_picker.html' %}
+            </fieldset>
+
+            <fieldset class="form-section">
+                <legend><i class="fa-solid fa-medal"></i> Classification</legend>
+                <div class="form-grid">
                     <div class="form-group">
                         <label for="format">Restrict to Format</label>
                         <select id="format" name="format" class="form-control">
@@ -57,7 +76,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="level">Tournament Level</label>
+                        <label for="level">Tournament Level<span class="req-marker">*</span></label>
                         <select id="level" name="level" class="form-control" required>
                             {% for level in levels %}
                                 <option value="{{level.pk}}" data-hint="{{level.hint}}" {% if tournament.level.pk ==  level.pk %} selected {% endif %}>{{level.title}}</option>
@@ -65,50 +84,54 @@
                         </select>
                     </div>
                 </div>
-                <div>
-                    <span class="level-hint"></span>
-                </div>
-                <div class="row row-gap">
+                <span class="level-hint"></span>
+            </fieldset>
+
+            <fieldset class="form-section">
+                <legend><i class="fa-solid fa-calendar-days"></i> Schedule</legend>
+                <div class="form-grid">
                     <div class="form-group">
-                        <label for="start_date_time">Start Time*</label>
-                        <input 
-                            type="text" 
-                            id="start_date_time" 
-                            name="start_date_time" 
-                            class="form-control date-time-picker local-date-time" 
+                        <label for="start_date_time">Start Time<span class="req-marker">*</span></label>
+                        <input
+                            type="text"
+                            id="start_date_time"
+                            name="start_date_time"
+                            class="form-control date-time-picker local-date-time"
                             data-epoch="{% datetime_to_timestamp tournament.start_datetime %}"
                             data-iso-date="true"
                             required
                         />
                     </div>
                     <div class="form-group">
-                        <label for="deck_registration_end_date_time">Registration End*</label>
-                        <input 
-                            type="text" 
-                            id="deck_registration_end_date_time" 
-                            name="deck_registration_end_date_time" 
+                        <label for="deck_registration_end_date_time">Registration End<span class="req-marker">*</span></label>
+                        <input
+                            type="text"
+                            id="deck_registration_end_date_time"
+                            name="deck_registration_end_date_time"
                             class="form-control date-time-picker local-date-time"
                             data-epoch="{% datetime_to_timestamp tournament.registration_deadline %}"
                             data-iso-date="true"
-                            required 
+                            required
                         />
                     </div>
-                </div>
-                <div class="row">
                     <div class="form-group">
                         <label for="deck_lock_date_time">Deck Edit lock after</label>
-                        <input 
-                            type="text" 
-                            id="deck_lock_date_time" 
+                        <input
+                            type="text"
+                            id="deck_lock_date_time"
                             name="deck_lock_date_time"
                             class="form-control date-time-picker local-date-time"
                             {% if tournament.deck_edit_deadline %} data-epoch="{% datetime_to_timestamp tournament.deck_edit_deadline %}" {% endif %}
                             data-iso-date="true"
                         />
+                        <small class="form-hint">Leave empty to lock decks when the tournament starts.</small>
                     </div>
                 </div>
+            </fieldset>
+
+            <div class="form-actions">
+                <button id="save-tournament" class="btn btn-primary btn-lg"><i class="fa-solid fa-floppy-disk"></i> Save Tournament</button>
             </div>
-            <button id="save-tournament" class="button">Save Tournament</button>
         </form>
     </div>
 {% endblock %}

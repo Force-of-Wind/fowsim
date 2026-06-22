@@ -1,0 +1,28 @@
+{% comment %}
+Venue location block for the tournament create/edit forms: the Location text
+field paired with its map picker so they read as one unit.
+
+The Location field stays outside the hideable map wrapper so it remains visible
+for online events (where the map is hidden but a location/link is still useful).
+
+The map only initialises when the form rendered the location_lat / location_lng
+coordinate fields (new tournaments, and older ones via the edit/copy views).
+The picker JS (tournament_location_picker.js) wires up the map, the Nominatim
+search box and the draggable marker, and hides the map for online events.
+{% endcomment %}
+<div class="location-section">
+    {% for field in meta_data %}
+        {% if field.name == 'location' %}
+            <div class="form-group form-group--full">
+                {% include 'tournament/field_renderer.html' with edit=True field=field %}
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div id="location-map-wrapper" class="location-map-wrapper" hidden>
+        <label class="location-map-label">
+            <i class="fa-solid fa-map-location-dot"></i> Pin the venue on the map
+            <span class="form-hint">Search for the address or drag the marker to the exact spot.</span>
+        </label>
+        <div id="location-map" class="location-map"></div>
+    </div>
+</div>

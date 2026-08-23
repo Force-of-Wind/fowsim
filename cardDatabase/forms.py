@@ -117,6 +117,9 @@ class DecklistSearchForm(forms.Form):
         label="", strip=True, widget=forms.TextInput(attrs={"placeholder": "Card name(s) to search"}), required=False
     )
     text_exactness = forms.ChoiceField(label="Match words", required=False, choices=CONS.TEXT_EXACTNESS_OPTIONS)
+    from_user = forms.CharField(
+        label="By user: ", strip=True, widget=forms.TextInput(attrs={"placeholder": "Username to search"}), required=False
+    )
     deck_format = forms.MultipleChoiceField(label="Format(s)", required=False, choices=get_formats())
 
 

@@ -110,6 +110,9 @@ urlpatterns = [
     path("pack_opening/<str:setcode>/", pack_opening.get, name="cardDatabase-pack-opening"),
     path("pack_select/", pack_select.get, name="cardDatabase-pack-select"),
     path("pack_history/", pack_history.get, name="cardDatabase-pack-history"),
+    path("api/pack/skip-preference/", pack_opening.set_skip_preference, name="cardDatabase-pack-skip-preference"),
+    path("api/pack/decks/", pack_opening.user_decks, name="cardDatabase-pack-user-decks"),
+    path("api/pack/add-to-deck/", pack_opening.add_to_deck, name="cardDatabase-pack-add-to-deck"),
     path("api/deck/<int:decklist_id>/", export_decklist.get, name="cardDatabase-export-decklist"),
     path(
         "api/deck/<int:decklist_id>/<str:share_parameter>",

@@ -83,6 +83,8 @@ class AdvancedSearchForm(forms.Form):
     pick_period = forms.ChoiceField(label="Popularity time period:", choices=CONS.PICK_PERIOD_CHOICES, required=False)
     reverse_sort = forms.BooleanField(label="Reverse sorting:", required=False)
     solo_mode = forms.BooleanField(label="Solo Mode:", required=False)
+    paradoxical = forms.BooleanField(label="Paradoxical:", required=False)
+    alternative = forms.BooleanField(label="Alternative:", required=False)
     colours = forms.MultipleChoiceField(label="Color(s):", choices=CONS.COLOUR_CHOICES, required=False)
     characteristics = forms.MultipleChoiceField(label="Characteristic(s):", choices=CONS.CHARACTERISTIC_CHOICES, required=False)
     colour_match = forms.ChoiceField(
@@ -140,6 +142,20 @@ class AddCardForm(forms.ModelForm):
             }
         ),
     )
+    alternative_face = forms.ChoiceField(
+        label="Alternative face:",
+        required=False,
+        choices=[
+            ("", "Not alternative"),
+            (Card.ALTERNATIVE_FACE_TOP, "Top half"),
+            (Card.ALTERNATIVE_FACE_BOTTOM, "Bottom half"),
+        ],
+    )
+    alternative_partner = forms.CharField(
+        label="Alternative partner card ID:",
+        required=False,
+        help_text="card_id of the other half (e.g. the bottom half's XXX-064^)",
+    )
 
     class Meta:
         model = Card
@@ -177,9 +193,17 @@ class AddCardForm(forms.ModelForm):
                 and visible.field.label == "Types"
             ):
                 types_list = list(chain(*[t["types"] for t in CONS.DATABASE_CARD_TYPE_GROUPS]))
+
+                def type_sort_key(_type):
+                    cleaned = self.clean_typename(_type[1])
+                    # Types present in the DB but not enumerated in DATABASE_CARD_TYPE_GROUPS
+                    # (e.g. legacy combined types like "Chant/Master Rune") sort to the end
+                    # instead of raising ValueError and breaking the whole add-card page.
+                    return types_list.index(cleaned) if cleaned in types_list else len(types_list)
+
                 visible.field.widget.choices = sorted(
                     chain(visible.field.widget.choices),
-                    key=lambda _type: types_list.index(self.clean_typename(_type[1])),
+                    key=type_sort_key,
                 )
             if not isinstance(visible.field.widget, forms.widgets.CheckboxSelectMultiple) and not isinstance(
                 visible.field.widget, forms.widgets.ClearableFileInput
@@ -188,6 +212,27 @@ class AddCardForm(forms.ModelForm):
 
     def clean_typename(self, name):
         return name.replace(": ", ":").title()
+
+    def clean(self):
+        cleaned_data = super().clean()
+        alternative_face = cleaned_data.get("alternative_face")
+        alternative_partner_id = (cleaned_data.get("alternative_partner") or "").strip()
+
+        if alternative_face and not alternative_partner_id:
+            self.add_error("alternative_partner", "A alternative card must reference its partner half's card_id.")
+        if alternative_partner_id and not alternative_face:
+            self.add_error("alternative_face", "Select which face this card is to pair it with a partner.")
+
+        if alternative_face and alternative_partner_id:
+            partner = Card.objects.filter(card_id=alternative_partner_id).first()
+            if partner is None:
+                self.add_error(
+                    "alternative_partner",
+                    f"No card found with card_id '{alternative_partner_id}'. Add the partner half first.",
+                )
+            else:
+                cleaned_data["_alternative_partner_card"] = partner
+        return cleaned_data
 
     @classmethod
     def split_abilities(cls, ability_text):
@@ -205,8 +250,28 @@ class AddCardForm(forms.ModelForm):
     def save(self):
         card_instance = super().save(commit=False)
         card_instance.name_without_punctuation = remove_punctuation(card_instance.name)
+
+        # Alternative fields aren't in Meta.fields (alternative_partner is resolved from a card_id, not a PK
+        # dropdown) so set them explicitly before saving.
+        alternative_face = self.cleaned_data.get("alternative_face") or None
+        partner = self.cleaned_data.get("_alternative_partner_card")
+        card_instance.alternative_face = alternative_face
+        if alternative_face and partner:
+            card_instance.alternative_partner = partner
+
         # Save model before using it with manytomany relations
         card_instance.save()
+
+        # Link both directions symmetrically so each half points at the other.
+        if alternative_face and partner:
+            partner.alternative_partner = card_instance
+            partner.alternative_face = (
+                Card.ALTERNATIVE_FACE_BOTTOM if alternative_face == Card.ALTERNATIVE_FACE_TOP else Card.ALTERNATIVE_FACE_TOP
+            )
+            partner.save()  # pre_save recomputes the partner's grouping_key/display_name
+            # Now that both halves are linked, recompute this card too so both share the
+            # canonical "top//bottom" key regardless of which half was added first.
+            card_instance.recompute_grouping(save=True)
 
         abilities_to_add = AddCardForm.split_abilities(self.cleaned_data["ability_texts"])
         position = 1

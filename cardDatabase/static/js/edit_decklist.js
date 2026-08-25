@@ -280,8 +280,8 @@ $(function() {
         return output;
     }
 
-    function createCardHtml(name, img_urls, card_id){
-        return `<div class="deck-zone-card" data-card-id="${card_id}" data-card-img-urls="${img_urls}" data-card-name="${name}" draggable="true">
+    function createCardHtml(name, img_urls, card_id, grouping_key){
+        return `<div class="deck-zone-card" data-card-id="${card_id}" data-card-img-urls="${img_urls}" data-card-name="${name}" data-grouping-key="${grouping_key}" draggable="true">
                     <div class="card-quantity">
                         <a href="#" class="card-quantity-minus">
                             <span>-</span>
@@ -316,16 +316,17 @@ $(function() {
         $('.overlay-zone:not(.view-card-link)').on('click', function(event){
             event.preventDefault();
             let card_name = $(this).closest('.card').data('card-name');
+            let grouping_key = $(this).closest('.card').data('grouping-key');
             let zone_name = $(this).data('zone-name');
             let deck_zone = $(`.deck-zone .deck-zone-title:contains('${zone_name}')`).parent().parent();
             let card_id = $(this).closest('.card').data('card-id');
             let card_img_urls = $(this).closest('.card').data('card-image-urls');
             let deck_zone_cards = deck_zone.find('.deck-zone-cards');
             let card_matches = deck_zone_cards.find(`.deck-zone-card`).filter(function(){
-                return $(this).find('.deck-zone-card-name').text() === card_name;
+                return $(this).data('grouping-key') === grouping_key;
             });
             if (!card_matches.length) {
-                let deck_card_html = createCardHtml(card_name, card_img_urls, card_id);
+                let deck_card_html = createCardHtml(card_name, card_img_urls, card_id, grouping_key);
                 deck_zone.find('.deck-zone-cards').append(deck_card_html);
                 deck_zone.find('.deck-zone-card-name').mouseout(hoverCardMouseOut);
                 deck_zone.find('.deck-zone-card-name').mouseover(hoverCardMouseOver);
@@ -410,7 +411,7 @@ $(function() {
                 let cardExists = false;
                 // Check if the card already exists in the zone
                 let cardMatches = $(deckZoneCards).find(`.deck-zone-card`).filter(function () {
-                    return $(this).find('.deck-zone-card-name').text() === $(dragged).find('.deck-zone-card-name').text();
+                    return $(this).data('grouping-key') === $(dragged).data('grouping-key');
                 });
 
                 // The existing card logic only runs if it was not dropped on the same zone
@@ -514,13 +515,14 @@ $(function() {
                     event.preventDefault();
                     let card_name = $(this).closest('.card').data('card-name');
                     let card_id = $(this).closest('.card').data('card-id');
+                    let grouping_key = $(this).closest('.card').data('grouping-key');
                     let card_img_urls = $(this).parent().data('card-image-urls');
-                    displayAddCardSidebar(card_name, card_id, card_img_urls);
+                    displayAddCardSidebar(card_name, card_id, card_img_urls, grouping_key);
                 })
         });
     }
 
-    function displayAddCardSidebar(card_name, card_id, card_img_urls) {
+    function displayAddCardSidebar(card_name, card_id, card_img_urls, grouping_key) {
         $('#add-card-container')
             .empty()
             .append(getCardTitleHTML(card_name))
@@ -534,10 +536,10 @@ $(function() {
                 let deck_zone = $(`.deck-zone .deck-zone-title:contains('${zone_name}')`).parent().parent();
                 let deck_zone_cards = deck_zone.find('.deck-zone-cards');
                 let card_matches = deck_zone_cards.find(`.deck-zone-card`).filter(function(){
-                    return $(this).find('.deck-zone-card-name').text() === card_name;
+                    return $(this).data('grouping-key') === grouping_key;
                 });
                 if (!card_matches.length) {
-                    let deck_card_html = createCardHtml(card_name, card_img_urls, card_id);
+                    let deck_card_html = createCardHtml(card_name, card_img_urls, card_id, grouping_key);
                     deck_zone.find('.deck-zone-cards').append(deck_card_html);
                     setupCardClickables();
                 } else {

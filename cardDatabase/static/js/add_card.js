@@ -125,21 +125,33 @@ function arrayToText(array, seperator){
     return array.join(seperator);
 }
 
+// Abilities can contain blank lines (e.g. nothing below the [Solo Mode] marker) or
+// null entries, which would otherwise be saved as empty ability rows.
+function cleanAbilities(abilities){
+    if (!Array.isArray(abilities))
+        return [];
+    return abilities
+        .filter(ability => ability !== null && ability !== undefined)
+        .map(ability => String(ability).trim())
+        .filter(ability => ability.length > 0);
+}
+
 // Split a card's abilities into the normal abilities and the Solo Mode abilities.
 // The [Solo Mode] marker and everything after it belongs to Solo Mode; the marker
 // itself is dropped since the dedicated textbox already implies the style.
 function splitSoloModeAbilities(abilities){
     const marker = '[Solo Mode]';
-    for (let i = 0; i < abilities.length; i++){
-        if (abilities[i].includes(marker)){
-            let solo = abilities.slice(i + 1);
-            let remainder = abilities[i].replace(marker, '').trim();
+    let cleaned = cleanAbilities(abilities);
+    for (let i = 0; i < cleaned.length; i++){
+        if (cleaned[i].includes(marker)){
+            let solo = cleaned.slice(i + 1);
+            let remainder = cleaned[i].replace(marker, '').trim();
             if (remainder)
                 solo.unshift(remainder);
-            return { normal: abilities.slice(0, i), solo: solo };
+            return { normal: cleaned.slice(0, i), solo: solo };
         }
     }
-    return { normal: abilities, solo: [] };
+    return { normal: cleaned, solo: [] };
 }
 
 function formatArtists(string, seperator = ' / '){

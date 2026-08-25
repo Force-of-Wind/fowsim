@@ -1360,6 +1360,10 @@ DECK_TYPE_CHOICES = [
 ]
 
 SOLO_MODE_STYLE = "solo-mode"
+SOLO_MODE_STYLE_NAME = "Solo Mode"
+# Marker written in the ability text. Everything after it is styled with SOLO_MODE_STYLE.
+# Solo Mode is always the last part of a card's text.
+SOLO_MODE_MARKER = "[Solo Mode]"
 
 PARADOX_FORMAT = "Paradox"
 

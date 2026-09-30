@@ -9,37 +9,54 @@
 
 {% block css %}
   {{ block.super }}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="{% static 'css/pack_select.css' %}" />
-
 {% endblock %}
 
 {% block body %}
-<div class="history-wrapper">
-  <p> </p>
-  <a href="{% url 'cardDatabase-pack-history' %}">
-    History <i class="fa-solid fa-clock-rotate-left fa-xl"></i>
-  </a>
-</div>
-  <div class="container">
-    <div class="image-wrapper">
-      {% for cluster in clusters %}
-        <div class="cluster-wrapper">
-          <div class="cluster-name">
-            <h2>{{ cluster.name }}</h2>
-          </div>
-          {# prettier-ignore-start #}
-          {% if cluster.sets|length < 1 %}
-          {# prettier-ignore-end #}
-            <p class="unsupported-text">Cluster not yet supported</p>
+  <div class="pack-select container py-4">
+    <div class="pack-select-header d-flex flex-wrap align-items-center justify-content-between mb-4">
+      <div class="pack-select-heading">
+        <h1 class="h3 mb-1"><i class="fa-solid fa-box-open mr-2"></i>Pack Opening</h1>
+        <p class="text-muted mb-0">Pick a set and crack open a virtual booster.</p>
+      </div>
+      <a class="btn btn-outline-secondary" href="{% url 'cardDatabase-pack-history' %}">
+        <i class="fa-solid fa-clock-rotate-left mr-2"></i>Opening History
+      </a>
+    </div>
+
+    {% for cluster in clusters %}
+      <section class="pack-cluster mb-5">
+        <div class="pack-cluster-title d-flex align-items-center mb-3">
+          <h2 class="h5 mb-0">{{ cluster.name }}</h2>
+          <span class="pack-cluster-rule flex-grow-1 ml-3"></span>
+          {% if cluster.sets|length > 0 %}
+            <span class="badge badge-pill badge-secondary ml-3">{{ cluster.sets|length }}</span>
           {% endif %}
-          <div class="sets-container">
+        </div>
+
+        {% if cluster.sets|length < 1 %}
+          <p class="text-muted font-italic mb-0">Cluster not yet supported.</p>
+        {% else %}
+          <div class="row">
             {% for set in cluster.sets %}
-              <a href="/pack_opening/{{ set.code }}/" ><img class="image-container" src="{% static set.image %}" title="{{ set.name }}" alt="{{ set.code }}" /></a>
+              <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                <a class="pack-card card h-100" href="/pack_opening/{{ set.code }}/" title="Open {{ set.name }}">
+                  <div class="pack-card-img-wrapper">
+                    <img class="pack-card-img" src="{% static set.image %}" alt="{{ set.code }}" loading="lazy" />
+                  </div>
+                  <div class="card-body p-2 text-center">
+                    <div class="pack-card-name" title="{{ set.name }}">{{ set.name }}</div>
+                    <span class="badge badge-light pack-card-code">{{ set.code }}</span>
+                    <span class="pack-card-open btn btn-sm btn-primary btn-block mt-2">
+                      <i class="fa-solid fa-box-open mr-1"></i>Open
+                    </span>
+                  </div>
+                </a>
+              </div>
             {% endfor %}
           </div>
-        </div>
-      {% endfor %}
-    </div>
+        {% endif %}
+      </section>
+    {% endfor %}
   </div>
 {% endblock %}

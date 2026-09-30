@@ -16,29 +16,43 @@
 {% endblock %}
 
 {% block body %}
-  <div class="container">
-    <div class="action-wrapper">
-      <button data-url="{% url 'cardDatabase-pack-select' %}" id="packSelectBtn">Go to pack select</button>
-      <button id="clearHistory">Clear History</button>
-      <button id="exportHistory">Export History</button>
+  <div class="pack-history container py-4">
+    <div class="pack-history-header d-flex flex-wrap align-items-center justify-content-between mb-4">
+      <div>
+        <h1 class="h3 mb-1"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Opening History</h1>
+        <p class="text-muted mb-0">Every pack you've opened on this device.</p>
+      </div>
+      <div class="pack-history-actions d-flex flex-wrap">
+        <a class="btn btn-primary mr-2 mb-2" href="{% url 'cardDatabase-pack-select' %}">
+          <i class="fa-solid fa-box-open mr-2"></i>Open packs
+        </a>
+        <button class="btn btn-outline-secondary mr-2 mb-2" id="exportHistory">
+          <i class="fa-solid fa-file-export mr-2"></i>Export
+        </button>
+        <button class="btn btn-outline-danger mb-2" id="clearHistory">
+          <i class="fa-solid fa-trash mr-2"></i>Clear
+        </button>
+      </div>
     </div>
+
     <div class="historyContainer" id="historyContainer"></div>
-    <div class="modal" id="exportModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Untap export</h5>
-            <button type="button" class="close dismiss-modal" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
-          <div class="modal-body">
-            <textarea id="exportText" cols="50" rows="10"></textarea>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary dismiss-modal" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
-          </div>
+
+    {# ---- Export modal ---- #}
+    <div class="pack-modal" id="exportModal">
+      <div class="pack-modal-dialog">
+        <div class="pack-modal-header">
+          <h5 class="mb-0">Untap export</h5>
+          <button type="button" class="pack-modal-close dismiss-modal" aria-label="Close">&times;</button>
+        </div>
+        <div class="pack-modal-body">
+          <textarea class="form-control" id="exportText" cols="50" rows="10" readonly></textarea>
+        </div>
+        <div class="pack-modal-footer">
+          <button type="button" class="btn btn-secondary dismiss-modal">Close</button>
         </div>
       </div>
     </div>
+
     <div id="card-highlight" class="card-highlight">
       <img id="highlight-img" src="" alt="" />
       <div class="view-in-another-tab">

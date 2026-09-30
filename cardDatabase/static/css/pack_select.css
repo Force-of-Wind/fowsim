@@ -1,41 +1,81 @@
-.container {
-  width: 100%;
-  height: 100%;
+.pack-select {
+  max-width: 1300px;
+}
+
+.pack-cluster-rule {
+  height: 1px;
+  background: linear-gradient(to right, rgba(128, 128, 128, 0.35), rgba(128, 128, 128, 0));
+}
+
+/* Pack card --------------------------------------------------------------- */
+.pack-card {
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.pack-card:hover,
+.pack-card:focus {
+  text-decoration: none;
+  color: inherit;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+  border-color: var(--primary, #007bff);
+}
+
+.pack-card-img-wrapper {
   display: flex;
-  overflow: auto;
-}
-
-.image-wrapper {
-  max-width: 1100px;
-}
-
-.image-container {
-  margin: 12px 12px 20px 0px;
-  max-width: 244px;
-  max-height: 400px;
-  cursor: pointer;
-}
-
-.history-wrapper {
-  display: flex;
-  justify-content: space-around;
-}
-
-.cluster-name {
-  width: 100%;
+  align-items: center;
   justify-content: center;
-  display: flex;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 14px 12px 6px;
+  background: radial-gradient(ellipse at center, rgba(124, 114, 72, 0.12), transparent 70%);
 }
 
-.unsupported-text {
+.pack-card-img {
   width: 100%;
-  justify-content: center;
-  display: flex;
+  max-height: 240px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+  transition: transform 0.18s ease;
 }
 
-.sets-container{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.pack-card:hover .pack-card-img {
+  transform: scale(1.03);
+}
+
+.pack-card-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  margin-bottom: 0.35rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.1em;
+}
+
+.pack-card-code {
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+}
+
+/* Always occupies layout space (no reflow/jump on hover) — only the visibility fades in */
+.pack-card-open {
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.pack-card:hover .pack-card-open,
+.pack-card:focus .pack-card-open {
+  opacity: 1;
+}
+
+/* On touch devices there is no hover, so keep the call-to-action visible */
+@media (hover: none) {
+  .pack-card-open {
+    opacity: 1;
+  }
 }

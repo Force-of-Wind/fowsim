@@ -400,6 +400,7 @@ SET_DATA = {
                 {"code": "DRC", "name": "Descent into the Raven's Catacombs"},
                 {"code": "JRV", "name": "Journey to Ravidra"},
                 {"code": "AVL", "name": "Attack on Velmardia"},
+                {"code": "QSK", "name": "The Quest of the Seven Keys"},
             ],
         },
     ]
@@ -830,6 +831,11 @@ SETS_IN_ORDER = [
     "MP03 Buy a Box 10",
     "MC10",
     "AVL",
+    "AVL Buy a Box",
+    "AVL Prerelease Party",
+    "QSK",
+    "QSK Buy a Box",
+    "QSK Prerelease Party",
     "MC11",
 ]
 
@@ -909,6 +915,7 @@ SEARCH_SETS_INCLUDE = {
         "MP03 Buy a Box 09",
         "MP03 Buy a Box 10",
         "AVL Buy a Box",
+        "QSK Buy a Box",
     ],
     "Pre": [
         "L1 Prerelease Party",
@@ -948,6 +955,7 @@ SEARCH_SETS_INCLUDE = {
         "JRV Prerelease Party",
         "DRC Prerelease Party",
         "AVL Prerelease Party",
+        "QSK Prerelease Party",
     ],
     "World": [
         "World2015",
@@ -1101,6 +1109,11 @@ SEARCH_SETS_INCLUDE = {
         "AVL Buy a Box",
         "AVL Prerelease Party",
         "MC11",
+    ],
+    "QSK": [        
+        "QSK Buy a Box",
+        "QSK Prerelease Party",
+        "MC12",
     ],
 }
 

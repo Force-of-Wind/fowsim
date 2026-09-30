@@ -310,6 +310,7 @@ def untap_list(cards):
     sideboard = []
     stone_deck = []
     face_down = []
+    other = []
     for card in cards:
         if card.zone.zone.name == "Main Deck":
             main.append(card)
@@ -325,6 +326,8 @@ def untap_list(cards):
             or "extra" in card.zone.zone.name.lower()
         ):
             face_down.append(card)
+        else:
+            other.append(card)
 
     output = ""
     if len(main) > 0:
@@ -356,6 +359,12 @@ def untap_list(cards):
         for card in face_down:
             output += f"{str(card.quantity)} {card.card.name}\n"
         output += "\n"
+
+    if len(other) > 0:
+        output += "//others\n"
+        for card in other:
+            output += f"{str(card.quantity)} {card.card.name}\n"
+        output += "\n"
     return output
 
 @register.simple_tag
@@ -363,16 +372,17 @@ def tcga_list(cards):
     main = []
     sideboard = []
     extra_deck = []
+    other = []
     for card in cards:
         if card.zone.zone.name == "Ruler":
             main.append(card)
         elif card.zone.zone.name == "Main Deck":
-            main.append(card)        
+            main.append(card)
         elif card.zone.zone.name == "Magic Stone Deck":
             main.append(card)
         elif card.zone.zone.name == "Side Deck":
             sideboard.append(card)
-        
+
         elif (
             "stranger" in card.zone.zone.name.lower()
             or "rune" in card.zone.zone.name.lower()
@@ -380,6 +390,8 @@ def tcga_list(cards):
             or "ex" in card.zone.zone.name.lower()
         ):
             extra_deck.append(card)
+        else:
+            other.append(card)
 
     output = ""
     if len(main) > 0:
@@ -397,6 +409,12 @@ def tcga_list(cards):
     if len(sideboard) > 0:
         output += "//sideboard\n"
         for card in sideboard:
+            output += f"{str(card.quantity)} {card.card.name}\n"
+        output += "\n"
+
+    if len(other) > 0:
+        output += "//others\n"
+        for card in other:
             output += f"{str(card.quantity)} {card.card.name}\n"
         output += "\n"
     return output

@@ -1,95 +1,114 @@
 $(document).ready(function () {
-    let historyJson = localStorage.getItem('pulledCards');
-    let exportArray = [];
+	const historyJson = localStorage.getItem('pulledCards');
+	const container = $('#historyContainer');
+	let exportArray = [];
 
-    $('#historyContainer').empty();
+	container.empty();
 
-    if (!historyJson) {
-        $('#historyContainer').append('<div class="empty-wrapper"><h1>No cards in History.</h1></div>');
-    }
-    else {
-        let history = JSON.parse(historyJson);
+	function renderEmpty() {
+		container.html(
+			'<div class="empty-wrapper text-center text-muted py-5">' +
+			'<i class="fa-solid fa-box-open fa-3x mb-3"></i>' +
+			'<h4>No packs opened yet</h4>' +
+			'<p>Open a pack and your pulls will show up here.</p>' +
+			'</div>'
+		);
+	}
 
-        history.forEach(entry => {
-            let imgHtml = '';
-            entry.pulls.forEach(card => {
-                imgHtml += `<div class="card"><div class="${card.slot}"></div><img class="card-img" title="${card.name}" src="${card.img}" data-card-url="${card.detailLink}" /></div>`
-                exportArray.unshift(card.name);
-            });
+	function escapeHtml(value) {
+		// Escape quotes too: these values are interpolated into HTML attributes
+		// (title/alt/src/data-card-url), where the jQuery .text().html() trick alone
+		// leaves " and ' intact and lets a quoted value break out of the attribute.
+		return String(value == null ? '' : value)
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;');
+	}
 
+	if (!historyJson) {
+		renderEmpty();
+	} else {
+		const history = JSON.parse(historyJson);
 
-            let pullhtml =
-                `<div class="pull-entry">
-            <div class="pack-open-info">
-                <div>Pack Opened: ${entry.pulledAt}</div>
-                <div>Pack: ${entry.set}</div>
-            </div>
-            <div class="card-container">
-                ${imgHtml}
-            </div>
-        </div>
-        `;
-            $('#historyContainer').append(pullhtml);
+		if (!history.length) {
+			renderEmpty();
+		}
 
-            $('.card-img').on('click', function () {
-                let imgElement = $(this);
-                let src = imgElement.attr('src');
-                let alt = imgElement.attr('alt');
-                let link = imgElement.data('card-url');
-                $('#highlight-img').attr('src', src);
-                $('#highlight-img').attr('alt', alt);
-                $('#highlight-link').attr('href', link);
-                $('.card-highlight').css('display', 'flex');
-                window.onclick = function (event) {
-                    console.log(event.target);
-                    let overlay = document.getElementById("card-highlight");
-                    if (event.target == overlay) {
-                        $('.card-highlight').css('display', 'none');
-                    }
-                }
-            });
+		history.forEach((entry) => {
+			let cardsHtml = '';
+			entry.pulls.forEach((card) => {
+				const slot = escapeHtml(card.slot);
+				const name = escapeHtml(card.name);
+				const img = escapeHtml(card.img);
+				const link = escapeHtml(card.detailLink);
+				cardsHtml +=
+					`<div class="history-card">` +
+					`<div class="${slot}"></div>` +
+					`<img class="card-img" title="${name}" alt="${name}" src="${img}" data-card-url="${link}" />` +
+					`</div>`;
+				exportArray.unshift(card.name);
+			});
 
-            $('.foil').on('click', function (event) {
-                $(this).parent().children('img').trigger('click');
-            })
+			const count = entry.pulls.length;
+			const entryHtml =
+				`<div class="history-entry card mb-4">` +
+				`<div class="history-entry-header">` +
+				`<span class="badge badge-primary history-set">${escapeHtml(entry.set)}</span>` +
+				`<span class="history-time"><i class="fa-regular fa-clock mr-1"></i>${escapeHtml(entry.pulledAt)}</span>` +
+				`<span class="history-count">${count} card${count === 1 ? '' : 's'}</span>` +
+				`</div>` +
+				`<div class="history-cards">${cardsHtml}</div>` +
+				`</div>`;
+			container.append(entryHtml);
+		});
 
-        });
-    }
+		container.on('click', '.card-img', function () {
+			const img = $(this);
+			$('#highlight-img').attr('src', img.attr('src'));
+			$('#highlight-img').attr('alt', img.attr('alt'));
+			$('#highlight-link').attr('href', img.data('card-url'));
+			$('#card-highlight').css('display', 'flex');
+		});
 
-    $('#clearHistory').on('click', function () {
-        localStorage.removeItem('pulledCards');
-        $('#historyContainer').empty();
-        $('#historyContainer').append('<div class="empty-wrapper"><h1>No cards in History.</h1></div>');
-        exportArray = [];
-    })
+		container.on('click', '.foil', function () {
+			$(this).siblings('img').trigger('click');
+		});
+	}
 
-    $('#exportHistory').on('click', function () {
-        $('#exportText').val('');
-        $('#exportModal').css('display', 'block');
-        let counts = {};
-        exportArray.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        let cards = '';
-        for (const [key, value] of Object.entries(counts)) {
-            console.log(`${key}: ${value}`);
-            cards += `${value} ${key};
-`
-        }
+	$('#clearHistory').on('click', function () {
+		localStorage.removeItem('pulledCards');
+		exportArray = [];
+		renderEmpty();
+	});
 
-        $('#exportText').val(cards);
-    });
+	$('#exportHistory').on('click', function () {
+		const counts = {};
+		exportArray.forEach((name) => {
+			counts[name] = (counts[name] || 0) + 1;
+		});
+		let cards = '';
+		for (const [name, value] of Object.entries(counts)) {
+			cards += `${value} ${name}\n`;
+		}
+		$('#exportText').val(cards);
+		$('#exportModal').css('display', 'flex');
+	});
 
-    $('.dismiss-modal').on('click', function () {
-        $('#exportModal').css('display', 'none');
-    });
+	$('.dismiss-modal').on('click', function () {
+		$('#exportModal').css('display', 'none');
+	});
 
-    window.onclick = function (event) {
-        let modal = document.getElementById("exportModal");
-        if (event.target == modal) {
-            $('#exportModal').css('display', 'none');
-        }
-    };
+	$('#exportModal').on('click', function (event) {
+		if (event.target === this) {
+			$(this).css('display', 'none');
+		}
+	});
 
-    $('#packSelectBtn').on('click', function () {
-        window.location.replace($(this).data('url'));
-    });
+	$('#card-highlight').on('click', function (event) {
+		if (event.target === this) {
+			$(this).css('display', 'none');
+		}
+	});
 });

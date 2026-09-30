@@ -1,9 +1,17 @@
-.action-wrapper {
-    width: max-content;
-    max-width: 100%;
-    margin: 0 auto;
+.history-cards {
+  justify-content: center;
+  gap: 10px;
+}
+
+.history-card {
+  width: 44%;
+  max-width: 160px;
+}
+
+.pack-history-actions {
+  width: 100%;
 }
 
 .view-in-another-tab {
-    top: calc(80%);
+  top: calc(80%);
 }

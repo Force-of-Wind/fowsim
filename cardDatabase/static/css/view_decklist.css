@@ -268,7 +268,7 @@ button.close.modal-close-btn {
 }
 
 @media (min-width: 1200px) {
-    .samplehand-card {
+    .samplehand-card-wrapper {
         --child-width: 222px;
         width: 222px;
     }
@@ -276,21 +276,21 @@ button.close.modal-close-btn {
 
 
 @media (min-width: 992px) {
-    .samplehand-card {
+    .samplehand-card-wrapper {
         --child-width: 194px;
         width: 194px;
     }
 }
 
 @media (min-width: 768px) {
-    .samplehand-card {
+    .samplehand-card-wrapper {
         --child-width: 156px;
         width: 156px;
     }
 }
 
 @media (min-width: 576px) {
-    .samplehand-card {
+    .samplehand-card-wrapper {
         --child-width: 126px;
         position: absolute;
         top: 0;
@@ -300,15 +300,71 @@ button.close.modal-close-btn {
     }
 }
 
-.samplehand-card {
+.samplehand-card-wrapper {
     display: block;
     width: 100%;
     max-width: 222px;
-    cursor: pointer;
     --delta: calc((var(--child-count) * var(--child-width)) - var(--container-width));
     --offset: calc(var(--delta) / (var(--child-count) - 1));
+}
+
+.samplehand-card {
+    display: block;
+    width: 100%;
+    cursor: pointer;
     border: 1px solid black;
     border-radius: 12px;
+}
+
+.samplehand-card-checkbox {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 3;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #d9534f;
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.samplehand-card-wrapper:hover .samplehand-card-checkbox,
+.samplehand-card-checkbox:checked,
+.samplehand-card-checkbox:focus-visible {
+    opacity: 1;
+}
+
+/* Touch devices have no hover state, so keep the selection checkbox visible. */
+@media (hover: none) {
+    .samplehand-card-checkbox {
+        opacity: 1;
+    }
+}
+
+@keyframes samplehand-deal-in {
+    from {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Cards deal in from the left; the per-card animation-delay (set inline) staggers them. */
+.samplehand-card-wrapper.dealing {
+    animation: samplehand-deal-in 0.35s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .samplehand-card-wrapper.dealing {
+        animation: none;
+    }
 }
 
 .test-hand-card-container {

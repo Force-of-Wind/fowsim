@@ -267,6 +267,7 @@ SET_DATA = {
                 {"code": "GITS2045", "name": "GHOST IN THE SHELL SAC_2045"},
                 {"code": "GITS2045SD", "name": "Starter Deck GHOST IN THE SHELL SAC_2045"},
                 {"code": "ATD", "name": "Antechamber of the Ten Dimensions"},
+                {"code": "CPB", "name": "Crossroads: the Path Beyond"},
             ],
         },
         {
@@ -837,6 +838,7 @@ SETS_IN_ORDER = [
     "QSK Buy a Box",
     "QSK Prerelease Party",
     "MC11",
+    "CPB",
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {

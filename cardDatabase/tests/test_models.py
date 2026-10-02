@@ -160,6 +160,209 @@ class TestCardModel:
 
 
 # =============================================================================
+# Paradoxical & Alternative grouping tests
+# =============================================================================
+
+
+def _make_card(name, card_id, colour, types=()):
+    from cardDatabase.models.CardType import Card
+
+    c = Card.objects.create(
+        name=name,
+        name_without_punctuation=name,
+        card_id=card_id,
+        rarity="R",
+    )
+    c.colours.add(colour)
+    for t in types:
+        c.types.add(t)
+    c.refresh_from_db()
+    return c
+
+
+@pytest.mark.django_db
+class TestGroupingKey:
+    """grouping_key / display_name computation and the signals that keep them fresh."""
+
+    def test_normal_card_grouping_key_is_name(self, card_colour, card_type):
+        card = _make_card("Plain Card", "TST-200", card_colour, [card_type])
+        assert card.grouping_key == "Plain Card"
+        assert card.display_name == "Plain Card"
+
+    def test_paradoxical_grouping_and_display(self, card_colour, card_type, paradoxical_type):
+        from fowsim import constants as CONS
+
+        card = _make_card("Echo", "TST-201", card_colour, [card_type, paradoxical_type])
+        assert card.is_paradoxical
+        assert card.grouping_key == f"Echo{CONS.GROUPING_KEY_SEPARATOR}PARADOXICAL"
+        assert card.display_name == "Echo (Paradoxical)"
+
+    def test_m2m_changed_recomputes_on_type_add_and_remove(self, card_colour, card_type, paradoxical_type):
+        card = _make_card("Flux", "TST-202", card_colour, [card_type])
+        assert card.grouping_key == "Flux"
+
+        card.types.add(paradoxical_type)
+        card.refresh_from_db()
+        assert card.display_name == "Flux (Paradoxical)"
+
+        card.types.remove(paradoxical_type)
+        card.refresh_from_db()
+        assert card.grouping_key == "Flux"
+        assert card.display_name == "Flux"
+
+    def test_alternative_grouping_and_display(self, card_colour, card_type):
+        from fowsim import constants as CONS
+
+        top = _make_card("Split Heaven and Earth", "XXX-064", card_colour, [card_type])
+        bottom = _make_card("Groundsplitting Rabbit", "XXX-064" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
+
+        top.alternative_face = top.ALTERNATIVE_FACE_TOP
+        top.alternative_partner = bottom
+        bottom.alternative_face = bottom.ALTERNATIVE_FACE_BOTTOM
+        bottom.alternative_partner = top
+        top.save()
+        bottom.save()
+        top.recompute_grouping(save=True)
+        bottom.recompute_grouping(save=True)
+        top.refresh_from_db()
+        bottom.refresh_from_db()
+
+        combined = "Split Heaven and Earth//Groundsplitting Rabbit"
+        assert top.grouping_key == combined
+        assert top.display_name == combined
+        # Bottom half shares the same canonical key (stacking is stable).
+        assert bottom.grouping_key == combined
+        assert bottom.display_name == combined
+
+    def test_reprints_excludes_paradoxical(self, card_colour, card_type, paradoxical_type):
+        normal = _make_card("Mirror", "TST-210", card_colour, [card_type])
+        paradox = _make_card("Mirror", "TST-211", card_colour, [card_type, paradoxical_type])
+
+        assert paradox not in normal.reprints
+        assert normal not in paradox.reprints
+
+    def test_alternative_bottom_reprints_excludes_own_top(self, card_colour, card_type):
+        from fowsim import constants as CONS
+
+        # Two printings of the same alternative card.
+        top_a = _make_card("Front", "AAA-001", card_colour, [card_type])
+        bottom_a = _make_card("Back", "AAA-001" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
+        top_b = _make_card("Front", "BBB-001", card_colour, [card_type])
+        bottom_b = _make_card("Back", "BBB-001" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
+        for top, bottom in ((top_a, bottom_a), (top_b, bottom_b)):
+            top.alternative_face = top.ALTERNATIVE_FACE_TOP
+            top.alternative_partner = bottom
+            bottom.alternative_face = bottom.ALTERNATIVE_FACE_BOTTOM
+            bottom.alternative_partner = top
+            top.save()
+            bottom.save()
+            top.recompute_grouping(save=True)
+            bottom.recompute_grouping(save=True)
+        bottom_a.refresh_from_db()
+
+        reprints = list(bottom_a.reprints)
+        # Must NOT list its own top half (the card it belongs to).
+        assert top_a not in reprints
+        # The other printing's top is a legitimate reprint; bottom halves never appear.
+        assert top_b in reprints
+        assert bottom_b not in reprints
+
+    def test_reprints_excludes_standalone_vs_alternative_same_name(self, card_colour, card_type):
+        from fowsim import constants as CONS
+
+        standalone = _make_card("Split Heaven and Earth", "AAA-001", card_colour, [card_type])
+        top = _make_card("Split Heaven and Earth", "XXX-064", card_colour, [card_type])
+        bottom = _make_card("Groundsplitting Rabbit", "XXX-064" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
+        top.alternative_face = top.ALTERNATIVE_FACE_TOP
+        top.alternative_partner = bottom
+        bottom.alternative_face = bottom.ALTERNATIVE_FACE_BOTTOM
+        bottom.alternative_partner = top
+        top.save()
+        bottom.save()
+        top.recompute_grouping(save=True)
+        top.refresh_from_db()
+
+        # Different grouping keys -> not reprints of each other.
+        assert top not in standalone.reprints
+        assert standalone not in top.reprints
+
+    def test_paradoxical_counterparts(self, card_colour, card_type, paradoxical_type):
+        normal = _make_card("Twin", "TST-220", card_colour, [card_type])
+        paradox = _make_card("Twin", "TST-221", card_colour, [card_type, paradoxical_type])
+
+        assert paradox in normal.paradoxical_counterparts
+        assert normal in paradox.paradoxical_counterparts
+
+    def test_paradoxical_counterparts_ignores_plain_reprints(self, card_colour, card_type):
+        # Two same-name normal printings are reprints, NOT paradoxical counterparts.
+        first = _make_card("Repeat", "TST-240", card_colour, [card_type])
+        second = _make_card("Repeat", "TST-241", card_colour, [card_type])
+
+        assert second not in first.paradoxical_counterparts
+        assert not first.paradoxical_counterparts.exists()
+
+    def test_paradoxical_counterparts_ignores_alternative_reprints(self, card_colour, card_type):
+        # A alternative top with same-name standalone reprints must not list them as paradoxical.
+        from fowsim import constants as CONS
+
+        top = _make_card("Dual", "TST-250", card_colour, [card_type])
+        bottom = _make_card("Dual Back", "TST-250" + CONS.DOUBLE_SIDED_CARD_CHARACTER, card_colour, [card_type])
+        top.alternative_face = top.ALTERNATIVE_FACE_TOP
+        top.alternative_partner = bottom
+        bottom.alternative_face = bottom.ALTERNATIVE_FACE_BOTTOM
+        bottom.alternative_partner = top
+        top.save()
+        bottom.save()
+        top.recompute_grouping(save=True)
+        top.refresh_from_db()
+
+        reprint = _make_card("Dual", "TST-251", card_colour, [card_type])  # plain same-name printing
+
+        assert reprint not in top.paradoxical_counterparts
+        assert not top.paradoxical_counterparts.exists()
+
+
+@pytest.mark.django_db
+class TestParadoxicalBansAndRulings:
+    """Paradoxical and the same-named normal card must NOT share bans/rulings."""
+
+    def test_bans_isolated(self, card_colour, card_type, paradoxical_type, format_obj):
+        from cardDatabase.models import BannedCard
+
+        normal = _make_card("Banned One", "TST-230", card_colour, [card_type])
+        paradox = _make_card("Banned One", "TST-231", card_colour, [card_type, paradoxical_type])
+
+        BannedCard.objects.create(card=normal, format=format_obj)
+
+        assert normal.bans.exists()
+        assert not paradox.bans.exists()
+
+    def test_combination_bans_isolated(self, card_colour, card_type, paradoxical_type, format_obj):
+        from cardDatabase.models import CombinationBannedCards
+
+        normal = _make_card("Combo One", "TST-232", card_colour, [card_type])
+        other = _make_card("Combo Two", "TST-233", card_colour, [card_type])
+        paradox = _make_card("Combo One", "TST-234", card_colour, [card_type, paradoxical_type])
+
+        combo = CombinationBannedCards.objects.create(format=format_obj)
+        combo.cards.add(normal, other)
+
+        assert normal.combination_bans.exists()
+        assert not paradox.combination_bans.exists()
+
+    def test_rulings_isolated(self, card_colour, card_type, paradoxical_type):
+        from cardDatabase.models.Rulings import Ruling
+
+        normal = _make_card("Ruled One", "TST-235", card_colour, [card_type])
+        paradox = _make_card("Ruled One", "TST-236", card_colour, [card_type, paradoxical_type])
+
+        Ruling.objects.create(card=normal, text="Applies only to the normal version.")
+
+        assert normal.rulings.exists()
+        assert not paradox.rulings.exists()
+
+
+# =============================================================================
 # DeckList Model Tests
 # =============================================================================
 

@@ -1,5 +1,11 @@
 # Force of Wind Simulator - Claude Code Guidelines
 
+## Local notes (read first)
+
+At the start of any work on this project, read **every `.md` file in `.claude/local/`**. These hold
+machine-specific/local context (e.g. how to run the app on this machine) that is gitignored and not
+shared. Treat them as authoritative for environment/runtime details.
+
 ## Project Overview
 
 Force of Wind Simulator is a Django-based web application for the Force of Wind Trading Card Game (FOWTCG). It provides card database browsing, deck building, tournament management, and pack opening simulation.

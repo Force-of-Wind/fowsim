@@ -125,6 +125,19 @@
                             {{ add_card_form.colours }}
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            {{ add_card_form.alternative_face.errors }}
+                            <label for="{{ add_card_form.alternative_face.id_for_label }}">Alternative face:</label>
+                            {{ add_card_form.alternative_face }}
+                        </div>
+                        <div class="form-group col">
+                            {{ add_card_form.alternative_partner.errors }}
+                            <label for="{{ add_card_form.alternative_partner.id_for_label }}">Alternative partner card ID:</label>
+                            {{ add_card_form.alternative_partner }}
+                            <small class="form-text text-muted">{{ add_card_form.alternative_partner.help_text }}</small>
+                        </div>
+                    </div>
                     <div class="form-group">
                         {{ add_card_form.races.errors }}
                         <label for="{{ add_card_form.races.id_for_label }}">Races:</label>

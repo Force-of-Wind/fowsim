@@ -6,3 +6,5 @@ venv
 media
 .vscode
 .claude/settings.local.json
+.claude/local/
+

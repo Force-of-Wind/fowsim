@@ -15,17 +15,18 @@ from fowsim.decorators import tournament_admin
 def post(request, tournament_id):
     updated_players = json.loads(request.body)
 
-    print(updated_players)
-
     if updated_players is None:
         return JsonResponse({"error": "Payload incorrect"}, status=400)
 
     for updatedPlayer in updated_players:
-        dbPlayer = TournamentPlayer.objects.get(pk=updatedPlayer["id"])
+        # Scope the lookup to this tournament so an admin of one tournament
+        # cannot modify players belonging to another via a crafted payload.
+        dbPlayer = TournamentPlayer.objects.filter(tournament=request.tournament, pk=updatedPlayer["id"]).first()
+        if dbPlayer is None:
+            continue
         dbPlayer.dropped_out = updatedPlayer["dropped"]
         dbPlayer.notes = updatedPlayer["notes"]
         dbPlayer.standing = updatedPlayer["standing"]
-        print(updatedPlayer["status"])
         dbPlayer.registration_status = updatedPlayer["status"]
         dbPlayer.last_registration_updated_by = request.user.profile
         dbPlayer.save()

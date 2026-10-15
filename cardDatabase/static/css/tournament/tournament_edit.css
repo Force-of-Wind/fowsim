@@ -12,7 +12,9 @@
 
 .level-hint{
     font-weight: bold;
-    color: red;
+    color: #dc3545;
+    display: inline-block;
+    margin-top: 8px;
 }
 
 .content-wrapper{
@@ -21,4 +23,110 @@
 }
 .row-gap{
     gap: 25px;
+}
+
+/* ---- Polished tournament form ---- */
+.tournament-form {
+    width: 100%;
+    max-width: 760px;
+    padding: 28px 30px 32px;
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    border-radius: 12px;
+    background: rgba(128, 128, 128, 0.05);
+}
+
+.tournament-form-header {
+    margin-bottom: 20px;
+}
+
+.tournament-form-subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.req-marker {
+    color: #dc3545;
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+.form-section {
+    border: none;
+    padding: 0;
+    margin: 0 0 26px;
+}
+
+.form-section legend {
+    font-size: 1.05rem;
+    font-weight: 600;
+    width: 100%;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+}
+
+.form-section legend i {
+    margin-right: 8px;
+    opacity: 0.8;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 22px;
+}
+
+.form-grid .form-group {
+    margin-bottom: 0;
+}
+
+/* Textareas (location, prizes, additional) span both columns */
+.form-group--full {
+    grid-column: 1 / -1;
+}
+
+.tournament-form label {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.tournament-form textarea.form-control {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.form-hint {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.82rem;
+    opacity: 0.65;
+}
+
+.toggle-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.toggle-field input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+.form-actions {
+    margin-top: 8px;
+}
+
+@media (max-width: 575px) {
+    .tournament-form {
+        padding: 20px 16px 24px;
+    }
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 }

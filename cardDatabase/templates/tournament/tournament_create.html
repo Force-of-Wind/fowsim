@@ -3,6 +3,8 @@
 
 {% block css %}
     {{ block.super }}
+    {# The site-wide Referrer-Policy is "same-origin"; Nominatim (venue search) requires a Referer. #}
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-geosearch@3.11.0/dist/geosearch.css">

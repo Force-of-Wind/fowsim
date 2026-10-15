@@ -80,8 +80,10 @@ $(document).ready(function () {
 
         map = L.map('location-map').setView(stored || DEFAULT_CENTER, stored ? PIN_ZOOM : DEFAULT_ZOOM);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
+            // The site-wide Referrer-Policy is "same-origin", but OSM's tile policy requires a Referer.
+            referrerPolicy: 'strict-origin-when-cross-origin',
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
 

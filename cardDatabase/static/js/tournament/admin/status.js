@@ -20,6 +20,17 @@ function translateStatus(status) {
     return translations[status] || 'Unknown Status';
 }
 
+// Update the phase heading text and the coloured accent on the phase card.
+function updatePhaseDisplay(status) {
+    document.getElementById('currentStatus').innerText = translateStatus(status);
+
+    const section = document.getElementById('phase-section');
+    if(section){
+        ['created', 'registration', 'swiss', 'tops', 'completed'].forEach(p => section.classList.remove(`phase-${p}`));
+        section.classList.add(`phase-${status}`);
+    }
+}
+
 function disableButtons(currentStatus) {
     document.querySelectorAll('.status-btn').forEach(button => {
         button.disabled = true;
@@ -60,7 +71,7 @@ $(document).ready(function() {
         const statusInput = document.getElementById('status');
 
         statusInput.value = nextStatus;
-        document.getElementById('currentStatus').innerText = `Current Phase: ${translateStatus(nextStatus)}`;
+        updatePhaseDisplay(nextStatus);
 
         $.ajax({
             url: `/api/tournament/${getTournamentId()}/phase/update/`,
@@ -180,5 +191,5 @@ $(document).ready(function() {
 
     disableButtons(document.getElementById('status').value);
 
-    document.getElementById('currentStatus').innerText = `Current Phase: ${translateStatus(document.getElementById('status').value)}`;
+    updatePhaseDisplay(document.getElementById('status').value);
 });

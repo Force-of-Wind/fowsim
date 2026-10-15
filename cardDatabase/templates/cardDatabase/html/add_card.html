@@ -136,6 +136,11 @@
                         {{ add_card_form.ability_texts }}
                     </div>
                     <div class="form-group">
+                        {{ add_card_form.solo_mode_ability_texts.errors }}
+                        <label for="{{ add_card_form.solo_mode_ability_texts.id_for_label }}">Solo Mode Abilities:</label>
+                        {{ add_card_form.solo_mode_ability_texts }}
+                    </div>
+                    <div class="form-group">
                         {{ add_card_form.flavour.errors }}
                         <label for="{{ add_card_form.flavour.id_for_label }}">Flavour Text:</label>
                         {{ add_card_form.flavour }}

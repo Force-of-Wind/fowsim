@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from django.db.models import Sum
+from django.db.models import Sum, Exists, OuterRef
 
 from cardDatabase.models import DeckList, Format
+from cardDatabase.models.Tournament import TournamentPlayer
 from cardDatabase.forms import DecklistSearchForm
 from cardDatabase.views.utils.search_context import (
     get_form_from_params,
@@ -29,6 +30,17 @@ def get(request, username=None):
 
     # Start with base queryset
     decklists = DeckList.objects.filter(profile=User.objects.get(username=username).profile).distinct()
+
+    # Flag decks that are used in a tournament (entered by a TournamentPlayer) so the
+    # template can mark them and the user can filter by them.
+    decklists = decklists.annotate(is_tournament_deck=Exists(TournamentPlayer.objects.filter(deck=OuterRef("pk"))))
+
+    # Filter by tournament / non-tournament / all.
+    deck_type = request.GET.get("deck_type", CONS.DECKLIST_DECK_TYPE_ALL)
+    if deck_type == CONS.DECKLIST_DECK_TYPE_TOURNAMENT:
+        decklists = decklists.filter(is_tournament_deck=True)
+    elif deck_type == CONS.DECKLIST_DECK_TYPE_NON_TOURNAMENT:
+        decklists = decklists.filter(is_tournament_deck=False)
 
     # If not owner, only show public decklists
     if not is_owner:
@@ -69,6 +81,8 @@ def get(request, username=None):
         "viewed_user": user,
         "total_results": paginator.count,
         "sort_choices": CONS.DECKLIST_SORT_BY_CHOICES,
+        "deck_type_choices": CONS.DECKLIST_DECK_TYPE_CHOICES,
+        "selected_deck_type": deck_type,
     }
 
     return render(request, "cardDatabase/html/user_decklists.html", context)

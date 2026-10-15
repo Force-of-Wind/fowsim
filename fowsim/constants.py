@@ -256,6 +256,8 @@ SET_DATA = {
                 {"code": "ABC-SD09", "name": "Gnome vs Reinhardt (Reinhardt)"},
                 {"code": "ABC-SD10", "name": "Elektra vs The Lich King (The Lich King)"},
                 {"code": "ABC-SD11", "name": "Void vs Void"},
+                {"code": "ABC-SD12", "name": "ABC-SD12"},
+                {"code": "ABC-SD13", "name": "ABC-SD13"},
             ],
         },
         {
@@ -839,6 +841,8 @@ SETS_IN_ORDER = [
     "QSK Prerelease Party",
     "MC11",
     "CPB",
+    "ABC-SD12",
+    "ABC-SD13",
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {

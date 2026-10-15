@@ -18,92 +18,175 @@
 {% block body %}
   {% if not valid %}
     <div class="container">
-      <div class="error-wrapper">
-        <h3>Pack not yet implemented or invalid!</h3>
+      <div class="error-wrapper text-center">
+        <div>
+          <h3 class="mb-3">Pack not yet implemented or invalid!</h3>
+          <a class="btn btn-primary" href="{% url 'cardDatabase-pack-select' %}">
+            <i class="fa-solid fa-arrow-left mr-2"></i>Back to pack select
+          </a>
+        </div>
       </div>
     </div>
   {% else %}
-    <div class="container">
-      <div class="loader-wrapper">
-        <svg class="loader" viewBox="0 0 100 100" overflow="visible">
-          <g class="core">
-            <circle class="path" cx="50" cy="50" r="1" fill="none" />
-          </g>
-          <g class="layer-1">
-            <circle class="path" cx="50" cy="50" r="70" fill="none" />
-          </g>
-          <g class="layer-2">
-            <circle class="path" cx="50" cy="50" r="120" fill="none" />
-          </g>
-          <g class="layer-3">
-            <circle class="path" cx="50" cy="50" r="180" fill="none" />
-          </g>
-          <g class="layer-4">
-            <circle class="path" cx="50" cy="50" r="240" fill="none" />
-          </g>
-          <g class="layer-5">
-            <circle class="path" cx="50" cy="50" r="300" fill="none" />
-          </g>
-          <g class="layer-6">
-            <circle class="path" cx="50" cy="50" r="380" fill="none" />
-          </g>
-          <g class="layer-7">
-            <circle class="path" cx="50" cy="50" r="450" fill="none" />
-          </g>
-          <g class="layer-8">
-            <circle class="path" cx="50" cy="50" r="540" fill="none" />
-          </g>
-        </svg>
+    <div id="pack-opener" class="pack-opener"
+         data-skip-animation="{{ skip_animation|yesno:'1,0' }}"
+         data-setcode="{{ setcode }}"
+         data-is-authenticated="{{ request.user.is_authenticated|yesno:'1,0' }}"
+         data-decks-url="{% url 'cardDatabase-pack-user-decks' %}"
+         data-add-url="{% url 'cardDatabase-pack-add-to-deck' %}"
+         data-skip-pref-url="{% url 'cardDatabase-pack-skip-preference' %}">
+      {% csrf_token %}
+
+      <div class="pack-topbar">
+        <label class="skip-toggle mb-0" title="Skip the opening animation for every pack">
+          <input type="checkbox" id="skipAnimationToggle" {% if skip_animation %}checked{% endif %} />
+          <span>Skip animation</span>
+        </label>
+        <div class="pack-counter">
+          <i class="fa-solid fa-layer-group mr-1"></i>
+          Packs opened: <span id="packCounter">0</span>
+        </div>
       </div>
-      <div class="pack-container">
-        <a href="#" id="pack-standard"><img src="{% static packImage %}" alt="{% static packImage %}" /></a>
+
+      <div class="pack-stage">
+        <div class="pack-flash" aria-hidden="true"></div>
+        <div class="pack-container">
+          <a href="#" id="pack-standard" role="button" aria-label="Open pack">
+            <img src="{% static packImage %}" alt="Booster pack" />
+          </a>
+          <div class="pack-hint"><i class="fa-solid fa-hand-pointer mr-1"></i>Tap the pack to open it</div>
+        </div>
+        <button type="button" class="btn btn-outline-secondary btn-sm skip-btn" id="skipBtn">
+          <i class="fa-solid fa-forward mr-1"></i>Skip animation
+        </button>
       </div>
+
       <div id="pack-wrapper" class="pack-wrapper">
         <div class="card-holder">
           {% for pull in pulls %}
-            <div class="card item hidden">
+            <div class="card item enter" data-card-id="{{ pull.card.card_id }}" data-zone-suggestion="{{ pull.zone_suggestion }}">
               <div class="{{ pull.slot }}"></div>
-              <img class="card__face card__face--front" src="{% static 'img/pack/card_back.png' %}" />
-              <img class="card__face card__face--back" src="{{ pull.card.card_image.url }}" title="{{ pull.card.name }}" data-slot="{{ pull.slot }}" data-card-url="{% url 'cardDatabase-view-card' pull.card.card_id %}" alt="card_front" />
+              <img class="card__face card__face--front" src="{% static 'img/pack/card_back.png' %}" alt="card back" />
+              <img class="card__face card__face--back" src="{{ pull.card.card_image.url }}"
+                   title="{{ pull.card.name }}"
+                   data-slot="{{ pull.slot }}"
+                   data-card-id="{{ pull.card.card_id }}"
+                   data-card-name="{{ pull.card.name }}"
+                   data-zone-suggestion="{{ pull.zone_suggestion }}"
+                   data-card-url="{% url 'cardDatabase-view-card' pull.card.card_id %}" alt="{{ pull.card.name }}" />
+              <div class="card-actions">
+                <button type="button" class="card-action card-action-view" title="Preview card">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                {% if request.user.is_authenticated %}
+                  <button type="button" class="card-action card-action-add" title="Add to a deck">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                {% endif %}
+              </div>
             </div>
           {% endfor %}
         </div>
       </div>
-      <div class="modal" id="exportModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Untap export</h5>
-              <button type="button" class="close dismiss-modal" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              {# prettier-ignore-start #}
-              <textarea cols="30" rows="10">{% for pull in pulls %}1 {{ pull.card.name }}
+
+      <div class="actions-wrapper">
+        <button class="btn btn-primary action-btn" id="openNewBtn"><i class="fa-solid fa-rotate-right mr-2"></i>Open new pack</button>
+        {% if request.user.is_authenticated %}
+          <button class="btn btn-success action-btn" id="addAllBtn"><i class="fa-solid fa-layer-group mr-2"></i>Add all to deck</button>
+        {% endif %}
+        <button class="btn btn-outline-secondary action-btn" id="exportBtn"><i class="fa-solid fa-file-export mr-2"></i>Export</button>
+        <button class="btn btn-outline-secondary action-btn" data-url="{% url 'cardDatabase-pack-select' %}" id="packSelectBtn"><i class="fa-solid fa-box-open mr-2"></i>Pack select</button>
+        <button class="btn btn-outline-secondary action-btn" data-url="{% url 'cardDatabase-pack-history' %}" id="packHistoryBtn"><i class="fa-solid fa-clock-rotate-left mr-2"></i>History</button>
+      </div>
+
+      {# ---- Export modal ---- #}
+      <div class="pack-modal" id="exportModal">
+        <div class="pack-modal-dialog">
+          <div class="pack-modal-header">
+            <h5 class="mb-0">Untap export</h5>
+            <button type="button" class="pack-modal-close" data-close-modal="exportModal" aria-label="Close">&times;</button>
+          </div>
+          <div class="pack-modal-body">
+            {# prettier-ignore-start #}
+            <textarea class="form-control" cols="30" rows="10" readonly>{% for pull in pulls %}1 {{ pull.card.name }}
 {% endfor %}</textarea>
-              {# prettier-ignore-end #}
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary dismiss-modal" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
-            </div>
+            {# prettier-ignore-end #}
+          </div>
+          <div class="pack-modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="exportModal">Close</button>
           </div>
         </div>
       </div>
-      <div class="actions-wrapper">
-        <button class="action-btn" id="openNewBtn">Open new Pack</button>
-        <button class="action-btn" id="exportBtn">Export Cards</button>
-        <button class="action-btn" data-url="{% url 'cardDatabase-pack-select' %}" id="packSelectBtn">Go to pack select</button>
-        <button class="action-btn" data-url="{% url 'cardDatabase-pack-history' %}" id="packHistoryBtn">History</button>
+
+      {# ---- Add to deck modal ---- #}
+      <div class="pack-modal" id="addDeckModal">
+        <div class="pack-modal-dialog">
+          <div class="pack-modal-header">
+            <h5 class="mb-0">Add to deck</h5>
+            <button type="button" class="pack-modal-close" data-close-modal="addDeckModal" aria-label="Close">&times;</button>
+          </div>
+          <div class="pack-modal-body">
+            <p class="add-deck-context text-muted mb-3"></p>
+            <div class="add-deck-loading text-center py-3" style="display:none;">
+              <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+            </div>
+            <div class="add-deck-empty" style="display:none;">
+              <p class="mb-2">You don't have any editable decks yet.</p>
+              <a class="btn btn-sm btn-primary" href="{% url 'cardDatabase-user-decklists' %}">Go to my decklists</a>
+            </div>
+            <div class="add-deck-form" style="display:none;">
+              <div class="form-group">
+                <label for="addDeckSelect">Deck</label>
+                <select class="form-control" id="addDeckSelect"></select>
+              </div>
+              <div class="form-group mb-0">
+                <label for="addZoneSelect">Zone</label>
+                <select class="form-control" id="addZoneSelect">
+                  <option value="auto">Auto (by card type)</option>
+                  {% for zone in deck_zones %}
+                    <option value="{{ zone }}">{{ zone }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="add-deck-status mt-3" style="display:none;"></div>
+          </div>
+          <div class="pack-modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="addDeckModal">Cancel</button>
+            <button type="button" class="btn btn-success" id="addDeckConfirm">Add to deck</button>
+          </div>
+        </div>
       </div>
+
+      {# ---- Skip confirmation modal ---- #}
+      <div class="pack-modal" id="skipModal">
+        <div class="pack-modal-dialog">
+          <div class="pack-modal-header">
+            <h5 class="mb-0">Skip animation?</h5>
+            <button type="button" class="pack-modal-close" data-close-modal="skipModal" aria-label="Close">&times;</button>
+          </div>
+          <div class="pack-modal-body">
+            <p class="mb-3">Reveal all cards instantly without the opening animation.</p>
+            <label class="d-flex align-items-center mb-0">
+              <input type="checkbox" id="skipAlwaysCheck" class="mr-2" />
+              <span>Always skip the animation from now on</span>
+            </label>
+          </div>
+          <div class="pack-modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal="skipModal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="skipConfirm">Skip</button>
+          </div>
+        </div>
+      </div>
+
       <div id="card-highlight" class="card-highlight">
         <img id="highlight-img" src="" alt="" />
         <div class="view-in-another-tab">
           <a id="highlight-link" href="" target="_blank">Go to Card</a>
         </div>
       </div>
-      <div class="pack-counter">
-        Packs opened:
-        <span id="packCounter"></span>
-      </div>
+
+      <div class="pack-toast" id="packToast"></div>
     </div>
   {% endif %}
 {% endblock %}

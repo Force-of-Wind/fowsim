@@ -2,6 +2,8 @@
 Tests for cardDatabase views.
 """
 
+import json
+
 import pytest
 from django.urls import reverse
 
@@ -358,6 +360,148 @@ class TestPackSelectView:
     def test_pack_select_loads(self, client):
         response = client.get(reverse("cardDatabase-pack-select"))
         assert response.status_code == 200
+
+    def test_pack_history_loads(self, client):
+        response = client.get(reverse("cardDatabase-pack-history"))
+        assert response.status_code == 200
+
+    def test_pack_opening_valid_renders(self, client):
+        response = client.get(reverse("cardDatabase-pack-opening", args=["ACN"]))
+        assert response.status_code == 200
+        assert b"pack-opener" in response.content
+
+    def test_pack_opening_invalid_renders(self, client):
+        response = client.get(reverse("cardDatabase-pack-opening", args=["NOPE"]))
+        assert response.status_code == 200
+        assert b"not yet implemented" in response.content
+
+
+@pytest.mark.django_db
+class TestPackOpeningEndpoints:
+    """Tests for the pack opener supporting endpoints (skip preference, add to deck)."""
+
+    def test_skip_preference_saved_to_session(self, client):
+        url = reverse("cardDatabase-pack-skip-preference")
+        response = client.post(url, data=json.dumps({"skip": True}), content_type="application/json")
+        assert response.status_code == 200
+        assert response.json()["skip"] is True
+        assert client.session["pack_skip_animation"] is True
+
+        response = client.post(url, data=json.dumps({"skip": False}), content_type="application/json")
+        assert response.json()["skip"] is False
+        assert client.session["pack_skip_animation"] is False
+
+    def test_user_decks_requires_login(self, client):
+        response = client.get(reverse("cardDatabase-pack-user-decks"))
+        assert response.status_code == 401  # JSON 401 for AJAX, not an HTML login redirect
+
+    def test_user_decks_lists_only_owned_editable_decks(self, authenticated_client, format_obj):
+        from cardDatabase.models import Profile, DeckList
+
+        profile, _ = Profile.objects.get_or_create(user=authenticated_client.user)
+        DeckList.objects.create(profile=profile, name="My Deck", deck_format=format_obj)
+        DeckList.objects.create(
+            profile=profile, name="Locked Deck", deck_format=format_obj, deck_lock="tournament"
+        )
+
+        response = authenticated_client.get(reverse("cardDatabase-pack-user-decks"))
+        assert response.status_code == 200
+        names = [d["name"] for d in response.json()["decks"]]
+        assert "My Deck" in names
+        assert "Locked Deck" not in names
+
+    def test_user_decks_excludes_tournament_decks(self, authenticated_client, format_obj, tournament):
+        from cardDatabase.models import Profile, DeckList, TournamentPlayer
+
+        profile, _ = Profile.objects.get_or_create(user=authenticated_client.user)
+        DeckList.objects.create(profile=profile, name="Plain Deck", deck_format=format_obj)
+        tourney_deck = DeckList.objects.create(profile=profile, name="Tourney Deck", deck_format=format_obj)
+        TournamentPlayer.objects.create(
+            profile=profile, tournament=tournament, deck=tourney_deck, user_data={}, standing=0
+        )
+
+        response = authenticated_client.get(reverse("cardDatabase-pack-user-decks"))
+        names = [d["name"] for d in response.json()["decks"]]
+        assert "Plain Deck" in names
+        assert "Tourney Deck" not in names
+
+    def test_add_to_deck_adds_and_increments(self, authenticated_client, card, format_obj):
+        from cardDatabase.models import Profile, DeckList
+        from cardDatabase.models.DeckList import DeckListCard
+
+        profile, _ = Profile.objects.get_or_create(user=authenticated_client.user)
+        deck = DeckList.objects.create(profile=profile, name="My Deck", deck_format=format_obj)
+        url = reverse("cardDatabase-pack-add-to-deck")
+        payload = {"decklist_id": deck.pk, "cards": [{"card_id": card.card_id, "zone": "Main Deck"}]}
+
+        response = authenticated_client.post(url, data=json.dumps(payload), content_type="application/json")
+        assert response.status_code == 200
+        assert response.json()["added"] == 1
+        deck_card = DeckListCard.objects.get(decklist=deck, card=card)
+        assert deck_card.quantity == 1
+        assert deck_card.zone.zone.name == "Main Deck"
+
+        # Adding the same card again should bump the quantity, not duplicate the row.
+        authenticated_client.post(url, data=json.dumps(payload), content_type="application/json")
+        deck_card.refresh_from_db()
+        assert deck_card.quantity == 2
+        assert DeckListCard.objects.filter(decklist=deck, card=card).count() == 1
+
+    def test_add_to_deck_rejects_other_users_deck(self, authenticated_client, card, format_obj, django_user_model):
+        from cardDatabase.models import Profile, DeckList
+
+        other_user = django_user_model.objects.create_user(
+            username="other", email="other@example.com", password="pass12345"
+        )
+        other_profile, _ = Profile.objects.get_or_create(user=other_user)
+        deck = DeckList.objects.create(profile=other_profile, name="Other Deck", deck_format=format_obj)
+        url = reverse("cardDatabase-pack-add-to-deck")
+        payload = {"decklist_id": deck.pk, "cards": [{"card_id": card.card_id, "zone": "Main Deck"}]}
+
+        response = authenticated_client.post(url, data=json.dumps(payload), content_type="application/json")
+        assert response.status_code == 404
+
+    def test_add_to_deck_rejects_tournament_deck(self, authenticated_client, card, format_obj, tournament):
+        from cardDatabase.models import Profile, DeckList, TournamentPlayer
+        from cardDatabase.models.DeckList import DeckListCard
+
+        profile, _ = Profile.objects.get_or_create(user=authenticated_client.user)
+        deck = DeckList.objects.create(profile=profile, name="Tourney Deck", deck_format=format_obj)
+        TournamentPlayer.objects.create(
+            profile=profile, tournament=tournament, deck=deck, user_data={}, standing=0
+        )
+        url = reverse("cardDatabase-pack-add-to-deck")
+        payload = {"decklist_id": deck.pk, "cards": [{"card_id": card.card_id, "zone": "Main Deck"}]}
+
+        response = authenticated_client.post(url, data=json.dumps(payload), content_type="application/json")
+        assert response.status_code == 400
+        assert not DeckListCard.objects.filter(decklist=deck).exists()
+
+    def test_skip_preference_rejects_malformed_body(self, client):
+        url = reverse("cardDatabase-pack-skip-preference")
+        response = client.post(url, data="not json", content_type="application/json")
+        assert response.status_code == 400
+
+    def test_add_to_deck_rejects_malformed_body(self, authenticated_client):
+        url = reverse("cardDatabase-pack-add-to-deck")
+        response = authenticated_client.post(url, data="not json", content_type="application/json")
+        assert response.status_code == 400
+
+    def test_add_to_deck_ignores_unknown_zone(self, authenticated_client, card, format_obj):
+        """A crafted zone name must not create rows in the shared DeckListZone table."""
+        from cardDatabase.models import Profile, DeckList
+        from cardDatabase.models.DeckList import DeckListCard, DeckListZone
+
+        profile, _ = Profile.objects.get_or_create(user=authenticated_client.user)
+        deck = DeckList.objects.create(profile=profile, name="My Deck", deck_format=format_obj)
+        url = reverse("cardDatabase-pack-add-to-deck")
+        payload = {"decklist_id": deck.pk, "cards": [{"card_id": card.card_id, "zone": "garbage zone"}]}
+
+        response = authenticated_client.post(url, data=json.dumps(payload), content_type="application/json")
+        assert response.status_code == 200
+        assert not DeckListZone.objects.filter(name="garbage zone").exists()
+        deck_card = DeckListCard.objects.get(decklist=deck, card=card)
+        assert deck_card.zone.zone.name == "Main Deck"  # fell back to the default zone
 
 
 # =============================================================================

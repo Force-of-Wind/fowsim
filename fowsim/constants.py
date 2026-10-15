@@ -256,6 +256,8 @@ SET_DATA = {
                 {"code": "ABC-SD09", "name": "Gnome vs Reinhardt (Reinhardt)"},
                 {"code": "ABC-SD10", "name": "Elektra vs The Lich King (The Lich King)"},
                 {"code": "ABC-SD11", "name": "Void vs Void"},
+                {"code": "ABC-SD12", "name": "ABC-SD12"},
+                {"code": "ABC-SD13", "name": "ABC-SD13"},
             ],
         },
         {
@@ -267,6 +269,7 @@ SET_DATA = {
                 {"code": "GITS2045", "name": "GHOST IN THE SHELL SAC_2045"},
                 {"code": "GITS2045SD", "name": "Starter Deck GHOST IN THE SHELL SAC_2045"},
                 {"code": "ATD", "name": "Antechamber of the Ten Dimensions"},
+                {"code": "CPB", "name": "Crossroads: the Path Beyond"},
             ],
         },
         {
@@ -400,6 +403,7 @@ SET_DATA = {
                 {"code": "DRC", "name": "Descent into the Raven's Catacombs"},
                 {"code": "JRV", "name": "Journey to Ravidra"},
                 {"code": "AVL", "name": "Attack on Velmardia"},
+                {"code": "QSK", "name": "The Quest of the Seven Keys"},
             ],
         },
     ]
@@ -841,7 +845,15 @@ SETS_IN_ORDER = [
     "MP03 Buy a Box 10",
     "MC10",
     "AVL",
+    "AVL Buy a Box",
+    "AVL Prerelease Party",
+    "QSK",
+    "QSK Buy a Box",
+    "QSK Prerelease Party",
     "MC11",
+    "CPB",
+    "ABC-SD12",
+    "ABC-SD13",
 ]
 
 SEARCH_CARD_TYPES_INCLUDE = {
@@ -920,6 +932,7 @@ SEARCH_SETS_INCLUDE = {
         "MP03 Buy a Box 09",
         "MP03 Buy a Box 10",
         "AVL Buy a Box",
+        "QSK Buy a Box",
     ],
     "Pre": [
         "L1 Prerelease Party",
@@ -959,6 +972,7 @@ SEARCH_SETS_INCLUDE = {
         "JRV Prerelease Party",
         "DRC Prerelease Party",
         "AVL Prerelease Party",
+        "QSK Prerelease Party",
     ],
     "World": [
         "World2015",
@@ -1112,6 +1126,11 @@ SEARCH_SETS_INCLUDE = {
         "AVL Buy a Box",
         "AVL Prerelease Party",
         "MC11",
+    ],
+    "QSK": [        
+        "QSK Buy a Box",
+        "QSK Prerelease Party",
+        "MC12",
     ],
 }
 
@@ -1373,6 +1392,10 @@ DECK_TYPE_CHOICES = [
 ]
 
 SOLO_MODE_STYLE = "solo-mode"
+SOLO_MODE_STYLE_NAME = "Solo Mode"
+# Marker written in the ability text. Everything after it is styled with SOLO_MODE_STYLE.
+# Solo Mode is always the last part of a card's text.
+SOLO_MODE_MARKER = "[Solo Mode]"
 
 PARADOX_FORMAT = "Paradox"
 

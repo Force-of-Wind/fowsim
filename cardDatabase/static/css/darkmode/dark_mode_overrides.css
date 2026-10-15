@@ -417,3 +417,48 @@ body.hasHover #user-decklists tr:not(:first-child):hover{
 body #banlists-page{
     color: white;
 }
+/* /Banlists */
+
+/* Pack opener / history modals & cards */
+.pack-modal-dialog {
+    background: #303134;
+    color: white;
+}
+
+.pack-modal-header,
+.pack-modal-footer {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.pack-modal-body textarea,
+.pack-modal-body .form-control,
+#addDeckSelect,
+#addZoneSelect {
+    background-color: #191d21;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.pack-modal-close {
+    color: white;
+}
+
+.pack-card,
+.history-entry {
+    background: #303134;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.history-entry-header {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.pack-card-name,
+.history-time {
+    color: #f1f1f1;
+}
+
+.skip-toggle {
+    border-color: rgba(255, 255, 255, 0.25);
+}

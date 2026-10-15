@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.db import ProgrammingError
 
 from fowsim import constants as CONS
-from cardDatabase.models.CardType import Card, Race, AbilityText, CardAbility, CardArtist
+from cardDatabase.models.CardType import Card, Race, AbilityText, AbilityStyle, CardAbility, CardArtist
 from cardDatabase.models.Ability import Keyword
 from cardDatabase.models.Banlist import Format
 from cardDatabase.models.Tournament import TournamentLevel
@@ -117,6 +117,9 @@ class DecklistSearchForm(forms.Form):
         label="", strip=True, widget=forms.TextInput(attrs={"placeholder": "Card name(s) to search"}), required=False
     )
     text_exactness = forms.ChoiceField(label="Match words", required=False, choices=CONS.TEXT_EXACTNESS_OPTIONS)
+    from_user = forms.CharField(
+        label="By user: ", strip=True, widget=forms.TextInput(attrs={"placeholder": "Username to search"}), required=False
+    )
     deck_format = forms.MultipleChoiceField(label="Format(s)", required=False, choices=get_formats())
 
 
@@ -134,6 +137,16 @@ class AddCardForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={
                 "placeholder": "Each ability must be separated by TWO newlines at the end. Single newlines will be counted as part of 1 ability."
+            }
+        ),
+    )
+    solo_mode_ability_texts = forms.CharField(
+        label="Solo Mode Abilities",
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "Abilities active only in Solo Mode. Separate each by TWO newlines. "
+                "No need to type [Solo Mode] - everything here is added with the Solo Mode style automatically."
             }
         ),
     )
@@ -199,18 +212,54 @@ class AddCardForm(forms.ModelForm):
         output.append(current_ability)
         return output
 
+    def get_solo_mode_style(self):
+        if self._solo_mode_style is None:
+            self._solo_mode_style, _ = AbilityStyle.objects.get_or_create(
+                identifier=CONS.SOLO_MODE_STYLE, defaults={"name": CONS.SOLO_MODE_STYLE_NAME}
+            )
+        return self._solo_mode_style
+
+    def _add_ability(self, card_instance, text, position, style):
+        ability_text, _ = AbilityText.objects.get_or_create(text=text)
+        CardAbility.objects.get_or_create(
+            ability_text=ability_text,
+            card=card_instance,
+            position=position,
+            defaults={"special_style": style},
+        )
+        return position + 1
+
     def save(self):
         card_instance = super().save(commit=False)
         card_instance.name_without_punctuation = remove_punctuation(card_instance.name)
         # Save model before using it with manytomany relations
         card_instance.save()
 
-        abilities_to_add = AddCardForm.split_abilities(self.cleaned_data["ability_texts"])
+        self._solo_mode_style = None
         position = 1
-        for ability_to_add in abilities_to_add:
-            ability_text, created = AbilityText.objects.get_or_create(text=ability_to_add)
-            CardAbility.objects.get_or_create(ability_text=ability_text, card=card_instance, position=position)
-            position += 1
+        for ability_to_add in AddCardForm.split_abilities(self.cleaned_data["ability_texts"]):
+            if not ability_to_add.strip():
+                continue
+            # Once the [Solo Mode] marker is seen, it and everything after it belong to the
+            # solo mode style. The marker itself is only a delimiter and is not stored.
+            style = None
+            if self._solo_mode_style is None and CONS.SOLO_MODE_MARKER in ability_to_add:
+                ability_to_add = ability_to_add.replace(CONS.SOLO_MODE_MARKER, "").strip()
+                style = self.get_solo_mode_style()
+                if not ability_to_add:
+                    continue
+            elif self._solo_mode_style is not None:
+                # We are already past the marker, so the rest of the main box is solo mode too.
+                style = self._solo_mode_style
+
+            position = self._add_ability(card_instance, ability_to_add, position, style)
+
+        # Abilities entered in the dedicated Solo Mode box are always appended last with the
+        # solo style, so admins never need to know the [Solo Mode] keyword.
+        for ability_to_add in AddCardForm.split_abilities(self.cleaned_data["solo_mode_ability_texts"]):
+            if not ability_to_add.strip():
+                continue
+            position = self._add_ability(card_instance, ability_to_add, position, self.get_solo_mode_style())
 
         races_to_add = self.cleaned_data["races"].splitlines()
         for race_to_add in races_to_add:

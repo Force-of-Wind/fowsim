@@ -465,10 +465,12 @@ def decklist_search(decklist_form):
     if decklist_form.is_valid():
         search_text = decklist_form.cleaned_data["contains_card"]
         text_exactness = decklist_form.cleaned_data["text_exactness"]
+        text_user = decklist_form.cleaned_data["from_user"]
         deck_format_filter = get_deck_format_query(decklist_form.cleaned_data["deck_format"])
         decklists = DeckList.objects.exclude(get_unsupported_decklists_query()).distinct()
         decklists = decklists.filter(deck_format_filter)
         decklists = apply_deckcard_cardname_search(decklists, search_text, ["name"], text_exactness)
+        decklists = decklists.filter(Q(**{"profile__user__username__icontains": text_user}))
         decklists = decklists.order_by("-last_modified")
 
     return decklists

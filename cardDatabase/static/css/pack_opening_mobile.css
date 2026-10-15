@@ -1,16 +1,36 @@
+.pack-stage {
+  min-height: 60vh;
+}
+
+#pack-standard img {
+  width: 70vw;
+}
+
 .card-holder {
   margin-bottom: 30px;
+  gap: 14px;
+}
+
+/* Card actions can't be hovered on touch — keep them visible once flipped */
+.card.is-flipped .card-actions {
+  opacity: 1;
+}
+
+.actions-wrapper {
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto 100px auto;
+  gap: 12px;
 }
 
 .action-btn {
   width: 100%;
 }
 
-.actions-wrapper {
-  flex-direction: column;
-  width: max-content;
-  margin: 0 auto 100px auto;
-  gap: 15px;
+.pack-modal {
+  padding: 6vh 12px 12px;
 }
 
 .view-in-another-tab {

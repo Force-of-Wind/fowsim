@@ -168,16 +168,8 @@ def advanced_search(advanced_form):
 
 def get_search_form_ctx():
     try:
-        race_values = Race.objects.values("name")
-        races_list = list(map(lambda x: x["name"], race_values))  # Remove blank string
-        races_list.sort()
-        races_list.remove("")
-
-        artist_values = CardArtist.objects.values("name")
-        artists_list = list(map(lambda x: x["name"], artist_values))
-        artists_list.sort()
-        if "" in artists_list:
-            artists_list.remove("")  # Remove blank string if exists
+        races_list = list(Race.objects.exclude(name="").order_by("name").values_list("name", flat=True))
+        artists_list = list(CardArtist.objects.exclude(name="").order_by("name").values_list("name", flat=True))
 
         format_list = Format.objects.annotate(num_sets=Count("sets")).filter(num_sets__gt=0).values("name")
     except Exception:

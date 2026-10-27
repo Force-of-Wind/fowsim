@@ -513,6 +513,16 @@ class TestGetSearchFormCtx:
         ctx = get_search_form_ctx()
         assert ctx["races_list"] == sorted(ctx["races_list"])
 
+    def test_lists_populated_without_blank_race(self, formats):
+        from cardDatabase.models.CardType import Race
+        from cardDatabase.views.utils.search_context import get_search_form_ctx
+
+        Race.objects.create(name="Human")
+        Race.objects.create(name="Dragon")
+
+        ctx = get_search_form_ctx()
+        assert ctx["races_list"] == ["Dragon", "Human"]
+
 
 @pytest.mark.django_db
 class TestBasicSearch:

@@ -16,6 +16,15 @@
     background-color: white;
 }
 
+.bubble-text.restrict{
+    border-color: white;
+    border-radius: 5px;
+    color:white;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #920d60;
+}
+
 .card-container{
     padding: 20px 0;
     display: block;

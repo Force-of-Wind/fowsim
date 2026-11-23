@@ -99,7 +99,7 @@ def field_(self, name):
 
 def make_bubble_html(text):
     content = text[1:-1]  # Strip '[]' from the ends
-    if content.split(" ")[-1].upper() in ["TURN", "TIMING"]:
+    if content.split(" ")[-1].upper() in ["TURN", "TIMING", "GAME"]:
         return '<div class="bubble-text restrict">%s</div>' % content
     else:
         return '<div class="bubble-text">%s</div>' % content
